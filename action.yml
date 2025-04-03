@@ -1,23 +1,23 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: 'AI Inference'
+description: Generate an AI response based on a provided prompt
+author: 'GitHub'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
+  icon: 'play-circle'
   color: red
 
 # Define your inputs here.
 inputs:
-  milliseconds:
+  prompt:
     description: Your input description here
     required: true
-    default: '1000'
+    default: ''
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  response:
+    description: The response from the model
 
 runs:
   using: node20
