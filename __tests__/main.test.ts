@@ -7,11 +7,29 @@
  */
 import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
-import { wait } from '../__fixtures__/wait.js'
 
-// Mocks should be declared before the module being tested is imported.
+const mockPost = jest.fn().mockImplementation(() => ({
+  body: {
+    choices: [
+      {
+        message: {
+          content: 'Hello, user!'
+        }
+      }
+    ]
+  }
+}))
+
+jest.unstable_mockModule('@azure-rest/ai-inference', () => ({
+  default: jest.fn(() => ({
+    path: jest.fn(() => ({
+      post: mockPost
+    }))
+  })),
+  isUnexpected: jest.fn(() => false)
+}))
+
 jest.unstable_mockModule('@actions/core', () => core)
-jest.unstable_mockModule('../src/wait.js', () => ({ wait }))
 
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
@@ -20,43 +38,35 @@ const { run } = await import('../src/main.js')
 describe('main.ts', () => {
   beforeEach(() => {
     // Set the action's inputs as return values from core.getInput().
-    core.getInput.mockImplementation(() => '500')
-
-    // Mock the wait function so that it does not actually wait.
-    wait.mockImplementation(() => Promise.resolve('done!'))
+    core.getInput.mockImplementation((name) => {
+      if (name === 'prompt') return 'Hello, AI!'
+      if (name === 'system_prompt') return 'You are a test assistant.'
+      if (name === 'model_name') return 'gpt-4o'
+      return ''
+    })
   })
 
   afterEach(() => {
     jest.resetAllMocks()
   })
 
-  it('Sets the time output', async () => {
+  it('Sets the response output', async () => {
     await run()
 
-    // Verify the time output was set.
     expect(core.setOutput).toHaveBeenNthCalledWith(
       1,
-      'time',
-      // Simple regex to match a time string in the format HH:MM:SS.
-      expect.stringMatching(/^\d{2}:\d{2}:\d{2}/)
+      'response',
+      'Hello, user!'
     )
   })
 
   it('Sets a failed status', async () => {
-    // Clear the getInput mock and return an invalid value.
-    core.getInput.mockClear().mockReturnValueOnce('this is not a number')
-
-    // Clear the wait mock and return a rejected promise.
-    wait
-      .mockClear()
-      .mockRejectedValueOnce(new Error('milliseconds is not a number'))
+    // Clear the getInput mock and return an empty prompt
+    core.getInput.mockClear().mockReturnValueOnce('')
 
     await run()
 
     // Verify that the action was marked as failed.
-    expect(core.setFailed).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds is not a number'
-    )
+    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'prompt is not set')
   })
 })

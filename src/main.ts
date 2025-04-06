@@ -10,6 +10,10 @@ import { AzureKeyCredential } from '@azure/core-auth'
 export async function run(): Promise<void> {
   try {
     const prompt: string = core.getInput('prompt')
+    if (prompt === undefined || prompt === '') {
+      throw new Error('prompt is not set')
+    }
+
     const systemPrompt: string = core.getInput('system_prompt')
     const modelName = core.getInput('model_name') || 'gpt-4o'
 
