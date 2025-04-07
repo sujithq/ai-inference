@@ -13,6 +13,18 @@ inputs:
     description: Your input description here
     required: true
     default: ''
+  model:
+    description: The model to use
+    required: false
+    default: 'gpt-4o'
+  endpoint:
+    description: The endpoint to use
+    required: false
+    default: 'https://models.github.ai/inference'
+  max_tokens:
+    description: The maximum number of tokens to generate
+    required: false
+    default: '200'
 
 # Define your outputs here.
 outputs:

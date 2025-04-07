@@ -33560,12 +33560,13 @@ async function run() {
             throw new Error('prompt is not set');
         }
         const systemPrompt = coreExports.getInput('system_prompt');
-        const modelName = coreExports.getInput('model_name') || 'gpt-4o';
+        const modelName = coreExports.getInput('model');
+        const maxTokens = parseInt(coreExports.getInput('max_tokens'), 10);
         const token = process.env['GITHUB_TOKEN'];
         if (token === undefined) {
             throw new Error('GITHUB_TOKEN is not set');
         }
-        const endpoint = 'https://models.inference.ai.azure.com';
+        const endpoint = coreExports.getInput('endpoint');
         const client = createClient(endpoint, new AzureKeyCredential(token));
         const response = await client.path('/chat/completions').post({
             body: {
@@ -33578,7 +33579,7 @@ async function run() {
                 ],
                 temperature: 1.0,
                 top_p: 1.0,
-                max_tokens: 1000,
+                max_tokens: maxTokens,
                 model: modelName
             }
         });

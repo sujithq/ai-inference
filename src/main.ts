@@ -15,13 +15,14 @@ export async function run(): Promise<void> {
     }
 
     const systemPrompt: string = core.getInput('system_prompt')
-    const modelName = core.getInput('model_name') || 'gpt-4o'
+    const modelName: string = core.getInput('model')
+    const maxTokens: number = parseInt(core.getInput('max_tokens'), 10)
 
     const token = process.env['GITHUB_TOKEN']
     if (token === undefined) {
       throw new Error('GITHUB_TOKEN is not set')
     }
-    const endpoint = 'https://models.inference.ai.azure.com'
+    const endpoint = core.getInput('endpoint')
 
     const client = ModelClient(endpoint, new AzureKeyCredential(token))
 
@@ -36,7 +37,7 @@ export async function run(): Promise<void> {
         ],
         temperature: 1.0,
         top_p: 1.0,
-        max_tokens: 1000,
+        max_tokens: maxTokens,
         model: modelName
       }
     })
