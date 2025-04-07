@@ -20,7 +20,7 @@ inputs:
   endpoint:
     description: The endpoint to use
     required: false
-    default: 'https://models.github.ai/inference'
+    default: 'https://models.inference.ai.azure.com'
   system-prompt:
     description: The system prompt for the model
     required: false

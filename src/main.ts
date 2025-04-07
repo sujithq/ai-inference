@@ -43,7 +43,15 @@ export async function run(): Promise<void> {
     })
 
     if (isUnexpected(response)) {
-      throw response.body.error
+      if (response.body.error) {
+        throw response.body.error
+      }
+      throw new Error(
+        'An error occurred while fetching the response (' +
+          response.status +
+          '): ' +
+          response.body
+      )
     }
 
     const modelResponse: string | null =
@@ -53,6 +61,10 @@ export async function run(): Promise<void> {
     core.setOutput('response', modelResponse || '')
   } catch (error) {
     // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(error.message)
+    } else {
+      core.setFailed('An unexpected error occurred')
+    }
   }
 }
