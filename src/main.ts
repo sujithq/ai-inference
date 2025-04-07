@@ -14,11 +14,11 @@ export async function run(): Promise<void> {
       throw new Error('prompt is not set')
     }
 
-    const systemPrompt: string = core.getInput('system_prompt')
+    const systemPrompt: string = core.getInput('system-prompt')
     const modelName: string = core.getInput('model')
-    const maxTokens: number = parseInt(core.getInput('max_tokens'), 10)
+    const maxTokens: number = parseInt(core.getInput('max-tokens'), 10)
 
-    const token = process.env['GITHUB_TOKEN']
+    const token = core.getInput('token') || process.env['GITHUB_TOKEN']
     if (token === undefined) {
       throw new Error('GITHUB_TOKEN is not set')
     }
@@ -31,7 +31,7 @@ export async function run(): Promise<void> {
         messages: [
           {
             role: 'system',
-            content: systemPrompt || 'You are a helpful assistant.'
+            content: systemPrompt
           },
           { role: 'user', content: prompt }
         ],

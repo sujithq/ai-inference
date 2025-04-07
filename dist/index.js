@@ -33559,10 +33559,10 @@ async function run() {
         if (prompt === undefined || prompt === '') {
             throw new Error('prompt is not set');
         }
-        const systemPrompt = coreExports.getInput('system_prompt');
+        const systemPrompt = coreExports.getInput('system-prompt');
         const modelName = coreExports.getInput('model');
-        const maxTokens = parseInt(coreExports.getInput('max_tokens'), 10);
-        const token = process.env['GITHUB_TOKEN'];
+        const maxTokens = parseInt(coreExports.getInput('max-tokens'), 10);
+        const token = coreExports.getInput('token') || process.env['GITHUB_TOKEN'];
         if (token === undefined) {
             throw new Error('GITHUB_TOKEN is not set');
         }
@@ -33573,7 +33573,7 @@ async function run() {
                 messages: [
                     {
                         role: 'system',
-                        content: systemPrompt || 'You are a helpful assistant.'
+                        content: systemPrompt
                     },
                     { role: 'user', content: prompt }
                 ],
