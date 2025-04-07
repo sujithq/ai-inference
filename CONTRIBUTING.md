@@ -1,4 +1,4 @@
-## Contributing
+# Contributing
 
 [fork]: https://github.com/actions/ai-inference/fork
 [pr]: https://github.com/actions/ai-inference/compare
@@ -47,7 +47,7 @@ avoid having to include the `node_modules/` directory in the repository.
    `npm run test`
 1. Make sure your code is correctly formatted: `npm run format`
 1. Update `dist/index.js` using `npm run build`. This creates a single
-   javascript file that is used as an entrypoint for the action
+   JavaScript file that is used as an entrypoint for the action
 1. Push to your fork and [submit a pull request][pr]
 1. Pat yourself on the back and wait for your pull request to be reviewed and
    merged.
@@ -66,7 +66,7 @@ All the concepts from
 [the actions/toolkit release docs](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)
 apply. Please read that first!
 
-Once the changes are merged into main, a repo maintainer should:
+Once the changes are merged into main, a repository maintainer should:
 
 1. Bump the package version by running
    [`npm version [major|minor|patch]`](https://docs.npmjs.com/cli/v7/commands/npm-version).
@@ -80,7 +80,7 @@ Once the changes are merged into main, a repo maintainer should:
    the specific ref of the release you just made. For example, if we just
    released `v1.1.0`, we would rewrite the `v1` tag like this:
 
-```
+```bash
 git tag -fa v1 v1.1.0 -m "Update v1 tag to point to v1.1.0"
 git push origin v1 --force
 ```
