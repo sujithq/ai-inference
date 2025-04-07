@@ -31,13 +31,14 @@ steps:
 Various inputs are defined in [`action.yml`](action.yml) to let you configure
 the action:
 
-| Name         | Description                                                                                                                           | Default                              |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `token`      | Token to use for inference. Typically the GITHUB_TOKEN secret                                                                         | `github.token`                       |
-| `prompt`     | The prompt to send to the model                                                                                                       | N/A                                  |
-| `model`      | The model to use for inference. Must be available in the [GitHub Models](https://github.com/marketplace?type=models) catalog          | `gpt-4o`                             |
-| `endpoint`   | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint | `https://models.github.ai/inference` |
-| `max_tokens` | The max number of tokens to generate                                                                                                  | 200                                  |
+| Name            | Description                                                                                                                           | Default                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `token`         | Token to use for inference. Typically the GITHUB_TOKEN secret                                                                         | `github.token`                       |
+| `prompt`        | The prompt to send to the model                                                                                                       | N/A                                  |
+| `system-prompt` | The system prompt to send to the model                                                                                                | `""`                                 |
+| `model`         | The model to use for inference. Must be available in the [GitHub Models](https://github.com/marketplace?type=models) catalog          | `gpt-4o`                             |
+| `endpoint`      | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint | `https://models.github.ai/inference` |
+| `max-tokens`    | The max number of tokens to generate                                                                                                  | 200                                  |
 
 ## Outputs
 

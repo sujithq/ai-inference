@@ -10,7 +10,7 @@ branding:
 # Define your inputs here.
 inputs:
   prompt:
-    description: Your input description here
+    description: The prompt for the model
     required: true
     default: ''
   model:
@@ -21,10 +21,18 @@ inputs:
     description: The endpoint to use
     required: false
     default: 'https://models.github.ai/inference'
-  max_tokens:
+  system-prompt:
+    description: The system prompt for the model
+    required: false
+    default: 'You are a helpful assistant'
+  max-tokens:
     description: The maximum number of tokens to generate
     required: false
     default: '200'
+  token:
+    description: The token to use
+    required: false
+    default: ${{ github.token }}
 
 # Define your outputs here.
 outputs:
