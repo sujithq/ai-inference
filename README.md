@@ -14,7 +14,7 @@ your actions.
 Create a workflow to use the AI inference action:
 
 ```yaml
-name: "AI inference"
+name: 'AI inference'
 on: workflow_dispatch
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/ai-inference@v1
         with:
           prompt: 'Hello!'
-    
+
       - name: Print Output
         id: output
         run: echo "${{ steps.inference.outputs.response }}"
