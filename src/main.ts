@@ -22,7 +22,18 @@ export async function run(): Promise<void> {
     if (token === undefined) {
       throw new Error('GITHUB_TOKEN is not set')
     }
-    const endpoint = core.getInput('endpoint')
+
+    let endpoint = core.getInput('endpoint')
+
+    // If we're in an org-owned repository, we should use the org-owned endpoint
+    const repoOwner = process.env.GITHUB_REPOSITORY_OWNER
+    const ownerType = process.env.GITHUB_REPOSITORY_OWNER_TYPE
+    if (
+      endpoint == 'https://models.github.ai/inference' &&
+      ownerType == 'Organization'
+    ) {
+      endpoint = `https://models.github.ai/${repoOwner}/inference`
+    }
 
     const client = ModelClient(endpoint, new AzureKeyCredential(token))
 
