@@ -14,16 +14,24 @@ your actions.
 Create a workflow to use the AI inference action:
 
 ```yaml
-steps:
-  - name: Test Local Action
-    id: inference
-    uses: actions/ai-inference@v1
-    with:
-      prompt: 'Hello!'
+name: "AI inference"
+on: workflow_dispatch
 
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.response }}"
+jobs:
+  inference:
+    permissions:
+      models: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Local Action
+        id: inference
+        uses: actions/ai-inference@v1
+        with:
+          prompt: 'Hello!'
+    
+      - name: Print Output
+        id: output
+        run: echo "${{ steps.inference.outputs.response }}"
 ```
 
 ## Inputs
