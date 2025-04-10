@@ -25,7 +25,9 @@ export async function run(): Promise<void> {
 
     const endpoint = core.getInput('endpoint')
 
-    const client = ModelClient(endpoint, new AzureKeyCredential(token))
+    const client = ModelClient(endpoint, new AzureKeyCredential(token), {
+      userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
+    })
 
     const response = await client.path('/chat/completions').post({
       body: {
@@ -36,8 +38,6 @@ export async function run(): Promise<void> {
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 1.0,
-        top_p: 1.0,
         max_tokens: maxTokens,
         model: modelName
       }

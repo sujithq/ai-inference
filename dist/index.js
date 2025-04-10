@@ -33567,7 +33567,9 @@ async function run() {
             throw new Error('GITHUB_TOKEN is not set');
         }
         const endpoint = coreExports.getInput('endpoint');
-        const client = createClient(endpoint, new AzureKeyCredential(token));
+        const client = createClient(endpoint, new AzureKeyCredential(token), {
+            userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
+        });
         const response = await client.path('/chat/completions').post({
             body: {
                 messages: [
@@ -33577,8 +33579,6 @@ async function run() {
                     },
                     { role: 'user', content: prompt }
                 ],
-                temperature: 1.0,
-                top_p: 1.0,
                 max_tokens: maxTokens,
                 model: modelName
             }
