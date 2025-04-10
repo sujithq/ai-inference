@@ -96,9 +96,10 @@ following steps:
    to create a new release in GitHub so users can easily reference the new tags
    in their workflows.
 
-## License 
+## License
 
-This project is licensed under the terms of the MIT open source license. Please refer to [MIT](./LICENSE.txt) for the full terms.
+This project is licensed under the terms of the MIT open source license. Please
+refer to [MIT](./LICENSE.txt) for the full terms.
 
 ## Contributions
 
