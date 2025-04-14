@@ -23,19 +23,11 @@ export async function run(): Promise<void> {
       throw new Error('GITHUB_TOKEN is not set')
     }
 
-    let endpoint = core.getInput('endpoint')
+    const endpoint = core.getInput('endpoint')
 
-    // If we're in an org-owned repository, we should use the org-owned endpoint
-    const repoOwner = process.env.GITHUB_REPOSITORY_OWNER
-    const ownerType = process.env.GITHUB_REPOSITORY_OWNER_TYPE
-    if (
-      endpoint == 'https://models.github.ai/inference' &&
-      ownerType == 'Organization'
-    ) {
-      endpoint = `https://models.github.ai/${repoOwner}/inference`
-    }
-
-    const client = ModelClient(endpoint, new AzureKeyCredential(token))
+    const client = ModelClient(endpoint, new AzureKeyCredential(token), {
+      userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
+    })
 
     const response = await client.path('/chat/completions').post({
       body: {
@@ -46,8 +38,6 @@ export async function run(): Promise<void> {
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 1.0,
-        top_p: 1.0,
         max_tokens: maxTokens,
         model: modelName
       }
