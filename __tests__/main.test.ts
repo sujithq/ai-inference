@@ -62,7 +62,7 @@ describe('main.ts', () => {
 
     expect(core.setOutput).toHaveBeenNthCalledWith(
       2,
-      'response-path',
+      'response-file',
       expect.stringContaining('modelResponse.txt')
     )
   })
@@ -101,7 +101,7 @@ describe('main.ts', () => {
     )
     expect(core.setOutput).toHaveBeenNthCalledWith(
       2,
-      'response-path',
+      'response-file',
       expect.stringContaining('modelResponse.txt')
     )
   })

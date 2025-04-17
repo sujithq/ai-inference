@@ -34,29 +34,36 @@ jobs:
         run: echo "${{ steps.inference.outputs.response }}"
 ```
 
-### Using a Prompt File
+### Using a prompt file
 
 You can also provide a prompt file instead of an inline prompt:
 
 ```yaml
 steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-
   - name: Run AI Inference with Prompt File
     id: inference
     uses: actions/ai-inference@v1
     with:
       prompt-file: './path/to/prompt.txt'
+```
+
+### Read output from file instead of output
+
+This can be useful when model response exceeds actions output limit
+
+```yaml
+steps:
+  - name: Test Local Action
+    id: inference
+    uses: actions/ai-inference@v1
+    with:
+      prompt: 'Hello!'
 
   - name: Use Response File
     run: |
-      echo "Response saved to: ${{ steps.inference.outputs.response-path }}"
-      cat "${{ steps.inference.outputs.response-path }}"
+      echo "Response saved to: ${{ steps.inference.outputs.response-file }}"
+      cat "${{ steps.inference.outputs.response-file }}"
 ```
-
-This is particularly useful for longer prompts or when you need to use the file
-path where the response is stored.
 
 ## Inputs
 
@@ -80,7 +87,7 @@ The AI inference action provides the following outputs:
 | Name            | Description                                                             |
 | --------------- | ----------------------------------------------------------------------- |
 | `response`      | The response from the model                                             |
-| `response-path` | The file path where the response is saved (useful for larger responses) |
+| `response-file` | The file path where the response is saved (useful for larger responses) |
 
 ## Required Permissions
 

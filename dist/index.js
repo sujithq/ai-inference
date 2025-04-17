@@ -33612,7 +33612,7 @@ async function run() {
         coreExports.setOutput('response', modelResponse || '');
         // Save the response to a file in case the response overflow the output limit
         const responseFilePath = require$$1.join(tempDir(), RESPONSE_FILE);
-        coreExports.setOutput('response-path', responseFilePath);
+        coreExports.setOutput('response-file', responseFilePath);
         if (modelResponse && modelResponse !== '') {
             fs.writeFileSync(responseFilePath, modelResponse, 'utf-8');
         }

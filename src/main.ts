@@ -78,7 +78,7 @@ export async function run(): Promise<void> {
 
     // Save the response to a file in case the response overflow the output limit
     const responseFilePath = path.join(tempDir(), RESPONSE_FILE)
-    core.setOutput('response-path', responseFilePath)
+    core.setOutput('response-file', responseFilePath)
 
     if (modelResponse && modelResponse !== '') {
       fs.writeFileSync(responseFilePath, modelResponse, 'utf-8')

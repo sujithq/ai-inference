@@ -42,7 +42,7 @@ inputs:
 outputs:
   response:
     description: The response from the model
-  response-path:
+  response-file:
     description: The file path where the response is saved
 
 runs:
