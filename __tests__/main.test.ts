@@ -7,7 +7,6 @@
  */
 import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
-
 const mockPost = jest.fn().mockImplementation(() => ({
   body: {
     choices: [
@@ -58,11 +57,21 @@ describe('main.ts', () => {
       'response',
       'Hello, user!'
     )
+
+    expect(core.setOutput).toHaveBeenNthCalledWith(
+      2,
+      'response-path',
+      expect.stringContaining('modelResponse.txt')
+    )
   })
 
   it('Sets a failed status', async () => {
-    // Clear the getInput mock and return an empty prompt
-    core.getInput.mockClear().mockReturnValueOnce('')
+    // Clear the getInput mock and simulate no prompt or prompt-file input
+    core.getInput.mockImplementation((name) => {
+      if (name === 'prompt') return ''
+      if (name === 'prompt_file') return ''
+      return ''
+    })
 
     await run()
 

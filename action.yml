@@ -11,7 +11,11 @@ branding:
 inputs:
   prompt:
     description: The prompt for the model
-    required: true
+    required: false
+    default: ''
+  prompt-file:
+    description: Path to a file containing the prompt
+    required: false
     default: ''
   model:
     description: The model to use
@@ -38,6 +42,8 @@ inputs:
 outputs:
   response:
     description: The response from the model
+  response-path:
+    description: The file path where the response is saved
 
 runs:
   using: node20
