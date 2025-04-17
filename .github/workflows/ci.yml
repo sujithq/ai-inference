@@ -67,3 +67,28 @@ jobs:
       - name: Print Output
         id: output
         run: echo "${{ steps.test-action.outputs.response }}"
+
+  test-action-prompt-file:
+    name: GitHub Actions Test with Prompt File
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Create Prompt File
+        run: echo "hello" > prompt.txt
+
+      - name: Test Local Action with Prompt File
+        id: test-action-prompt-file
+        uses: ./
+        with:
+          prompt-file: prompt.txt
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Print Output
+        run: |
+          echo "Response saved to: ${{ steps.test-action-prompt-file.outputs.response-file }}"
+          cat "${{ steps.test-action-prompt-file.outputs.response-file }}"
