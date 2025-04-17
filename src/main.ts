@@ -15,16 +15,17 @@ const RESPONSE_FILE = 'modelResponse.txt'
 export async function run(): Promise<void> {
   try {
     const promptFile: string = core.getInput('prompt-file')
-    let prompt: string = core.getInput('prompt')
+    const promptString: string = core.getInput('prompt')
 
+    let prompt: string
     if (promptFile !== undefined && promptFile !== '') {
       if (!fs.existsSync(promptFile)) {
         throw new Error(`Prompt file not found: ${promptFile}`)
       }
       prompt = fs.readFileSync(promptFile, 'utf-8')
-    }
-
-    if (prompt === undefined || prompt === '') {
+    } else if (promptString !== undefined && promptString !== '') {
+      prompt = promptString
+    } else {
       throw new Error('prompt is not set')
     }
 

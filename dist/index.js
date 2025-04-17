@@ -33560,14 +33560,18 @@ const RESPONSE_FILE = 'modelResponse.txt';
 async function run() {
     try {
         const promptFile = coreExports.getInput('prompt-file');
-        let prompt = coreExports.getInput('prompt');
+        const promptString = coreExports.getInput('prompt');
+        let prompt;
         if (promptFile !== undefined && promptFile !== '') {
             if (!fs.existsSync(promptFile)) {
                 throw new Error(`Prompt file not found: ${promptFile}`);
             }
             prompt = fs.readFileSync(promptFile, 'utf-8');
         }
-        if (prompt === undefined || prompt === '') {
+        else if (promptString !== undefined && promptString !== '') {
+            prompt = promptString;
+        }
+        else {
             throw new Error('prompt is not set');
         }
         const systemPrompt = coreExports.getInput('system-prompt');
