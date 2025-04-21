@@ -7,7 +7,6 @@
  */
 import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
-
 const mockPost = jest.fn().mockImplementation(() => ({
   body: {
     choices: [
@@ -29,6 +28,14 @@ jest.unstable_mockModule('@azure-rest/ai-inference', () => ({
   isUnexpected: jest.fn(() => false)
 }))
 
+const mockExistsSync = jest.fn().mockReturnValue(true)
+const mockReadFileSync = jest.fn().mockReturnValue('Hello, AI!')
+
+jest.unstable_mockModule('fs', () => ({
+  existsSync: mockExistsSync,
+  readFileSync: mockReadFileSync
+}))
+
 jest.unstable_mockModule('@actions/core', () => core)
 
 // The module being tested should be imported dynamically. This ensures that the
@@ -36,7 +43,7 @@ jest.unstable_mockModule('@actions/core', () => core)
 const { run } = await import('../src/main.js')
 
 describe('main.ts', () => {
-  beforeEach(() => {
+  it('Sets the response output', async () => {
     // Set the action's inputs as return values from core.getInput().
     core.getInput.mockImplementation((name) => {
       if (name === 'prompt') return 'Hello, AI!'
@@ -44,13 +51,7 @@ describe('main.ts', () => {
       if (name === 'model_name') return 'gpt-4o'
       return ''
     })
-  })
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
-  it('Sets the response output', async () => {
     await run()
 
     expect(core.setOutput).toHaveBeenNthCalledWith(
@@ -58,15 +59,50 @@ describe('main.ts', () => {
       'response',
       'Hello, user!'
     )
+
+    expect(core.setOutput).toHaveBeenNthCalledWith(
+      2,
+      'response-file',
+      expect.stringContaining('modelResponse.txt')
+    )
   })
 
   it('Sets a failed status', async () => {
-    // Clear the getInput mock and return an empty prompt
-    core.getInput.mockClear().mockReturnValueOnce('')
+    // Clear the getInput mock and simulate no prompt or prompt-file input
+    core.getInput.mockImplementation((name) => {
+      if (name === 'prompt') return ''
+      if (name === 'prompt_file') return ''
+      return ''
+    })
 
     await run()
 
     // Verify that the action was marked as failed.
     expect(core.setFailed).toHaveBeenNthCalledWith(1, 'prompt is not set')
+  })
+
+  it('uses prompt-file', async () => {
+    const promptFile = 'prompt.txt'
+    core.getInput.mockImplementation((name) => {
+      if (name === 'prompt-file') return promptFile
+      if (name === 'system-prompt') return 'You are a test assistant.'
+      if (name === 'model-name') return 'gpt-4o'
+      return ''
+    })
+
+    await run()
+
+    expect(mockExistsSync).toHaveBeenCalledWith(promptFile)
+    expect(mockReadFileSync).toHaveBeenCalledWith(promptFile, 'utf-8')
+    expect(core.setOutput).toHaveBeenNthCalledWith(
+      1,
+      'response',
+      'Hello, user!'
+    )
+    expect(core.setOutput).toHaveBeenNthCalledWith(
+      2,
+      'response-file',
+      expect.stringContaining('modelResponse.txt')
+    )
   })
 })

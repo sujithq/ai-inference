@@ -1,7 +1,10 @@
-import require$$0 from 'os';
+import * as require$$0 from 'os';
+import require$$0__default from 'os';
 import require$$0$1, { randomUUID as randomUUID$1 } from 'crypto';
-import require$$1 from 'fs';
-import require$$1$5 from 'path';
+import * as fs from 'fs';
+import fs__default from 'fs';
+import * as require$$1 from 'path';
+import require$$1__default from 'path';
 import require$$2 from 'http';
 import require$$1$1 from 'https';
 import require$$0$4 from 'net';
@@ -30,7 +33,7 @@ import require$$6$1 from 'timers';
 import * as os from 'node:os';
 import { EOL } from 'node:os';
 import * as process$1 from 'node:process';
-import require$$1$6 from 'tty';
+import require$$1$5 from 'tty';
 import * as http from 'node:http';
 import * as https from 'node:https';
 import * as zlib from 'node:zlib';
@@ -120,7 +123,7 @@ function requireCommand () {
 	};
 	Object.defineProperty(command, "__esModule", { value: true });
 	command.issue = command.issueCommand = void 0;
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const utils_1 = requireUtils$1();
 	/**
 	 * Commands
@@ -229,8 +232,8 @@ function requireFileCommand () {
 	// We use any as a valid input type
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const crypto = __importStar(require$$0$1);
-	const fs = __importStar(require$$1);
-	const os = __importStar(require$$0);
+	const fs = __importStar(fs__default);
+	const os = __importStar(require$$0__default);
 	const utils_1 = requireUtils$1();
 	function issueFileCommand(command, message) {
 	    const filePath = process.env[`GITHUB_${command}`];
@@ -25206,8 +25209,8 @@ function requireSummary () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
-		const os_1 = require$$0;
-		const fs_1 = require$$1;
+		const os_1 = require$$0__default;
+		const fs_1 = fs__default;
 		const { access, appendFile, writeFile } = fs_1.promises;
 		exports.SUMMARY_ENV_VAR = 'GITHUB_STEP_SUMMARY';
 		exports.SUMMARY_DOCS_URL = 'https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary';
@@ -25513,7 +25516,7 @@ function requirePathUtils () {
 	};
 	Object.defineProperty(pathUtils, "__esModule", { value: true });
 	pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1__default);
 	/**
 	 * toPosixPath converts the given path to the posix form. On Windows, \\ will be
 	 * replaced with /.
@@ -25599,8 +25602,8 @@ function requireIoUtil () {
 		var _a;
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
-		const fs = __importStar(require$$1);
-		const path = __importStar(require$$1$5);
+		const fs = __importStar(fs__default);
+		const path = __importStar(require$$1__default);
 		_a = fs.promises
 		// export const {open} = 'fs'
 		, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
@@ -25790,7 +25793,7 @@ function requireIo () {
 	Object.defineProperty(io, "__esModule", { value: true });
 	io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
 	const assert_1 = require$$0$3;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1__default);
 	const ioUtil = __importStar(requireIoUtil());
 	/**
 	 * Copies a file or folder.
@@ -26095,10 +26098,10 @@ function requireToolrunner () {
 	};
 	Object.defineProperty(toolrunner, "__esModule", { value: true });
 	toolrunner.argStringToArray = toolrunner.ToolRunner = void 0;
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const events = __importStar(require$$4);
 	const child = __importStar(require$$2$2);
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1__default);
 	const io = __importStar(requireIo());
 	const ioUtil = __importStar(requireIoUtil());
 	const timers_1 = require$$6$1;
@@ -26838,7 +26841,7 @@ function requirePlatform () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
-		const os_1 = __importDefault(require$$0);
+		const os_1 = __importDefault(require$$0__default);
 		const exec = __importStar(requireExec());
 		const getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
 		    const { stdout: version } = yield exec.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', undefined, {
@@ -26941,8 +26944,8 @@ function requireCore () {
 		const command_1 = requireCommand();
 		const file_command_1 = requireFileCommand();
 		const utils_1 = requireUtils$1();
-		const os = __importStar(require$$0);
-		const path = __importStar(require$$1$5);
+		const os = __importStar(require$$0__default);
+		const path = __importStar(require$$1__default);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
 		 * The code to exit an action
@@ -29841,8 +29844,8 @@ var hasRequiredSupportsColor;
 function requireSupportsColor () {
 	if (hasRequiredSupportsColor) return supportsColor_1;
 	hasRequiredSupportsColor = 1;
-	const os = require$$0;
-	const tty = require$$1$6;
+	const os = require$$0__default;
+	const tty = require$$1$5;
 	const hasFlag = requireHasFlag();
 
 	const {env} = process;
@@ -29988,7 +29991,7 @@ function requireNode () {
 	if (hasRequiredNode) return node.exports;
 	hasRequiredNode = 1;
 	(function (module, exports) {
-		const tty = require$$1$6;
+		const tty = require$$1$5;
 		const util = require$$0$2;
 
 		/**
@@ -33548,6 +33551,7 @@ function getPathFromMapKey(mapKey) {
     return mapKey.slice(pathStart);
 }
 
+const RESPONSE_FILE = 'modelResponse.txt';
 /**
  * The main function for the action.
  *
@@ -33555,8 +33559,19 @@ function getPathFromMapKey(mapKey) {
  */
 async function run() {
     try {
-        const prompt = coreExports.getInput('prompt');
-        if (prompt === undefined || prompt === '') {
+        const promptFile = coreExports.getInput('prompt-file');
+        const promptString = coreExports.getInput('prompt');
+        let prompt;
+        if (promptFile !== undefined && promptFile !== '') {
+            if (!fs.existsSync(promptFile)) {
+                throw new Error(`Prompt file not found: ${promptFile}`);
+            }
+            prompt = fs.readFileSync(promptFile, 'utf-8');
+        }
+        else if (promptString !== undefined && promptString !== '') {
+            prompt = promptString;
+        }
+        else {
             throw new Error('prompt is not set');
         }
         const systemPrompt = coreExports.getInput('system-prompt');
@@ -33595,6 +33610,12 @@ async function run() {
         const modelResponse = response.body.choices[0].message.content;
         // Set outputs for other workflow steps to use
         coreExports.setOutput('response', modelResponse || '');
+        // Save the response to a file in case the response overflow the output limit
+        const responseFilePath = require$$1.join(tempDir(), RESPONSE_FILE);
+        coreExports.setOutput('response-file', responseFilePath);
+        if (modelResponse && modelResponse !== '') {
+            fs.writeFileSync(responseFilePath, modelResponse, 'utf-8');
+        }
     }
     catch (error) {
         // Fail the workflow run if an error occurs
@@ -33605,6 +33626,10 @@ async function run() {
             coreExports.setFailed('An unexpected error occurred');
         }
     }
+}
+function tempDir() {
+    const tempDirectory = process.env['RUNNER_TEMP'] || require$$0.tmpdir();
+    return tempDirectory;
 }
 
 /**

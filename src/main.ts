@@ -1,6 +1,11 @@
 import * as core from '@actions/core'
 import ModelClient, { isUnexpected } from '@azure-rest/ai-inference'
 import { AzureKeyCredential } from '@azure/core-auth'
+import * as fs from 'fs'
+import * as os from 'os'
+import * as path from 'path'
+
+const RESPONSE_FILE = 'modelResponse.txt'
 
 /**
  * The main function for the action.
@@ -9,8 +14,18 @@ import { AzureKeyCredential } from '@azure/core-auth'
  */
 export async function run(): Promise<void> {
   try {
-    const prompt: string = core.getInput('prompt')
-    if (prompt === undefined || prompt === '') {
+    const promptFile: string = core.getInput('prompt-file')
+    const promptString: string = core.getInput('prompt')
+
+    let prompt: string
+    if (promptFile !== undefined && promptFile !== '') {
+      if (!fs.existsSync(promptFile)) {
+        throw new Error(`Prompt file not found: ${promptFile}`)
+      }
+      prompt = fs.readFileSync(promptFile, 'utf-8')
+    } else if (promptString !== undefined && promptString !== '') {
+      prompt = promptString
+    } else {
       throw new Error('prompt is not set')
     }
 
@@ -60,6 +75,14 @@ export async function run(): Promise<void> {
 
     // Set outputs for other workflow steps to use
     core.setOutput('response', modelResponse || '')
+
+    // Save the response to a file in case the response overflow the output limit
+    const responseFilePath = path.join(tempDir(), RESPONSE_FILE)
+    core.setOutput('response-file', responseFilePath)
+
+    if (modelResponse && modelResponse !== '') {
+      fs.writeFileSync(responseFilePath, modelResponse, 'utf-8')
+    }
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) {
@@ -68,4 +91,9 @@ export async function run(): Promise<void> {
       core.setFailed('An unexpected error occurred')
     }
   }
+}
+
+function tempDir(): string {
+  const tempDirectory = process.env['RUNNER_TEMP'] || os.tmpdir()
+  return tempDirectory
 }

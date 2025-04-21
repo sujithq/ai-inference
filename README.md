@@ -34,6 +34,37 @@ jobs:
         run: echo "${{ steps.inference.outputs.response }}"
 ```
 
+### Using a prompt file
+
+You can also provide a prompt file instead of an inline prompt:
+
+```yaml
+steps:
+  - name: Run AI Inference with Prompt File
+    id: inference
+    uses: actions/ai-inference@v1
+    with:
+      prompt-file: './path/to/prompt.txt'
+```
+
+### Read output from file instead of output
+
+This can be useful when model response exceeds actions output limit
+
+```yaml
+steps:
+  - name: Test Local Action
+    id: inference
+    uses: actions/ai-inference@v1
+    with:
+      prompt: 'Hello!'
+
+  - name: Use Response File
+    run: |
+      echo "Response saved to: ${{ steps.inference.outputs.response-file }}"
+      cat "${{ steps.inference.outputs.response-file }}"
+```
+
 ## Inputs
 
 Various inputs are defined in [`action.yml`](action.yml) to let you configure
@@ -43,6 +74,7 @@ the action:
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | `token`         | Token to use for inference. Typically the GITHUB_TOKEN secret                                                                         | `github.token`                       |
 | `prompt`        | The prompt to send to the model                                                                                                       | N/A                                  |
+| `prompt-file`   | Path to a file containing the prompt. If both `prompt` and `prompt-file` are provided, `prompt-file` takes precedence                 | `""`                                 |
 | `system-prompt` | The system prompt to send to the model                                                                                                | `""`                                 |
 | `model`         | The model to use for inference. Must be available in the [GitHub Models](https://github.com/marketplace?type=models) catalog          | `gpt-4o`                             |
 | `endpoint`      | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint | `https://models.github.ai/inference` |
@@ -52,9 +84,10 @@ the action:
 
 The AI inference action provides the following outputs:
 
-| Name       | Description                 |
-| ---------- | --------------------------- |
-| `response` | The response from the model |
+| Name            | Description                                                             |
+| --------------- | ----------------------------------------------------------------------- |
+| `response`      | The response from the model                                             |
+| `response-file` | The file path where the response is saved (useful for larger responses) |
 
 ## Required Permissions
 
