@@ -36,6 +36,63 @@ const mockReadFileSync = jest.fn().mockImplementation(() => {
   throw new Error('Unexpected call to readFileSync - test should override this implementation')
 })
 
+/**
+ * Helper function to mock file system operations for one or more files
+ * @param fileContents - Object mapping file paths to their contents
+ * @param nonExistentFiles - Array of file paths that should be treated as non-existent
+ */
+function mockFileContent(fileContents: Record<string, string> = {}, nonExistentFiles: string[] = []): void {
+  // Mock existsSync to return true for files that exist, false for those that don't
+  mockExistsSync.mockImplementation(function(this: any, path: any): boolean {
+    if (nonExistentFiles.includes(path)) {
+      return false
+    }
+    return path in fileContents || true
+  })
+  
+  // Mock readFileSync to return the content for known files
+  mockReadFileSync.mockImplementation(function(this: any, path: any, encoding: any): string {
+    if (encoding === 'utf-8' && path in fileContents) {
+      return fileContents[path]
+    }
+    throw new Error(`Unexpected file read: ${path}`)
+  })
+}
+
+/**
+ * Helper function to mock action inputs
+ * @param inputs - Object mapping input names to their values
+ */
+function mockInputs(inputs: Record<string, string> = {}): void {
+  // Default values that are applied unless overridden
+  const defaultInputs: Record<string, string> = {
+    'token': 'fake-token'
+  }
+  
+  // Combine defaults with user-provided inputs
+  const allInputs: Record<string, string> = {...defaultInputs, ...inputs}
+  
+  core.getInput.mockImplementation((name: string) => {
+    return allInputs[name] || ''
+  })
+}
+
+/**
+ * Helper function to verify common response assertions
+ */
+function verifyStandardResponse(): void {
+  expect(core.setOutput).toHaveBeenNthCalledWith(
+    1,
+    'response',
+    'Hello, user!'
+  )
+  expect(core.setOutput).toHaveBeenNthCalledWith(
+    2,
+    'response-file',
+    expect.stringContaining('modelResponse.txt')
+  )
+}
+
 jest.unstable_mockModule('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync
@@ -55,35 +112,21 @@ describe('main.ts', () => {
   
   it('Sets the response output', async () => {
     // Set the action's inputs as return values from core.getInput().
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return 'Hello, AI!'
-      if (name === 'system-prompt') return 'You are a test assistant.'
-      if (name === 'token') return 'fake-token'
-      return ''
+    mockInputs({
+      'prompt': 'Hello, AI!',
+      'system-prompt': 'You are a test assistant.'
     })
 
     await run()
 
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
 
   it('Sets a failed status when no prompt is set', async () => {
     // Clear the getInput mock and simulate no prompt or prompt-file input
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return ''
-      if (name === 'prompt-file') return ''
-      if (name === 'token') return 'fake-token'
-      return ''
+    mockInputs({
+      'prompt': '',
+      'prompt-file': ''
     })
 
     await run()
@@ -97,52 +140,32 @@ describe('main.ts', () => {
     const promptContent = 'This is a prompt from a file'
     
     // Set up mock to return specific content for the prompt file
-    mockExistsSync.mockReturnValue(true)
-    mockReadFileSync.mockImplementation((path, encoding) => {
-      if (path === promptFile && encoding === 'utf-8') {
-        return promptContent
-      }
-      throw new Error(`Unexpected file read: ${path}`)
+    mockFileContent({
+      [promptFile]: promptContent
     })
     
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt-file') return promptFile
-      if (name === 'system-prompt') return 'You are a test assistant.'
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt-file': promptFile,
+      'system-prompt': 'You are a test assistant.'
     })
 
     await run()
 
     expect(mockExistsSync).toHaveBeenCalledWith(promptFile)
     expect(mockReadFileSync).toHaveBeenCalledWith(promptFile, 'utf-8')
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
 
   it('handles non-existent prompt-file with an error', async () => {
     const promptFile = 'non-existent-prompt.txt'
     
     // Mock the file not existing
-    mockExistsSync.mockImplementation((path) => {
-      if (path === promptFile) {
-        return false
-      }
-      return true
-    })
+    mockFileContent({}, [promptFile])
     
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt-file') return promptFile
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt-file': promptFile
     })
 
     await run()
@@ -159,20 +182,15 @@ describe('main.ts', () => {
     const promptString = 'This is a direct prompt that should be ignored'
 
     // Set up mock to return specific content for the prompt file
-    mockExistsSync.mockReturnValue(true)
-    mockReadFileSync.mockImplementation((path, encoding) => {
-      if (path === promptFile && encoding === 'utf-8') {
-        return promptFileContent
-      }
-      throw new Error(`Unexpected file read: ${path}`)
+    mockFileContent({
+      [promptFile]: promptFileContent
     })
 
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return promptString
-      if (name === 'prompt-file') return promptFile
-      if (name === 'system-prompt') return 'You are a test assistant.'
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt': promptString,
+      'prompt-file': promptFile,
+      'system-prompt': 'You are a test assistant.'
     })
 
     await run()
@@ -195,16 +213,7 @@ describe('main.ts', () => {
       }
     })
     
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
 
   it('uses system-prompt-file', async () => {
@@ -212,53 +221,33 @@ describe('main.ts', () => {
     const systemPromptContent = 'You are a specialized system assistant for testing'
 
     // Set up mock to return specific content for the system prompt file
-    mockExistsSync.mockReturnValue(true)
-    mockReadFileSync.mockImplementation((path, encoding) => {
-      if (path === systemPromptFile && encoding === 'utf-8') {
-        return systemPromptContent
-      }
-      throw new Error(`Unexpected file read: ${path}`)
+    mockFileContent({
+      [systemPromptFile]: systemPromptContent
     })
 
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return 'Hello, AI!'
-      if (name === 'system-prompt-file') return systemPromptFile
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt': 'Hello, AI!',
+      'system-prompt-file': systemPromptFile
     })
 
     await run()
 
     expect(mockExistsSync).toHaveBeenCalledWith(systemPromptFile)
     expect(mockReadFileSync).toHaveBeenCalledWith(systemPromptFile, 'utf-8')
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
   
   it('handles non-existent system-prompt-file with an error', async () => {
     const systemPromptFile = 'non-existent-system-prompt.txt'
     
     // Mock the file not existing
-    mockExistsSync.mockImplementation((path) => {
-      if (path === systemPromptFile) {
-        return false
-      }
-      return true
-    })
+    mockFileContent({}, [systemPromptFile])
     
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return 'Hello, AI!'
-      if (name === 'system-prompt-file') return systemPromptFile
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt': 'Hello, AI!',
+      'system-prompt-file': systemPromptFile
     })
 
     await run()
@@ -275,20 +264,15 @@ describe('main.ts', () => {
     const systemPromptString = 'You are a basic system assistant from input parameter'
 
     // Set up mock to return specific content for the system prompt file
-    mockExistsSync.mockReturnValue(true)
-    mockReadFileSync.mockImplementation((path, encoding) => {
-      if (path === systemPromptFile && encoding === 'utf-8') {
-        return systemPromptFileContent
-      }
-      throw new Error(`Unexpected file read: ${path}`)
+    mockFileContent({
+      [systemPromptFile]: systemPromptFileContent
     })
 
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return 'Hello, AI!'
-      if (name === 'system-prompt-file') return systemPromptFile
-      if (name === 'system-prompt') return systemPromptString
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt': 'Hello, AI!',
+      'system-prompt-file': systemPromptFile,
+      'system-prompt': systemPromptString
     })
 
     await run()
@@ -311,16 +295,7 @@ describe('main.ts', () => {
       }
     })
     
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
   
   it('uses both prompt-file and system-prompt-file together', async () => {
@@ -330,21 +305,15 @@ describe('main.ts', () => {
     const systemPromptContent = 'You are a specialized system assistant from file'
 
     // Set up mock to return specific content for both files
-    mockExistsSync.mockReturnValue(true)
-    mockReadFileSync.mockImplementation((path, encoding) => {
-      if (path === promptFile && encoding === 'utf-8') {
-        return promptContent
-      } else if (path === systemPromptFile && encoding === 'utf-8') {
-        return systemPromptContent
-      }
-      throw new Error(`Unexpected file read: ${path}`)
+    mockFileContent({
+      [promptFile]: promptContent,
+      [systemPromptFile]: systemPromptContent
     })
     
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt-file') return promptFile
-      if (name === 'system-prompt-file') return systemPromptFile
-      if (name === 'token') return 'fake-token'
-      return ''
+    // Set up input mocks
+    mockInputs({
+      'prompt-file': promptFile,
+      'system-prompt-file': systemPromptFile
     })
 
     await run()
@@ -369,27 +338,16 @@ describe('main.ts', () => {
       }
     })
     
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      2,
-      'response-file',
-      expect.stringContaining('modelResponse.txt')
-    )
+    verifyStandardResponse()
   })
   
   it('passes custom max-tokens parameter to the model', async () => {
     const customMaxTokens = 500
     
-    core.getInput.mockImplementation((name) => {
-      if (name === 'prompt') return 'Hello, AI!'
-      if (name === 'system-prompt') return 'You are a test assistant.'
-      if (name === 'token') return 'fake-token'
-      if (name === 'max-tokens') return customMaxTokens.toString()
-      return ''
+    mockInputs({
+      'prompt': 'Hello, AI!',
+      'system-prompt': 'You are a test assistant.',
+      'max-tokens': customMaxTokens.toString()
     })
 
     await run()
@@ -403,10 +361,6 @@ describe('main.ts', () => {
       }
     })
     
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'response',
-      'Hello, user!'
-    )
+    verifyStandardResponse()
   })
 })
