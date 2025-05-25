@@ -8,42 +8,53 @@ import * as path from 'path'
 const RESPONSE_FILE = 'modelResponse.txt'
 
 /**
+ * Helper function to load content from a file or use fallback input
+ * @param filePathInput - Input name for the file path
+ * @param contentInput - Input name for the direct content
+ * @param defaultValue - Default value to use if neither file nor content is provided
+ * @returns The loaded content
+ */
+function loadContentFromFileOrInput(
+  filePathInput: string,
+  contentInput: string,
+  defaultValue?: string
+): string {
+  const filePath = core.getInput(filePathInput)
+  const contentString = core.getInput(contentInput)
+
+  if (filePath !== undefined && filePath !== '') {
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File for ${filePathInput} was not found: ${filePath}`)
+    }
+    return fs.readFileSync(filePath, 'utf-8')
+  } else if (contentString !== undefined && contentString !== '') {
+    return contentString
+  } else if (defaultValue !== undefined) {
+    return defaultValue
+  } else {
+    throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`)
+  }
+}
+
+/**
  * The main function for the action.
  *
  * @returns Resolves when the action is complete.
  */
 export async function run(): Promise<void> {
   try {
-    const promptFile: string = core.getInput('prompt-file')
-    const promptString: string = core.getInput('prompt')
+    // Load prompt content - required
+    const prompt = loadContentFromFileOrInput(
+      'prompt-file',
+      'prompt'
+    )
 
-    let prompt: string
-    if (promptFile !== undefined && promptFile !== '') {
-      if (!fs.existsSync(promptFile)) {
-        throw new Error(`Prompt file not found: ${promptFile}`)
-      }
-      prompt = fs.readFileSync(promptFile, 'utf-8')
-    } else if (promptString !== undefined && promptString !== '') {
-      prompt = promptString
-    } else {
-      throw new Error('prompt is not set')
-    }
-
-    const systemPromptFile: string = core.getInput('system-prompt-file')
-    const systemPromptString: string = core.getInput('system-prompt')
-
-    let systemPrompt: string
-    if (systemPromptFile !== undefined && systemPromptFile !== '') {
-      if (!fs.existsSync(systemPromptFile)) {
-        throw new Error(`System prompt file not found: ${systemPromptFile}`)
-      }
-      systemPrompt = fs.readFileSync(systemPromptFile, 'utf-8')
-    } else if (systemPromptString !== undefined && systemPromptString !== '') {
-      systemPrompt = systemPromptString
-    } else {
-      // Use default system prompt
-      systemPrompt = 'You are a helpful assistant'
-    }
+    // Load system prompt with default value
+    const systemPrompt = loadContentFromFileOrInput(
+      'system-prompt-file',
+      'system-prompt',
+      'You are a helpful assistant'
+    )
 
     const modelName: string = core.getInput('model')
     const maxTokens: number = parseInt(core.getInput('max-tokens'), 10)

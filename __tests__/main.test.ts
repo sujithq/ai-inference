@@ -132,7 +132,7 @@ describe('main.ts', () => {
     await run()
 
     // Verify that the action was marked as failed.
-    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'prompt is not set')
+    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'Neither prompt-file nor prompt was set')
   })
 
   it('uses prompt-file', async () => {
@@ -172,7 +172,7 @@ describe('main.ts', () => {
 
     // Verify that the error was correctly reported
     expect(core.setFailed).toHaveBeenCalledWith(
-      `Prompt file not found: ${promptFile}`
+      `File for prompt-file was not found: ${promptFile}`
     )
   })
 
@@ -254,7 +254,7 @@ describe('main.ts', () => {
 
     // Verify that the error was correctly reported
     expect(core.setFailed).toHaveBeenCalledWith(
-      `System prompt file not found: ${systemPromptFile}`
+      `File for system-prompt-file was not found: ${systemPromptFile}`
     )
   })
   
