@@ -1,6 +1,6 @@
 import * as require$$0 from 'os';
 import require$$0__default from 'os';
-import require$$0$1, { randomUUID as randomUUID$1 } from 'crypto';
+import require$$0$1 from 'crypto';
 import * as fs from 'fs';
 import fs__default from 'fs';
 import * as require$$1 from 'path';
@@ -12,11 +12,11 @@ import require$$1$2 from 'tls';
 import require$$4 from 'events';
 import require$$0$3 from 'assert';
 import require$$0$2 from 'util';
-import require$$0$5 from 'stream';
+import require$$0$5, { Readable } from 'stream';
 import require$$7 from 'buffer';
 import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
-import require$$0$7, { Readable, Transform } from 'node:stream';
+import require$$0$7, { Transform } from 'node:stream';
 import require$$1$3, { inspect } from 'node:util';
 import require$$0$6 from 'node:events';
 import require$$0$8 from 'worker_threads';
@@ -33,6 +33,7 @@ import require$$6$1 from 'timers';
 import * as os from 'node:os';
 import { EOL } from 'node:os';
 import * as process$1 from 'node:process';
+import { randomUUID as randomUUID$1 } from 'node:crypto';
 import require$$1$5 from 'tty';
 import * as http from 'node:http';
 import * as https from 'node:https';
@@ -11502,6 +11503,20 @@ function requirePool () {
 	      ? { ...options.interceptors }
 	      : undefined;
 	    this[kFactory] = factory;
+
+	    this.on('connectionError', (origin, targets, error) => {
+	      // If a connection error occurs, we remove the client from the pool,
+	      // and emit a connectionError event. They will not be re-used.
+	      // Fixes https://github.com/nodejs/undici/issues/3895
+	      for (const target of targets) {
+	        // Do not use kRemoveClient here, as it will close the client,
+	        // but the client cannot be closed in this state.
+	        const idx = this[kClients].indexOf(target);
+	        if (idx !== -1) {
+	          this[kClients].splice(idx, 1);
+	        }
+	      }
+	    });
 	  }
 
 	  [kGetDispatcher] () {
@@ -14963,6 +14978,7 @@ function requireHeaders () {
 	  isValidHeaderName,
 	  isValidHeaderValue
 	} = requireUtil$5();
+	const util = require$$0$2;
 	const { webidl } = requireWebidl();
 	const assert = require$$0$3;
 
@@ -15509,6 +15525,9 @@ function requireHeaders () {
 	  [Symbol.toStringTag]: {
 	    value: 'Headers',
 	    configurable: true
+	  },
+	  [util.inspect.custom]: {
+	    enumerable: false
 	  }
 	});
 
@@ -21398,9 +21417,10 @@ function requireUtil$1 () {
 	if (hasRequiredUtil$1) return util$1;
 	hasRequiredUtil$1 = 1;
 
-	const assert = require$$0$3;
-	const { kHeadersList } = requireSymbols$4();
-
+	/**
+	 * @param {string} value
+	 * @returns {boolean}
+	 */
 	function isCTLExcludingHtab (value) {
 	  if (value.length === 0) {
 	    return false
@@ -21661,31 +21681,13 @@ function requireUtil$1 () {
 	  return out.join('; ')
 	}
 
-	let kHeadersListNode;
-
-	function getHeadersList (headers) {
-	  if (headers[kHeadersList]) {
-	    return headers[kHeadersList]
-	  }
-
-	  if (!kHeadersListNode) {
-	    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-	      (symbol) => symbol.description === 'headers list'
-	    );
-
-	    assert(kHeadersListNode, 'Headers cannot be parsed');
-	  }
-
-	  const headersList = headers[kHeadersListNode];
-	  assert(headersList);
-
-	  return headersList
-	}
-
 	util$1 = {
 	  isCTLExcludingHtab,
-	  stringify,
-	  getHeadersList
+	  validateCookieName,
+	  validateCookiePath,
+	  validateCookieValue,
+	  toIMFDate,
+	  stringify
 	};
 	return util$1;
 }
@@ -22023,7 +22025,7 @@ function requireCookies () {
 	hasRequiredCookies = 1;
 
 	const { parseSetCookie } = requireParse();
-	const { stringify, getHeadersList } = requireUtil$1();
+	const { stringify } = requireUtil$1();
 	const { webidl } = requireWebidl();
 	const { Headers } = requireHeaders();
 
@@ -22099,14 +22101,13 @@ function requireCookies () {
 
 	  webidl.brandCheck(headers, Headers, { strict: false });
 
-	  const cookies = getHeadersList(headers).cookies;
+	  const cookies = headers.getSetCookie();
 
 	  if (!cookies) {
 	    return []
 	  }
 
-	  // In older versions of undici, cookies is a list of name:value.
-	  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+	  return cookies.map((pair) => parseSetCookie(pair))
 	}
 
 	/**
@@ -27329,6 +27330,384 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+/**
+ * This error is thrown when an asynchronous operation has been aborted.
+ * Check for this error by testing the `name` that the name property of the
+ * error matches `"AbortError"`.
+ *
+ * @example
+ * ```ts snippet:ReadmeSampleAbortError
+ * import { AbortError } from "@typespec/ts-http-runtime";
+ *
+ * async function doAsyncWork(options: { abortSignal: AbortSignal }): Promise<void> {
+ *   if (options.abortSignal.aborted) {
+ *     throw new AbortError();
+ *   }
+ *
+ *   // do async work
+ * }
+ *
+ * const controller = new AbortController();
+ * controller.abort();
+ *
+ * try {
+ *   doAsyncWork({ abortSignal: controller.signal });
+ * } catch (e) {
+ *   if (e instanceof Error && e.name === "AbortError") {
+ *     // handle abort error here.
+ *   }
+ * }
+ * ```
+ */
+let AbortError$1 = class AbortError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "AbortError";
+    }
+};
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function log(message, ...args) {
+    process$1.stderr.write(`${require$$1$3.format(message, ...args)}${EOL}`);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const debugEnvVariable = (typeof process !== "undefined" && process.env && process.env.DEBUG) || undefined;
+let enabledString;
+let enabledNamespaces = [];
+let skippedNamespaces = [];
+const debuggers = [];
+if (debugEnvVariable) {
+    enable(debugEnvVariable);
+}
+const debugObj = Object.assign((namespace) => {
+    return createDebugger(namespace);
+}, {
+    enable,
+    enabled,
+    disable,
+    log,
+});
+function enable(namespaces) {
+    enabledString = namespaces;
+    enabledNamespaces = [];
+    skippedNamespaces = [];
+    const wildcard = /\*/g;
+    const namespaceList = namespaces.split(",").map((ns) => ns.trim().replace(wildcard, ".*?"));
+    for (const ns of namespaceList) {
+        if (ns.startsWith("-")) {
+            skippedNamespaces.push(new RegExp(`^${ns.substr(1)}$`));
+        }
+        else {
+            enabledNamespaces.push(new RegExp(`^${ns}$`));
+        }
+    }
+    for (const instance of debuggers) {
+        instance.enabled = enabled(instance.namespace);
+    }
+}
+function enabled(namespace) {
+    if (namespace.endsWith("*")) {
+        return true;
+    }
+    for (const skipped of skippedNamespaces) {
+        if (skipped.test(namespace)) {
+            return false;
+        }
+    }
+    for (const enabledNamespace of enabledNamespaces) {
+        if (enabledNamespace.test(namespace)) {
+            return true;
+        }
+    }
+    return false;
+}
+function disable() {
+    const result = enabledString || "";
+    enable("");
+    return result;
+}
+function createDebugger(namespace) {
+    const newDebugger = Object.assign(debug, {
+        enabled: enabled(namespace),
+        destroy,
+        log: debugObj.log,
+        namespace,
+        extend,
+    });
+    function debug(...args) {
+        if (!newDebugger.enabled) {
+            return;
+        }
+        if (args.length > 0) {
+            args[0] = `${namespace} ${args[0]}`;
+        }
+        newDebugger.log(...args);
+    }
+    debuggers.push(newDebugger);
+    return newDebugger;
+}
+function destroy() {
+    const index = debuggers.indexOf(this);
+    if (index >= 0) {
+        debuggers.splice(index, 1);
+        return true;
+    }
+    return false;
+}
+function extend(namespace) {
+    const newDebugger = createDebugger(`${this.namespace}:${namespace}`);
+    newDebugger.log = this.log;
+    return newDebugger;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const TYPESPEC_RUNTIME_LOG_LEVELS = ["verbose", "info", "warning", "error"];
+const levelMap = {
+    verbose: 400,
+    info: 300,
+    warning: 200,
+    error: 100,
+};
+function patchLogMethod(parent, child) {
+    child.log = (...args) => {
+        parent.log(...args);
+    };
+}
+function isTypeSpecRuntimeLogLevel(level) {
+    return TYPESPEC_RUNTIME_LOG_LEVELS.includes(level);
+}
+/**
+ * Creates a logger context base on the provided options.
+ * @param options - The options for creating a logger context.
+ * @returns The logger context.
+ */
+function createLoggerContext(options) {
+    const registeredLoggers = new Set();
+    const logLevelFromEnv = (typeof process !== "undefined" && process.env && process.env[options.logLevelEnvVarName]) ||
+        undefined;
+    let logLevel;
+    const clientLogger = debugObj(options.namespace);
+    clientLogger.log = (...args) => {
+        debugObj.log(...args);
+    };
+    if (logLevelFromEnv) {
+        // avoid calling setLogLevel because we don't want a mis-set environment variable to crash
+        if (isTypeSpecRuntimeLogLevel(logLevelFromEnv)) {
+            setLogLevel(logLevelFromEnv);
+        }
+        else {
+            console.error(`${options.logLevelEnvVarName} set to unknown log level '${logLevelFromEnv}'; logging is not enabled. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(", ")}.`);
+        }
+    }
+    function shouldEnable(logger) {
+        return Boolean(logLevel && levelMap[logger.level] <= levelMap[logLevel]);
+    }
+    function createLogger(parent, level) {
+        const logger = Object.assign(parent.extend(level), {
+            level,
+        });
+        patchLogMethod(parent, logger);
+        if (shouldEnable(logger)) {
+            const enabledNamespaces = debugObj.disable();
+            debugObj.enable(enabledNamespaces + "," + logger.namespace);
+        }
+        registeredLoggers.add(logger);
+        return logger;
+    }
+    return {
+        setLogLevel(level) {
+            if (level && !isTypeSpecRuntimeLogLevel(level)) {
+                throw new Error(`Unknown log level '${level}'. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(",")}`);
+            }
+            logLevel = level;
+            const enabledNamespaces = [];
+            for (const logger of registeredLoggers) {
+                if (shouldEnable(logger)) {
+                    enabledNamespaces.push(logger.namespace);
+                }
+            }
+            debugObj.enable(enabledNamespaces.join(","));
+        },
+        getLogLevel() {
+            return logLevel;
+        },
+        createClientLogger(namespace) {
+            const clientRootLogger = clientLogger.extend(namespace);
+            patchLogMethod(clientLogger, clientRootLogger);
+            return {
+                error: createLogger(clientRootLogger, "error"),
+                warning: createLogger(clientRootLogger, "warning"),
+                info: createLogger(clientRootLogger, "info"),
+                verbose: createLogger(clientRootLogger, "verbose"),
+            };
+        },
+        logger: clientLogger,
+    };
+}
+const context$1 = createLoggerContext({
+    logLevelEnvVarName: "TYPESPEC_RUNTIME_LOG_LEVEL",
+    namespace: "typeSpecRuntime",
+});
+/**
+ * Retrieves the currently specified log level.
+ */
+function setLogLevel(logLevel) {
+    context$1.setLogLevel(logLevel);
+}
+/**
+ * Creates a logger for use by the SDKs that inherits from `TypeSpecRuntimeLogger`.
+ * @param namespace - The name of the SDK package.
+ * @hidden
+ */
+function createClientLogger$1(namespace) {
+    return context$1.createClientLogger(namespace);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function normalizeName(name) {
+    return name.toLowerCase();
+}
+function* headerIterator(map) {
+    for (const entry of map.values()) {
+        yield [entry.name, entry.value];
+    }
+}
+class HttpHeadersImpl {
+    constructor(rawHeaders) {
+        this._headersMap = new Map();
+        if (rawHeaders) {
+            for (const headerName of Object.keys(rawHeaders)) {
+                this.set(headerName, rawHeaders[headerName]);
+            }
+        }
+    }
+    /**
+     * Set a header in this collection with the provided name and value. The name is
+     * case-insensitive.
+     * @param name - The name of the header to set. This value is case-insensitive.
+     * @param value - The value of the header to set.
+     */
+    set(name, value) {
+        this._headersMap.set(normalizeName(name), { name, value: String(value).trim() });
+    }
+    /**
+     * Get the header value for the provided header name, or undefined if no header exists in this
+     * collection with the provided name.
+     * @param name - The name of the header. This value is case-insensitive.
+     */
+    get(name) {
+        var _a;
+        return (_a = this._headersMap.get(normalizeName(name))) === null || _a === void 0 ? void 0 : _a.value;
+    }
+    /**
+     * Get whether or not this header collection contains a header entry for the provided header name.
+     * @param name - The name of the header to set. This value is case-insensitive.
+     */
+    has(name) {
+        return this._headersMap.has(normalizeName(name));
+    }
+    /**
+     * Remove the header with the provided headerName.
+     * @param name - The name of the header to remove.
+     */
+    delete(name) {
+        this._headersMap.delete(normalizeName(name));
+    }
+    /**
+     * Get the JSON object representation of this HTTP header collection.
+     */
+    toJSON(options = {}) {
+        const result = {};
+        if (options.preserveCase) {
+            for (const entry of this._headersMap.values()) {
+                result[entry.name] = entry.value;
+            }
+        }
+        else {
+            for (const [normalizedName, entry] of this._headersMap) {
+                result[normalizedName] = entry.value;
+            }
+        }
+        return result;
+    }
+    /**
+     * Get the string representation of this HTTP header collection.
+     */
+    toString() {
+        return JSON.stringify(this.toJSON({ preserveCase: true }));
+    }
+    /**
+     * Iterate over tuples of header [name, value] pairs.
+     */
+    [Symbol.iterator]() {
+        return headerIterator(this._headersMap);
+    }
+}
+/**
+ * Creates an object that satisfies the `HttpHeaders` interface.
+ * @param rawHeaders - A simple object representing initial headers
+ */
+function createHttpHeaders(rawHeaders) {
+    return new HttpHeadersImpl(rawHeaders);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+var _a$1;
+// NOTE: This is a workaround until we can use `globalThis.crypto.randomUUID` in Node.js 19+.
+const uuidFunction = typeof ((_a$1 = globalThis === null || globalThis === void 0 ? void 0 : globalThis.crypto) === null || _a$1 === void 0 ? void 0 : _a$1.randomUUID) === "function"
+    ? globalThis.crypto.randomUUID.bind(globalThis.crypto)
+    : randomUUID$1;
+/**
+ * Generated Universally Unique Identifier
+ *
+ * @returns RFC4122 v4 UUID.
+ */
+function randomUUID() {
+    return uuidFunction();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+class PipelineRequestImpl {
+    constructor(options) {
+        var _a, _b, _c, _d, _e, _f, _g;
+        this.url = options.url;
+        this.body = options.body;
+        this.headers = (_a = options.headers) !== null && _a !== void 0 ? _a : createHttpHeaders();
+        this.method = (_b = options.method) !== null && _b !== void 0 ? _b : "GET";
+        this.timeout = (_c = options.timeout) !== null && _c !== void 0 ? _c : 0;
+        this.multipartBody = options.multipartBody;
+        this.formData = options.formData;
+        this.disableKeepAlive = (_d = options.disableKeepAlive) !== null && _d !== void 0 ? _d : false;
+        this.proxySettings = options.proxySettings;
+        this.streamResponseStatusCodes = options.streamResponseStatusCodes;
+        this.withCredentials = (_e = options.withCredentials) !== null && _e !== void 0 ? _e : false;
+        this.abortSignal = options.abortSignal;
+        this.onUploadProgress = options.onUploadProgress;
+        this.onDownloadProgress = options.onDownloadProgress;
+        this.requestId = options.requestId || randomUUID();
+        this.allowInsecureConnection = (_f = options.allowInsecureConnection) !== null && _f !== void 0 ? _f : false;
+        this.enableBrowserStreams = (_g = options.enableBrowserStreams) !== null && _g !== void 0 ? _g : false;
+        this.requestOverrides = options.requestOverrides;
+    }
+}
+/**
+ * Creates a new pipeline request with the given options.
+ * This method is to allow for the easy setting of default values and not required.
+ * @param options - The options to create the request with.
+ */
+function createPipelineRequest(options) {
+    return new PipelineRequestImpl(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 const ValidPhaseNames = new Set(["Deserialize", "Serialize", "Retry", "Sign"]);
 /**
  * A private implementation of Pipeline.
@@ -27585,267 +27964,8 @@ class HttpPipeline {
  * Creates a totally empty pipeline.
  * Useful for testing or creating a custom one.
  */
-function createEmptyPipeline() {
+function createEmptyPipeline$1() {
     return HttpPipeline.create();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-function log(message, ...args) {
-    process$1.stderr.write(`${require$$1$3.format(message, ...args)}${EOL}`);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-const debugEnvVariable = (typeof process !== "undefined" && process.env && process.env.DEBUG) || undefined;
-let enabledString;
-let enabledNamespaces = [];
-let skippedNamespaces = [];
-const debuggers = [];
-if (debugEnvVariable) {
-    enable(debugEnvVariable);
-}
-const debugObj = Object.assign((namespace) => {
-    return createDebugger(namespace);
-}, {
-    enable,
-    enabled,
-    disable,
-    log,
-});
-function enable(namespaces) {
-    enabledString = namespaces;
-    enabledNamespaces = [];
-    skippedNamespaces = [];
-    const wildcard = /\*/g;
-    const namespaceList = namespaces.split(",").map((ns) => ns.trim().replace(wildcard, ".*?"));
-    for (const ns of namespaceList) {
-        if (ns.startsWith("-")) {
-            skippedNamespaces.push(new RegExp(`^${ns.substr(1)}$`));
-        }
-        else {
-            enabledNamespaces.push(new RegExp(`^${ns}$`));
-        }
-    }
-    for (const instance of debuggers) {
-        instance.enabled = enabled(instance.namespace);
-    }
-}
-function enabled(namespace) {
-    if (namespace.endsWith("*")) {
-        return true;
-    }
-    for (const skipped of skippedNamespaces) {
-        if (skipped.test(namespace)) {
-            return false;
-        }
-    }
-    for (const enabledNamespace of enabledNamespaces) {
-        if (enabledNamespace.test(namespace)) {
-            return true;
-        }
-    }
-    return false;
-}
-function disable() {
-    const result = enabledString || "";
-    enable("");
-    return result;
-}
-function createDebugger(namespace) {
-    const newDebugger = Object.assign(debug, {
-        enabled: enabled(namespace),
-        destroy,
-        log: debugObj.log,
-        namespace,
-        extend,
-    });
-    function debug(...args) {
-        if (!newDebugger.enabled) {
-            return;
-        }
-        if (args.length > 0) {
-            args[0] = `${namespace} ${args[0]}`;
-        }
-        newDebugger.log(...args);
-    }
-    debuggers.push(newDebugger);
-    return newDebugger;
-}
-function destroy() {
-    const index = debuggers.indexOf(this);
-    if (index >= 0) {
-        debuggers.splice(index, 1);
-        return true;
-    }
-    return false;
-}
-function extend(namespace) {
-    const newDebugger = createDebugger(`${this.namespace}:${namespace}`);
-    newDebugger.log = this.log;
-    return newDebugger;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-const registeredLoggers = new Set();
-const logLevelFromEnv = (typeof process !== "undefined" && process.env && process.env.AZURE_LOG_LEVEL) || undefined;
-let azureLogLevel;
-/**
- * The AzureLogger provides a mechanism for overriding where logs are output to.
- * By default, logs are sent to stderr.
- * Override the `log` method to redirect logs to another location.
- */
-const AzureLogger = debugObj("azure");
-AzureLogger.log = (...args) => {
-    debugObj.log(...args);
-};
-const AZURE_LOG_LEVELS = ["verbose", "info", "warning", "error"];
-if (logLevelFromEnv) {
-    // avoid calling setLogLevel because we don't want a mis-set environment variable to crash
-    if (isAzureLogLevel(logLevelFromEnv)) {
-        setLogLevel(logLevelFromEnv);
-    }
-    else {
-        console.error(`AZURE_LOG_LEVEL set to unknown log level '${logLevelFromEnv}'; logging is not enabled. Acceptable values: ${AZURE_LOG_LEVELS.join(", ")}.`);
-    }
-}
-/**
- * Immediately enables logging at the specified log level. If no level is specified, logging is disabled.
- * @param level - The log level to enable for logging.
- * Options from most verbose to least verbose are:
- * - verbose
- * - info
- * - warning
- * - error
- */
-function setLogLevel(level) {
-    if (level && !isAzureLogLevel(level)) {
-        throw new Error(`Unknown log level '${level}'. Acceptable values: ${AZURE_LOG_LEVELS.join(",")}`);
-    }
-    azureLogLevel = level;
-    const enabledNamespaces = [];
-    for (const logger of registeredLoggers) {
-        if (shouldEnable(logger)) {
-            enabledNamespaces.push(logger.namespace);
-        }
-    }
-    debugObj.enable(enabledNamespaces.join(","));
-}
-const levelMap = {
-    verbose: 400,
-    info: 300,
-    warning: 200,
-    error: 100,
-};
-/**
- * Creates a logger for use by the Azure SDKs that inherits from `AzureLogger`.
- * @param namespace - The name of the SDK package.
- * @hidden
- */
-function createClientLogger(namespace) {
-    const clientRootLogger = AzureLogger.extend(namespace);
-    patchLogMethod(AzureLogger, clientRootLogger);
-    return {
-        error: createLogger(clientRootLogger, "error"),
-        warning: createLogger(clientRootLogger, "warning"),
-        info: createLogger(clientRootLogger, "info"),
-        verbose: createLogger(clientRootLogger, "verbose"),
-    };
-}
-function patchLogMethod(parent, child) {
-    child.log = (...args) => {
-        parent.log(...args);
-    };
-}
-function createLogger(parent, level) {
-    const logger = Object.assign(parent.extend(level), {
-        level,
-    });
-    patchLogMethod(parent, logger);
-    if (shouldEnable(logger)) {
-        const enabledNamespaces = debugObj.disable();
-        debugObj.enable(enabledNamespaces + "," + logger.namespace);
-    }
-    registeredLoggers.add(logger);
-    return logger;
-}
-function shouldEnable(logger) {
-    return Boolean(azureLogLevel && levelMap[logger.level] <= levelMap[azureLogLevel]);
-}
-function isAzureLogLevel(logLevel) {
-    return AZURE_LOG_LEVELS.includes(logLevel);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const logger$1 = createClientLogger("core-rest-pipeline");
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-/**
- * This error is thrown when an asynchronous operation has been aborted.
- * Check for this error by testing the `name` that the name property of the
- * error matches `"AbortError"`.
- *
- * @example
- * ```ts
- * const controller = new AbortController();
- * controller.abort();
- * try {
- *   doAsyncWork(controller.signal)
- * } catch (e) {
- *   if (e.name === 'AbortError') {
- *     // handle abort error here.
- *   }
- * }
- * ```
- */
-class AbortError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "AbortError";
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Returns a random integer value between a lower and upper bound,
- * inclusive of both bounds.
- * Note that this uses Math.random and isn't secure. If you need to use
- * this for any kind of security purpose, find a better source of random.
- * @param min - The smallest integer value allowed.
- * @param max - The largest integer value allowed.
- */
-function getRandomIntegerInclusive(min, max) {
-    // Make sure inputs are integers.
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    // Pick a random offset from zero to the size of the range.
-    // Since Math.random() can never return 1, we have to make the range one larger
-    // in order to be inclusive of the maximum value after we take the floor.
-    const offset = Math.floor(Math.random() * (max - min + 1));
-    return offset + min;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Calculates the delay interval for retry attempts using exponential delay with jitter.
- * @param retryAttempt - The current retry attempt number.
- * @param config - The exponential retry configuration.
- * @returns An object containing the calculated retry delay.
- */
-function calculateRetryDelay(retryAttempt, config) {
-    // Exponentially increase the delay each time
-    const exponentialDelay = config.retryDelayInMs * Math.pow(2, retryAttempt);
-    // Don't let the delay exceed the maximum
-    const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
-    // Allow the final value to have some "jitter" (within 50% of the delay size) so
-    // that retries across multiple clients don't occur simultaneously.
-    const retryAfterInMs = clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2);
-    return { retryAfterInMs };
 }
 
 // Copyright (c) Microsoft Corporation.
@@ -27868,7 +27988,7 @@ function isObject(input) {
  * Typeguard for an error object shape (has name and message)
  * @param e - Something caught by a catch clause.
  */
-function isError(e) {
+function isError$1(e) {
     if (isObject(e)) {
         const hasName = typeof e.name === "string";
         const hasMessage = typeof e.message === "string";
@@ -27876,128 +27996,10 @@ function isError(e) {
     }
     return false;
 }
-/**
- * Given what is thought to be an error object, return the message if possible.
- * If the message is missing, returns a stringified version of the input.
- * @param e - Something thrown from a try block
- * @returns The error message or a string of the input
- */
-function getErrorMessage(e) {
-    if (isError(e)) {
-        return e.message;
-    }
-    else {
-        let stringified;
-        try {
-            if (typeof e === "object" && e) {
-                stringified = JSON.stringify(e);
-            }
-            else {
-                stringified = String(e);
-            }
-        }
-        catch (err) {
-            stringified = "[unable to stringify input]";
-        }
-        return `Unknown error ${stringified}`;
-    }
-}
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-/**
- * Helper TypeGuard that checks if something is defined or not.
- * @param thing - Anything
- */
-function isDefined(thing) {
-    return typeof thing !== "undefined" && thing !== null;
-}
-/**
- * Helper TypeGuard that checks if the input is an object with the specified properties.
- * @param thing - Anything.
- * @param properties - The name of the properties that should appear in the object.
- */
-function isObjectWithProperties(thing, properties) {
-    if (!isDefined(thing) || typeof thing !== "object") {
-        return false;
-    }
-    for (const property of properties) {
-        if (!objectHasProperty(thing, property)) {
-            return false;
-        }
-    }
-    return true;
-}
-/**
- * Helper TypeGuard that checks if the input is an object with the specified property.
- * @param thing - Any object.
- * @param property - The name of the property that should appear in the object.
- */
-function objectHasProperty(thing, property) {
-    return (isDefined(thing) && typeof thing === "object" && property in thing);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-var _a$1;
-// NOTE: This is a workaround until we can use `globalThis.crypto.randomUUID` in Node.js 19+.
-const uuidFunction = typeof ((_a$1 = globalThis === null || globalThis === void 0 ? void 0 : globalThis.crypto) === null || _a$1 === void 0 ? void 0 : _a$1.randomUUID) === "function"
-    ? globalThis.crypto.randomUUID.bind(globalThis.crypto)
-    : randomUUID$1;
-/**
- * Generated Universally Unique Identifier
- *
- * @returns RFC4122 v4 UUID.
- */
-function randomUUID() {
-    return uuidFunction();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-var _a, _b, _c, _d;
-/**
- * A constant that indicates whether the environment the code is running is a Web Worker.
- */
-typeof self === "object" &&
-    typeof (self === null || self === void 0 ? void 0 : self.importScripts) === "function" &&
-    (((_a = self.constructor) === null || _a === void 0 ? void 0 : _a.name) === "DedicatedWorkerGlobalScope" ||
-        ((_b = self.constructor) === null || _b === void 0 ? void 0 : _b.name) === "ServiceWorkerGlobalScope" ||
-        ((_c = self.constructor) === null || _c === void 0 ? void 0 : _c.name) === "SharedWorkerGlobalScope");
-/**
- * A constant that indicates whether the environment the code is running is Deno.
- */
-typeof Deno !== "undefined" &&
-    typeof Deno.version !== "undefined" &&
-    typeof Deno.version.deno !== "undefined";
-/**
- * A constant that indicates whether the environment the code is running is Bun.sh.
- */
-typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
-/**
- * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
- */
-const isNodeLike = typeof globalThis.process !== "undefined" &&
-    Boolean(globalThis.process.version) &&
-    Boolean((_d = globalThis.process.versions) === null || _d === void 0 ? void 0 : _d.node);
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The helper that transforms bytes with specific character encoding into string
- * @param bytes - the uint8array bytes
- * @param format - the format we use to encode the byte
- * @returns a string of the encoded string
- */
-/**
- * The helper that transforms string to specific character encoded bytes array.
- * @param value - the string to be converted
- * @param format - the format we use to decode the value
- * @returns a uint8array
- */
-function stringToUint8Array(value, format) {
-    return Buffer.from(value, format);
-}
+const custom = inspect.custom;
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
@@ -28046,7 +28048,7 @@ const defaultAllowedHeaderNames = [
 ];
 const defaultAllowedQueryParameters = ["api-version"];
 /**
- * @internal
+ * A utility class to sanitize objects for logging.
  */
 class Sanitizer {
     constructor({ additionalAllowedHeaderNames: allowedHeaderNames = [], additionalAllowedQueryParameters: allowedQueryParameters = [], } = {}) {
@@ -28055,6 +28057,11 @@ class Sanitizer {
         this.allowedHeaderNames = new Set(allowedHeaderNames.map((n) => n.toLowerCase()));
         this.allowedQueryParameters = new Set(allowedQueryParameters.map((p) => p.toLowerCase()));
     }
+    /**
+     * Sanitizes an object for logging.
+     * @param obj - The object to sanitize
+     * @returns - The sanitized object as a string
+     */
     sanitize(obj) {
         const seen = new Set();
         return JSON.stringify(obj, (key, value) => {
@@ -28093,6 +28100,11 @@ class Sanitizer {
             return value;
         }, 2);
     }
+    /**
+     * Sanitizes a URL for logging.
+     * @param value - The URL to sanitize
+     * @returns - The sanitized URL as a string
+     */
     sanitizeUrl(value) {
         if (typeof value !== "string" || value === null || value === "") {
             return value;
@@ -28139,6 +28151,424 @@ class Sanitizer {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+const errorSanitizer = new Sanitizer();
+/**
+ * A custom error type for failed pipeline requests.
+ */
+let RestError$1 = class RestError extends Error {
+    constructor(message, options = {}) {
+        super(message);
+        this.name = "RestError";
+        this.code = options.code;
+        this.statusCode = options.statusCode;
+        // The request and response may contain sensitive information in the headers or body.
+        // To help prevent this sensitive information being accidentally logged, the request and response
+        // properties are marked as non-enumerable here. This prevents them showing up in the output of
+        // JSON.stringify and console.log.
+        Object.defineProperty(this, "request", { value: options.request, enumerable: false });
+        Object.defineProperty(this, "response", { value: options.response, enumerable: false });
+        // Logging method for util.inspect in Node
+        Object.defineProperty(this, custom, {
+            value: () => {
+                // Extract non-enumerable properties and add them back. This is OK since in this output the request and
+                // response get sanitized.
+                return `RestError: ${this.message} \n ${errorSanitizer.sanitize(Object.assign(Object.assign({}, this), { request: this.request, response: this.response }))}`;
+            },
+            enumerable: false,
+        });
+        Object.setPrototypeOf(this, RestError.prototype);
+    }
+};
+/**
+ * Something went wrong when making the request.
+ * This means the actual request failed for some reason,
+ * such as a DNS issue or the connection being lost.
+ */
+RestError$1.REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
+/**
+ * This means that parsing the response from the server failed.
+ * It may have been malformed.
+ */
+RestError$1.PARSE_ERROR = "PARSE_ERROR";
+/**
+ * Typeguard for RestError
+ * @param e - Something caught by a catch clause.
+ */
+function isRestError$1(e) {
+    if (e instanceof RestError$1) {
+        return true;
+    }
+    return isError$1(e) && e.name === "RestError";
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The helper that transforms bytes with specific character encoding into string
+ * @param bytes - the uint8array bytes
+ * @param format - the format we use to encode the byte
+ * @returns a string of the encoded string
+ */
+function uint8ArrayToString(bytes, format) {
+    return Buffer.from(bytes).toString(format);
+}
+/**
+ * The helper that transforms string to specific character encoded bytes array.
+ * @param value - the string to be converted
+ * @param format - the format we use to decode the value
+ * @returns a uint8array
+ */
+function stringToUint8Array(value, format) {
+    return Buffer.from(value, format);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$2 = createClientLogger$1("ts-http-runtime");
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const DEFAULT_TLS_SETTINGS = {};
+function isReadableStream$1(body) {
+    return body && typeof body.pipe === "function";
+}
+function isStreamComplete(stream) {
+    if (stream.readable === false) {
+        return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+        const handler = () => {
+            resolve();
+            stream.removeListener("close", handler);
+            stream.removeListener("end", handler);
+            stream.removeListener("error", handler);
+        };
+        stream.on("close", handler);
+        stream.on("end", handler);
+        stream.on("error", handler);
+    });
+}
+function isArrayBuffer(body) {
+    return body && typeof body.byteLength === "number";
+}
+class ReportTransform extends Transform {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    _transform(chunk, _encoding, callback) {
+        this.push(chunk);
+        this.loadedBytes += chunk.length;
+        try {
+            this.progressCallback({ loadedBytes: this.loadedBytes });
+            callback();
+        }
+        catch (e) {
+            callback(e);
+        }
+    }
+    constructor(progressCallback) {
+        super();
+        this.loadedBytes = 0;
+        this.progressCallback = progressCallback;
+    }
+}
+/**
+ * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
+ * @internal
+ */
+class NodeHttpClient {
+    constructor() {
+        this.cachedHttpsAgents = new WeakMap();
+    }
+    /**
+     * Makes a request over an underlying transport layer and returns the response.
+     * @param request - The request to be made.
+     */
+    async sendRequest(request) {
+        var _a, _b, _c;
+        const abortController = new AbortController();
+        let abortListener;
+        if (request.abortSignal) {
+            if (request.abortSignal.aborted) {
+                throw new AbortError$1("The operation was aborted. Request has already been canceled.");
+            }
+            abortListener = (event) => {
+                if (event.type === "abort") {
+                    abortController.abort();
+                }
+            };
+            request.abortSignal.addEventListener("abort", abortListener);
+        }
+        let timeoutId;
+        if (request.timeout > 0) {
+            timeoutId = setTimeout(() => {
+                const sanitizer = new Sanitizer();
+                logger$2.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
+                abortController.abort();
+            }, request.timeout);
+        }
+        const acceptEncoding = request.headers.get("Accept-Encoding");
+        const shouldDecompress = (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("gzip")) || (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("deflate"));
+        let body = typeof request.body === "function" ? request.body() : request.body;
+        if (body && !request.headers.has("Content-Length")) {
+            const bodyLength = getBodyLength(body);
+            if (bodyLength !== null) {
+                request.headers.set("Content-Length", bodyLength);
+            }
+        }
+        let responseStream;
+        try {
+            if (body && request.onUploadProgress) {
+                const onUploadProgress = request.onUploadProgress;
+                const uploadReportStream = new ReportTransform(onUploadProgress);
+                uploadReportStream.on("error", (e) => {
+                    logger$2.error("Error in upload progress", e);
+                });
+                if (isReadableStream$1(body)) {
+                    body.pipe(uploadReportStream);
+                }
+                else {
+                    uploadReportStream.end(body);
+                }
+                body = uploadReportStream;
+            }
+            const res = await this.makeRequest(request, abortController, body);
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+            const headers = getResponseHeaders(res);
+            const status = (_a = res.statusCode) !== null && _a !== void 0 ? _a : 0;
+            const response = {
+                status,
+                headers,
+                request,
+            };
+            // Responses to HEAD must not have a body.
+            // If they do return a body, that body must be ignored.
+            if (request.method === "HEAD") {
+                // call resume() and not destroy() to avoid closing the socket
+                // and losing keep alive
+                res.resume();
+                return response;
+            }
+            responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
+            const onDownloadProgress = request.onDownloadProgress;
+            if (onDownloadProgress) {
+                const downloadReportStream = new ReportTransform(onDownloadProgress);
+                downloadReportStream.on("error", (e) => {
+                    logger$2.error("Error in download progress", e);
+                });
+                responseStream.pipe(downloadReportStream);
+                responseStream = downloadReportStream;
+            }
+            if (
+            // Value of POSITIVE_INFINITY in streamResponseStatusCodes is considered as any status code
+            ((_b = request.streamResponseStatusCodes) === null || _b === void 0 ? void 0 : _b.has(Number.POSITIVE_INFINITY)) ||
+                ((_c = request.streamResponseStatusCodes) === null || _c === void 0 ? void 0 : _c.has(response.status))) {
+                response.readableStreamBody = responseStream;
+            }
+            else {
+                response.bodyAsText = await streamToText(responseStream);
+            }
+            return response;
+        }
+        finally {
+            // clean up event listener
+            if (request.abortSignal && abortListener) {
+                let uploadStreamDone = Promise.resolve();
+                if (isReadableStream$1(body)) {
+                    uploadStreamDone = isStreamComplete(body);
+                }
+                let downloadStreamDone = Promise.resolve();
+                if (isReadableStream$1(responseStream)) {
+                    downloadStreamDone = isStreamComplete(responseStream);
+                }
+                Promise.all([uploadStreamDone, downloadStreamDone])
+                    .then(() => {
+                    var _a;
+                    // eslint-disable-next-line promise/always-return
+                    if (abortListener) {
+                        (_a = request.abortSignal) === null || _a === void 0 ? void 0 : _a.removeEventListener("abort", abortListener);
+                    }
+                })
+                    .catch((e) => {
+                    logger$2.warning("Error when cleaning up abortListener on httpRequest", e);
+                });
+            }
+        }
+    }
+    makeRequest(request, abortController, body) {
+        var _a;
+        const url = new URL(request.url);
+        const isInsecure = url.protocol !== "https:";
+        if (isInsecure && !request.allowInsecureConnection) {
+            throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
+        }
+        const agent = (_a = request.agent) !== null && _a !== void 0 ? _a : this.getOrCreateAgent(request, isInsecure);
+        const options = Object.assign({ agent, hostname: url.hostname, path: `${url.pathname}${url.search}`, port: url.port, method: request.method, headers: request.headers.toJSON({ preserveCase: true }) }, request.requestOverrides);
+        return new Promise((resolve, reject) => {
+            const req = isInsecure ? http.request(options, resolve) : https.request(options, resolve);
+            req.once("error", (err) => {
+                var _a;
+                reject(new RestError$1(err.message, { code: (_a = err.code) !== null && _a !== void 0 ? _a : RestError$1.REQUEST_SEND_ERROR, request }));
+            });
+            abortController.signal.addEventListener("abort", () => {
+                const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
+                req.destroy(abortError);
+                reject(abortError);
+            });
+            if (body && isReadableStream$1(body)) {
+                body.pipe(req);
+            }
+            else if (body) {
+                if (typeof body === "string" || Buffer.isBuffer(body)) {
+                    req.end(body);
+                }
+                else if (isArrayBuffer(body)) {
+                    req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer) : Buffer.from(body));
+                }
+                else {
+                    logger$2.error("Unrecognized body type", body);
+                    reject(new RestError$1("Unrecognized body type"));
+                }
+            }
+            else {
+                // streams don't like "undefined" being passed as data
+                req.end();
+            }
+        });
+    }
+    getOrCreateAgent(request, isInsecure) {
+        var _a;
+        const disableKeepAlive = request.disableKeepAlive;
+        // Handle Insecure requests first
+        if (isInsecure) {
+            if (disableKeepAlive) {
+                // keepAlive:false is the default so we don't need a custom Agent
+                return http.globalAgent;
+            }
+            if (!this.cachedHttpAgent) {
+                // If there is no cached agent create a new one and cache it.
+                this.cachedHttpAgent = new http.Agent({ keepAlive: true });
+            }
+            return this.cachedHttpAgent;
+        }
+        else {
+            if (disableKeepAlive && !request.tlsSettings) {
+                // When there are no tlsSettings and keepAlive is false
+                // we don't need a custom agent
+                return https.globalAgent;
+            }
+            // We use the tlsSettings to index cached clients
+            const tlsSettings = (_a = request.tlsSettings) !== null && _a !== void 0 ? _a : DEFAULT_TLS_SETTINGS;
+            // Get the cached agent or create a new one with the
+            // provided values for keepAlive and tlsSettings
+            let agent = this.cachedHttpsAgents.get(tlsSettings);
+            if (agent && agent.options.keepAlive === !disableKeepAlive) {
+                return agent;
+            }
+            logger$2.info("No cached TLS Agent exist, creating a new Agent");
+            agent = new https.Agent(Object.assign({ 
+                // keepAlive is true if disableKeepAlive is false.
+                keepAlive: !disableKeepAlive }, tlsSettings));
+            this.cachedHttpsAgents.set(tlsSettings, agent);
+            return agent;
+        }
+    }
+}
+function getResponseHeaders(res) {
+    const headers = createHttpHeaders();
+    for (const header of Object.keys(res.headers)) {
+        const value = res.headers[header];
+        if (Array.isArray(value)) {
+            if (value.length > 0) {
+                headers.set(header, value[0]);
+            }
+        }
+        else if (value) {
+            headers.set(header, value);
+        }
+    }
+    return headers;
+}
+function getDecodedResponseStream(stream, headers) {
+    const contentEncoding = headers.get("Content-Encoding");
+    if (contentEncoding === "gzip") {
+        const unzip = zlib.createGunzip();
+        stream.pipe(unzip);
+        return unzip;
+    }
+    else if (contentEncoding === "deflate") {
+        const inflate = zlib.createInflate();
+        stream.pipe(inflate);
+        return inflate;
+    }
+    return stream;
+}
+function streamToText(stream) {
+    return new Promise((resolve, reject) => {
+        const buffer = [];
+        stream.on("data", (chunk) => {
+            if (Buffer.isBuffer(chunk)) {
+                buffer.push(chunk);
+            }
+            else {
+                buffer.push(Buffer.from(chunk));
+            }
+        });
+        stream.on("end", () => {
+            resolve(Buffer.concat(buffer).toString("utf8"));
+        });
+        stream.on("error", (e) => {
+            if (e && (e === null || e === void 0 ? void 0 : e.name) === "AbortError") {
+                reject(e);
+            }
+            else {
+                reject(new RestError$1(`Error reading response as text: ${e.message}`, {
+                    code: RestError$1.PARSE_ERROR,
+                }));
+            }
+        });
+    });
+}
+/** @internal */
+function getBodyLength(body) {
+    if (!body) {
+        return 0;
+    }
+    else if (Buffer.isBuffer(body)) {
+        return body.length;
+    }
+    else if (isReadableStream$1(body)) {
+        return null;
+    }
+    else if (isArrayBuffer(body)) {
+        return body.byteLength;
+    }
+    else if (typeof body === "string") {
+        return Buffer.from(body).length;
+    }
+    else {
+        return null;
+    }
+}
+/**
+ * Create a new HttpClient instance for the NodeJS environment.
+ * @internal
+ */
+function createNodeHttpClient() {
+    return new NodeHttpClient();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Create the correct HttpClient for the current environment.
+ */
+function createDefaultHttpClient() {
+    return createNodeHttpClient();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 /**
  * The programmatic identifier of the logPolicy.
  */
@@ -28147,9 +28577,9 @@ const logPolicyName = "logPolicy";
  * A policy that logs all requests and responses.
  * @param options - Options to configure logPolicy.
  */
-function logPolicy(options = {}) {
+function logPolicy$1(options = {}) {
     var _a;
-    const logger = (_a = options.logger) !== null && _a !== void 0 ? _a : logger$1.info;
+    const logger = (_a = options.logger) !== null && _a !== void 0 ? _a : logger$2.info;
     const sanitizer = new Sanitizer({
         additionalAllowedHeaderNames: options.additionalAllowedHeaderNames,
         additionalAllowedQueryParameters: options.additionalAllowedQueryParameters,
@@ -28185,7 +28615,7 @@ const allowedRedirect = ["GET", "HEAD"];
  * In the browser, this policy is not used.
  * @param options - Options to control policy behavior.
  */
-function redirectPolicy(options = {}) {
+function redirectPolicy$1(options = {}) {
     const { maxRetries = 20 } = options;
     return {
         name: redirectPolicyName,
@@ -28226,13 +28656,13 @@ async function handleRedirect(next, response, maxRetries, currentRetries = 0) {
 /**
  * @internal
  */
-function getHeaderName() {
+function getHeaderName$1() {
     return "User-Agent";
 }
 /**
  * @internal
  */
-async function setPlatformSpecificData(map) {
+async function setPlatformSpecificData$1(map) {
     if (process$1 && process$1.versions) {
         const versions = process$1.versions;
         if (versions.bun) {
@@ -28250,12 +28680,12 @@ async function setPlatformSpecificData(map) {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-const SDK_VERSION$1 = "1.19.1";
+const SDK_VERSION$2 = "0.2.2";
 const DEFAULT_RETRY_POLICY_COUNT = 3;
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-function getUserAgentString(telemetryInfo) {
+function getUserAgentString$1(telemetryInfo) {
     const parts = [];
     for (const [key, value] of telemetryInfo) {
         const token = value ? `${key}/${value}` : key;
@@ -28266,275 +28696,41 @@ function getUserAgentString(telemetryInfo) {
 /**
  * @internal
  */
-function getUserAgentHeaderName() {
-    return getHeaderName();
+function getUserAgentHeaderName$1() {
+    return getHeaderName$1();
 }
 /**
  * @internal
  */
-async function getUserAgentValue(prefix) {
+async function getUserAgentValue$1(prefix) {
     const runtimeInfo = new Map();
-    runtimeInfo.set("core-rest-pipeline", SDK_VERSION$1);
-    await setPlatformSpecificData(runtimeInfo);
-    const defaultAgent = getUserAgentString(runtimeInfo);
+    runtimeInfo.set("ts-http-runtime", SDK_VERSION$2);
+    await setPlatformSpecificData$1(runtimeInfo);
+    const defaultAgent = getUserAgentString$1(runtimeInfo);
     const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
     return userAgentValue;
 }
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-const UserAgentHeaderName = getUserAgentHeaderName();
+const UserAgentHeaderName$1 = getUserAgentHeaderName$1();
 /**
  * The programmatic identifier of the userAgentPolicy.
  */
-const userAgentPolicyName = "userAgentPolicy";
+const userAgentPolicyName$1 = "userAgentPolicy";
 /**
  * A policy that sets the User-Agent header (or equivalent) to reflect
  * the library version.
  * @param options - Options to customize the user agent value.
  */
-function userAgentPolicy(options = {}) {
-    const userAgentValue = getUserAgentValue(options.userAgentPrefix);
+function userAgentPolicy$1(options = {}) {
+    const userAgentValue = getUserAgentValue$1(options.userAgentPrefix);
     return {
-        name: userAgentPolicyName,
+        name: userAgentPolicyName$1,
         async sendRequest(request, next) {
-            if (!request.headers.has(UserAgentHeaderName)) {
-                request.headers.set(UserAgentHeaderName, await userAgentValue);
+            if (!request.headers.has(UserAgentHeaderName$1)) {
+                request.headers.set(UserAgentHeaderName$1, await userAgentValue);
             }
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function isBlob(x) {
-    return typeof x.stream === "function";
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Private symbol used as key on objects created using createFile containing the
- * original source of the file object.
- *
- * This is used in Node to access the original Node stream without using Blob#stream, which
- * returns a web stream. This is done to avoid a couple of bugs to do with Blob#stream and
- * Readable#to/fromWeb in Node versions we support:
- * - https://github.com/nodejs/node/issues/42694 (fixed in Node 18.14)
- * - https://github.com/nodejs/node/issues/48916 (fixed in Node 20.6)
- *
- * Once these versions are no longer supported, we may be able to stop doing this.
- *
- * @internal
- */
-const rawContent = Symbol("rawContent");
-function hasRawContent(x) {
-    return typeof x[rawContent] === "function";
-}
-/**
- * Extract the raw content from a given blob-like object. If the input was created using createFile
- * or createFileFromStream, the exact content passed into createFile/createFileFromStream will be used.
- * For true instances of Blob and File, returns the blob's content as a Web ReadableStream<Uint8Array>.
- *
- * @internal
- */
-function getRawContent(blob) {
-    if (hasRawContent(blob)) {
-        return blob[rawContent]();
-    }
-    else {
-        return blob.stream();
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function streamAsyncIterator() {
-    return __asyncGenerator(this, arguments, function* streamAsyncIterator_1() {
-        const reader = this.getReader();
-        try {
-            while (true) {
-                const { done, value } = yield __await(reader.read());
-                if (done) {
-                    return yield __await(void 0);
-                }
-                yield yield __await(value);
-            }
-        }
-        finally {
-            reader.releaseLock();
-        }
-    });
-}
-function makeAsyncIterable(webStream) {
-    if (!webStream[Symbol.asyncIterator]) {
-        webStream[Symbol.asyncIterator] = streamAsyncIterator.bind(webStream);
-    }
-    if (!webStream.values) {
-        webStream.values = streamAsyncIterator.bind(webStream);
-    }
-}
-function ensureNodeStream(stream) {
-    if (stream instanceof ReadableStream) {
-        makeAsyncIterable(stream);
-        return Readable.fromWeb(stream);
-    }
-    else {
-        return stream;
-    }
-}
-function toStream(source) {
-    if (source instanceof Uint8Array) {
-        return Readable.from(Buffer.from(source));
-    }
-    else if (isBlob(source)) {
-        return toStream(getRawContent(source));
-    }
-    else {
-        return ensureNodeStream(source);
-    }
-}
-/**
- * Utility function that concatenates a set of binary inputs into one combined output.
- *
- * @param sources - array of sources for the concatenation
- * @returns - in Node, a (() =\> NodeJS.ReadableStream) which, when read, produces a concatenation of all the inputs.
- *           In browser, returns a `Blob` representing all the concatenated inputs.
- *
- * @internal
- */
-async function concat(sources) {
-    return function () {
-        const streams = sources.map((x) => (typeof x === "function" ? x() : x)).map(toStream);
-        return Readable.from((function () {
-            return __asyncGenerator(this, arguments, function* () {
-                var _a, e_1, _b, _c;
-                for (const stream of streams) {
-                    try {
-                        for (var _d = true, stream_1 = (e_1 = void 0, __asyncValues(stream)), stream_1_1; stream_1_1 = yield __await(stream_1.next()), _a = stream_1_1.done, !_a; _d = true) {
-                            _c = stream_1_1.value;
-                            _d = false;
-                            const chunk = _c;
-                            yield yield __await(chunk);
-                        }
-                    }
-                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                    finally {
-                        try {
-                            if (!_d && !_a && (_b = stream_1.return)) yield __await(_b.call(stream_1));
-                        }
-                        finally { if (e_1) throw e_1.error; }
-                    }
-                }
-            });
-        })());
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function generateBoundary() {
-    return `----AzSDKFormBoundary${randomUUID()}`;
-}
-function encodeHeaders(headers) {
-    let result = "";
-    for (const [key, value] of headers) {
-        result += `${key}: ${value}\r\n`;
-    }
-    return result;
-}
-function getLength(source) {
-    if (source instanceof Uint8Array) {
-        return source.byteLength;
-    }
-    else if (isBlob(source)) {
-        // if was created using createFile then -1 means we have an unknown size
-        return source.size === -1 ? undefined : source.size;
-    }
-    else {
-        return undefined;
-    }
-}
-function getTotalLength(sources) {
-    let total = 0;
-    for (const source of sources) {
-        const partLength = getLength(source);
-        if (partLength === undefined) {
-            return undefined;
-        }
-        else {
-            total += partLength;
-        }
-    }
-    return total;
-}
-async function buildRequestBody(request, parts, boundary) {
-    const sources = [
-        stringToUint8Array(`--${boundary}`, "utf-8"),
-        ...parts.flatMap((part) => [
-            stringToUint8Array("\r\n", "utf-8"),
-            stringToUint8Array(encodeHeaders(part.headers), "utf-8"),
-            stringToUint8Array("\r\n", "utf-8"),
-            part.body,
-            stringToUint8Array(`\r\n--${boundary}`, "utf-8"),
-        ]),
-        stringToUint8Array("--\r\n\r\n", "utf-8"),
-    ];
-    const contentLength = getTotalLength(sources);
-    if (contentLength) {
-        request.headers.set("Content-Length", contentLength);
-    }
-    request.body = await concat(sources);
-}
-/**
- * Name of multipart policy
- */
-const multipartPolicyName = "multipartPolicy";
-const maxBoundaryLength = 70;
-const validBoundaryCharacters = new Set(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()+,-./:=?`);
-function assertValidBoundary(boundary) {
-    if (boundary.length > maxBoundaryLength) {
-        throw new Error(`Multipart boundary "${boundary}" exceeds maximum length of 70 characters`);
-    }
-    if (Array.from(boundary).some((x) => !validBoundaryCharacters.has(x))) {
-        throw new Error(`Multipart boundary "${boundary}" contains invalid characters`);
-    }
-}
-/**
- * Pipeline policy for multipart requests
- */
-function multipartPolicy() {
-    return {
-        name: multipartPolicyName,
-        async sendRequest(request, next) {
-            var _a;
-            if (!request.multipartBody) {
-                return next(request);
-            }
-            if (request.body) {
-                throw new Error("multipartBody and regular body cannot be set at the same time");
-            }
-            let boundary = request.multipartBody.boundary;
-            const contentTypeHeader = (_a = request.headers.get("Content-Type")) !== null && _a !== void 0 ? _a : "multipart/mixed";
-            const parsedHeader = contentTypeHeader.match(/^(multipart\/[^ ;]+)(?:; *boundary=(.+))?$/);
-            if (!parsedHeader) {
-                throw new Error(`Got multipart request body, but content-type header was not multipart: ${contentTypeHeader}`);
-            }
-            const [, contentType, parsedBoundary] = parsedHeader;
-            if (parsedBoundary && boundary && parsedBoundary !== boundary) {
-                throw new Error(`Multipart boundary was specified as ${parsedBoundary} in the header, but got ${boundary} in the request body`);
-            }
-            boundary !== null && boundary !== void 0 ? boundary : (boundary = parsedBoundary);
-            if (boundary) {
-                assertValidBoundary(boundary);
-            }
-            else {
-                boundary = generateBoundary();
-            }
-            request.headers.set("Content-Type", `${contentType}; boundary=${boundary}`);
-            await buildRequestBody(request, request.multipartBody.parts, boundary);
-            request.multipartBody = undefined;
             return next(request);
         },
     };
@@ -28550,7 +28746,7 @@ const decompressResponsePolicyName = "decompressResponsePolicy";
  * A policy to enable response decompression according to Accept-Encoding header
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
  */
-function decompressResponsePolicy() {
+function decompressResponsePolicy$1() {
     return {
         name: decompressResponsePolicyName,
         async sendRequest(request, next) {
@@ -28565,7 +28761,47 @@ function decompressResponsePolicy() {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-const StandardAbortMessage = "The operation was aborted.";
+/**
+ * Returns a random integer value between a lower and upper bound,
+ * inclusive of both bounds.
+ * Note that this uses Math.random and isn't secure. If you need to use
+ * this for any kind of security purpose, find a better source of random.
+ * @param min - The smallest integer value allowed.
+ * @param max - The largest integer value allowed.
+ */
+function getRandomIntegerInclusive(min, max) {
+    // Make sure inputs are integers.
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    // Pick a random offset from zero to the size of the range.
+    // Since Math.random() can never return 1, we have to make the range one larger
+    // in order to be inclusive of the maximum value after we take the floor.
+    const offset = Math.floor(Math.random() * (max - min + 1));
+    return offset + min;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Calculates the delay interval for retry attempts using exponential delay with jitter.
+ * @param retryAttempt - The current retry attempt number.
+ * @param config - The exponential retry configuration.
+ * @returns An object containing the calculated retry delay.
+ */
+function calculateRetryDelay(retryAttempt, config) {
+    // Exponentially increase the delay each time
+    const exponentialDelay = config.retryDelayInMs * Math.pow(2, retryAttempt);
+    // Don't let the delay exceed the maximum
+    const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
+    // Allow the final value to have some "jitter" (within 50% of the delay size) so
+    // that retries across multiple clients don't occur simultaneously.
+    const retryAfterInMs = clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2);
+    return { retryAfterInMs };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const StandardAbortMessage$1 = "The operation was aborted.";
 /**
  * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
  * @param delayInMs - The number of milliseconds to be delayed.
@@ -28575,12 +28811,12 @@ const StandardAbortMessage = "The operation was aborted.";
  *                  - abortErrorMsg - The abort error message associated with containing operation.
  * @returns Resolved promise
  */
-function delay(delayInMs, value, options) {
+function delay$1(delayInMs, value, options) {
     return new Promise((resolve, reject) => {
         let timer = undefined;
         let onAborted = undefined;
         const rejectOnAbort = () => {
-            return reject(new AbortError((options === null || options === void 0 ? void 0 : options.abortErrorMsg) ? options === null || options === void 0 ? void 0 : options.abortErrorMsg : StandardAbortMessage));
+            return reject(new AbortError$1((options === null || options === void 0 ? void 0 : options.abortErrorMsg) ? options === null || options === void 0 ? void 0 : options.abortErrorMsg : StandardAbortMessage$1));
         };
         const removeListeners = () => {
             if ((options === null || options === void 0 ? void 0 : options.abortSignal) && onAborted) {
@@ -28623,12 +28859,12 @@ function parseHeaderValueAsNumber(response, headerName) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 /**
- * The header that comes back from Azure services representing
+ * The header that comes back from services representing
  * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
  */
 const RetryAfterHeader = "Retry-After";
 /**
- * The headers that come back from Azure services representing
+ * The headers that come back from services representing
  * the amount of time (minimum) to wait to retry.
  *
  * "retry-after-ms", "x-ms-retry-after-ms" : milliseconds
@@ -28757,7 +28993,7 @@ function isSystemError(err) {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-const retryPolicyLogger = createClientLogger("core-rest-pipeline retryPolicy");
+const retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
 /**
  * The programmatic identifier of the retryPolicy.
  */
@@ -28796,7 +29032,7 @@ function retryPolicy(strategies, options = { maxRetries: DEFAULT_RETRY_POLICY_CO
                 }
                 if ((_a = request.abortSignal) === null || _a === void 0 ? void 0 : _a.aborted) {
                     logger.error(`Retry ${retryCount}: Request aborted.`);
-                    const abortError = new AbortError();
+                    const abortError = new AbortError$1();
                     throw abortError;
                 }
                 if (retryCount >= ((_b = options.maxRetries) !== null && _b !== void 0 ? _b : DEFAULT_RETRY_POLICY_COUNT)) {
@@ -28813,7 +29049,7 @@ function retryPolicy(strategies, options = { maxRetries: DEFAULT_RETRY_POLICY_CO
                 }
                 logger.info(`Retry ${retryCount}: Processing ${strategies.length} retry strategies.`);
                 strategiesLoop: for (const strategy of strategies) {
-                    const strategyLogger = strategy.logger || retryPolicyLogger;
+                    const strategyLogger = strategy.logger || logger;
                     strategyLogger.info(`Retry ${retryCount}: Processing retry strategy ${strategy.name}.`);
                     const modifiers = strategy.retry({
                         retryCount,
@@ -28831,7 +29067,7 @@ function retryPolicy(strategies, options = { maxRetries: DEFAULT_RETRY_POLICY_CO
                     }
                     if (retryAfterInMs || retryAfterInMs === 0) {
                         strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} retries after ${retryAfterInMs}`);
-                        await delay(retryAfterInMs, undefined, { abortSignal: request.abortSignal });
+                        await delay$1(retryAfterInMs, undefined, { abortSignal: request.abortSignal });
                         continue retryRequest;
                     }
                     if (redirectTo) {
@@ -28868,7 +29104,7 @@ const defaultRetryPolicyName = "defaultRetryPolicy";
  * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
  * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
  */
-function defaultRetryPolicy(options = {}) {
+function defaultRetryPolicy$1(options = {}) {
     var _a;
     return {
         name: defaultRetryPolicyName,
@@ -28880,92 +29116,31 @@ function defaultRetryPolicy(options = {}) {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-function normalizeName(name) {
-    return name.toLowerCase();
-}
-function* headerIterator(map) {
-    for (const entry of map.values()) {
-        yield [entry.name, entry.value];
-    }
-}
-class HttpHeadersImpl {
-    constructor(rawHeaders) {
-        this._headersMap = new Map();
-        if (rawHeaders) {
-            for (const headerName of Object.keys(rawHeaders)) {
-                this.set(headerName, rawHeaders[headerName]);
-            }
-        }
-    }
-    /**
-     * Set a header in this collection with the provided name and value. The name is
-     * case-insensitive.
-     * @param name - The name of the header to set. This value is case-insensitive.
-     * @param value - The value of the header to set.
-     */
-    set(name, value) {
-        this._headersMap.set(normalizeName(name), { name, value: String(value).trim() });
-    }
-    /**
-     * Get the header value for the provided header name, or undefined if no header exists in this
-     * collection with the provided name.
-     * @param name - The name of the header. This value is case-insensitive.
-     */
-    get(name) {
-        var _a;
-        return (_a = this._headersMap.get(normalizeName(name))) === null || _a === void 0 ? void 0 : _a.value;
-    }
-    /**
-     * Get whether or not this header collection contains a header entry for the provided header name.
-     * @param name - The name of the header to set. This value is case-insensitive.
-     */
-    has(name) {
-        return this._headersMap.has(normalizeName(name));
-    }
-    /**
-     * Remove the header with the provided headerName.
-     * @param name - The name of the header to remove.
-     */
-    delete(name) {
-        this._headersMap.delete(normalizeName(name));
-    }
-    /**
-     * Get the JSON object representation of this HTTP header collection.
-     */
-    toJSON(options = {}) {
-        const result = {};
-        if (options.preserveCase) {
-            for (const entry of this._headersMap.values()) {
-                result[entry.name] = entry.value;
-            }
-        }
-        else {
-            for (const [normalizedName, entry] of this._headersMap) {
-                result[normalizedName] = entry.value;
-            }
-        }
-        return result;
-    }
-    /**
-     * Get the string representation of this HTTP header collection.
-     */
-    toString() {
-        return JSON.stringify(this.toJSON({ preserveCase: true }));
-    }
-    /**
-     * Iterate over tuples of header [name, value] pairs.
-     */
-    [Symbol.iterator]() {
-        return headerIterator(this._headersMap);
-    }
-}
+var _a, _b, _c, _d;
 /**
- * Creates an object that satisfies the `HttpHeaders` interface.
- * @param rawHeaders - A simple object representing initial headers
+ * A constant that indicates whether the environment the code is running is a Web Worker.
  */
-function createHttpHeaders(rawHeaders) {
-    return new HttpHeadersImpl(rawHeaders);
-}
+typeof self === "object" &&
+    typeof (self === null || self === void 0 ? void 0 : self.importScripts) === "function" &&
+    (((_a = self.constructor) === null || _a === void 0 ? void 0 : _a.name) === "DedicatedWorkerGlobalScope" ||
+        ((_b = self.constructor) === null || _b === void 0 ? void 0 : _b.name) === "ServiceWorkerGlobalScope" ||
+        ((_c = self.constructor) === null || _c === void 0 ? void 0 : _c.name) === "SharedWorkerGlobalScope");
+/**
+ * A constant that indicates whether the environment the code is running is Deno.
+ */
+typeof Deno !== "undefined" &&
+    typeof Deno.version !== "undefined" &&
+    typeof Deno.version.deno !== "undefined";
+/**
+ * A constant that indicates whether the environment the code is running is Bun.sh.
+ */
+typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
+/**
+ * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
+ */
+const isNodeLike$1 = typeof globalThis.process !== "undefined" &&
+    Boolean(globalThis.process.version) &&
+    Boolean((_d = globalThis.process.versions) === null || _d === void 0 ? void 0 : _d.node);
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
@@ -28985,11 +29160,11 @@ function formDataToFormDataMap(formData) {
 /**
  * A policy that encodes FormData on the request into the body.
  */
-function formDataPolicy() {
+function formDataPolicy$1() {
     return {
         name: formDataPolicyName,
         async sendRequest(request, next) {
-            if (isNodeLike && typeof FormData !== "undefined" && request.body instanceof FormData) {
+            if (isNodeLike$1 && typeof FormData !== "undefined" && request.body instanceof FormData) {
                 request.formData = formDataToFormDataMap(request.body);
                 request.body = undefined;
             }
@@ -29413,7 +29588,7 @@ function requireCommon () {
 
 			const split = (typeof namespaces === 'string' ? namespaces : '')
 				.trim()
-				.replace(' ', ',')
+				.replace(/\s+/g, ',')
 				.split(',')
 				.filter(Boolean);
 
@@ -29765,7 +29940,7 @@ function requireBrowser () {
 		function load() {
 			let r;
 			try {
-				r = exports.storage.getItem('debug');
+				r = exports.storage.getItem('debug') || exports.storage.getItem('DEBUG') ;
 			} catch (error) {
 				// Swallow
 				// XXX (@Qix-) should we be logging these?
@@ -31113,7 +31288,7 @@ function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
     const url = new URL(request.url);
     const isInsecure = url.protocol !== "https:";
     if (request.tlsSettings) {
-        logger$1.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
+        logger$2.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
     }
     const headers = request.headers.toJSON();
     if (isInsecure) {
@@ -31136,7 +31311,7 @@ function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
  * @param proxySettings - ProxySettings to use on each request.
  * @param options - additional settings, for example, custom NO_PROXY patterns
  */
-function proxyPolicy(proxySettings, options) {
+function proxyPolicy$1(proxySettings, options) {
     if (!noProxyListLoaded) {
         globalNoProxyList.push(...loadNoProxy());
     }
@@ -31159,6 +31334,1488 @@ function proxyPolicy(proxySettings, options) {
             return next(request);
         },
     };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the Agent Policy
+ */
+const agentPolicyName = "agentPolicy";
+/**
+ * Gets a pipeline policy that sets http.agent
+ */
+function agentPolicy$1(agent) {
+    return {
+        name: agentPolicyName,
+        sendRequest: async (req, next) => {
+            // Users may define an agent on the request, honor it over the client level one
+            if (!req.agent) {
+                req.agent = agent;
+            }
+            return next(req);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the TLS Policy
+ */
+const tlsPolicyName = "tlsPolicy";
+/**
+ * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
+ */
+function tlsPolicy$1(tlsSettings) {
+    return {
+        name: tlsPolicyName,
+        sendRequest: async (req, next) => {
+            // Users may define a request tlsSettings, honor those over the client level one
+            if (!req.tlsSettings) {
+                req.tlsSettings = tlsSettings;
+            }
+            return next(req);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function isNodeReadableStream(x) {
+    return Boolean(x && typeof x["pipe"] === "function");
+}
+function isWebReadableStream(x) {
+    return Boolean(x &&
+        typeof x.getReader === "function" &&
+        typeof x.tee === "function");
+}
+function isBinaryBody(body) {
+    return (body !== undefined &&
+        (body instanceof Uint8Array ||
+            isReadableStream(body) ||
+            typeof body === "function" ||
+            body instanceof Blob));
+}
+function isReadableStream(x) {
+    return isNodeReadableStream(x) || isWebReadableStream(x);
+}
+function isBlob(x) {
+    return typeof x.stream === "function";
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function streamAsyncIterator() {
+    return __asyncGenerator(this, arguments, function* streamAsyncIterator_1() {
+        const reader = this.getReader();
+        try {
+            while (true) {
+                const { done, value } = yield __await(reader.read());
+                if (done) {
+                    return yield __await(void 0);
+                }
+                yield yield __await(value);
+            }
+        }
+        finally {
+            reader.releaseLock();
+        }
+    });
+}
+function makeAsyncIterable(webStream) {
+    if (!webStream[Symbol.asyncIterator]) {
+        webStream[Symbol.asyncIterator] = streamAsyncIterator.bind(webStream);
+    }
+    if (!webStream.values) {
+        webStream.values = streamAsyncIterator.bind(webStream);
+    }
+}
+function ensureNodeStream(stream) {
+    if (stream instanceof ReadableStream) {
+        makeAsyncIterable(stream);
+        return Readable.fromWeb(stream);
+    }
+    else {
+        return stream;
+    }
+}
+function toStream(source) {
+    if (source instanceof Uint8Array) {
+        return Readable.from(Buffer.from(source));
+    }
+    else if (isBlob(source)) {
+        return ensureNodeStream(source.stream());
+    }
+    else {
+        return ensureNodeStream(source);
+    }
+}
+/**
+ * Utility function that concatenates a set of binary inputs into one combined output.
+ *
+ * @param sources - array of sources for the concatenation
+ * @returns - in Node, a (() =\> NodeJS.ReadableStream) which, when read, produces a concatenation of all the inputs.
+ *           In browser, returns a `Blob` representing all the concatenated inputs.
+ *
+ * @internal
+ */
+async function concat(sources) {
+    return function () {
+        const streams = sources.map((x) => (typeof x === "function" ? x() : x)).map(toStream);
+        return Readable.from((function () {
+            return __asyncGenerator(this, arguments, function* () {
+                var _a, e_1, _b, _c;
+                for (const stream of streams) {
+                    try {
+                        for (var _d = true, stream_1 = (e_1 = void 0, __asyncValues(stream)), stream_1_1; stream_1_1 = yield __await(stream_1.next()), _a = stream_1_1.done, !_a; _d = true) {
+                            _c = stream_1_1.value;
+                            _d = false;
+                            const chunk = _c;
+                            yield yield __await(chunk);
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (!_d && !_a && (_b = stream_1.return)) yield __await(_b.call(stream_1));
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                }
+            });
+        })());
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function generateBoundary() {
+    return `----AzSDKFormBoundary${randomUUID()}`;
+}
+function encodeHeaders(headers) {
+    let result = "";
+    for (const [key, value] of headers) {
+        result += `${key}: ${value}\r\n`;
+    }
+    return result;
+}
+function getLength(source) {
+    if (source instanceof Uint8Array) {
+        return source.byteLength;
+    }
+    else if (isBlob(source)) {
+        // if was created using createFile then -1 means we have an unknown size
+        return source.size === -1 ? undefined : source.size;
+    }
+    else {
+        return undefined;
+    }
+}
+function getTotalLength(sources) {
+    let total = 0;
+    for (const source of sources) {
+        const partLength = getLength(source);
+        if (partLength === undefined) {
+            return undefined;
+        }
+        else {
+            total += partLength;
+        }
+    }
+    return total;
+}
+async function buildRequestBody(request, parts, boundary) {
+    const sources = [
+        stringToUint8Array(`--${boundary}`, "utf-8"),
+        ...parts.flatMap((part) => [
+            stringToUint8Array("\r\n", "utf-8"),
+            stringToUint8Array(encodeHeaders(part.headers), "utf-8"),
+            stringToUint8Array("\r\n", "utf-8"),
+            part.body,
+            stringToUint8Array(`\r\n--${boundary}`, "utf-8"),
+        ]),
+        stringToUint8Array("--\r\n\r\n", "utf-8"),
+    ];
+    const contentLength = getTotalLength(sources);
+    if (contentLength) {
+        request.headers.set("Content-Length", contentLength);
+    }
+    request.body = await concat(sources);
+}
+/**
+ * Name of multipart policy
+ */
+const multipartPolicyName$1 = "multipartPolicy";
+const maxBoundaryLength = 70;
+const validBoundaryCharacters = new Set(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()+,-./:=?`);
+function assertValidBoundary(boundary) {
+    if (boundary.length > maxBoundaryLength) {
+        throw new Error(`Multipart boundary "${boundary}" exceeds maximum length of 70 characters`);
+    }
+    if (Array.from(boundary).some((x) => !validBoundaryCharacters.has(x))) {
+        throw new Error(`Multipart boundary "${boundary}" contains invalid characters`);
+    }
+}
+/**
+ * Pipeline policy for multipart requests
+ */
+function multipartPolicy$1() {
+    return {
+        name: multipartPolicyName$1,
+        async sendRequest(request, next) {
+            var _a;
+            if (!request.multipartBody) {
+                return next(request);
+            }
+            if (request.body) {
+                throw new Error("multipartBody and regular body cannot be set at the same time");
+            }
+            let boundary = request.multipartBody.boundary;
+            const contentTypeHeader = (_a = request.headers.get("Content-Type")) !== null && _a !== void 0 ? _a : "multipart/mixed";
+            const parsedHeader = contentTypeHeader.match(/^(multipart\/[^ ;]+)(?:; *boundary=(.+))?$/);
+            if (!parsedHeader) {
+                throw new Error(`Got multipart request body, but content-type header was not multipart: ${contentTypeHeader}`);
+            }
+            const [, contentType, parsedBoundary] = parsedHeader;
+            if (parsedBoundary && boundary && parsedBoundary !== boundary) {
+                throw new Error(`Multipart boundary was specified as ${parsedBoundary} in the header, but got ${boundary} in the request body`);
+            }
+            boundary !== null && boundary !== void 0 ? boundary : (boundary = parsedBoundary);
+            if (boundary) {
+                assertValidBoundary(boundary);
+            }
+            else {
+                boundary = generateBoundary();
+            }
+            request.headers.set("Content-Type", `${contentType}; boundary=${boundary}`);
+            await buildRequestBody(request, request.multipartBody.parts, boundary);
+            request.multipartBody = undefined;
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Create a new pipeline with a default set of customizable policies.
+ * @param options - Options to configure a custom pipeline.
+ */
+function createPipelineFromOptions$1(options) {
+    const pipeline = createEmptyPipeline$1();
+    if (isNodeLike$1) {
+        if (options.agent) {
+            pipeline.addPolicy(agentPolicy$1(options.agent));
+        }
+        if (options.tlsOptions) {
+            pipeline.addPolicy(tlsPolicy$1(options.tlsOptions));
+        }
+        pipeline.addPolicy(proxyPolicy$1(options.proxyOptions));
+        pipeline.addPolicy(decompressResponsePolicy$1());
+    }
+    pipeline.addPolicy(formDataPolicy$1(), { beforePolicies: [multipartPolicyName$1] });
+    pipeline.addPolicy(userAgentPolicy$1(options.userAgentOptions));
+    // The multipart policy is added after policies with no phase, so that
+    // policies can be added between it and formDataPolicy to modify
+    // properties (e.g., making the boundary constant in recorded tests).
+    pipeline.addPolicy(multipartPolicy$1(), { afterPhase: "Deserialize" });
+    pipeline.addPolicy(defaultRetryPolicy$1(options.retryOptions), { phase: "Retry" });
+    if (isNodeLike$1) {
+        // Both XHR and Fetch expect to handle redirects automatically,
+        // so only include this policy when we're in Node.
+        pipeline.addPolicy(redirectPolicy$1(options.redirectOptions), { afterPhase: "Retry" });
+    }
+    pipeline.addPolicy(logPolicy$1(options.loggingOptions), { afterPhase: "Sign" });
+    return pipeline;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const apiVersionPolicyName$1 = "ApiVersionPolicy";
+/**
+ * Creates a policy that sets the apiVersion as a query parameter on every request
+ * @param options - Client options
+ * @returns Pipeline policy that sets the apiVersion as a query parameter on every request
+ */
+function apiVersionPolicy$1(options) {
+    return {
+        name: apiVersionPolicyName$1,
+        sendRequest: (req, next) => {
+            // Use the apiVesion defined in request url directly
+            // Append one if there is no apiVesion and we have one at client options
+            const url = new URL(req.url);
+            if (!url.searchParams.get("api-version") && options.apiVersion) {
+                req.url = `${req.url}${Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"}api-version=${options.apiVersion}`;
+            }
+            return next(req);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Type guard to check if a credential is an OAuth2 token credential.
+ */
+function isOAuth2TokenCredential(credential) {
+    return "getOAuth2Token" in credential;
+}
+/**
+ * Type guard to check if a credential is a Bearer token credential.
+ */
+function isBearerTokenCredential(credential) {
+    return "getBearerToken" in credential;
+}
+/**
+ * Type guard to check if a credential is a Basic auth credential.
+ */
+function isBasicCredential(credential) {
+    return "username" in credential && "password" in credential;
+}
+/**
+ * Type guard to check if a credential is an API key credential.
+ */
+function isApiKeyCredential(credential) {
+    return "key" in credential;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// Ensure the warining is only emitted once
+let insecureConnectionWarningEmmitted = false;
+/**
+ * Checks if the request is allowed to be sent over an insecure connection.
+ *
+ * A request is allowed to be sent over an insecure connection when:
+ * - The `allowInsecureConnection` option is set to `true`.
+ * - The request has the `allowInsecureConnection` property set to `true`.
+ * - The request is being sent to `localhost` or `127.0.0.1`
+ */
+function allowInsecureConnection(request, options) {
+    if (options.allowInsecureConnection && request.allowInsecureConnection) {
+        const url = new URL(request.url);
+        if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+            return true;
+        }
+    }
+    return false;
+}
+/**
+ * Logs a warning about sending a token over an insecure connection.
+ *
+ * This function will emit a node warning once, but log the warning every time.
+ */
+function emitInsecureConnectionWarning() {
+    const warning = "Sending token over insecure transport. Assume any token issued is compromised.";
+    logger$2.warning(warning);
+    if (typeof (process === null || process === void 0 ? void 0 : process.emitWarning) === "function" && !insecureConnectionWarningEmmitted) {
+        insecureConnectionWarningEmmitted = true;
+        process.emitWarning(warning);
+    }
+}
+/**
+ * Ensures that authentication is only allowed over HTTPS unless explicitly allowed.
+ * Throws an error if the connection is not secure and not explicitly allowed.
+ */
+function ensureSecureConnection(request, options) {
+    if (!request.url.toLowerCase().startsWith("https://")) {
+        if (allowInsecureConnection(request, options)) {
+            emitInsecureConnectionWarning();
+        }
+        else {
+            throw new Error("Authentication is not permitted for non-TLS protected (non-https) URLs when allowInsecureConnection is false.");
+        }
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the API Key Authentication Policy
+ */
+const apiKeyAuthenticationPolicyName = "apiKeyAuthenticationPolicy";
+/**
+ * Gets a pipeline policy that adds API key authentication to requests
+ */
+function apiKeyAuthenticationPolicy(options) {
+    return {
+        name: apiKeyAuthenticationPolicyName,
+        async sendRequest(request, next) {
+            var _a, _b;
+            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
+            ensureSecureConnection(request, options);
+            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "apiKey");
+            // Skip adding authentication header if no API key authentication scheme is found
+            if (!scheme) {
+                return next(request);
+            }
+            if (scheme.apiKeyLocation !== "header") {
+                throw new Error(`Unsupported API key location: ${scheme.apiKeyLocation}`);
+            }
+            request.headers.set(scheme.name, options.credential.key);
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the Basic Authentication Policy
+ */
+const basicAuthenticationPolicyName = "bearerAuthenticationPolicy";
+/**
+ * Gets a pipeline policy that adds basic authentication to requests
+ */
+function basicAuthenticationPolicy(options) {
+    return {
+        name: basicAuthenticationPolicyName,
+        async sendRequest(request, next) {
+            var _a, _b;
+            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
+            ensureSecureConnection(request, options);
+            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "basic");
+            // Skip adding authentication header if no basic authentication scheme is found
+            if (!scheme) {
+                return next(request);
+            }
+            const { username, password } = options.credential;
+            const headerValue = uint8ArrayToString(stringToUint8Array(`${username}:${password}`, "utf-8"), "base64");
+            request.headers.set("Authorization", `Basic ${headerValue}`);
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the Bearer Authentication Policy
+ */
+const bearerAuthenticationPolicyName = "bearerAuthenticationPolicy";
+/**
+ * Gets a pipeline policy that adds bearer token authentication to requests
+ */
+function bearerAuthenticationPolicy(options) {
+    return {
+        name: bearerAuthenticationPolicyName,
+        async sendRequest(request, next) {
+            var _a, _b;
+            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
+            ensureSecureConnection(request, options);
+            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "bearer");
+            // Skip adding authentication header if no bearer authentication scheme is found
+            if (!scheme) {
+                return next(request);
+            }
+            const token = await options.credential.getBearerToken({
+                abortSignal: request.abortSignal,
+            });
+            request.headers.set("Authorization", `Bearer ${token}`);
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the OAuth2 Authentication Policy
+ */
+const oauth2AuthenticationPolicyName = "oauth2AuthenticationPolicy";
+/**
+ * Gets a pipeline policy that adds authorization header from OAuth2 schemes
+ */
+function oauth2AuthenticationPolicy(options) {
+    return {
+        name: oauth2AuthenticationPolicyName,
+        async sendRequest(request, next) {
+            var _a, _b;
+            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
+            ensureSecureConnection(request, options);
+            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "oauth2");
+            // Skip adding authentication header if no OAuth2 authentication scheme is found
+            if (!scheme) {
+                return next(request);
+            }
+            const token = await options.credential.getOAuth2Token(scheme.flows, {
+                abortSignal: request.abortSignal,
+            });
+            request.headers.set("Authorization", `Bearer ${token}`);
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+let cachedHttpClient;
+/**
+ * Creates a default rest pipeline to re-use accross Rest Level Clients
+ */
+function createDefaultPipeline$1(options = {}) {
+    const pipeline = createPipelineFromOptions$1(options);
+    pipeline.addPolicy(apiVersionPolicy$1(options));
+    const { credential, authSchemes, allowInsecureConnection } = options;
+    if (credential) {
+        if (isApiKeyCredential(credential)) {
+            pipeline.addPolicy(apiKeyAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
+        }
+        else if (isBasicCredential(credential)) {
+            pipeline.addPolicy(basicAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
+        }
+        else if (isBearerTokenCredential(credential)) {
+            pipeline.addPolicy(bearerAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
+        }
+        else if (isOAuth2TokenCredential(credential)) {
+            pipeline.addPolicy(oauth2AuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
+        }
+    }
+    return pipeline;
+}
+function getCachedDefaultHttpsClient() {
+    if (!cachedHttpClient) {
+        cachedHttpClient = createDefaultHttpClient();
+    }
+    return cachedHttpClient;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Get value of a header in the part descriptor ignoring case
+ */
+function getHeaderValue(descriptor, headerName) {
+    if (descriptor.headers) {
+        const actualHeaderName = Object.keys(descriptor.headers).find((x) => x.toLowerCase() === headerName.toLowerCase());
+        if (actualHeaderName) {
+            return descriptor.headers[actualHeaderName];
+        }
+    }
+    return undefined;
+}
+function getPartContentType(descriptor) {
+    const contentTypeHeader = getHeaderValue(descriptor, "content-type");
+    if (contentTypeHeader) {
+        return contentTypeHeader;
+    }
+    // Special value of null means content type is to be omitted
+    if (descriptor.contentType === null) {
+        return undefined;
+    }
+    if (descriptor.contentType) {
+        return descriptor.contentType;
+    }
+    const { body } = descriptor;
+    if (body === null || body === undefined) {
+        return undefined;
+    }
+    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
+        return "text/plain; charset=UTF-8";
+    }
+    if (body instanceof Blob) {
+        return body.type || "application/octet-stream";
+    }
+    if (isBinaryBody(body)) {
+        return "application/octet-stream";
+    }
+    // arbitrary non-text object -> generic JSON content type by default. We will try to JSON.stringify the body.
+    return "application/json";
+}
+/**
+ * Enclose value in quotes and escape special characters, for use in the Content-Disposition header
+ */
+function escapeDispositionField(value) {
+    return JSON.stringify(value);
+}
+function getContentDisposition(descriptor) {
+    var _a;
+    const contentDispositionHeader = getHeaderValue(descriptor, "content-disposition");
+    if (contentDispositionHeader) {
+        return contentDispositionHeader;
+    }
+    if (descriptor.dispositionType === undefined &&
+        descriptor.name === undefined &&
+        descriptor.filename === undefined) {
+        return undefined;
+    }
+    const dispositionType = (_a = descriptor.dispositionType) !== null && _a !== void 0 ? _a : "form-data";
+    let disposition = dispositionType;
+    if (descriptor.name) {
+        disposition += `; name=${escapeDispositionField(descriptor.name)}`;
+    }
+    let filename = undefined;
+    if (descriptor.filename) {
+        filename = descriptor.filename;
+    }
+    else if (typeof File !== "undefined" && descriptor.body instanceof File) {
+        const filenameFromFile = descriptor.body.name;
+        if (filenameFromFile !== "") {
+            filename = filenameFromFile;
+        }
+    }
+    if (filename) {
+        disposition += `; filename=${escapeDispositionField(filename)}`;
+    }
+    return disposition;
+}
+function normalizeBody(body, contentType) {
+    if (body === undefined) {
+        // zero-length body
+        return new Uint8Array([]);
+    }
+    // binary and primitives should go straight on the wire regardless of content type
+    if (isBinaryBody(body)) {
+        return body;
+    }
+    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
+        return stringToUint8Array(String(body), "utf-8");
+    }
+    // stringify objects for JSON-ish content types e.g. application/json, application/merge-patch+json, application/vnd.oci.manifest.v1+json, application.json; charset=UTF-8
+    if (contentType && /application\/(.+\+)?json(;.+)?/i.test(String(contentType))) {
+        return stringToUint8Array(JSON.stringify(body), "utf-8");
+    }
+    throw new RestError$1(`Unsupported body/content-type combination: ${body}, ${contentType}`);
+}
+function buildBodyPart(descriptor) {
+    var _a;
+    const contentType = getPartContentType(descriptor);
+    const contentDisposition = getContentDisposition(descriptor);
+    const headers = createHttpHeaders((_a = descriptor.headers) !== null && _a !== void 0 ? _a : {});
+    if (contentType) {
+        headers.set("content-type", contentType);
+    }
+    if (contentDisposition) {
+        headers.set("content-disposition", contentDisposition);
+    }
+    const body = normalizeBody(descriptor.body, contentType);
+    return {
+        headers,
+        body,
+    };
+}
+function buildMultipartBody(parts) {
+    return { parts: parts.map(buildBodyPart) };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Helper function to send request used by the client
+ * @param method - method to use to send the request
+ * @param url - url to send the request to
+ * @param pipeline - pipeline with the policies to run when sending the request
+ * @param options - request options
+ * @param customHttpClient - a custom HttpClient to use when making the request
+ * @returns returns and HttpResponse
+ */
+async function sendRequest(method, url, pipeline, options = {}, customHttpClient) {
+    var _a;
+    const httpClient = customHttpClient !== null && customHttpClient !== void 0 ? customHttpClient : getCachedDefaultHttpsClient();
+    const request = buildPipelineRequest(method, url, options);
+    try {
+        const response = await pipeline.sendRequest(httpClient, request);
+        const headers = response.headers.toJSON();
+        const stream = (_a = response.readableStreamBody) !== null && _a !== void 0 ? _a : response.browserStreamBody;
+        const parsedBody = options.responseAsStream || stream !== undefined ? undefined : getResponseBody(response);
+        const body = stream !== null && stream !== void 0 ? stream : parsedBody;
+        if (options === null || options === void 0 ? void 0 : options.onResponse) {
+            options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders: headers, parsedBody }));
+        }
+        return {
+            request,
+            headers,
+            status: `${response.status}`,
+            body,
+        };
+    }
+    catch (e) {
+        if (isRestError$1(e) && e.response && options.onResponse) {
+            const { response } = e;
+            const rawHeaders = response.headers.toJSON();
+            // UNBRANDED DIFFERENCE: onResponse callback does not have a second __legacyError property
+            options === null || options === void 0 ? void 0 : options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders }), e);
+        }
+        throw e;
+    }
+}
+/**
+ * Function to determine the request content type
+ * @param options - request options InternalRequestParameters
+ * @returns returns the content-type
+ */
+function getRequestContentType(options = {}) {
+    var _a, _b, _c;
+    return ((_c = (_a = options.contentType) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b["content-type"]) !== null && _c !== void 0 ? _c : getContentType(options.body));
+}
+/**
+ * Function to determine the content-type of a body
+ * this is used if an explicit content-type is not provided
+ * @param body - body in the request
+ * @returns returns the content-type
+ */
+function getContentType(body) {
+    if (ArrayBuffer.isView(body)) {
+        return "application/octet-stream";
+    }
+    if (typeof body === "string") {
+        try {
+            JSON.parse(body);
+            return "application/json";
+        }
+        catch (error) {
+            // If we fail to parse the body, it is not json
+            return undefined;
+        }
+    }
+    // By default return json
+    return "application/json";
+}
+function buildPipelineRequest(method, url, options = {}) {
+    var _a, _b, _c;
+    const requestContentType = getRequestContentType(options);
+    const { body, multipartBody } = getRequestBody$1(options.body, requestContentType);
+    const hasContent = body !== undefined || multipartBody !== undefined;
+    const headers = createHttpHeaders(Object.assign(Object.assign(Object.assign({}, (options.headers ? options.headers : {})), { accept: (_c = (_a = options.accept) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b.accept) !== null && _c !== void 0 ? _c : "application/json" }), (hasContent &&
+        requestContentType && {
+        "content-type": requestContentType,
+    })));
+    return createPipelineRequest({
+        url,
+        method,
+        body,
+        multipartBody,
+        headers,
+        allowInsecureConnection: options.allowInsecureConnection,
+        abortSignal: options.abortSignal,
+        onUploadProgress: options.onUploadProgress,
+        onDownloadProgress: options.onDownloadProgress,
+        timeout: options.timeout,
+        enableBrowserStreams: true,
+        streamResponseStatusCodes: options.responseAsStream
+            ? new Set([Number.POSITIVE_INFINITY])
+            : undefined,
+    });
+}
+/**
+ * Prepares the body before sending the request
+ */
+function getRequestBody$1(body, contentType = "") {
+    if (body === undefined) {
+        return { body: undefined };
+    }
+    if (typeof FormData !== "undefined" && body instanceof FormData) {
+        return { body };
+    }
+    if (isReadableStream(body)) {
+        return { body };
+    }
+    if (ArrayBuffer.isView(body)) {
+        return { body: body instanceof Uint8Array ? body : JSON.stringify(body) };
+    }
+    const firstType = contentType.split(";")[0];
+    switch (firstType) {
+        case "application/json":
+            return { body: JSON.stringify(body) };
+        case "multipart/form-data":
+            if (Array.isArray(body)) {
+                return { multipartBody: buildMultipartBody(body) };
+            }
+            return { body: JSON.stringify(body) };
+        case "text/plain":
+            return { body: String(body) };
+        default:
+            if (typeof body === "string") {
+                return { body };
+            }
+            return { body: JSON.stringify(body) };
+    }
+}
+/**
+ * Prepares the response body
+ */
+function getResponseBody(response) {
+    var _a, _b;
+    // Set the default response type
+    const contentType = (_a = response.headers.get("content-type")) !== null && _a !== void 0 ? _a : "";
+    const firstType = contentType.split(";")[0];
+    const bodyToParse = (_b = response.bodyAsText) !== null && _b !== void 0 ? _b : "";
+    if (firstType === "text/plain") {
+        return String(bodyToParse);
+    }
+    // Default to "application/json" and fallback to string;
+    try {
+        return bodyToParse ? JSON.parse(bodyToParse) : undefined;
+    }
+    catch (error) {
+        // If we were supposed to get a JSON object and failed to
+        // parse, throw a parse error
+        if (firstType === "application/json") {
+            throw createParseError(response, error);
+        }
+        // We are not sure how to handle the response so we return it as
+        // plain text.
+        return String(bodyToParse);
+    }
+}
+function createParseError(response, err) {
+    var _a;
+    const msg = `Error "${err}" occurred while parsing the response body - ${response.bodyAsText}.`;
+    const errCode = (_a = err.code) !== null && _a !== void 0 ? _a : RestError$1.PARSE_ERROR;
+    return new RestError$1(msg, {
+        code: errCode,
+        statusCode: response.status,
+        request: response.request,
+        response: response,
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function isQueryParameterWithOptions(x) {
+    const value = x.value;
+    return (value !== undefined && value.toString !== undefined && typeof value.toString === "function");
+}
+/**
+ * Builds the request url, filling in query and path parameters
+ * @param endpoint - base url which can be a template url
+ * @param routePath - path to append to the endpoint
+ * @param pathParameters - values of the path parameters
+ * @param options - request parameters including query parameters
+ * @returns a full url with path and query parameters
+ */
+function buildRequestUrl(endpoint, routePath, pathParameters, options = {}) {
+    if (routePath.startsWith("https://") || routePath.startsWith("http://")) {
+        return routePath;
+    }
+    endpoint = buildBaseUrl(endpoint, options);
+    routePath = buildRoutePath(routePath, pathParameters, options);
+    const requestUrl = appendQueryParams(`${endpoint}/${routePath}`, options);
+    const url = new URL(requestUrl);
+    return (url
+        .toString()
+        // Remove double forward slashes
+        .replace(/([^:]\/)\/+/g, "$1"));
+}
+function getQueryParamValue(key, allowReserved, style, param) {
+    let separator;
+    if (style === "pipeDelimited") {
+        separator = "|";
+    }
+    else if (style === "spaceDelimited") {
+        separator = "%20";
+    }
+    else {
+        separator = ",";
+    }
+    let paramValues;
+    if (Array.isArray(param)) {
+        paramValues = param;
+    }
+    else if (typeof param === "object" && param.toString === Object.prototype.toString) {
+        // If the parameter is an object without a custom toString implementation (e.g. a Date),
+        // then we should deconstruct the object into an array [key1, value1, key2, value2, ...].
+        paramValues = Object.entries(param).flat();
+    }
+    else {
+        paramValues = [param];
+    }
+    const value = paramValues
+        .map((p) => {
+        if (p === null || p === undefined) {
+            return "";
+        }
+        if (!p.toString || typeof p.toString !== "function") {
+            throw new Error(`Query parameters must be able to be represented as string, ${key} can't`);
+        }
+        const rawValue = p.toISOString !== undefined ? p.toISOString() : p.toString();
+        return allowReserved ? rawValue : encodeURIComponent(rawValue);
+    })
+        .join(separator);
+    return `${allowReserved ? key : encodeURIComponent(key)}=${value}`;
+}
+function appendQueryParams(url, options = {}) {
+    var _a, _b, _c, _d;
+    if (!options.queryParameters) {
+        return url;
+    }
+    const parsedUrl = new URL(url);
+    const queryParams = options.queryParameters;
+    const paramStrings = [];
+    for (const key of Object.keys(queryParams)) {
+        const param = queryParams[key];
+        if (param === undefined || param === null) {
+            continue;
+        }
+        const hasMetadata = isQueryParameterWithOptions(param);
+        const rawValue = hasMetadata ? param.value : param;
+        const explode = hasMetadata ? ((_a = param.explode) !== null && _a !== void 0 ? _a : false) : false;
+        const style = hasMetadata && param.style ? param.style : "form";
+        if (explode) {
+            if (Array.isArray(rawValue)) {
+                for (const item of rawValue) {
+                    paramStrings.push(getQueryParamValue(key, (_b = options.skipUrlEncoding) !== null && _b !== void 0 ? _b : false, style, item));
+                }
+            }
+            else if (typeof rawValue === "object") {
+                // For object explode, the name of the query parameter is ignored and we use the object key instead
+                for (const [actualKey, value] of Object.entries(rawValue)) {
+                    paramStrings.push(getQueryParamValue(actualKey, (_c = options.skipUrlEncoding) !== null && _c !== void 0 ? _c : false, style, value));
+                }
+            }
+            else {
+                // Explode doesn't really make sense for primitives
+                throw new Error("explode can only be set to true for objects and arrays");
+            }
+        }
+        else {
+            paramStrings.push(getQueryParamValue(key, (_d = options.skipUrlEncoding) !== null && _d !== void 0 ? _d : false, style, rawValue));
+        }
+    }
+    if (parsedUrl.search !== "") {
+        parsedUrl.search += "&";
+    }
+    parsedUrl.search += paramStrings.join("&");
+    return parsedUrl.toString();
+}
+function buildBaseUrl(endpoint, options) {
+    var _a;
+    if (!options.pathParameters) {
+        return endpoint;
+    }
+    const pathParams = options.pathParameters;
+    for (const [key, param] of Object.entries(pathParams)) {
+        if (param === undefined || param === null) {
+            throw new Error(`Path parameters ${key} must not be undefined or null`);
+        }
+        if (!param.toString || typeof param.toString !== "function") {
+            throw new Error(`Path parameters must be able to be represented as string, ${key} can't`);
+        }
+        let value = param.toISOString !== undefined ? param.toISOString() : String(param);
+        if (!options.skipUrlEncoding) {
+            value = encodeURIComponent(param);
+        }
+        endpoint = (_a = replaceAll(endpoint, `{${key}}`, value)) !== null && _a !== void 0 ? _a : "";
+    }
+    return endpoint;
+}
+function buildRoutePath(routePath, pathParameters, options = {}) {
+    var _a;
+    for (const pathParam of pathParameters) {
+        const allowReserved = typeof pathParam === "object" && ((_a = pathParam.allowReserved) !== null && _a !== void 0 ? _a : false);
+        let value = typeof pathParam === "object" ? pathParam.value : pathParam;
+        if (!options.skipUrlEncoding && !allowReserved) {
+            value = encodeURIComponent(value);
+        }
+        routePath = routePath.replace(/\{[\w-]+\}/, String(value));
+    }
+    return routePath;
+}
+/**
+ * Replace all of the instances of searchValue in value with the provided replaceValue.
+ * @param value - The value to search and replace in.
+ * @param searchValue - The value to search for in the value argument.
+ * @param replaceValue - The value to replace searchValue with in the value argument.
+ * @returns The value where each instance of searchValue was replaced with replacedValue.
+ */
+function replaceAll(value, searchValue, replaceValue) {
+    return !value || !searchValue ? value : value.split(searchValue).join(replaceValue || "");
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a client with a default pipeline
+ * @param endpoint - Base endpoint for the client
+ * @param credentials - Credentials to authenticate the requests
+ * @param options - Client options
+ */
+function getClient$1(endpoint, clientOptions = {}) {
+    var _a, _b, _c;
+    const pipeline = (_a = clientOptions.pipeline) !== null && _a !== void 0 ? _a : createDefaultPipeline$1(clientOptions);
+    if ((_b = clientOptions.additionalPolicies) === null || _b === void 0 ? void 0 : _b.length) {
+        for (const { policy, position } of clientOptions.additionalPolicies) {
+            // Sign happens after Retry and is commonly needed to occur
+            // before policies that intercept post-retry.
+            const afterPhase = position === "perRetry" ? "Sign" : undefined;
+            pipeline.addPolicy(policy, {
+                afterPhase,
+            });
+        }
+    }
+    const { allowInsecureConnection, httpClient } = clientOptions;
+    const endpointUrl = (_c = clientOptions.endpoint) !== null && _c !== void 0 ? _c : endpoint;
+    const client = (path, ...args) => {
+        const getUrl = (requestOptions) => buildRequestUrl(endpointUrl, path, args, Object.assign({ allowInsecureConnection }, requestOptions));
+        return {
+            get: (requestOptions = {}) => {
+                return buildOperation("GET", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            post: (requestOptions = {}) => {
+                return buildOperation("POST", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            put: (requestOptions = {}) => {
+                return buildOperation("PUT", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            patch: (requestOptions = {}) => {
+                return buildOperation("PATCH", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            delete: (requestOptions = {}) => {
+                return buildOperation("DELETE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            head: (requestOptions = {}) => {
+                return buildOperation("HEAD", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            options: (requestOptions = {}) => {
+                return buildOperation("OPTIONS", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+            trace: (requestOptions = {}) => {
+                return buildOperation("TRACE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+            },
+        };
+    };
+    return {
+        path: client,
+        pathUnchecked: client,
+        pipeline,
+    };
+}
+function buildOperation(method, url, pipeline, options, allowInsecureConnection, httpClient) {
+    var _a;
+    allowInsecureConnection = (_a = options.allowInsecureConnection) !== null && _a !== void 0 ? _a : allowInsecureConnection;
+    return {
+        then: function (onFulfilled, onrejected) {
+            return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection }), httpClient).then(onFulfilled, onrejected);
+        },
+        async asBrowserStream() {
+            if (isNodeLike$1) {
+                throw new Error("`asBrowserStream` is supported only in the browser environment. Use `asNodeStream` instead to obtain the response body stream. If you require a Web stream of the response in Node, consider using `Readable.toWeb` on the result of `asNodeStream`.");
+            }
+            else {
+                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
+            }
+        },
+        async asNodeStream() {
+            if (isNodeLike$1) {
+                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
+            }
+            else {
+                throw new Error("`isNodeStream` is not supported in the browser environment. Use `asBrowserStream` to obtain the response body stream.");
+            }
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a totally empty pipeline.
+ * Useful for testing or creating a custom one.
+ */
+function createEmptyPipeline() {
+    return createEmptyPipeline$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const context = createLoggerContext({
+    logLevelEnvVarName: "AZURE_LOG_LEVEL",
+    namespace: "azure",
+});
+/**
+ * Creates a logger for use by the Azure SDKs that inherits from `AzureLogger`.
+ * @param namespace - The name of the SDK package.
+ * @hidden
+ */
+function createClientLogger(namespace) {
+    return context.createClientLogger(namespace);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$1 = createClientLogger("core-rest-pipeline");
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that logs all requests and responses.
+ * @param options - Options to configure logPolicy.
+ */
+function logPolicy(options = {}) {
+    return logPolicy$1(Object.assign({ logger: logger$1.info }, options));
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy to follow Location headers from the server in order
+ * to support server-side redirection.
+ * In the browser, this policy is not used.
+ * @param options - Options to control policy behavior.
+ */
+function redirectPolicy(options = {}) {
+    return redirectPolicy$1(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * @internal
+ */
+function getHeaderName() {
+    return "User-Agent";
+}
+/**
+ * @internal
+ */
+async function setPlatformSpecificData(map) {
+    if (process$1 && process$1.versions) {
+        const versions = process$1.versions;
+        if (versions.bun) {
+            map.set("Bun", versions.bun);
+        }
+        else if (versions.deno) {
+            map.set("Deno", versions.deno);
+        }
+        else if (versions.node) {
+            map.set("Node", versions.node);
+        }
+    }
+    map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const SDK_VERSION$1 = "1.20.0";
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function getUserAgentString(telemetryInfo) {
+    const parts = [];
+    for (const [key, value] of telemetryInfo) {
+        const token = value ? `${key}/${value}` : key;
+        parts.push(token);
+    }
+    return parts.join(" ");
+}
+/**
+ * @internal
+ */
+function getUserAgentHeaderName() {
+    return getHeaderName();
+}
+/**
+ * @internal
+ */
+async function getUserAgentValue(prefix) {
+    const runtimeInfo = new Map();
+    runtimeInfo.set("core-rest-pipeline", SDK_VERSION$1);
+    await setPlatformSpecificData(runtimeInfo);
+    const defaultAgent = getUserAgentString(runtimeInfo);
+    const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
+    return userAgentValue;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const UserAgentHeaderName = getUserAgentHeaderName();
+/**
+ * The programmatic identifier of the userAgentPolicy.
+ */
+const userAgentPolicyName = "userAgentPolicy";
+/**
+ * A policy that sets the User-Agent header (or equivalent) to reflect
+ * the library version.
+ * @param options - Options to customize the user agent value.
+ */
+function userAgentPolicy(options = {}) {
+    const userAgentValue = getUserAgentValue(options.userAgentPrefix);
+    return {
+        name: userAgentPolicyName,
+        async sendRequest(request, next) {
+            if (!request.headers.has(UserAgentHeaderName)) {
+                request.headers.set(UserAgentHeaderName, await userAgentValue);
+            }
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+/**
+ * This error is thrown when an asynchronous operation has been aborted.
+ * Check for this error by testing the `name` that the name property of the
+ * error matches `"AbortError"`.
+ *
+ * @example
+ * ```ts
+ * const controller = new AbortController();
+ * controller.abort();
+ * try {
+ *   doAsyncWork(controller.signal)
+ * } catch (e) {
+ *   if (e.name === 'AbortError') {
+ *     // handle abort error here.
+ *   }
+ * }
+ * ```
+ */
+class AbortError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "AbortError";
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates an abortable promise.
+ * @param buildPromise - A function that takes the resolve and reject functions as parameters.
+ * @param options - The options for the abortable promise.
+ * @returns A promise that can be aborted.
+ */
+function createAbortablePromise(buildPromise, options) {
+    const { cleanupBeforeAbort, abortSignal, abortErrorMsg } = options !== null && options !== void 0 ? options : {};
+    return new Promise((resolve, reject) => {
+        function rejectOnAbort() {
+            reject(new AbortError(abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : "The operation was aborted."));
+        }
+        function removeListeners() {
+            abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.removeEventListener("abort", onAbort);
+        }
+        function onAbort() {
+            cleanupBeforeAbort === null || cleanupBeforeAbort === void 0 ? void 0 : cleanupBeforeAbort();
+            removeListeners();
+            rejectOnAbort();
+        }
+        if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
+            return rejectOnAbort();
+        }
+        try {
+            buildPromise((x) => {
+                removeListeners();
+                resolve(x);
+            }, (x) => {
+                removeListeners();
+                reject(x);
+            });
+        }
+        catch (err) {
+            reject(err);
+        }
+        abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.addEventListener("abort", onAbort);
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const StandardAbortMessage = "The delay was aborted.";
+/**
+ * A wrapper for setTimeout that resolves a promise after timeInMs milliseconds.
+ * @param timeInMs - The number of milliseconds to be delayed.
+ * @param options - The options for delay - currently abort options
+ * @returns Promise that is resolved after timeInMs
+ */
+function delay(timeInMs, options) {
+    let token;
+    const { abortSignal, abortErrorMsg } = {};
+    return createAbortablePromise((resolve) => {
+        token = setTimeout(resolve, timeInMs);
+    }, {
+        cleanupBeforeAbort: () => clearTimeout(token),
+        abortSignal,
+        abortErrorMsg: abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : StandardAbortMessage,
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Given what is thought to be an error object, return the message if possible.
+ * If the message is missing, returns a stringified version of the input.
+ * @param e - Something thrown from a try block
+ * @returns The error message or a string of the input
+ */
+function getErrorMessage(e) {
+    if (isError$1(e)) {
+        return e.message;
+    }
+    else {
+        let stringified;
+        try {
+            if (typeof e === "object" && e) {
+                stringified = JSON.stringify(e);
+            }
+            else {
+                stringified = String(e);
+            }
+        }
+        catch (err) {
+            stringified = "[unable to stringify input]";
+        }
+        return `Unknown error ${stringified}`;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Helper TypeGuard that checks if something is defined or not.
+ * @param thing - Anything
+ */
+function isDefined(thing) {
+    return typeof thing !== "undefined" && thing !== null;
+}
+/**
+ * Helper TypeGuard that checks if the input is an object with the specified properties.
+ * @param thing - Anything.
+ * @param properties - The name of the properties that should appear in the object.
+ */
+function isObjectWithProperties(thing, properties) {
+    if (!isDefined(thing) || typeof thing !== "object") {
+        return false;
+    }
+    for (const property of properties) {
+        if (!objectHasProperty(thing, property)) {
+            return false;
+        }
+    }
+    return true;
+}
+/**
+ * Helper TypeGuard that checks if the input is an object with the specified property.
+ * @param thing - Any object.
+ * @param property - The name of the property that should appear in the object.
+ */
+function objectHasProperty(thing, property) {
+    return (isDefined(thing) && typeof thing === "object" && property in thing);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Typeguard for an error object shape (has name and message)
+ *
+ * @param e - Something caught by a catch clause.
+ */
+function isError(e) {
+    return isError$1(e);
+}
+/**
+ * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
+ */
+const isNodeLike = isNodeLike$1;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Private symbol used as key on objects created using createFile containing the
+ * original source of the file object.
+ *
+ * This is used in Node to access the original Node stream without using Blob#stream, which
+ * returns a web stream. This is done to avoid a couple of bugs to do with Blob#stream and
+ * Readable#to/fromWeb in Node versions we support:
+ * - https://github.com/nodejs/node/issues/42694 (fixed in Node 18.14)
+ * - https://github.com/nodejs/node/issues/48916 (fixed in Node 20.6)
+ *
+ * Once these versions are no longer supported, we may be able to stop doing this.
+ *
+ * @internal
+ */
+const rawContent = Symbol("rawContent");
+/**
+ * Type guard to check if a given object is a blob-like object with a raw content property.
+ */
+function hasRawContent(x) {
+    return typeof x[rawContent] === "function";
+}
+/**
+ * Extract the raw content from a given blob-like object. If the input was created using createFile
+ * or createFileFromStream, the exact content passed into createFile/createFileFromStream will be used.
+ * For true instances of Blob and File, returns the actual blob.
+ *
+ * @internal
+ */
+function getRawContent(blob) {
+    if (hasRawContent(blob)) {
+        return blob[rawContent]();
+    }
+    else {
+        return blob;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of multipart policy
+ */
+const multipartPolicyName = multipartPolicyName$1;
+/**
+ * Pipeline policy for multipart requests
+ */
+function multipartPolicy() {
+    const tspPolicy = multipartPolicy$1();
+    return {
+        name: multipartPolicyName,
+        sendRequest: async (request, next) => {
+            if (request.multipartBody) {
+                for (const part of request.multipartBody.parts) {
+                    if (hasRawContent(part.body)) {
+                        part.body = getRawContent(part.body);
+                    }
+                }
+            }
+            return tspPolicy.sendRequest(request, next);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy to enable response decompression according to Accept-Encoding header
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
+ */
+function decompressResponsePolicy() {
+    return decompressResponsePolicy$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that retries according to three strategies:
+ * - When the server sends a 429 response with a Retry-After header.
+ * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
+ * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
+ */
+function defaultRetryPolicy(options = {}) {
+    return defaultRetryPolicy$1(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that encodes FormData on the request into the body.
+ */
+function formDataPolicy() {
+    return formDataPolicy$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that allows one to apply proxy settings to all requests.
+ * If not passed static settings, they will be retrieved from the HTTPS_PROXY
+ * or HTTP_PROXY environment variables.
+ * @param proxySettings - ProxySettings to use on each request.
+ * @param options - additional settings, for example, custom NO_PROXY patterns
+ */
+function proxyPolicy(proxySettings, options) {
+    return proxyPolicy$1(proxySettings);
 }
 
 // Copyright (c) Microsoft Corporation.
@@ -31188,45 +32845,19 @@ function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id"
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 /**
- * Name of the Agent Policy
- */
-const agentPolicyName = "agentPolicy";
-/**
  * Gets a pipeline policy that sets http.agent
  */
 function agentPolicy(agent) {
-    return {
-        name: agentPolicyName,
-        sendRequest: async (req, next) => {
-            // Users may define an agent on the request, honor it over the client level one
-            if (!req.agent) {
-                req.agent = agent;
-            }
-            return next(req);
-        },
-    };
+    return agentPolicy$1(agent);
 }
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 /**
- * Name of the TLS Policy
- */
-const tlsPolicyName = "tlsPolicy";
-/**
  * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
  */
 function tlsPolicy(tlsSettings) {
-    return {
-        name: tlsPolicyName,
-        sendRequest: async (req, next) => {
-            // Users may define a request tlsSettings, honor those over the client level one
-            if (!req.tlsSettings) {
-                req.tlsSettings = tlsSettings;
-            }
-            return next(req);
-        },
-    };
+    return tlsPolicy$1(tlsSettings);
 }
 
 // Copyright (c) Microsoft Corporation.
@@ -31437,35 +33068,18 @@ function createTracingClient(options) {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-const custom = inspect.custom;
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const errorSanitizer = new Sanitizer();
 /**
  * A custom error type for failed pipeline requests.
  */
 class RestError extends Error {
     constructor(message, options = {}) {
         super(message);
-        this.name = "RestError";
-        this.code = options.code;
-        this.statusCode = options.statusCode;
-        // The request and response may contain sensitive information in the headers or body.
-        // To help prevent this sensitive information being accidentally logged, the request and response
-        // properties are marked as non-enumerable here. This prevents them showing up in the output of
-        // JSON.stringify and console.log.
-        Object.defineProperty(this, "request", { value: options.request, enumerable: false });
-        Object.defineProperty(this, "response", { value: options.response, enumerable: false });
-        Object.setPrototypeOf(this, RestError.prototype);
-    }
-    /**
-     * Logging method for util.inspect in Node
-     */
-    [custom]() {
-        // Extract non-enumerable properties and add them back. This is OK since in this output the request and
-        // response get sanitized.
-        return `RestError: ${this.message} \n ${errorSanitizer.sanitize(Object.assign(Object.assign({}, this), { request: this.request, response: this.response }))}`;
+        // what is this??
+        // it turns out that you can return from a constructor and it causes
+        // calling `new` to return the value you return.
+        // this lets us wrap the TypeSpec RestError so that calling this constructor will give you the same type of object as calling the TypeSpec one,
+        // even though the constructor signatures (through RestErrorOptions) are slightly different.
+        return new RestError$1(message, options);
     }
 }
 /**
@@ -31484,10 +33098,7 @@ RestError.PARSE_ERROR = "PARSE_ERROR";
  * @param e - Something caught by a catch clause.
  */
 function isRestError(e) {
-    if (e instanceof RestError) {
-        return true;
-    }
-    return isError(e) && e.name === "RestError";
+    return isRestError$1(e);
 }
 
 // Copyright (c) Microsoft Corporation.
@@ -31618,6 +33229,66 @@ function tryProcessResponse$1(span, response) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 /**
+ * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
+ * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
+ * @param abortSignalLike - The AbortSignalLike to wrap.
+ * @returns - An object containing the native AbortSignal and an optional cleanup function. The cleanup function should be called when the AbortSignal is no longer needed.
+ */
+function wrapAbortSignalLike(abortSignalLike) {
+    if (abortSignalLike instanceof AbortSignal) {
+        return { abortSignal: abortSignalLike };
+    }
+    if (abortSignalLike.aborted) {
+        return { abortSignal: AbortSignal.abort(abortSignalLike.reason) };
+    }
+    const controller = new AbortController();
+    let needsCleanup = true;
+    function cleanup() {
+        if (needsCleanup) {
+            abortSignalLike.removeEventListener("abort", listener);
+            needsCleanup = false;
+        }
+    }
+    function listener() {
+        controller.abort(abortSignalLike.reason);
+        cleanup();
+    }
+    abortSignalLike.addEventListener("abort", listener);
+    return { abortSignal: controller.signal, cleanup };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
+/**
+ * Policy that ensure that any AbortSignalLike is wrapped in a native AbortSignal for processing by the pipeline.
+ * Since the ts-http-runtime expects a native AbortSignal, this policy is used to ensure that any AbortSignalLike is wrapped in a native AbortSignal.
+ *
+ * @returns - created policy
+ */
+function wrapAbortSignalLikePolicy() {
+    return {
+        name: wrapAbortSignalLikePolicyName,
+        sendRequest: async (request, next) => {
+            if (!request.abortSignal) {
+                return next(request);
+            }
+            const { abortSignal, cleanup } = wrapAbortSignalLike(request.abortSignal);
+            // eslint-disable-next-line no-param-reassign
+            request.abortSignal = abortSignal;
+            try {
+                return await next(request);
+            }
+            finally {
+                cleanup === null || cleanup === void 0 ? void 0 : cleanup();
+            }
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
  * Create a new pipeline with a default set of customizable policies.
  * @param options - Options to configure a custom pipeline.
  */
@@ -31634,6 +33305,7 @@ function createPipelineFromOptions(options) {
         pipeline.addPolicy(proxyPolicy(options.proxyOptions));
         pipeline.addPolicy(decompressResponsePolicy());
     }
+    pipeline.addPolicy(wrapAbortSignalLikePolicy());
     pipeline.addPolicy(formDataPolicy(), { beforePolicies: [multipartPolicyName] });
     pipeline.addPolicy(userAgentPolicy(options.userAgentOptions));
     pipeline.addPolicy(setClientRequestIdPolicy((_a = options.telemetryOptions) === null || _a === void 0 ? void 0 : _a.clientRequestIdHeaderName));
@@ -31652,390 +33324,6 @@ function createPipelineFromOptions(options) {
     }
     pipeline.addPolicy(logPolicy(options.loggingOptions), { afterPhase: "Sign" });
     return pipeline;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const DEFAULT_TLS_SETTINGS = {};
-function isReadableStream$1(body) {
-    return body && typeof body.pipe === "function";
-}
-function isStreamComplete(stream) {
-    if (stream.readable === false) {
-        return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-        const handler = () => {
-            resolve();
-            stream.removeListener("close", handler);
-            stream.removeListener("end", handler);
-            stream.removeListener("error", handler);
-        };
-        stream.on("close", handler);
-        stream.on("end", handler);
-        stream.on("error", handler);
-    });
-}
-function isArrayBuffer(body) {
-    return body && typeof body.byteLength === "number";
-}
-class ReportTransform extends Transform {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    _transform(chunk, _encoding, callback) {
-        this.push(chunk);
-        this.loadedBytes += chunk.length;
-        try {
-            this.progressCallback({ loadedBytes: this.loadedBytes });
-            callback();
-        }
-        catch (e) {
-            callback(e);
-        }
-    }
-    constructor(progressCallback) {
-        super();
-        this.loadedBytes = 0;
-        this.progressCallback = progressCallback;
-    }
-}
-/**
- * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
- * @internal
- */
-class NodeHttpClient {
-    constructor() {
-        this.cachedHttpsAgents = new WeakMap();
-    }
-    /**
-     * Makes a request over an underlying transport layer and returns the response.
-     * @param request - The request to be made.
-     */
-    async sendRequest(request) {
-        var _a, _b, _c;
-        const abortController = new AbortController();
-        let abortListener;
-        if (request.abortSignal) {
-            if (request.abortSignal.aborted) {
-                throw new AbortError("The operation was aborted. Request has already been canceled.");
-            }
-            abortListener = (event) => {
-                if (event.type === "abort") {
-                    abortController.abort();
-                }
-            };
-            request.abortSignal.addEventListener("abort", abortListener);
-        }
-        let timeoutId;
-        if (request.timeout > 0) {
-            timeoutId = setTimeout(() => {
-                const sanitizer = new Sanitizer();
-                logger$1.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
-                abortController.abort();
-            }, request.timeout);
-        }
-        const acceptEncoding = request.headers.get("Accept-Encoding");
-        const shouldDecompress = (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("gzip")) || (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("deflate"));
-        let body = typeof request.body === "function" ? request.body() : request.body;
-        if (body && !request.headers.has("Content-Length")) {
-            const bodyLength = getBodyLength(body);
-            if (bodyLength !== null) {
-                request.headers.set("Content-Length", bodyLength);
-            }
-        }
-        let responseStream;
-        try {
-            if (body && request.onUploadProgress) {
-                const onUploadProgress = request.onUploadProgress;
-                const uploadReportStream = new ReportTransform(onUploadProgress);
-                uploadReportStream.on("error", (e) => {
-                    logger$1.error("Error in upload progress", e);
-                });
-                if (isReadableStream$1(body)) {
-                    body.pipe(uploadReportStream);
-                }
-                else {
-                    uploadReportStream.end(body);
-                }
-                body = uploadReportStream;
-            }
-            const res = await this.makeRequest(request, abortController, body);
-            if (timeoutId !== undefined) {
-                clearTimeout(timeoutId);
-            }
-            const headers = getResponseHeaders(res);
-            const status = (_a = res.statusCode) !== null && _a !== void 0 ? _a : 0;
-            const response = {
-                status,
-                headers,
-                request,
-            };
-            // Responses to HEAD must not have a body.
-            // If they do return a body, that body must be ignored.
-            if (request.method === "HEAD") {
-                // call resume() and not destroy() to avoid closing the socket
-                // and losing keep alive
-                res.resume();
-                return response;
-            }
-            responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
-            const onDownloadProgress = request.onDownloadProgress;
-            if (onDownloadProgress) {
-                const downloadReportStream = new ReportTransform(onDownloadProgress);
-                downloadReportStream.on("error", (e) => {
-                    logger$1.error("Error in download progress", e);
-                });
-                responseStream.pipe(downloadReportStream);
-                responseStream = downloadReportStream;
-            }
-            if (
-            // Value of POSITIVE_INFINITY in streamResponseStatusCodes is considered as any status code
-            ((_b = request.streamResponseStatusCodes) === null || _b === void 0 ? void 0 : _b.has(Number.POSITIVE_INFINITY)) ||
-                ((_c = request.streamResponseStatusCodes) === null || _c === void 0 ? void 0 : _c.has(response.status))) {
-                response.readableStreamBody = responseStream;
-            }
-            else {
-                response.bodyAsText = await streamToText(responseStream);
-            }
-            return response;
-        }
-        finally {
-            // clean up event listener
-            if (request.abortSignal && abortListener) {
-                let uploadStreamDone = Promise.resolve();
-                if (isReadableStream$1(body)) {
-                    uploadStreamDone = isStreamComplete(body);
-                }
-                let downloadStreamDone = Promise.resolve();
-                if (isReadableStream$1(responseStream)) {
-                    downloadStreamDone = isStreamComplete(responseStream);
-                }
-                Promise.all([uploadStreamDone, downloadStreamDone])
-                    .then(() => {
-                    var _a;
-                    // eslint-disable-next-line promise/always-return
-                    if (abortListener) {
-                        (_a = request.abortSignal) === null || _a === void 0 ? void 0 : _a.removeEventListener("abort", abortListener);
-                    }
-                })
-                    .catch((e) => {
-                    logger$1.warning("Error when cleaning up abortListener on httpRequest", e);
-                });
-            }
-        }
-    }
-    makeRequest(request, abortController, body) {
-        var _a;
-        const url = new URL(request.url);
-        const isInsecure = url.protocol !== "https:";
-        if (isInsecure && !request.allowInsecureConnection) {
-            throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
-        }
-        const agent = (_a = request.agent) !== null && _a !== void 0 ? _a : this.getOrCreateAgent(request, isInsecure);
-        const options = {
-            agent,
-            hostname: url.hostname,
-            path: `${url.pathname}${url.search}`,
-            port: url.port,
-            method: request.method,
-            headers: request.headers.toJSON({ preserveCase: true }),
-        };
-        return new Promise((resolve, reject) => {
-            const req = isInsecure ? http.request(options, resolve) : https.request(options, resolve);
-            req.once("error", (err) => {
-                var _a;
-                reject(new RestError(err.message, { code: (_a = err.code) !== null && _a !== void 0 ? _a : RestError.REQUEST_SEND_ERROR, request }));
-            });
-            abortController.signal.addEventListener("abort", () => {
-                const abortError = new AbortError("The operation was aborted. Rejecting from abort signal callback while making request.");
-                req.destroy(abortError);
-                reject(abortError);
-            });
-            if (body && isReadableStream$1(body)) {
-                body.pipe(req);
-            }
-            else if (body) {
-                if (typeof body === "string" || Buffer.isBuffer(body)) {
-                    req.end(body);
-                }
-                else if (isArrayBuffer(body)) {
-                    req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer) : Buffer.from(body));
-                }
-                else {
-                    logger$1.error("Unrecognized body type", body);
-                    reject(new RestError("Unrecognized body type"));
-                }
-            }
-            else {
-                // streams don't like "undefined" being passed as data
-                req.end();
-            }
-        });
-    }
-    getOrCreateAgent(request, isInsecure) {
-        var _a;
-        const disableKeepAlive = request.disableKeepAlive;
-        // Handle Insecure requests first
-        if (isInsecure) {
-            if (disableKeepAlive) {
-                // keepAlive:false is the default so we don't need a custom Agent
-                return http.globalAgent;
-            }
-            if (!this.cachedHttpAgent) {
-                // If there is no cached agent create a new one and cache it.
-                this.cachedHttpAgent = new http.Agent({ keepAlive: true });
-            }
-            return this.cachedHttpAgent;
-        }
-        else {
-            if (disableKeepAlive && !request.tlsSettings) {
-                // When there are no tlsSettings and keepAlive is false
-                // we don't need a custom agent
-                return https.globalAgent;
-            }
-            // We use the tlsSettings to index cached clients
-            const tlsSettings = (_a = request.tlsSettings) !== null && _a !== void 0 ? _a : DEFAULT_TLS_SETTINGS;
-            // Get the cached agent or create a new one with the
-            // provided values for keepAlive and tlsSettings
-            let agent = this.cachedHttpsAgents.get(tlsSettings);
-            if (agent && agent.options.keepAlive === !disableKeepAlive) {
-                return agent;
-            }
-            logger$1.info("No cached TLS Agent exist, creating a new Agent");
-            agent = new https.Agent(Object.assign({ 
-                // keepAlive is true if disableKeepAlive is false.
-                keepAlive: !disableKeepAlive }, tlsSettings));
-            this.cachedHttpsAgents.set(tlsSettings, agent);
-            return agent;
-        }
-    }
-}
-function getResponseHeaders(res) {
-    const headers = createHttpHeaders();
-    for (const header of Object.keys(res.headers)) {
-        const value = res.headers[header];
-        if (Array.isArray(value)) {
-            if (value.length > 0) {
-                headers.set(header, value[0]);
-            }
-        }
-        else if (value) {
-            headers.set(header, value);
-        }
-    }
-    return headers;
-}
-function getDecodedResponseStream(stream, headers) {
-    const contentEncoding = headers.get("Content-Encoding");
-    if (contentEncoding === "gzip") {
-        const unzip = zlib.createGunzip();
-        stream.pipe(unzip);
-        return unzip;
-    }
-    else if (contentEncoding === "deflate") {
-        const inflate = zlib.createInflate();
-        stream.pipe(inflate);
-        return inflate;
-    }
-    return stream;
-}
-function streamToText(stream) {
-    return new Promise((resolve, reject) => {
-        const buffer = [];
-        stream.on("data", (chunk) => {
-            if (Buffer.isBuffer(chunk)) {
-                buffer.push(chunk);
-            }
-            else {
-                buffer.push(Buffer.from(chunk));
-            }
-        });
-        stream.on("end", () => {
-            resolve(Buffer.concat(buffer).toString("utf8"));
-        });
-        stream.on("error", (e) => {
-            if (e && (e === null || e === void 0 ? void 0 : e.name) === "AbortError") {
-                reject(e);
-            }
-            else {
-                reject(new RestError(`Error reading response as text: ${e.message}`, {
-                    code: RestError.PARSE_ERROR,
-                }));
-            }
-        });
-    });
-}
-/** @internal */
-function getBodyLength(body) {
-    if (!body) {
-        return 0;
-    }
-    else if (Buffer.isBuffer(body)) {
-        return body.length;
-    }
-    else if (isReadableStream$1(body)) {
-        return null;
-    }
-    else if (isArrayBuffer(body)) {
-        return body.byteLength;
-    }
-    else if (typeof body === "string") {
-        return Buffer.from(body).length;
-    }
-    else {
-        return null;
-    }
-}
-/**
- * Create a new HttpClient instance for the NodeJS environment.
- * @internal
- */
-function createNodeHttpClient() {
-    return new NodeHttpClient();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Create the correct HttpClient for the current environment.
- */
-function createDefaultHttpClient() {
-    return createNodeHttpClient();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-class PipelineRequestImpl {
-    constructor(options) {
-        var _a, _b, _c, _d, _e, _f, _g;
-        this.url = options.url;
-        this.body = options.body;
-        this.headers = (_a = options.headers) !== null && _a !== void 0 ? _a : createHttpHeaders();
-        this.method = (_b = options.method) !== null && _b !== void 0 ? _b : "GET";
-        this.timeout = (_c = options.timeout) !== null && _c !== void 0 ? _c : 0;
-        this.multipartBody = options.multipartBody;
-        this.formData = options.formData;
-        this.disableKeepAlive = (_d = options.disableKeepAlive) !== null && _d !== void 0 ? _d : false;
-        this.proxySettings = options.proxySettings;
-        this.streamResponseStatusCodes = options.streamResponseStatusCodes;
-        this.withCredentials = (_e = options.withCredentials) !== null && _e !== void 0 ? _e : false;
-        this.abortSignal = options.abortSignal;
-        this.tracingOptions = options.tracingOptions;
-        this.onUploadProgress = options.onUploadProgress;
-        this.onDownloadProgress = options.onDownloadProgress;
-        this.requestId = options.requestId || randomUUID();
-        this.allowInsecureConnection = (_f = options.allowInsecureConnection) !== null && _f !== void 0 ? _f : false;
-        this.enableBrowserStreams = (_g = options.enableBrowserStreams) !== null && _g !== void 0 ? _g : false;
-        this.agent = options.agent;
-        this.tlsSettings = options.tlsSettings;
-    }
-}
-/**
- * Creates a new pipeline request with the given options.
- * This method is to allow for the easy setting of default values and not required.
- * @param options - The options to create the request with.
- */
-function createPipelineRequest(options) {
-    return new PipelineRequestImpl(options);
 }
 
 // Copyright (c) Microsoft Corporation.
@@ -32548,7 +33836,6 @@ function keyCredentialAuthenticationPolicy(credential, apiKeyHeaderName) {
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-let cachedHttpClient;
 /**
  * Adds a credential policy to the pipeline if a credential is provided. If none is provided, no policy is added.
  */
@@ -32585,479 +33872,22 @@ function createDefaultPipeline(endpoint, credential, options = {}) {
 function isKeyCredential(credential) {
     return credential.key !== undefined;
 }
-function getCachedDefaultHttpsClient() {
-    if (!cachedHttpClient) {
-        cachedHttpClient = createDefaultHttpClient();
-    }
-    return cachedHttpClient;
-}
 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 /**
- * Checks if the body is a ReadableStream supported by Node
- * @internal
+ * Function to wrap RequestParameters so that we get the legacy onResponse behavior in core-client-rest
  */
-function isReadableStream(body) {
-    return Boolean(body) && typeof body.pipe === "function";
+function wrapRequestParameters(parameters) {
+    if (parameters.onResponse) {
+        return Object.assign(Object.assign({}, parameters), { onResponse(rawResponse, error) {
+                var _a;
+                (_a = parameters.onResponse) === null || _a === void 0 ? void 0 : _a.call(parameters, rawResponse, error, error);
+            } });
+    }
+    return parameters;
 }
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function isBinaryBody(body) {
-    return (body !== undefined &&
-        (body instanceof Uint8Array ||
-            isReadableStream(body) ||
-            typeof body === "function" ||
-            body instanceof Blob));
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Get value of a header in the part descriptor ignoring case
- */
-function getHeaderValue(descriptor, headerName) {
-    if (descriptor.headers) {
-        const actualHeaderName = Object.keys(descriptor.headers).find((x) => x.toLowerCase() === headerName.toLowerCase());
-        if (actualHeaderName) {
-            return descriptor.headers[actualHeaderName];
-        }
-    }
-    return undefined;
-}
-function getPartContentType(descriptor) {
-    const contentTypeHeader = getHeaderValue(descriptor, "content-type");
-    if (contentTypeHeader) {
-        return contentTypeHeader;
-    }
-    // Special value of null means content type is to be omitted
-    if (descriptor.contentType === null) {
-        return undefined;
-    }
-    if (descriptor.contentType) {
-        return descriptor.contentType;
-    }
-    const { body } = descriptor;
-    if (body === null || body === undefined) {
-        return undefined;
-    }
-    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
-        return "text/plain; charset=UTF-8";
-    }
-    if (body instanceof Blob) {
-        return body.type || "application/octet-stream";
-    }
-    if (isBinaryBody(body)) {
-        return "application/octet-stream";
-    }
-    // arbitrary non-text object -> generic JSON content type by default. We will try to JSON.stringify the body.
-    return "application/json";
-}
-/**
- * Enclose value in quotes and escape special characters, for use in the Content-Disposition header
- */
-function escapeDispositionField(value) {
-    return JSON.stringify(value);
-}
-function getContentDisposition(descriptor) {
-    var _a;
-    const contentDispositionHeader = getHeaderValue(descriptor, "content-disposition");
-    if (contentDispositionHeader) {
-        return contentDispositionHeader;
-    }
-    if (descriptor.dispositionType === undefined &&
-        descriptor.name === undefined &&
-        descriptor.filename === undefined) {
-        return undefined;
-    }
-    const dispositionType = (_a = descriptor.dispositionType) !== null && _a !== void 0 ? _a : "form-data";
-    let disposition = dispositionType;
-    if (descriptor.name) {
-        disposition += `; name=${escapeDispositionField(descriptor.name)}`;
-    }
-    let filename = undefined;
-    if (descriptor.filename) {
-        filename = descriptor.filename;
-    }
-    else if (typeof File !== "undefined" && descriptor.body instanceof File) {
-        const filenameFromFile = descriptor.body.name;
-        if (filenameFromFile !== "") {
-            filename = filenameFromFile;
-        }
-    }
-    if (filename) {
-        disposition += `; filename=${escapeDispositionField(filename)}`;
-    }
-    return disposition;
-}
-function normalizeBody(body, contentType) {
-    if (body === undefined) {
-        // zero-length body
-        return new Uint8Array([]);
-    }
-    // binary and primitives should go straight on the wire regardless of content type
-    if (isBinaryBody(body)) {
-        return body;
-    }
-    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
-        return stringToUint8Array(String(body), "utf-8");
-    }
-    // stringify objects for JSON-ish content types e.g. application/json, application/merge-patch+json, application/vnd.oci.manifest.v1+json, application.json; charset=UTF-8
-    if (contentType && /application\/(.+\+)?json(;.+)?/i.test(String(contentType))) {
-        return stringToUint8Array(JSON.stringify(body), "utf-8");
-    }
-    throw new RestError(`Unsupported body/content-type combination: ${body}, ${contentType}`);
-}
-function buildBodyPart(descriptor) {
-    var _a;
-    const contentType = getPartContentType(descriptor);
-    const contentDisposition = getContentDisposition(descriptor);
-    const headers = createHttpHeaders((_a = descriptor.headers) !== null && _a !== void 0 ? _a : {});
-    if (contentType) {
-        headers.set("content-type", contentType);
-    }
-    if (contentDisposition) {
-        headers.set("content-disposition", contentDisposition);
-    }
-    const body = normalizeBody(descriptor.body, contentType);
-    return {
-        headers,
-        body,
-    };
-}
-function buildMultipartBody(parts) {
-    return { parts: parts.map(buildBodyPart) };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Helper function to send request used by the client
- * @param method - method to use to send the request
- * @param url - url to send the request to
- * @param pipeline - pipeline with the policies to run when sending the request
- * @param options - request options
- * @param customHttpClient - a custom HttpClient to use when making the request
- * @returns returns and HttpResponse
- */
-async function sendRequest(method, url, pipeline, options = {}, customHttpClient) {
-    var _a;
-    const httpClient = customHttpClient !== null && customHttpClient !== void 0 ? customHttpClient : getCachedDefaultHttpsClient();
-    const request = buildPipelineRequest(method, url, options);
-    try {
-        const response = await pipeline.sendRequest(httpClient, request);
-        const headers = response.headers.toJSON();
-        const stream = (_a = response.readableStreamBody) !== null && _a !== void 0 ? _a : response.browserStreamBody;
-        const parsedBody = options.responseAsStream || stream !== undefined ? undefined : getResponseBody(response);
-        const body = stream !== null && stream !== void 0 ? stream : parsedBody;
-        if (options === null || options === void 0 ? void 0 : options.onResponse) {
-            options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders: headers, parsedBody }));
-        }
-        return {
-            request,
-            headers,
-            status: `${response.status}`,
-            body,
-        };
-    }
-    catch (e) {
-        if (isRestError(e) && e.response && options.onResponse) {
-            const { response } = e;
-            const rawHeaders = response.headers.toJSON();
-            options === null || options === void 0 ? void 0 : options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders }), e, e);
-        }
-        throw e;
-    }
-}
-/**
- * Function to determine the request content type
- * @param options - request options InternalRequestParameters
- * @returns returns the content-type
- */
-function getRequestContentType(options = {}) {
-    var _a, _b, _c;
-    return ((_c = (_a = options.contentType) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b["content-type"]) !== null && _c !== void 0 ? _c : getContentType(options.body));
-}
-/**
- * Function to determine the content-type of a body
- * this is used if an explicit content-type is not provided
- * @param body - body in the request
- * @returns returns the content-type
- */
-function getContentType(body) {
-    if (ArrayBuffer.isView(body)) {
-        return "application/octet-stream";
-    }
-    if (typeof body === "string") {
-        try {
-            JSON.parse(body);
-            return "application/json";
-        }
-        catch (error) {
-            // If we fail to parse the body, it is not json
-            return undefined;
-        }
-    }
-    // By default return json
-    return "application/json";
-}
-function buildPipelineRequest(method, url, options = {}) {
-    var _a, _b, _c;
-    const requestContentType = getRequestContentType(options);
-    const { body, multipartBody } = getRequestBody$1(options.body, requestContentType);
-    const hasContent = body !== undefined || multipartBody !== undefined;
-    const headers = createHttpHeaders(Object.assign(Object.assign(Object.assign({}, (options.headers ? options.headers : {})), { accept: (_c = (_a = options.accept) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b.accept) !== null && _c !== void 0 ? _c : "application/json" }), (hasContent &&
-        requestContentType && {
-        "content-type": requestContentType,
-    })));
-    return createPipelineRequest({
-        url,
-        method,
-        body,
-        multipartBody,
-        headers,
-        allowInsecureConnection: options.allowInsecureConnection,
-        tracingOptions: options.tracingOptions,
-        abortSignal: options.abortSignal,
-        onUploadProgress: options.onUploadProgress,
-        onDownloadProgress: options.onDownloadProgress,
-        timeout: options.timeout,
-        enableBrowserStreams: true,
-        streamResponseStatusCodes: options.responseAsStream
-            ? new Set([Number.POSITIVE_INFINITY])
-            : undefined,
-    });
-}
-/**
- * Prepares the body before sending the request
- */
-function getRequestBody$1(body, contentType = "") {
-    if (body === undefined) {
-        return { body: undefined };
-    }
-    if (typeof FormData !== "undefined" && body instanceof FormData) {
-        return { body };
-    }
-    if (isReadableStream(body)) {
-        return { body };
-    }
-    if (ArrayBuffer.isView(body)) {
-        return { body: body instanceof Uint8Array ? body : JSON.stringify(body) };
-    }
-    const firstType = contentType.split(";")[0];
-    switch (firstType) {
-        case "application/json":
-            return { body: JSON.stringify(body) };
-        case "multipart/form-data":
-            if (Array.isArray(body)) {
-                return { multipartBody: buildMultipartBody(body) };
-            }
-            return { body: JSON.stringify(body) };
-        case "text/plain":
-            return { body: String(body) };
-        default:
-            if (typeof body === "string") {
-                return { body };
-            }
-            return { body: JSON.stringify(body) };
-    }
-}
-/**
- * Prepares the response body
- */
-function getResponseBody(response) {
-    var _a, _b;
-    // Set the default response type
-    const contentType = (_a = response.headers.get("content-type")) !== null && _a !== void 0 ? _a : "";
-    const firstType = contentType.split(";")[0];
-    const bodyToParse = (_b = response.bodyAsText) !== null && _b !== void 0 ? _b : "";
-    if (firstType === "text/plain") {
-        return String(bodyToParse);
-    }
-    // Default to "application/json" and fallback to string;
-    try {
-        return bodyToParse ? JSON.parse(bodyToParse) : undefined;
-    }
-    catch (error) {
-        // If we were supposed to get a JSON object and failed to
-        // parse, throw a parse error
-        if (firstType === "application/json") {
-            throw createParseError(response, error);
-        }
-        // We are not sure how to handle the response so we return it as
-        // plain text.
-        return String(bodyToParse);
-    }
-}
-function createParseError(response, err) {
-    var _a;
-    const msg = `Error "${err}" occurred while parsing the response body - ${response.bodyAsText}.`;
-    const errCode = (_a = err.code) !== null && _a !== void 0 ? _a : RestError.PARSE_ERROR;
-    return new RestError(msg, {
-        code: errCode,
-        statusCode: response.status,
-        request: response.request,
-        response: response,
-    });
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function isQueryParameterWithOptions(x) {
-    const value = x.value;
-    return (value !== undefined && value.toString !== undefined && typeof value.toString === "function");
-}
-/**
- * Builds the request url, filling in query and path parameters
- * @param endpoint - base url which can be a template url
- * @param routePath - path to append to the endpoint
- * @param pathParameters - values of the path parameters
- * @param options - request parameters including query parameters
- * @returns a full url with path and query parameters
- */
-function buildRequestUrl(endpoint, routePath, pathParameters, options = {}) {
-    if (routePath.startsWith("https://") || routePath.startsWith("http://")) {
-        return routePath;
-    }
-    endpoint = buildBaseUrl(endpoint, options);
-    routePath = buildRoutePath(routePath, pathParameters, options);
-    const requestUrl = appendQueryParams(`${endpoint}/${routePath}`, options);
-    const url = new URL(requestUrl);
-    return (url
-        .toString()
-        // Remove double forward slashes
-        .replace(/([^:]\/)\/+/g, "$1"));
-}
-function getQueryParamValue(key, allowReserved, style, param) {
-    let separator;
-    if (style === "pipeDelimited") {
-        separator = "|";
-    }
-    else if (style === "spaceDelimited") {
-        separator = "%20";
-    }
-    else {
-        separator = ",";
-    }
-    let paramValues;
-    if (Array.isArray(param)) {
-        paramValues = param;
-    }
-    else if (typeof param === "object" && param.toString === Object.prototype.toString) {
-        // If the parameter is an object without a custom toString implementation (e.g. a Date),
-        // then we should deconstruct the object into an array [key1, value1, key2, value2, ...].
-        paramValues = Object.entries(param).flat();
-    }
-    else {
-        paramValues = [param];
-    }
-    const value = paramValues
-        .map((p) => {
-        if (p === null || p === undefined) {
-            return "";
-        }
-        if (!p.toString || typeof p.toString !== "function") {
-            throw new Error(`Query parameters must be able to be represented as string, ${key} can't`);
-        }
-        const rawValue = p.toISOString !== undefined ? p.toISOString() : p.toString();
-        return allowReserved ? rawValue : encodeURIComponent(rawValue);
-    })
-        .join(separator);
-    return `${allowReserved ? key : encodeURIComponent(key)}=${value}`;
-}
-function appendQueryParams(url, options = {}) {
-    var _a, _b, _c, _d;
-    if (!options.queryParameters) {
-        return url;
-    }
-    const parsedUrl = new URL(url);
-    const queryParams = options.queryParameters;
-    const paramStrings = [];
-    for (const key of Object.keys(queryParams)) {
-        const param = queryParams[key];
-        if (param === undefined || param === null) {
-            continue;
-        }
-        const hasMetadata = isQueryParameterWithOptions(param);
-        const rawValue = hasMetadata ? param.value : param;
-        const explode = hasMetadata ? ((_a = param.explode) !== null && _a !== void 0 ? _a : false) : false;
-        const style = hasMetadata && param.style ? param.style : "form";
-        if (explode) {
-            if (Array.isArray(rawValue)) {
-                for (const item of rawValue) {
-                    paramStrings.push(getQueryParamValue(key, (_b = options.skipUrlEncoding) !== null && _b !== void 0 ? _b : false, style, item));
-                }
-            }
-            else if (typeof rawValue === "object") {
-                // For object explode, the name of the query parameter is ignored and we use the object key instead
-                for (const [actualKey, value] of Object.entries(rawValue)) {
-                    paramStrings.push(getQueryParamValue(actualKey, (_c = options.skipUrlEncoding) !== null && _c !== void 0 ? _c : false, style, value));
-                }
-            }
-            else {
-                // Explode doesn't really make sense for primitives
-                throw new Error("explode can only be set to true for objects and arrays");
-            }
-        }
-        else {
-            paramStrings.push(getQueryParamValue(key, (_d = options.skipUrlEncoding) !== null && _d !== void 0 ? _d : false, style, rawValue));
-        }
-    }
-    if (parsedUrl.search !== "") {
-        parsedUrl.search += "&";
-    }
-    parsedUrl.search += paramStrings.join("&");
-    return parsedUrl.toString();
-}
-function buildBaseUrl(endpoint, options) {
-    var _a;
-    if (!options.pathParameters) {
-        return endpoint;
-    }
-    const pathParams = options.pathParameters;
-    for (const [key, param] of Object.entries(pathParams)) {
-        if (param === undefined || param === null) {
-            throw new Error(`Path parameters ${key} must not be undefined or null`);
-        }
-        if (!param.toString || typeof param.toString !== "function") {
-            throw new Error(`Path parameters must be able to be represented as string, ${key} can't`);
-        }
-        let value = param.toISOString !== undefined ? param.toISOString() : String(param);
-        if (!options.skipUrlEncoding) {
-            value = encodeURIComponent(param);
-        }
-        endpoint = (_a = replaceAll(endpoint, `{${key}}`, value)) !== null && _a !== void 0 ? _a : "";
-    }
-    return endpoint;
-}
-function buildRoutePath(routePath, pathParameters, options = {}) {
-    var _a;
-    for (const pathParam of pathParameters) {
-        const allowReserved = typeof pathParam === "object" && ((_a = pathParam.allowReserved) !== null && _a !== void 0 ? _a : false);
-        let value = typeof pathParam === "object" ? pathParam.value : pathParam;
-        if (!options.skipUrlEncoding && !allowReserved) {
-            value = encodeURIComponent(value);
-        }
-        routePath = routePath.replace(/\{[\w-]+\}/, String(value));
-    }
-    return routePath;
-}
-/**
- * Replace all of the instances of searchValue in value with the provided replaceValue.
- * @param value - The value to search and replace in.
- * @param searchValue - The value to search for in the value argument.
- * @param replaceValue - The value to replace searchValue with in the value argument.
- * @returns The value where each instance of searchValue was replaced with replacedValue.
- */
-function replaceAll(value, searchValue, replaceValue) {
-    return !value || !searchValue ? value : value.split(searchValue).join(replaceValue || "");
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
 function getClient(endpoint, credentialsOrPipelineOptions, clientOptions = {}) {
-    var _a, _b;
     let credentials;
     if (credentialsOrPipelineOptions) {
         if (isCredential(credentialsOrPipelineOptions)) {
@@ -33068,76 +33898,39 @@ function getClient(endpoint, credentialsOrPipelineOptions, clientOptions = {}) {
         }
     }
     const pipeline = createDefaultPipeline(endpoint, credentials, clientOptions);
-    if ((_a = clientOptions.additionalPolicies) === null || _a === void 0 ? void 0 : _a.length) {
-        for (const { policy, position } of clientOptions.additionalPolicies) {
-            // Sign happens after Retry and is commonly needed to occur
-            // before policies that intercept post-retry.
-            const afterPhase = position === "perRetry" ? "Sign" : undefined;
-            pipeline.addPolicy(policy, {
-                afterPhase,
-            });
-        }
-    }
-    const { allowInsecureConnection, httpClient } = clientOptions;
-    const endpointUrl = (_b = clientOptions.endpoint) !== null && _b !== void 0 ? _b : endpoint;
+    const tspClient = getClient$1(endpoint, Object.assign(Object.assign({}, clientOptions), { pipeline }));
     const client = (path, ...args) => {
-        const getUrl = (requestOptions) => buildRequestUrl(endpointUrl, path, args, Object.assign({ allowInsecureConnection }, requestOptions));
         return {
             get: (requestOptions = {}) => {
-                return buildOperation("GET", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).get(wrapRequestParameters(requestOptions));
             },
             post: (requestOptions = {}) => {
-                return buildOperation("POST", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).post(wrapRequestParameters(requestOptions));
             },
             put: (requestOptions = {}) => {
-                return buildOperation("PUT", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).put(wrapRequestParameters(requestOptions));
             },
             patch: (requestOptions = {}) => {
-                return buildOperation("PATCH", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).patch(wrapRequestParameters(requestOptions));
             },
             delete: (requestOptions = {}) => {
-                return buildOperation("DELETE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).delete(wrapRequestParameters(requestOptions));
             },
             head: (requestOptions = {}) => {
-                return buildOperation("HEAD", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).head(wrapRequestParameters(requestOptions));
             },
             options: (requestOptions = {}) => {
-                return buildOperation("OPTIONS", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).options(wrapRequestParameters(requestOptions));
             },
             trace: (requestOptions = {}) => {
-                return buildOperation("TRACE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
+                return tspClient.path(path, ...args).trace(wrapRequestParameters(requestOptions));
             },
         };
     };
     return {
         path: client,
         pathUnchecked: client,
-        pipeline,
-    };
-}
-function buildOperation(method, url, pipeline, options, allowInsecureConnection, httpClient) {
-    var _a;
-    allowInsecureConnection = (_a = options.allowInsecureConnection) !== null && _a !== void 0 ? _a : allowInsecureConnection;
-    return {
-        then: function (onFulfilled, onrejected) {
-            return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection }), httpClient).then(onFulfilled, onrejected);
-        },
-        async asBrowserStream() {
-            if (isNodeLike) {
-                throw new Error("`asBrowserStream` is supported only in the browser environment. Use `asNodeStream` instead to obtain the response body stream. If you require a Web stream of the response in Node, consider using `Readable.toWeb` on the result of `asNodeStream`.");
-            }
-            else {
-                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
-            }
-        },
-        async asNodeStream() {
-            if (isNodeLike) {
-                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
-            }
-            else {
-                throw new Error("`isNodeStream` is not supported in the browser environment. Use `asBrowserStream` to obtain the response body stream.");
-            }
-        },
+        pipeline: tspClient.pipeline,
     };
 }
 function isCredential(param) {
