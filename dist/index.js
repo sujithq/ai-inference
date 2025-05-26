@@ -34346,28 +34346,42 @@ function getPathFromMapKey(mapKey) {
 
 const RESPONSE_FILE = 'modelResponse.txt';
 /**
+ * Helper function to load content from a file or use fallback input
+ * @param filePathInput - Input name for the file path
+ * @param contentInput - Input name for the direct content
+ * @param defaultValue - Default value to use if neither file nor content is provided
+ * @returns The loaded content
+ */
+function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
+    const filePath = coreExports.getInput(filePathInput);
+    const contentString = coreExports.getInput(contentInput);
+    if (filePath !== undefined && filePath !== '') {
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File for ${filePathInput} was not found: ${filePath}`);
+        }
+        return fs.readFileSync(filePath, 'utf-8');
+    }
+    else if (contentString !== undefined && contentString !== '') {
+        return contentString;
+    }
+    else if (defaultValue !== undefined) {
+        return defaultValue;
+    }
+    else {
+        throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`);
+    }
+}
+/**
  * The main function for the action.
  *
  * @returns Resolves when the action is complete.
  */
 async function run() {
     try {
-        const promptFile = coreExports.getInput('prompt-file');
-        const promptString = coreExports.getInput('prompt');
-        let prompt;
-        if (promptFile !== undefined && promptFile !== '') {
-            if (!fs.existsSync(promptFile)) {
-                throw new Error(`Prompt file not found: ${promptFile}`);
-            }
-            prompt = fs.readFileSync(promptFile, 'utf-8');
-        }
-        else if (promptString !== undefined && promptString !== '') {
-            prompt = promptString;
-        }
-        else {
-            throw new Error('prompt is not set');
-        }
-        const systemPrompt = coreExports.getInput('system-prompt');
+        // Load prompt content - required
+        const prompt = loadContentFromFileOrInput('prompt-file', 'prompt');
+        // Load system prompt with default value
+        const systemPrompt = loadContentFromFileOrInput('system-prompt-file', 'system-prompt', 'You are a helpful assistant');
         const modelName = coreExports.getInput('model');
         const maxTokens = parseInt(coreExports.getInput('max-tokens'), 10);
         const token = coreExports.getInput('token') || process.env['GITHUB_TOKEN'];
