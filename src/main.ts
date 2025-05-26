@@ -44,10 +44,7 @@ function loadContentFromFileOrInput(
 export async function run(): Promise<void> {
   try {
     // Load prompt content - required
-    const prompt = loadContentFromFileOrInput(
-      'prompt-file',
-      'prompt'
-    )
+    const prompt = loadContentFromFileOrInput('prompt-file', 'prompt')
 
     // Load system prompt with default value
     const systemPrompt = loadContentFromFileOrInput(

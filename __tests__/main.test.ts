@@ -30,10 +30,14 @@ jest.unstable_mockModule('@azure-rest/ai-inference', () => ({
 
 // Default to throwing errors to catch unexpected calls
 const mockExistsSync = jest.fn().mockImplementation(() => {
-  throw new Error('Unexpected call to existsSync - test should override this implementation')
+  throw new Error(
+    'Unexpected call to existsSync - test should override this implementation'
+  )
 })
 const mockReadFileSync = jest.fn().mockImplementation(() => {
-  throw new Error('Unexpected call to readFileSync - test should override this implementation')
+  throw new Error(
+    'Unexpected call to readFileSync - test should override this implementation'
+  )
 })
 
 /**
@@ -41,17 +45,24 @@ const mockReadFileSync = jest.fn().mockImplementation(() => {
  * @param fileContents - Object mapping file paths to their contents
  * @param nonExistentFiles - Array of file paths that should be treated as non-existent
  */
-function mockFileContent(fileContents: Record<string, string> = {}, nonExistentFiles: string[] = []): void {
+function mockFileContent(
+  fileContents: Record<string, string> = {},
+  nonExistentFiles: string[] = []
+): void {
   // Mock existsSync to return true for files that exist, false for those that don't
-  mockExistsSync.mockImplementation(function(this: any, path: any): boolean {
+  mockExistsSync.mockImplementation(function (this: any, path: any): boolean {
     if (nonExistentFiles.includes(path)) {
       return false
     }
     return path in fileContents || true
   })
-  
+
   // Mock readFileSync to return the content for known files
-  mockReadFileSync.mockImplementation(function(this: any, path: any, encoding: any): string {
+  mockReadFileSync.mockImplementation(function (
+    this: any,
+    path: any,
+    encoding: any
+  ): string {
     if (encoding === 'utf-8' && path in fileContents) {
       return fileContents[path]
     }
@@ -66,12 +77,12 @@ function mockFileContent(fileContents: Record<string, string> = {}, nonExistentF
 function mockInputs(inputs: Record<string, string> = {}): void {
   // Default values that are applied unless overridden
   const defaultInputs: Record<string, string> = {
-    'token': 'fake-token'
+    token: 'fake-token'
   }
-  
+
   // Combine defaults with user-provided inputs
-  const allInputs: Record<string, string> = {...defaultInputs, ...inputs}
-  
+  const allInputs: Record<string, string> = { ...defaultInputs, ...inputs }
+
   core.getInput.mockImplementation((name: string) => {
     return allInputs[name] || ''
   })
@@ -81,11 +92,7 @@ function mockInputs(inputs: Record<string, string> = {}): void {
  * Helper function to verify common response assertions
  */
 function verifyStandardResponse(): void {
-  expect(core.setOutput).toHaveBeenNthCalledWith(
-    1,
-    'response',
-    'Hello, user!'
-  )
+  expect(core.setOutput).toHaveBeenNthCalledWith(1, 'response', 'Hello, user!')
   expect(core.setOutput).toHaveBeenNthCalledWith(
     2,
     'response-file',
@@ -107,13 +114,13 @@ const { run } = await import('../src/main.js')
 describe('main.ts', () => {
   // Reset all mocks before each test
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  
+    jest.clearAllMocks()
+  })
+
   it('Sets the response output', async () => {
     // Set the action's inputs as return values from core.getInput().
     mockInputs({
-      'prompt': 'Hello, AI!',
+      prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.'
     })
 
@@ -125,25 +132,28 @@ describe('main.ts', () => {
   it('Sets a failed status when no prompt is set', async () => {
     // Clear the getInput mock and simulate no prompt or prompt-file input
     mockInputs({
-      'prompt': '',
+      prompt: '',
       'prompt-file': ''
     })
 
     await run()
 
     // Verify that the action was marked as failed.
-    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'Neither prompt-file nor prompt was set')
+    expect(core.setFailed).toHaveBeenNthCalledWith(
+      1,
+      'Neither prompt-file nor prompt was set'
+    )
   })
 
   it('uses prompt-file', async () => {
     const promptFile = 'prompt.txt'
     const promptContent = 'This is a prompt from a file'
-    
+
     // Set up mock to return specific content for the prompt file
     mockFileContent({
       [promptFile]: promptContent
     })
-    
+
     // Set up input mocks
     mockInputs({
       'prompt-file': promptFile,
@@ -159,10 +169,10 @@ describe('main.ts', () => {
 
   it('handles non-existent prompt-file with an error', async () => {
     const promptFile = 'non-existent-prompt.txt'
-    
+
     // Mock the file not existing
     mockFileContent({}, [promptFile])
-    
+
     // Set up input mocks
     mockInputs({
       'prompt-file': promptFile
@@ -188,7 +198,7 @@ describe('main.ts', () => {
 
     // Set up input mocks
     mockInputs({
-      'prompt': promptString,
+      prompt: promptString,
       'prompt-file': promptFile,
       'system-prompt': 'You are a test assistant.'
     })
@@ -197,7 +207,7 @@ describe('main.ts', () => {
 
     expect(mockExistsSync).toHaveBeenCalledWith(promptFile)
     expect(mockReadFileSync).toHaveBeenCalledWith(promptFile, 'utf-8')
-    
+
     // Check that the post call was made with the prompt from the file, not the input parameter
     expect(mockPost).toHaveBeenCalledWith({
       body: {
@@ -206,19 +216,20 @@ describe('main.ts', () => {
             role: 'system',
             content: expect.any(String)
           },
-          { role: 'user', content: promptFileContent }  // Should use the file content, not the string input
+          { role: 'user', content: promptFileContent } // Should use the file content, not the string input
         ],
         max_tokens: expect.any(Number),
         model: expect.any(String)
       }
     })
-    
+
     verifyStandardResponse()
   })
 
   it('uses system-prompt-file', async () => {
     const systemPromptFile = 'system-prompt.txt'
-    const systemPromptContent = 'You are a specialized system assistant for testing'
+    const systemPromptContent =
+      'You are a specialized system assistant for testing'
 
     // Set up mock to return specific content for the system prompt file
     mockFileContent({
@@ -227,7 +238,7 @@ describe('main.ts', () => {
 
     // Set up input mocks
     mockInputs({
-      'prompt': 'Hello, AI!',
+      prompt: 'Hello, AI!',
       'system-prompt-file': systemPromptFile
     })
 
@@ -237,16 +248,16 @@ describe('main.ts', () => {
     expect(mockReadFileSync).toHaveBeenCalledWith(systemPromptFile, 'utf-8')
     verifyStandardResponse()
   })
-  
+
   it('handles non-existent system-prompt-file with an error', async () => {
     const systemPromptFile = 'non-existent-system-prompt.txt'
-    
+
     // Mock the file not existing
     mockFileContent({}, [systemPromptFile])
-    
+
     // Set up input mocks
     mockInputs({
-      'prompt': 'Hello, AI!',
+      prompt: 'Hello, AI!',
       'system-prompt-file': systemPromptFile
     })
 
@@ -257,11 +268,13 @@ describe('main.ts', () => {
       `File for system-prompt-file was not found: ${systemPromptFile}`
     )
   })
-  
+
   it('prefers system-prompt-file over system-prompt when both are provided', async () => {
     const systemPromptFile = 'system-prompt.txt'
-    const systemPromptFileContent = 'You are a specialized system assistant from file'
-    const systemPromptString = 'You are a basic system assistant from input parameter'
+    const systemPromptFileContent =
+      'You are a specialized system assistant from file'
+    const systemPromptString =
+      'You are a basic system assistant from input parameter'
 
     // Set up mock to return specific content for the system prompt file
     mockFileContent({
@@ -270,7 +283,7 @@ describe('main.ts', () => {
 
     // Set up input mocks
     mockInputs({
-      'prompt': 'Hello, AI!',
+      prompt: 'Hello, AI!',
       'system-prompt-file': systemPromptFile,
       'system-prompt': systemPromptString
     })
@@ -279,7 +292,7 @@ describe('main.ts', () => {
 
     expect(mockExistsSync).toHaveBeenCalledWith(systemPromptFile)
     expect(mockReadFileSync).toHaveBeenCalledWith(systemPromptFile, 'utf-8')
-    
+
     // Check that the post call was made with the system prompt from the file, not the input parameter
     expect(mockPost).toHaveBeenCalledWith({
       body: {
@@ -294,22 +307,23 @@ describe('main.ts', () => {
         model: expect.any(String)
       }
     })
-    
+
     verifyStandardResponse()
   })
-  
+
   it('uses both prompt-file and system-prompt-file together', async () => {
     const promptFile = 'prompt.txt'
     const promptContent = 'This is a prompt from a file'
     const systemPromptFile = 'system-prompt.txt'
-    const systemPromptContent = 'You are a specialized system assistant from file'
+    const systemPromptContent =
+      'You are a specialized system assistant from file'
 
     // Set up mock to return specific content for both files
     mockFileContent({
       [promptFile]: promptContent,
       [systemPromptFile]: systemPromptContent
     })
-    
+
     // Set up input mocks
     mockInputs({
       'prompt-file': promptFile,
@@ -322,14 +336,14 @@ describe('main.ts', () => {
     expect(mockExistsSync).toHaveBeenCalledWith(systemPromptFile)
     expect(mockReadFileSync).toHaveBeenCalledWith(promptFile, 'utf-8')
     expect(mockReadFileSync).toHaveBeenCalledWith(systemPromptFile, 'utf-8')
-    
+
     // Check that the post call was made with both the prompt and system prompt from files
     expect(mockPost).toHaveBeenCalledWith({
       body: {
         messages: [
           {
             role: 'system',
-            content: systemPromptContent 
+            content: systemPromptContent
           },
           { role: 'user', content: promptContent }
         ],
@@ -337,15 +351,15 @@ describe('main.ts', () => {
         model: expect.any(String)
       }
     })
-    
+
     verifyStandardResponse()
   })
-  
+
   it('passes custom max-tokens parameter to the model', async () => {
     const customMaxTokens = 500
-    
+
     mockInputs({
-      'prompt': 'Hello, AI!',
+      prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
       'max-tokens': customMaxTokens.toString()
     })
@@ -360,7 +374,7 @@ describe('main.ts', () => {
         model: expect.any(String)
       }
     })
-    
+
     verifyStandardResponse()
   })
 })
