@@ -50,7 +50,8 @@ function mockFileContent(
   nonExistentFiles: string[] = []
 ): void {
   // Mock existsSync to return true for files that exist, false for those that don't
-  mockExistsSync.mockImplementation(function (this: any, path: any): boolean {
+  mockExistsSync.mockImplementation((...args: unknown[]): boolean => {
+    const [path] = args as [string]
     if (nonExistentFiles.includes(path)) {
       return false
     }
@@ -58,12 +59,9 @@ function mockFileContent(
   })
 
   // Mock readFileSync to return the content for known files
-  mockReadFileSync.mockImplementation(function (
-    this: any,
-    path: any,
-    encoding: any
-  ): string {
-    if (encoding === 'utf-8' && path in fileContents) {
+  mockReadFileSync.mockImplementation((...args: unknown[]): string => {
+    const [path, options] = args as [string, BufferEncoding]
+    if (options === 'utf-8' && path in fileContents) {
       return fileContents[path]
     }
     throw new Error(`Unexpected file read: ${path}`)
@@ -126,6 +124,7 @@ describe('main.ts', () => {
 
     await run()
 
+    expect(core.setOutput).toHaveBeenCalled()
     verifyStandardResponse()
   })
 
