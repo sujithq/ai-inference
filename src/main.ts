@@ -70,6 +70,7 @@ export async function run(): Promise<void> {
     const enableMcp = core.getBooleanInput('enable-mcp') || false
 
     let azureTools: any[] = []
+    let mcp: Client | null = null
 
     // Connect to MCP server if enabled
     if (enableMcp || true) {
@@ -86,7 +87,7 @@ export async function run(): Promise<void> {
         }
       )
 
-      const mcp = new Client({
+      mcp = new Client({
         name: 'ai-inference-action',
         version: '1.0.0',
         transport
@@ -153,21 +154,103 @@ export async function run(): Promise<void> {
       )
     }
 
-    const modelResponse: string | null =
+    let modelResponse: string | null =
       response.body.choices[0].message.content
 
     core.info(`Model response: ${response || 'No response content'}`)
 
     // Handle tool calls if present
     const toolCalls = response.body.choices[0].message.tool_calls
-    if (toolCalls && toolCalls.length > 0) {
+    if (toolCalls && toolCalls.length > 0 && mcp) {
       core.info(`Model requested ${toolCalls.length} tool calls`)
-      // Note: For now, we'll just log the tool calls
-      // In a full implementation, you'd execute them via MCP and continue the conversation
+      
+      // Execute tool calls via MCP and continue the conversation
+      const toolResults: any[] = []
+      
       for (const toolCall of toolCalls) {
         core.info(
-          `Tool call: ${toolCall.function.name} with args: ${toolCall.function.arguments}`
+          `Executing tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`
         )
+        
+        try {
+          // Parse the arguments from JSON string
+          const args = JSON.parse(toolCall.function.arguments)
+          
+          // Call the tool via MCP
+          const result = await mcp.callTool({
+            name: toolCall.function.name,
+            arguments: args
+          })
+          
+          core.info(`Tool ${toolCall.function.name} executed successfully`)
+          
+          // Store the result for the follow-up conversation
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: 'tool',
+            name: toolCall.function.name,
+            content: JSON.stringify(result.content)
+          })
+          
+        } catch (toolError) {
+          core.warning(`Failed to execute tool ${toolCall.function.name}: ${toolError}`)
+          
+          // Add error result to continue conversation
+          toolResults.push({
+            tool_call_id: toolCall.id,
+            role: 'tool',
+            name: toolCall.function.name,
+            content: `Error: ${toolError}`
+          })
+        }
+      }
+      
+      // If we have tool results, continue the conversation
+      if (toolResults.length > 0) {
+        core.info('Continuing conversation with tool results...')
+        
+        // Build the follow-up request with the original conversation + tool results
+        const followUpMessages = [
+          {
+            role: 'system',
+            content: systemPrompt
+          },
+          { role: 'user', content: prompt },
+          {
+            role: 'assistant',
+            content: modelResponse,
+            tool_calls: toolCalls
+          },
+          ...toolResults
+        ]
+        
+        const followUpRequest: any = {
+          messages: followUpMessages,
+          max_tokens: maxTokens,
+          model: modelName
+        }
+        
+        // Add tools again for potential follow-up tool calls
+        if (azureTools.length > 0) {
+          followUpRequest.tools = azureTools
+        }
+        
+        const followUpResponse = await client.path('/chat/completions').post({
+          body: followUpRequest
+        })
+        
+        if (isUnexpected(followUpResponse)) {
+          core.warning(
+            'Failed to get follow-up response after tool execution: ' +
+            followUpResponse.status + ': ' + followUpResponse.body
+          )
+        } else {
+          const finalResponse = followUpResponse.body.choices[0].message.content
+          core.info(`Final response after tool execution: ${finalResponse}`)
+          
+          // Update the model response to the final one
+          modelResponse = finalResponse || modelResponse
+        }
       }
     }
 
