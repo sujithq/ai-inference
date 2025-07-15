@@ -67,6 +67,7 @@ jobs:
 
       - name: Print Output
         id: output
+        continue-on-error: true
         run: echo "${{ steps.test-action.outputs.response }}"
 
   test-action-prompt-file:
@@ -96,6 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Print Output
+        continue-on-error: true
         run: |
           echo "Response saved to: ${{ steps.test-action-prompt-file.outputs.response-file }}"
           cat "${{ steps.test-action-prompt-file.outputs.response-file }}"
