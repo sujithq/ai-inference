@@ -41,6 +41,14 @@ inputs:
     description: The token to use
     required: false
     default: ${{ github.token }}
+  enable-mcp:
+    description: Enable Model Context Protocol integration with GitHub tools
+    required: false
+    default: 'false'
+  mcp-server-url:
+    description: URL of the MCP server to connect to
+    required: false
+    default: 'https://github-mcp-server.fly.dev/mcp'
 
 # Define your outputs here.
 outputs:
