@@ -84,23 +84,24 @@ steps:
 
 This action now supports **read-only** integration with the GitHub-hosted Model
 Context Protocol (MCP) server, which provides access to GitHub tools like
-repository management, issue tracking, and pull request operations.
+repository management, issue tracking, and pull request operations
 
 ```yaml
 steps:
   - name: AI Inference with GitHub Tools
     id: inference
-    uses: actions/ai-inference@v1
+    uses: actions/ai-inference@v1.2
     with:
       prompt: 'List my open pull requests and create a summary'
       enable-github-mcp: true
+      token: ${{ secrets.USER_PAT }}
 ```
 
 When MCP is enabled, the AI model will have access to GitHub tools and can
 perform actions like searching issues and PRs.
 
-**Note:** MCP integration requires your workflow token to have appropriate
-GitHub permissions for the operations the AI will perform.
+**Note:** For now, MCP integration cannot be used with the built-in token. You
+must pass a GitHub PAT into `token:` instead.
 
 ## Inputs
 
