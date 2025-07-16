@@ -1,5 +1,5 @@
 // See: https://rollupjs.org/introduction/
-
+import { builtinModules } from 'node:module'
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
@@ -13,10 +13,22 @@ const config = {
     format: 'es',
     sourcemap: true
   },
+  external: [
+    ...builtinModules,
+    /^node:/,
+    '@actions/core',
+    '@actions/github' // Those are pre‑installed on the runner
+  ],
   plugins: [
     typescript(),
-    nodeResolve({ preferBuiltins: true }),
-    commonjs(),
+    nodeResolve({
+      preferBuiltins: true,
+      browser: false,
+      exportConditions: ['node']
+    }),
+    commonjs({
+      include: /node_modules/
+    }),
     json()
   ]
 }
