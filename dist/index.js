@@ -48972,6 +48972,57 @@ function getPathFromMapKey(mapKey) {
 }
 
 /**
+ * Helper function to load content from a file or use fallback input
+ * @param filePathInput - Input name for the file path
+ * @param contentInput - Input name for the direct content
+ * @param defaultValue - Default value to use if neither file nor content is provided
+ * @returns The loaded content
+ */
+function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
+    const filePath = coreExports.getInput(filePathInput);
+    const contentString = coreExports.getInput(contentInput);
+    if (filePath !== undefined && filePath !== '') {
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File for ${filePathInput} was not found: ${filePath}`);
+        }
+        return fs.readFileSync(filePath, 'utf-8');
+    }
+    else if (contentString !== undefined && contentString !== '') {
+        return contentString;
+    }
+    else if (defaultValue !== undefined) {
+        return defaultValue;
+    }
+    else {
+        throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`);
+    }
+}
+/**
+ * Helper function to handle unexpected responses from AI service
+ * @param response - The response object from the AI service
+ * @throws Error with appropriate error message based on response content
+ */
+function handleUnexpectedResponse(response) {
+    // Extract x-ms-error-code from headers if available
+    const errorCode = response.headers['x-ms-error-code'];
+    const errorCodeMsg = errorCode ? ` (error code: ${errorCode})` : '';
+    // Check if response body exists and contains error details
+    if (response.body && response.body.error) {
+        throw response.body.error;
+    }
+    // Handle case where response body is missing
+    if (!response.body) {
+        throw new Error(`Failed to get response from AI service (status: ${response.status})${errorCodeMsg}. ` +
+            'Please check network connection and endpoint configuration.');
+    }
+    // Handle other error cases
+    throw new Error(`AI service returned error response (status: ${response.status})${errorCodeMsg}: ` +
+        (typeof response.body === 'string'
+            ? response.body
+            : JSON.stringify(response.body)));
+}
+
+/**
  * Simple one-shot inference without tools
  */
 async function simpleInference(request) {
@@ -48994,10 +49045,7 @@ async function simpleInference(request) {
         body: requestBody
     });
     if (isUnexpected(response)) {
-        throw new Error('An error occurred while fetching the response (' +
-            response.status +
-            '): ' +
-            response.body);
+        handleUnexpectedResponse(response);
     }
     const modelResponse = response.body.choices[0].message.content;
     coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
@@ -49034,10 +49082,7 @@ async function mcpInference(request, githubMcpClient) {
             body: requestBody
         });
         if (isUnexpected(response)) {
-            throw new Error('An error occurred while fetching the response (' +
-                response.status +
-                '): ' +
-                response.body);
+            handleUnexpectedResponse(response);
         }
         const assistantMessage = response.body.choices[0].message;
         const modelResponse = assistantMessage.content;
@@ -49066,33 +49111,6 @@ async function mcpInference(request, githubMcpClient) {
         .reverse()
         .find((msg) => msg.role === 'assistant');
     return lastAssistantMessage?.content || null;
-}
-
-/**
- * Helper function to load content from a file or use fallback input
- * @param filePathInput - Input name for the file path
- * @param contentInput - Input name for the direct content
- * @param defaultValue - Default value to use if neither file nor content is provided
- * @returns The loaded content
- */
-function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
-    const filePath = coreExports.getInput(filePathInput);
-    const contentString = coreExports.getInput(contentInput);
-    if (filePath !== undefined && filePath !== '') {
-        if (!fs.existsSync(filePath)) {
-            throw new Error(`File for ${filePathInput} was not found: ${filePath}`);
-        }
-        return fs.readFileSync(filePath, 'utf-8');
-    }
-    else if (contentString !== undefined && contentString !== '') {
-        return contentString;
-    }
-    else if (defaultValue !== undefined) {
-        return defaultValue;
-    }
-    else {
-        throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`);
-    }
 }
 
 const RESPONSE_FILE = 'modelResponse.txt';

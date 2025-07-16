@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import ModelClient, { isUnexpected } from '@azure-rest/ai-inference'
 import { AzureKeyCredential } from '@azure/core-auth'
 import { GitHubMCPClient, executeToolCalls } from './mcp.js'
+import { handleUnexpectedResponse } from './helpers.js'
 
 export interface InferenceRequest {
   systemPrompt: string
@@ -57,12 +58,7 @@ export async function simpleInference(
   })
 
   if (isUnexpected(response)) {
-    throw new Error(
-      'An error occurred while fetching the response (' +
-        response.status +
-        '): ' +
-        response.body
-    )
+    handleUnexpectedResponse(response)
   }
 
   const modelResponse = response.body.choices[0].message.content
@@ -116,12 +112,7 @@ export async function mcpInference(
     })
 
     if (isUnexpected(response)) {
-      throw new Error(
-        'An error occurred while fetching the response (' +
-          response.status +
-          '): ' +
-          response.body
-      )
+      handleUnexpectedResponse(response)
     }
 
     const assistantMessage = response.body.choices[0].message
