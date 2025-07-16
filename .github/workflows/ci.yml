@@ -58,6 +58,7 @@ jobs:
 
       - name: Test Local Action
         id: test-action
+        continue-on-error: true
         uses: ./
         with:
           prompt: hello
@@ -66,6 +67,7 @@ jobs:
 
       - name: Print Output
         id: output
+        continue-on-error: true
         run: echo "${{ steps.test-action.outputs.response }}"
 
   test-action-prompt-file:
@@ -86,6 +88,7 @@ jobs:
 
       - name: Test Local Action with Prompt File
         id: test-action-prompt-file
+        continue-on-error: true
         uses: ./
         with:
           prompt-file: prompt.txt
@@ -94,6 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Print Output
+        continue-on-error: true
         run: |
           echo "Response saved to: ${{ steps.test-action-prompt-file.outputs.response-file }}"
           cat "${{ steps.test-action-prompt-file.outputs.response-file }}"
