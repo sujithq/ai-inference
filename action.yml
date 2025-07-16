@@ -41,6 +41,10 @@ inputs:
     description: The token to use
     required: false
     default: ${{ github.token }}
+  enable-github-mcp:
+    description: Enable Model Context Protocol integration with GitHub tools
+    required: false
+    default: 'false'
 
 # Define your outputs here.
 outputs:

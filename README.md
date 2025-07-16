@@ -80,6 +80,28 @@ steps:
       cat "${{ steps.inference.outputs.response-file }}"
 ```
 
+### GitHub MCP Integration (Model Context Protocol)
+
+This action now supports **read-only** integration with the GitHub-hosted Model
+Context Protocol (MCP) server, which provides access to GitHub tools like
+repository management, issue tracking, and pull request operations.
+
+```yaml
+steps:
+  - name: AI Inference with GitHub Tools
+    id: inference
+    uses: actions/ai-inference@v1
+    with:
+      prompt: 'List my open pull requests and create a summary'
+      enable-github-mcp: true
+```
+
+When MCP is enabled, the AI model will have access to GitHub tools and can
+perform actions like searching issues and PRs.
+
+**Note:** MCP integration requires your workflow token to have appropriate
+GitHub permissions for the operations the AI will perform.
+
 ## Inputs
 
 Various inputs are defined in [`action.yml`](action.yml) to let you configure
@@ -95,6 +117,7 @@ the action:
 | `model`              | The model to use for inference. Must be available in the [GitHub Models](https://github.com/marketplace?type=models) catalog                      | `openai/gpt-4.1`                     |
 | `endpoint`           | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint             | `https://models.github.ai/inference` |
 | `max-tokens`         | The max number of tokens to generate                                                                                                              | 200                                  |
+| `enable-github-mcp`  | Enable Model Context Protocol integration with GitHub tools                                                                                       | `false`                              |
 
 ## Outputs
 
