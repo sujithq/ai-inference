@@ -13,12 +13,7 @@ const config = {
     format: 'es',
     sourcemap: true
   },
-  external: [
-    ...builtinModules,
-    /^node:/,
-    '@actions/core',
-    '@actions/github' // Those are pre‑installed on the runner
-  ],
+  external: [...builtinModules, /^node:/],
   plugins: [
     typescript(),
     nodeResolve({
