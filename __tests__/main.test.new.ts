@@ -114,9 +114,6 @@ describe('main.ts', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    // Remove any existing GITHUB_TOKEN
-    delete process.env.GITHUB_TOKEN
-
     // Set up default mock responses
     mockSimpleInference.mockResolvedValue('Hello, user!')
     mockMcpInference.mockResolvedValue('Hello, user!')
