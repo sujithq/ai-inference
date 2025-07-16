@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
-import { connectToMCP } from './mcp.js'
+import { connectToGitHubMCP } from './mcp.js'
 import { simpleInference, mcpInference, InferenceRequest } from './inference.js'
 import { loadContentFromFileOrInput } from './helpers.js'
 
@@ -32,7 +32,7 @@ export async function run(): Promise<void> {
     }
 
     const endpoint = core.getInput('endpoint')
-    const enableMcp = core.getBooleanInput('enable-mcp') || false
+    const enableMcp = core.getBooleanInput('enable-github-mcp') || false
 
     const inferenceRequest: InferenceRequest = {
       systemPrompt,
@@ -46,7 +46,7 @@ export async function run(): Promise<void> {
     let modelResponse: string | null = null
 
     if (enableMcp) {
-      const mcpClient = await connectToMCP(token)
+      const mcpClient = await connectToGitHubMCP(token)
 
       if (mcpClient) {
         modelResponse = await mcpInference(inferenceRequest, mcpClient)

@@ -90,12 +90,15 @@ jest.unstable_mockModule('fs', () => ({
 }))
 
 // Mock MCP and inference modules
-const mockConnectToMCP = jest.fn() as jest.MockedFunction<any>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockConnectToGitHubMCP = jest.fn() as jest.MockedFunction<any>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockSimpleInference = jest.fn() as jest.MockedFunction<any>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockMcpInference = jest.fn() as jest.MockedFunction<any>
 
 jest.unstable_mockModule('../src/mcp.js', () => ({
-  connectToMCP: mockConnectToMCP
+  connectToGitHubMCP: mockConnectToGitHubMCP
 }))
 
 jest.unstable_mockModule('../src/inference.js', () => ({
@@ -152,7 +155,7 @@ describe('main.ts', () => {
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-mcp': 'false'
+      'enable-github-mcp': 'false'
     })
 
     await run()
@@ -165,13 +168,14 @@ describe('main.ts', () => {
       endpoint: 'https://api.test.com',
       token: 'fake-token'
     })
-    expect(mockConnectToMCP).not.toHaveBeenCalled()
+    expect(mockConnectToGitHubMCP).not.toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
     verifyStandardResponse()
   })
 
   it('uses MCP inference when enabled and connection succeeds', async () => {
     const mockMcpClient = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       client: {} as any,
       tools: [{ type: 'function', function: { name: 'test-tool' } }]
     }
@@ -179,14 +183,14 @@ describe('main.ts', () => {
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-mcp': 'true'
+      'enable-github-mcp': 'true'
     })
 
-    mockConnectToMCP.mockResolvedValue(mockMcpClient)
+    mockConnectToGitHubMCP.mockResolvedValue(mockMcpClient)
 
     await run()
 
-    expect(mockConnectToMCP).toHaveBeenCalledWith('fake-token')
+    expect(mockConnectToGitHubMCP).toHaveBeenCalledWith('fake-token')
     expect(mockMcpInference).toHaveBeenCalledWith(
       expect.objectContaining({
         systemPrompt: 'You are a test assistant.',
@@ -203,14 +207,14 @@ describe('main.ts', () => {
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-mcp': 'true'
+      'enable-github-mcp': 'true'
     })
 
-    mockConnectToMCP.mockResolvedValue(null)
+    mockConnectToGitHubMCP.mockResolvedValue(null)
 
     await run()
 
-    expect(mockConnectToMCP).toHaveBeenCalledWith('fake-token')
+    expect(mockConnectToGitHubMCP).toHaveBeenCalledWith('fake-token')
     expect(mockSimpleInference).toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
     expect(core.warning).toHaveBeenCalledWith(
@@ -233,7 +237,7 @@ describe('main.ts', () => {
     mockInputs({
       'prompt-file': promptFile,
       'system-prompt-file': systemPromptFile,
-      'enable-mcp': 'false'
+      'enable-github-mcp': 'false'
     })
 
     await run()

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import ModelClient, { isUnexpected } from '@azure-rest/ai-inference'
 import { AzureKeyCredential } from '@azure/core-auth'
-import { MCPClient, executeToolCalls } from './mcp.js'
+import { GitHubMCPClient, executeToolCalls } from './mcp.js'
 
 export interface InferenceRequest {
   systemPrompt: string
@@ -14,7 +14,14 @@ export interface InferenceRequest {
 
 export interface InferenceResponse {
   content: string | null
-  toolCalls?: any[]
+  toolCalls?: Array<{
+    id: string
+    type: string
+    function: {
+      name: string
+      arguments: string
+    }
+  }>
 }
 
 /**
@@ -65,13 +72,13 @@ export async function simpleInference(
 }
 
 /**
- * MCP-enabled inference with tool execution loop
+ * GitHub MCP-enabled inference with tool execution loop
  */
 export async function mcpInference(
   request: InferenceRequest,
-  mcpClient: MCPClient
+  githubMcpClient: GitHubMCPClient
 ): Promise<string | null> {
-  core.info('Running MCP inference with tools')
+  core.info('Running GitHub MCP inference with tools')
 
   const client = ModelClient(
     request.endpoint,
@@ -82,7 +89,7 @@ export async function mcpInference(
   )
 
   // Start with the initial conversation
-  let messages: any[] = [
+  const messages = [
     {
       role: 'system',
       content: request.systemPrompt
@@ -101,7 +108,7 @@ export async function mcpInference(
       messages: messages,
       max_tokens: request.maxTokens,
       model: request.modelName,
-      tools: mcpClient.tools
+      tools: githubMcpClient.tools
     }
 
     const response = await client.path('/chat/completions').post({
@@ -125,25 +132,31 @@ export async function mcpInference(
 
     messages.push({
       role: 'assistant',
-      content: modelResponse,
+      content: modelResponse || '',
       ...(toolCalls && { tool_calls: toolCalls })
     })
 
     if (!toolCalls || toolCalls.length === 0) {
-      core.info('No tool calls requested, ending MCP inference loop')
+      core.info('No tool calls requested, ending GitHub MCP inference loop')
       return modelResponse
     }
 
     core.info(`Model requested ${toolCalls.length} tool calls`)
 
-    const toolResults = await executeToolCalls(mcpClient.client, toolCalls)
+    // Execute all tool calls via GitHub MCP
+    const toolResults = await executeToolCalls(
+      githubMcpClient.client,
+      toolCalls
+    )
+
+    // Add tool results to the conversation
     messages.push(...toolResults)
 
     core.info('Tool results added, continuing conversation...')
   }
 
   core.warning(
-    `MCP inference loop exceeded maximum iterations (${maxIterations})`
+    `GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`
   )
 
   // Return the last assistant message content

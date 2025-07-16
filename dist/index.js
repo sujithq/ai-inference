@@ -41803,15 +41803,16 @@ class StreamableHTTPClientTransport {
 }
 
 /**
- * Connect to the MCP server and retrieve available tools
+ * Connect to the GitHub MCP server and retrieve available tools
  */
-async function connectToMCP(token) {
-    const mcpServerUrl = 'https://api.githubcopilot.com/mcp/';
+async function connectToGitHubMCP(token) {
+    const githubMcpUrl = 'https://api.githubcopilot.com/mcp/';
     coreExports.info('Connecting to GitHub MCP server...');
-    const transport = new StreamableHTTPClientTransport(new URL(mcpServerUrl), {
+    const transport = new StreamableHTTPClientTransport(new URL(githubMcpUrl), {
         requestInit: {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'X-MCP-Readonly': 'true'
             }
         }
     });
@@ -41824,14 +41825,13 @@ async function connectToMCP(token) {
         await client.connect(transport);
     }
     catch (mcpError) {
-        coreExports.warning(`Failed to connect to MCP server: ${mcpError}`);
+        coreExports.warning(`Failed to connect to GitHub MCP server: ${mcpError}`);
         return null;
     }
-    coreExports.info('Successfully connected to MCP server');
-    // Pull tool metadata
+    coreExports.info('Successfully connected to GitHub MCP server');
     const toolsResponse = await client.listTools();
-    coreExports.info(`Retrieved ${toolsResponse.tools?.length || 0} tools from MCP server`);
-    // Map MCP → Azure tool definitions
+    coreExports.info(`Retrieved ${toolsResponse.tools?.length || 0} tools from GitHub MCP server`);
+    // Map GitHub MCP tools → Azure AI Inference tool definitions
     const tools = (toolsResponse.tools || []).map((t) => ({
         type: 'function',
         function: {
@@ -41840,24 +41840,21 @@ async function connectToMCP(token) {
             parameters: t.inputSchema
         }
     }));
-    coreExports.info(`Mapped ${tools.length} tools for Azure AI Inference`);
+    coreExports.info(`Mapped ${tools.length} GitHub MCP tools for Azure AI Inference`);
     return { client, tools };
 }
 /**
- * Execute a single tool call via MCP
+ * Execute a single tool call via GitHub MCP
  */
-async function executeToolCall(mcpClient, toolCall) {
-    coreExports.info(`Executing tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`);
+async function executeToolCall(githubMcpClient, toolCall) {
+    coreExports.info(`Executing GitHub MCP tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`);
     try {
-        // Parse the arguments from JSON string
         const args = JSON.parse(toolCall.function.arguments);
-        // Call the tool via MCP
-        const result = await mcpClient.callTool({
+        const result = await githubMcpClient.callTool({
             name: toolCall.function.name,
             arguments: args
         });
-        coreExports.info(`Tool ${toolCall.function.name} executed successfully`);
-        // Return the result formatted for the conversation
+        coreExports.info(`GitHub MCP tool ${toolCall.function.name} executed successfully`);
         return {
             tool_call_id: toolCall.id,
             role: 'tool',
@@ -41866,8 +41863,7 @@ async function executeToolCall(mcpClient, toolCall) {
         };
     }
     catch (toolError) {
-        coreExports.warning(`Failed to execute tool ${toolCall.function.name}: ${toolError}`);
-        // Return error result to continue conversation
+        coreExports.warning(`Failed to execute GitHub MCP tool ${toolCall.function.name}: ${toolError}`);
         return {
             tool_call_id: toolCall.id,
             role: 'tool',
@@ -41877,12 +41873,12 @@ async function executeToolCall(mcpClient, toolCall) {
     }
 }
 /**
- * Execute all tool calls from a response
+ * Execute all tool calls from a response via GitHub MCP
  */
-async function executeToolCalls(mcpClient, toolCalls) {
+async function executeToolCalls(githubMcpClient, toolCalls) {
     const toolResults = [];
     for (const toolCall of toolCalls) {
-        const result = await executeToolCall(mcpClient, toolCall);
+        const result = await executeToolCall(githubMcpClient, toolCall);
         toolResults.push(result);
     }
     return toolResults;
@@ -49008,15 +49004,15 @@ async function simpleInference(request) {
     return modelResponse;
 }
 /**
- * MCP-enabled inference with tool execution loop
+ * GitHub MCP-enabled inference with tool execution loop
  */
-async function mcpInference(request, mcpClient) {
-    coreExports.info('Running MCP inference with tools');
+async function mcpInference(request, githubMcpClient) {
+    coreExports.info('Running GitHub MCP inference with tools');
     const client = createClient(request.endpoint, new AzureKeyCredential(request.token), {
         userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
     });
     // Start with the initial conversation
-    let messages = [
+    const messages = [
         {
             role: 'system',
             content: request.systemPrompt
@@ -49032,7 +49028,7 @@ async function mcpInference(request, mcpClient) {
             messages: messages,
             max_tokens: request.maxTokens,
             model: request.modelName,
-            tools: mcpClient.tools
+            tools: githubMcpClient.tools
         };
         const response = await client.path('/chat/completions').post({
             body: requestBody
@@ -49047,25 +49043,23 @@ async function mcpInference(request, mcpClient) {
         const modelResponse = assistantMessage.content;
         const toolCalls = assistantMessage.tool_calls;
         coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
-        // Add the assistant's response to the conversation
         messages.push({
             role: 'assistant',
-            content: modelResponse,
+            content: modelResponse || '',
             ...(toolCalls && { tool_calls: toolCalls })
         });
-        // Check if there are tool calls to execute
         if (!toolCalls || toolCalls.length === 0) {
-            coreExports.info('No tool calls requested, ending MCP inference loop');
+            coreExports.info('No tool calls requested, ending GitHub MCP inference loop');
             return modelResponse;
         }
         coreExports.info(`Model requested ${toolCalls.length} tool calls`);
-        // Execute all tool calls
-        const toolResults = await executeToolCalls(mcpClient.client, toolCalls);
+        // Execute all tool calls via GitHub MCP
+        const toolResults = await executeToolCalls(githubMcpClient.client, toolCalls);
         // Add tool results to the conversation
         messages.push(...toolResults);
         coreExports.info('Tool results added, continuing conversation...');
     }
-    coreExports.warning(`MCP inference loop exceeded maximum iterations (${maxIterations})`);
+    coreExports.warning(`GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`);
     // Return the last assistant message content
     const lastAssistantMessage = messages
         .slice()
@@ -49074,7 +49068,6 @@ async function mcpInference(request, mcpClient) {
     return lastAssistantMessage?.content || null;
 }
 
-const RESPONSE_FILE = 'modelResponse.txt';
 /**
  * Helper function to load content from a file or use fallback input
  * @param filePathInput - Input name for the file path
@@ -49101,6 +49094,8 @@ function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
         throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`);
     }
 }
+
+const RESPONSE_FILE = 'modelResponse.txt';
 /**
  * The main function for the action.
  *
@@ -49108,9 +49103,7 @@ function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
  */
 async function run() {
     try {
-        // Load prompt content - required
         const prompt = loadContentFromFileOrInput('prompt-file', 'prompt');
-        // Load system prompt with default value
         const systemPrompt = loadContentFromFileOrInput('system-prompt-file', 'system-prompt', 'You are a helpful assistant');
         const modelName = coreExports.getInput('model');
         const maxTokens = parseInt(coreExports.getInput('max-tokens'), 10);
@@ -49119,8 +49112,7 @@ async function run() {
             throw new Error('GITHUB_TOKEN is not set');
         }
         const endpoint = coreExports.getInput('endpoint');
-        const enableMcp = coreExports.getBooleanInput('enable-mcp') || false;
-        // Build the inference request
+        const enableMcp = coreExports.getBooleanInput('enable-github-mcp') || false;
         const inferenceRequest = {
             systemPrompt,
             prompt,
@@ -49131,8 +49123,7 @@ async function run() {
         };
         let modelResponse = null;
         if (enableMcp) {
-            // MCP-enabled inference path
-            const mcpClient = await connectToMCP(token);
+            const mcpClient = await connectToGitHubMCP(token);
             if (mcpClient) {
                 modelResponse = await mcpInference(inferenceRequest, mcpClient);
             }
@@ -49142,12 +49133,9 @@ async function run() {
             }
         }
         else {
-            // Simple inference path
             modelResponse = await simpleInference(inferenceRequest);
         }
-        // Set outputs for other workflow steps to use
         coreExports.setOutput('response', modelResponse || '');
-        // Save the response to a file in case the response overflow the output limit
         const responseFilePath = require$$1.join(tempDir(), RESPONSE_FILE);
         coreExports.setOutput('response-file', responseFilePath);
         if (modelResponse && modelResponse !== '') {
@@ -49155,7 +49143,6 @@ async function run() {
         }
     }
     catch (error) {
-        // Fail the workflow run if an error occurs
         if (error instanceof Error) {
             coreExports.setFailed(error.message);
         }

@@ -133,6 +133,7 @@ describe('helpers.ts', () => {
     it('handles undefined inputs correctly', () => {
       const defaultValue = 'Default content'
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       core.getInput.mockImplementation(() => undefined as any)
 
       const result = loadContentFromFileOrInput(

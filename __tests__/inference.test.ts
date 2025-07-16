@@ -5,6 +5,7 @@ import { jest } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
 
 // Mock Azure AI Inference
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockPost = jest.fn() as jest.MockedFunction<any>
 const mockPath = jest.fn(() => ({ post: mockPost }))
 const mockClient = jest.fn(() => ({ path: mockPath }))
@@ -19,6 +20,7 @@ jest.unstable_mockModule('@azure/core-auth', () => ({
 }))
 
 // Mock MCP functions
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockExecuteToolCalls = jest.fn() as jest.MockedFunction<any>
 jest.unstable_mockModule('../src/mcp.js', () => ({
   executeToolCalls: mockExecuteToolCalls
@@ -112,10 +114,11 @@ describe('inference.ts', () => {
 
   describe('mcpInference', () => {
     const mockMcpClient = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       client: {} as any,
       tools: [
         {
-          type: 'function',
+          type: 'function' as const,
           function: {
             name: 'test-tool',
             description: 'A test tool',
@@ -144,15 +147,18 @@ describe('inference.ts', () => {
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(result).toBe('Hello, user!')
-      expect(core.info).toHaveBeenCalledWith('Running MCP inference with tools')
+      expect(core.info).toHaveBeenCalledWith(
+        'Running GitHub MCP inference with tools'
+      )
       expect(core.info).toHaveBeenCalledWith('MCP inference iteration 1')
       expect(core.info).toHaveBeenCalledWith(
-        'No tool calls requested, ending MCP inference loop'
+        'No tool calls requested, ending GitHub MCP inference loop'
       )
 
       // The MCP inference loop will always add the assistant message, even when there are no tool calls
       // So we don't check the exact messages, just that tools were included
       expect(mockPost).toHaveBeenCalledTimes(1)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const callArgs = mockPost.mock.calls[0][0] as any
       expect(callArgs.body.tools).toEqual(mockMcpClient.tools)
       expect(callArgs.body.model).toBe('gpt-4')
@@ -223,6 +229,7 @@ describe('inference.ts', () => {
       expect(mockPost).toHaveBeenCalledTimes(2)
 
       // Verify the second call includes the conversation history
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const secondCall = mockPost.mock.calls[1][0] as any
       expect(secondCall.body.messages).toHaveLength(5) // system, user, assistant, tool, assistant
       expect(secondCall.body.messages[2].role).toBe('assistant')
@@ -271,7 +278,7 @@ describe('inference.ts', () => {
 
       expect(mockPost).toHaveBeenCalledTimes(5) // Max iterations reached
       expect(core.warning).toHaveBeenCalledWith(
-        'MCP inference loop exceeded maximum iterations (5)'
+        'GitHub MCP inference loop exceeded maximum iterations (5)'
       )
       expect(result).toBe('Using tool again.') // Last assistant message
     })
@@ -296,7 +303,7 @@ describe('inference.ts', () => {
 
       expect(result).toBe('Hello, user!')
       expect(core.info).toHaveBeenCalledWith(
-        'No tool calls requested, ending MCP inference loop'
+        'No tool calls requested, ending GitHub MCP inference loop'
       )
       expect(mockExecuteToolCalls).not.toHaveBeenCalled()
     })

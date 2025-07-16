@@ -9,23 +9,44 @@ export interface ToolResult {
   content: string
 }
 
-export interface MCPClient {
+export interface MCPTool {
+  type: 'function'
+  function: {
+    name: string
+    description?: string
+    parameters?: Record<string, unknown>
+  }
+}
+
+export interface ToolCall {
+  id: string
+  type: string
+  function: {
+    name: string
+    arguments: string
+  }
+}
+
+export interface GitHubMCPClient {
   client: Client
-  tools: any[]
+  tools: Array<MCPTool>
 }
 
 /**
- * Connect to the MCP server and retrieve available tools
+ * Connect to the GitHub MCP server and retrieve available tools
  */
-export async function connectToMCP(token: string): Promise<MCPClient | null> {
-  const mcpServerUrl = 'https://api.githubcopilot.com/mcp/'
+export async function connectToGitHubMCP(
+  token: string
+): Promise<GitHubMCPClient | null> {
+  const githubMcpUrl = 'https://api.githubcopilot.com/mcp/'
 
   core.info('Connecting to GitHub MCP server...')
 
-  const transport = new StreamableHTTPClientTransport(new URL(mcpServerUrl), {
+  const transport = new StreamableHTTPClientTransport(new URL(githubMcpUrl), {
     requestInit: {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'X-MCP-Readonly': 'true'
       }
     }
   })
@@ -39,21 +60,20 @@ export async function connectToMCP(token: string): Promise<MCPClient | null> {
   try {
     await client.connect(transport)
   } catch (mcpError) {
-    core.warning(`Failed to connect to MCP server: ${mcpError}`)
+    core.warning(`Failed to connect to GitHub MCP server: ${mcpError}`)
     return null
   }
 
-  core.info('Successfully connected to MCP server')
+  core.info('Successfully connected to GitHub MCP server')
 
-  // Pull tool metadata
   const toolsResponse = await client.listTools()
   core.info(
-    `Retrieved ${toolsResponse.tools?.length || 0} tools from MCP server`
+    `Retrieved ${toolsResponse.tools?.length || 0} tools from GitHub MCP server`
   )
 
-  // Map MCP → Azure tool definitions
+  // Map GitHub MCP tools → Azure AI Inference tool definitions
   const tools = (toolsResponse.tools || []).map((t) => ({
-    type: 'function',
+    type: 'function' as const,
     function: {
       name: t.name,
       description: t.description,
@@ -61,35 +81,32 @@ export async function connectToMCP(token: string): Promise<MCPClient | null> {
     }
   }))
 
-  core.info(`Mapped ${tools.length} tools for Azure AI Inference`)
+  core.info(`Mapped ${tools.length} GitHub MCP tools for Azure AI Inference`)
 
   return { client, tools }
 }
 
 /**
- * Execute a single tool call via MCP
+ * Execute a single tool call via GitHub MCP
  */
 export async function executeToolCall(
-  mcpClient: Client,
-  toolCall: any
+  githubMcpClient: Client,
+  toolCall: ToolCall
 ): Promise<ToolResult> {
   core.info(
-    `Executing tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`
+    `Executing GitHub MCP tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`
   )
 
   try {
-    // Parse the arguments from JSON string
     const args = JSON.parse(toolCall.function.arguments)
 
-    // Call the tool via MCP
-    const result = await mcpClient.callTool({
+    const result = await githubMcpClient.callTool({
       name: toolCall.function.name,
       arguments: args
     })
 
-    core.info(`Tool ${toolCall.function.name} executed successfully`)
+    core.info(`GitHub MCP tool ${toolCall.function.name} executed successfully`)
 
-    // Return the result formatted for the conversation
     return {
       tool_call_id: toolCall.id,
       role: 'tool',
@@ -98,10 +115,9 @@ export async function executeToolCall(
     }
   } catch (toolError) {
     core.warning(
-      `Failed to execute tool ${toolCall.function.name}: ${toolError}`
+      `Failed to execute GitHub MCP tool ${toolCall.function.name}: ${toolError}`
     )
 
-    // Return error result to continue conversation
     return {
       tool_call_id: toolCall.id,
       role: 'tool',
@@ -112,16 +128,16 @@ export async function executeToolCall(
 }
 
 /**
- * Execute all tool calls from a response
+ * Execute all tool calls from a response via GitHub MCP
  */
 export async function executeToolCalls(
-  mcpClient: Client,
-  toolCalls: any[]
+  githubMcpClient: Client,
+  toolCalls: ToolCall[]
 ): Promise<ToolResult[]> {
   const toolResults: ToolResult[] = []
 
   for (const toolCall of toolCalls) {
-    const result = await executeToolCall(mcpClient, toolCall)
+    const result = await executeToolCall(githubMcpClient, toolCall)
     toolResults.push(result)
   }
 
