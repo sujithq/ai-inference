@@ -161,12 +161,15 @@ describe('main.ts', () => {
     await run()
 
     expect(mockSimpleInference).toHaveBeenCalledWith({
-      systemPrompt: 'You are a test assistant.',
-      prompt: 'Hello, AI!',
+      messages: [
+        { role: 'system', content: 'You are a test assistant.' },
+        { role: 'user', content: 'Hello, AI!' }
+      ],
       modelName: 'gpt-4',
       maxTokens: 100,
       endpoint: 'https://api.test.com',
-      token: 'fake-token'
+      token: 'fake-token',
+      responseFormat: undefined
     })
     expect(mockConnectToGitHubMCP).not.toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
@@ -193,8 +196,10 @@ describe('main.ts', () => {
     expect(mockConnectToGitHubMCP).toHaveBeenCalledWith('fake-token')
     expect(mockMcpInference).toHaveBeenCalledWith(
       expect.objectContaining({
-        systemPrompt: 'You are a test assistant.',
-        prompt: 'Hello, AI!',
+        messages: [
+          { role: 'system', content: 'You are a test assistant.' },
+          { role: 'user', content: 'Hello, AI!' }
+        ],
         token: 'fake-token'
       }),
       mockMcpClient
@@ -243,12 +248,15 @@ describe('main.ts', () => {
     await run()
 
     expect(mockSimpleInference).toHaveBeenCalledWith({
-      systemPrompt: systemPromptContent,
-      prompt: promptContent,
+      messages: [
+        { role: 'system', content: systemPromptContent },
+        { role: 'user', content: promptContent }
+      ],
       modelName: 'gpt-4',
       maxTokens: 100,
       endpoint: 'https://api.test.com',
-      token: 'fake-token'
+      token: 'fake-token',
+      responseFormat: undefined
     })
     verifyStandardResponse()
   })
