@@ -1,8 +1,22 @@
 import * as core from '@actions/core'
 import ModelClient, { isUnexpected } from '@azure-rest/ai-inference'
 import { AzureKeyCredential } from '@azure/core-auth'
-import { GitHubMCPClient, executeToolCalls } from './mcp.js'
+import { GitHubMCPClient, executeToolCalls, MCPTool, ToolCall } from './mcp.js'
 import { handleUnexpectedResponse } from './helpers.js'
+
+interface ChatMessage {
+  role: string
+  content: string | null
+  tool_calls?: ToolCall[]
+}
+
+interface ChatCompletionsRequestBody {
+  messages: ChatMessage[]
+  max_tokens: number
+  model: string
+  response_format?: { type: 'json_schema'; json_schema: unknown }
+  tools?: MCPTool[]
+}
 
 export interface InferenceRequest {
   messages: Array<{ role: string; content: string }>
@@ -10,7 +24,7 @@ export interface InferenceRequest {
   maxTokens: number
   endpoint: string
   token: string
-  responseFormat?: any // Will contain the processed response format for the API
+  responseFormat?: { type: 'json_schema'; json_schema: unknown } // Processed response format for the API
 }
 
 export interface InferenceResponse {
@@ -41,7 +55,7 @@ export async function simpleInference(
     }
   )
 
-  const requestBody: any = {
+  const requestBody: ChatCompletionsRequestBody = {
     messages: request.messages,
     max_tokens: request.maxTokens,
     model: request.modelName
@@ -84,7 +98,7 @@ export async function mcpInference(
   )
 
   // Start with the pre-processed messages
-  const messages: Array<any> = [...request.messages]
+  const messages: ChatMessage[] = [...request.messages]
 
   let iterationCount = 0
   const maxIterations = 5 // Prevent infinite loops
@@ -93,7 +107,7 @@ export async function mcpInference(
     iterationCount++
     core.info(`MCP inference iteration ${iterationCount}`)
 
-    const requestBody: any = {
+    const requestBody: ChatCompletionsRequestBody = {
       messages: messages,
       max_tokens: request.maxTokens,
       model: request.modelName,

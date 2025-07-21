@@ -1,31 +1,42 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals'
-import * as core from '@actions/core'
-import * as fs from 'fs'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
-import { run } from '../src/main'
+import * as core from '../__fixtures__/core.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Create fs mocks
+const mockExistsSync = jest.fn()
+const mockReadFileSync = jest.fn()
+const mockWriteFileSync = jest.fn()
 
-// Mock the action toolkit functions
-jest.mock('@actions/core')
+// Create inference mocks
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockSimpleInference = jest.fn() as jest.MockedFunction<any>
+const mockMcpInference = jest.fn()
 
-// Mock fs to handle temporary file creation
-jest.mock('fs')
+// Create MCP mocks
+const mockConnectToGitHubMCP = jest.fn()
+
+// Mock fs module
+jest.unstable_mockModule('fs', () => ({
+  existsSync: mockExistsSync,
+  readFileSync: mockReadFileSync,
+  writeFileSync: mockWriteFileSync
+}))
 
 // Mock the inference functions
-jest.mock('../src/inference', () => ({
-  simpleInference: jest.fn(),
-  mcpInference: jest.fn()
+jest.unstable_mockModule('../src/inference.js', () => ({
+  simpleInference: mockSimpleInference,
+  mcpInference: mockMcpInference
 }))
 
 // Mock the MCP connection
-jest.mock('../src/mcp', () => ({
-  connectToGitHubMCP: jest.fn()
+jest.unstable_mockModule('../src/mcp.js', () => ({
+  connectToGitHubMCP: mockConnectToGitHubMCP
 }))
 
-import { simpleInference } from '../src/inference'
+jest.unstable_mockModule('@actions/core', () => core)
+
+// The module being tested should be imported dynamically. This ensures that the
+// mocks are used in place of any actual dependencies.
+const { run } = await import('../src/main.js')
 
 describe('main.ts - prompt.yml integration', () => {
   beforeEach(() => {
@@ -35,8 +46,7 @@ describe('main.ts - prompt.yml integration', () => {
     process.env['GITHUB_TOKEN'] = 'test-token'
 
     // Mock core.getInput to return appropriate values
-    const mockGetInput = core.getInput as jest.Mock
-    mockGetInput.mockImplementation((name: string) => {
+    core.getInput.mockImplementation((name: string) => {
       switch (name) {
         case 'model':
           return 'openai/gpt-4o'
@@ -55,12 +65,7 @@ describe('main.ts - prompt.yml integration', () => {
     const mockGetBooleanInput = core.getBooleanInput as jest.Mock
     mockGetBooleanInput.mockReturnValue(false)
 
-    // Mock fs.existsSync
-    const mockExistsSync = fs.existsSync as jest.Mock
-    mockExistsSync.mockReturnValue(true)
-
     // Mock fs.readFileSync for prompt file
-    const mockReadFileSync = fs.readFileSync as jest.Mock
     mockReadFileSync.mockReturnValue(`
 messages:
   - role: system
@@ -71,17 +76,15 @@ model: openai/gpt-4o
     `)
 
     // Mock fs.writeFileSync
-    const mockWriteFileSync = fs.writeFileSync as jest.Mock
     mockWriteFileSync.mockImplementation(() => {})
 
     // Mock simpleInference
-    const mockSimpleInference = simpleInference as jest.Mock
     mockSimpleInference.mockResolvedValue('Mocked AI response')
   })
 
   it('should handle prompt YAML files with template variables', async () => {
-    const mockGetInput = core.getInput as jest.Mock
-    mockGetInput.mockImplementation((name: string) => {
+    mockExistsSync.mockReturnValue(true)
+    core.getInput.mockImplementation((name: string) => {
       switch (name) {
         case 'prompt-file':
           return 'test.prompt.yml'
@@ -103,7 +106,6 @@ model: openai/gpt-4o
     await run()
 
     // Verify simpleInference was called with the correct message structure
-    const mockSimpleInference = simpleInference as jest.Mock
     expect(mockSimpleInference).toHaveBeenCalledWith(
       expect.objectContaining({
         messages: [
@@ -135,8 +137,8 @@ model: openai/gpt-4o
   })
 
   it('should fall back to legacy format when not using prompt YAML', async () => {
-    const mockGetInput = core.getInput as jest.Mock
-    mockGetInput.mockImplementation((name: string) => {
+    mockExistsSync.mockReturnValue(false)
+    core.getInput.mockImplementation((name: string) => {
       switch (name) {
         case 'prompt':
           return 'Hello, world!'
@@ -157,12 +159,19 @@ model: openai/gpt-4o
 
     await run()
 
-    // Verify simpleInference was called with legacy format
-    const mockSimpleInference = simpleInference as jest.Mock
+    // Verify simpleInference was called with converted message format
     expect(mockSimpleInference).toHaveBeenCalledWith(
       expect.objectContaining({
-        systemPrompt: 'You are helpful',
-        prompt: 'Hello, world!',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are helpful'
+          },
+          {
+            role: 'user',
+            content: 'Hello, world!'
+          }
+        ],
         modelName: 'openai/gpt-4o',
         maxTokens: 200,
         endpoint: 'https://models.github.ai/inference',

@@ -96,7 +96,9 @@ export function buildMessages(
 /**
  * Build response format object for API from prompt config
  */
-export function buildResponseFormat(promptConfig?: PromptConfig): any {
+export function buildResponseFormat(
+  promptConfig?: PromptConfig
+): { type: 'json_schema'; json_schema: unknown } | undefined {
   if (
     promptConfig?.responseFormat === 'json_schema' &&
     promptConfig.jsonSchema

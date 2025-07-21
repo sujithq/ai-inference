@@ -8,7 +8,8 @@ import { loadContentFromFileOrInput, buildInferenceRequest } from './helpers.js'
 import {
   loadPromptFile,
   parseTemplateVariables,
-  isPromptYamlFile
+  isPromptYamlFile,
+  PromptConfig
 } from './prompt.js'
 
 const RESPONSE_FILE = 'modelResponse.txt'
@@ -23,7 +24,7 @@ export async function run(): Promise<void> {
     const promptFilePath = core.getInput('prompt-file')
     const inputVariables = core.getInput('input')
 
-    let promptConfig: any = undefined
+    let promptConfig: PromptConfig | undefined = undefined
     let systemPrompt: string | undefined = undefined
     let prompt: string | undefined = undefined
 
