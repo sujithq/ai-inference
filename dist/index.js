@@ -52054,7 +52054,7 @@ function parseTemplateVariables(input) {
  * Replace template variables in text using {{variable}} syntax
  */
 function replaceTemplateVariables(text, variables) {
-    return text.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
+    return text.replace(/\{\{([\w.-]+)\}\}/g, (match, variableName) => {
         if (variableName in variables) {
             return variables[variableName];
         }
