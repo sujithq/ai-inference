@@ -46,7 +46,7 @@ export function replaceTemplateVariables(
   text: string,
   variables: TemplateVariables
 ): string {
-  return text.replace(/\{\{(\w+)\}\}/g, (match, variableName) => {
+  return text.replace(/\{\{([\w.-]+)\}\}/g, (match, variableName) => {
     if (variableName in variables) {
       return variables[variableName]
     }
