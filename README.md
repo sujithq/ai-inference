@@ -84,7 +84,7 @@ steps:
 
 This action now supports **read-only** integration with the GitHub-hosted Model
 Context Protocol (MCP) server, which provides access to GitHub tools like
-repository management, issue tracking, and pull request operations
+repository management, issue tracking, and pull request operations.
 
 ```yaml
 steps:
