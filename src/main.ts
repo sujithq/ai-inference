@@ -3,8 +3,13 @@ import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
 import { connectToGitHubMCP } from './mcp.js'
-import { simpleInference, mcpInference, InferenceRequest } from './inference.js'
-import { loadContentFromFileOrInput } from './helpers.js'
+import { simpleInference, mcpInference } from './inference.js'
+import { loadContentFromFileOrInput, buildInferenceRequest } from './helpers.js'
+import {
+  loadPromptFile,
+  parseTemplateVariables,
+  isPromptYamlFile
+} from './prompt.js'
 
 const RESPONSE_FILE = 'modelResponse.txt'
 
@@ -15,16 +20,37 @@ const RESPONSE_FILE = 'modelResponse.txt'
  */
 export async function run(): Promise<void> {
   try {
-    const prompt = loadContentFromFileOrInput('prompt-file', 'prompt')
+    const promptFilePath = core.getInput('prompt-file')
+    const inputVariables = core.getInput('input')
 
-    const systemPrompt = loadContentFromFileOrInput(
-      'system-prompt-file',
-      'system-prompt',
-      'You are a helpful assistant'
-    )
+    let promptConfig: any = undefined
+    let systemPrompt: string | undefined = undefined
+    let prompt: string | undefined = undefined
 
-    const modelName: string = core.getInput('model')
-    const maxTokens: number = parseInt(core.getInput('max-tokens'), 10)
+    // Check if we're using a prompt YAML file
+    if (promptFilePath && isPromptYamlFile(promptFilePath)) {
+      core.info('Using prompt YAML file format')
+
+      // Parse template variables
+      const templateVariables = parseTemplateVariables(inputVariables)
+
+      // Load and process prompt file
+      promptConfig = loadPromptFile(promptFilePath, templateVariables)
+    } else {
+      // Use legacy format
+      core.info('Using legacy prompt format')
+
+      prompt = loadContentFromFileOrInput('prompt-file', 'prompt')
+      systemPrompt = loadContentFromFileOrInput(
+        'system-prompt-file',
+        'system-prompt',
+        'You are a helpful assistant'
+      )
+    }
+
+    // Get common parameters
+    const modelName = promptConfig?.model || core.getInput('model')
+    const maxTokens = parseInt(core.getInput('max-tokens'), 10)
 
     const token = process.env['GITHUB_TOKEN'] || core.getInput('token')
     if (token === undefined) {
@@ -32,21 +58,24 @@ export async function run(): Promise<void> {
     }
 
     const endpoint = core.getInput('endpoint')
-    const enableMcp = core.getBooleanInput('enable-github-mcp') || false
 
-    const inferenceRequest: InferenceRequest = {
+    // Build the inference request with pre-processed messages and response format
+    const inferenceRequest = buildInferenceRequest(
+      promptConfig,
       systemPrompt,
       prompt,
       modelName,
       maxTokens,
       endpoint,
       token
-    }
+    )
+
+    const enableMcp = core.getBooleanInput('enable-github-mcp') || false
 
     let modelResponse: string | null = null
 
     if (enableMcp) {
-      const mcpClient = await connectToGitHubMCP(token)
+      const mcpClient = await connectToGitHubMCP(inferenceRequest.token)
 
       if (mcpClient) {
         modelResponse = await mcpInference(inferenceRequest, mcpClient)

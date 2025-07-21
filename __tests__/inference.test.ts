@@ -33,8 +33,10 @@ const { simpleInference, mcpInference } = await import('../src/inference.js')
 
 describe('inference.ts', () => {
   const mockRequest = {
-    systemPrompt: 'You are a test assistant',
-    prompt: 'Hello, AI!',
+    messages: [
+      { role: 'system', content: 'You are a test assistant' },
+      { role: 'user', content: 'Hello, AI!' }
+    ],
     modelName: 'gpt-4',
     maxTokens: 100,
     endpoint: 'https://api.test.com',

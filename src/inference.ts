@@ -5,12 +5,12 @@ import { GitHubMCPClient, executeToolCalls } from './mcp.js'
 import { handleUnexpectedResponse } from './helpers.js'
 
 export interface InferenceRequest {
-  systemPrompt: string
-  prompt: string
+  messages: Array<{ role: string; content: string }>
   modelName: string
   maxTokens: number
   endpoint: string
   token: string
+  responseFormat?: any // Will contain the processed response format for the API
 }
 
 export interface InferenceResponse {
@@ -41,16 +41,15 @@ export async function simpleInference(
     }
   )
 
-  const requestBody = {
-    messages: [
-      {
-        role: 'system',
-        content: request.systemPrompt
-      },
-      { role: 'user', content: request.prompt }
-    ],
+  const requestBody: any = {
+    messages: request.messages,
     max_tokens: request.maxTokens,
     model: request.modelName
+  }
+
+  // Add response format if specified
+  if (request.responseFormat) {
+    requestBody.response_format = request.responseFormat
   }
 
   const response = await client.path('/chat/completions').post({
@@ -84,14 +83,8 @@ export async function mcpInference(
     }
   )
 
-  // Start with the initial conversation
-  const messages = [
-    {
-      role: 'system',
-      content: request.systemPrompt
-    },
-    { role: 'user', content: request.prompt }
-  ]
+  // Start with the pre-processed messages
+  const messages: Array<any> = [...request.messages]
 
   let iterationCount = 0
   const maxIterations = 5 // Prevent infinite loops
@@ -100,11 +93,16 @@ export async function mcpInference(
     iterationCount++
     core.info(`MCP inference iteration ${iterationCount}`)
 
-    const requestBody = {
+    const requestBody: any = {
       messages: messages,
       max_tokens: request.maxTokens,
       model: request.modelName,
       tools: githubMcpClient.tools
+    }
+
+    // Add response format if specified (only on first iteration to avoid conflicts)
+    if (iterationCount === 1 && request.responseFormat) {
+      requestBody.response_format = request.responseFormat
     }
 
     const response = await client.path('/chat/completions').post({

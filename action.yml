@@ -14,7 +14,13 @@ inputs:
     required: false
     default: ''
   prompt-file:
-    description: Path to a file containing the prompt
+    description:
+      Path to a file containing the prompt (supports .txt and .prompt.yml
+      formats)
+    required: false
+    default: ''
+  input:
+    description: Template variables in YAML format for .prompt.yml files
     required: false
     default: ''
   model:
