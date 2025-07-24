@@ -1,4 +1,4 @@
-import { vi, it, expect, beforeEach, describe } from 'vitest'
+import {vi, it, expect, beforeEach, describe} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 const mockExistsSync = vi.fn()
@@ -6,12 +6,12 @@ const mockReadFileSync = vi.fn()
 
 vi.mock('fs', () => ({
   existsSync: mockExistsSync,
-  readFileSync: mockReadFileSync
+  readFileSync: mockReadFileSync,
 }))
 
 vi.mock('@actions/core', () => core)
 
-const { loadContentFromFileOrInput } = await import('../src/helpers.js')
+const {loadContentFromFileOrInput} = await import('../src/helpers.js')
 
 describe('helpers.ts', () => {
   beforeEach(() => {
@@ -103,11 +103,7 @@ describe('helpers.ts', () => {
 
       core.getInput.mockImplementation(() => '')
 
-      const result = loadContentFromFileOrInput(
-        'file-input',
-        'content-input',
-        defaultValue
-      )
+      const result = loadContentFromFileOrInput('file-input', 'content-input', defaultValue)
 
       expect(result).toBe(defaultValue)
       expect(mockExistsSync).not.toHaveBeenCalled()
@@ -131,11 +127,7 @@ describe('helpers.ts', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       core.getInput.mockImplementation(() => undefined as any)
 
-      const result = loadContentFromFileOrInput(
-        'file-input',
-        'content-input',
-        defaultValue
-      )
+      const result = loadContentFromFileOrInput('file-input', 'content-input', defaultValue)
 
       expect(result).toBe(defaultValue)
     })

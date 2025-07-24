@@ -1,5 +1,5 @@
 // See: https://rollupjs.org/introduction/
-import { builtinModules } from 'node:module'
+import {builtinModules} from 'node:module'
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
@@ -11,7 +11,7 @@ const config = {
     esModule: true,
     file: 'dist/index.js',
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
   external: [...builtinModules, /^node:/],
   plugins: [
@@ -19,13 +19,13 @@ const config = {
     nodeResolve({
       preferBuiltins: true,
       browser: false,
-      exportConditions: ['node']
+      exportConditions: ['node'],
     }),
     commonjs({
-      include: /node_modules/
+      include: /node_modules/,
     }),
-    json()
-  ]
+    json(),
+  ],
 }
 
 export default config

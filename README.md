@@ -83,8 +83,7 @@ model: openai/gpt-4o
 ```yaml
 messages:
   - role: system
-    content:
-      You are a helpful assistant that describes animals using JSON format
+    content: You are a helpful assistant that describes animals using JSON format
   - role: user
     content: |-
       Describe a {{animal}}

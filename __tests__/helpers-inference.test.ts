@@ -1,41 +1,37 @@
-import { describe, it, expect } from 'vitest'
-import {
-  buildMessages,
-  buildResponseFormat,
-  buildInferenceRequest
-} from '../src/helpers'
-import { PromptConfig } from '../src/prompt'
+import {describe, it, expect} from 'vitest'
+import {buildMessages, buildResponseFormat, buildInferenceRequest} from '../src/helpers'
+import {PromptConfig} from '../src/prompt'
 
 describe('helpers.ts - inference request building', () => {
   describe('buildMessages', () => {
     it('should build messages from prompt config', () => {
       const promptConfig: PromptConfig = {
         messages: [
-          { role: 'system', content: 'System message' },
-          { role: 'user', content: 'User message' }
-        ]
+          {role: 'system', content: 'System message'},
+          {role: 'user', content: 'User message'},
+        ],
       }
 
       const result = buildMessages(promptConfig)
       expect(result).toEqual([
-        { role: 'system', content: 'System message' },
-        { role: 'user', content: 'User message' }
+        {role: 'system', content: 'System message'},
+        {role: 'user', content: 'User message'},
       ])
     })
 
     it('should build messages from legacy format', () => {
       const result = buildMessages(undefined, 'System prompt', 'User prompt')
       expect(result).toEqual([
-        { role: 'system', content: 'System prompt' },
-        { role: 'user', content: 'User prompt' }
+        {role: 'system', content: 'System prompt'},
+        {role: 'user', content: 'User prompt'},
       ])
     })
 
     it('should use default system prompt when none provided', () => {
       const result = buildMessages(undefined, undefined, 'User prompt')
       expect(result).toEqual([
-        { role: 'system', content: 'You are a helpful assistant' },
-        { role: 'user', content: 'User prompt' }
+        {role: 'system', content: 'You are a helpful assistant'},
+        {role: 'user', content: 'User prompt'},
       ])
     })
   })
@@ -47,8 +43,8 @@ describe('helpers.ts - inference request building', () => {
         responseFormat: 'json_schema',
         jsonSchema: JSON.stringify({
           name: 'test_schema',
-          schema: { type: 'object' }
-        })
+          schema: {type: 'object'},
+        }),
       }
 
       const result = buildResponseFormat(promptConfig)
@@ -56,15 +52,15 @@ describe('helpers.ts - inference request building', () => {
         type: 'json_schema',
         json_schema: {
           name: 'test_schema',
-          schema: { type: 'object' }
-        }
+          schema: {type: 'object'},
+        },
       })
     })
 
     it('should return undefined for text format', () => {
       const promptConfig: PromptConfig = {
         messages: [],
-        responseFormat: 'text'
+        responseFormat: 'text',
       }
 
       const result = buildResponseFormat(promptConfig)
@@ -73,7 +69,7 @@ describe('helpers.ts - inference request building', () => {
 
     it('should return undefined when no response format specified', () => {
       const promptConfig: PromptConfig = {
-        messages: []
+        messages: [],
       }
 
       const result = buildResponseFormat(promptConfig)
@@ -84,12 +80,10 @@ describe('helpers.ts - inference request building', () => {
       const promptConfig: PromptConfig = {
         messages: [],
         responseFormat: 'json_schema',
-        jsonSchema: 'invalid json'
+        jsonSchema: 'invalid json',
       }
 
-      expect(() => buildResponseFormat(promptConfig)).toThrow(
-        'Invalid JSON schema'
-      )
+      expect(() => buildResponseFormat(promptConfig)).toThrow('Invalid JSON schema')
     })
   })
 
@@ -97,14 +91,14 @@ describe('helpers.ts - inference request building', () => {
     it('should build complete inference request from prompt config', () => {
       const promptConfig: PromptConfig = {
         messages: [
-          { role: 'system', content: 'System message' },
-          { role: 'user', content: 'User message' }
+          {role: 'system', content: 'System message'},
+          {role: 'user', content: 'User message'},
         ],
         responseFormat: 'json_schema',
         jsonSchema: JSON.stringify({
           name: 'test_schema',
-          schema: { type: 'object' }
-        })
+          schema: {type: 'object'},
+        }),
       }
 
       const result = buildInferenceRequest(
@@ -114,13 +108,13 @@ describe('helpers.ts - inference request building', () => {
         'gpt-4',
         100,
         'https://api.test.com',
-        'test-token'
+        'test-token',
       )
 
       expect(result).toEqual({
         messages: [
-          { role: 'system', content: 'System message' },
-          { role: 'user', content: 'User message' }
+          {role: 'system', content: 'System message'},
+          {role: 'user', content: 'User message'},
         ],
         modelName: 'gpt-4',
         maxTokens: 100,
@@ -130,9 +124,9 @@ describe('helpers.ts - inference request building', () => {
           type: 'json_schema',
           json_schema: {
             name: 'test_schema',
-            schema: { type: 'object' }
-          }
-        }
+            schema: {type: 'object'},
+          },
+        },
       })
     })
 
@@ -144,19 +138,19 @@ describe('helpers.ts - inference request building', () => {
         'gpt-4',
         100,
         'https://api.test.com',
-        'test-token'
+        'test-token',
       )
 
       expect(result).toEqual({
         messages: [
-          { role: 'system', content: 'System prompt' },
-          { role: 'user', content: 'User prompt' }
+          {role: 'system', content: 'System prompt'},
+          {role: 'user', content: 'User prompt'},
         ],
         modelName: 'gpt-4',
         maxTokens: 100,
         endpoint: 'https://api.test.com',
         token: 'test-token',
-        responseFormat: undefined
+        responseFormat: undefined,
       })
     })
   })

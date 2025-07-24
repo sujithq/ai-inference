@@ -1,11 +1,4 @@
-import {
-  vi,
-  type MockedFunction,
-  describe,
-  it,
-  expect,
-  beforeEach
-} from 'vitest'
+import {vi, type MockedFunction, describe, it, expect, beforeEach} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Mock MCP SDK
@@ -19,24 +12,22 @@ const mockCallTool = vi.fn() as MockedFunction<any>
 const mockClient = {
   connect: mockConnect,
   listTools: mockListTools,
-  callTool: mockCallTool
+  callTool: mockCallTool,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any
 
 vi.mock('@modelcontextprotocol/sdk/client/index.js', () => ({
-  Client: vi.fn(() => mockClient)
+  Client: vi.fn(() => mockClient),
 }))
 
 vi.mock('@modelcontextprotocol/sdk/client/streamableHttp.js', () => ({
-  StreamableHTTPClientTransport: vi.fn()
+  StreamableHTTPClientTransport: vi.fn(),
 }))
 
 vi.mock('@actions/core', () => core)
 
 // Import the module being tested
-const { connectToGitHubMCP, executeToolCall, executeToolCalls } = await import(
-  '../src/mcp.js'
-)
+const {connectToGitHubMCP, executeToolCall, executeToolCalls} = await import('../src/mcp.js')
 
 describe('mcp.ts', () => {
   beforeEach(() => {
@@ -50,20 +41,20 @@ describe('mcp.ts', () => {
         {
           name: 'test-tool-1',
           description: 'Test tool 1',
-          inputSchema: { type: 'object', properties: {} }
+          inputSchema: {type: 'object', properties: {}},
         },
         {
           name: 'test-tool-2',
           description: 'Test tool 2',
           inputSchema: {
             type: 'object',
-            properties: { param: { type: 'string' } }
-          }
-        }
+            properties: {param: {type: 'string'}},
+          },
+        },
       ]
 
       mockConnect.mockResolvedValue(undefined)
-      mockListTools.mockResolvedValue({ tools: mockTools })
+      mockListTools.mockResolvedValue({tools: mockTools})
 
       const result = await connectToGitHubMCP(token)
 
@@ -75,21 +66,13 @@ describe('mcp.ts', () => {
         function: {
           name: 'test-tool-1',
           description: 'Test tool 1',
-          parameters: { type: 'object', properties: {} }
-        }
+          parameters: {type: 'object', properties: {}},
+        },
       })
-      expect(core.info).toHaveBeenCalledWith(
-        'Connecting to GitHub MCP server...'
-      )
-      expect(core.info).toHaveBeenCalledWith(
-        'Successfully connected to GitHub MCP server'
-      )
-      expect(core.info).toHaveBeenCalledWith(
-        'Retrieved 2 tools from GitHub MCP server'
-      )
-      expect(core.info).toHaveBeenCalledWith(
-        'Mapped 2 GitHub MCP tools for Azure AI Inference'
-      )
+      expect(core.info).toHaveBeenCalledWith('Connecting to GitHub MCP server...')
+      expect(core.info).toHaveBeenCalledWith('Successfully connected to GitHub MCP server')
+      expect(core.info).toHaveBeenCalledWith('Retrieved 2 tools from GitHub MCP server')
+      expect(core.info).toHaveBeenCalledWith('Mapped 2 GitHub MCP tools for Azure AI Inference')
     })
 
     it('returns null when connection fails', async () => {
@@ -101,27 +84,21 @@ describe('mcp.ts', () => {
       const result = await connectToGitHubMCP(token)
 
       expect(result).toBeNull()
-      expect(core.warning).toHaveBeenCalledWith(
-        'Failed to connect to GitHub MCP server: Error: Connection failed'
-      )
+      expect(core.warning).toHaveBeenCalledWith('Failed to connect to GitHub MCP server: Error: Connection failed')
     })
 
     it('handles empty tools list', async () => {
       const token = 'test-token'
 
       mockConnect.mockResolvedValue(undefined)
-      mockListTools.mockResolvedValue({ tools: [] })
+      mockListTools.mockResolvedValue({tools: []})
 
       const result = await connectToGitHubMCP(token)
 
       expect(result).not.toBeNull()
       expect(result?.tools).toHaveLength(0)
-      expect(core.info).toHaveBeenCalledWith(
-        'Retrieved 0 tools from GitHub MCP server'
-      )
-      expect(core.info).toHaveBeenCalledWith(
-        'Mapped 0 GitHub MCP tools for Azure AI Inference'
-      )
+      expect(core.info).toHaveBeenCalledWith('Retrieved 0 tools from GitHub MCP server')
+      expect(core.info).toHaveBeenCalledWith('Mapped 0 GitHub MCP tools for Azure AI Inference')
     })
 
     it('handles undefined tools list', async () => {
@@ -134,9 +111,7 @@ describe('mcp.ts', () => {
 
       expect(result).not.toBeNull()
       expect(result?.tools).toHaveLength(0)
-      expect(core.info).toHaveBeenCalledWith(
-        'Retrieved 0 tools from GitHub MCP server'
-      )
+      expect(core.info).toHaveBeenCalledWith('Retrieved 0 tools from GitHub MCP server')
     })
   })
 
@@ -147,11 +122,11 @@ describe('mcp.ts', () => {
         type: 'function',
         function: {
           name: 'test-tool',
-          arguments: '{"param": "value"}'
-        }
+          arguments: '{"param": "value"}',
+        },
       }
       const toolResult = {
-        content: [{ type: 'text', text: 'Tool execution result' }]
+        content: [{type: 'text', text: 'Tool execution result'}],
       }
 
       mockCallTool.mockResolvedValue(toolResult)
@@ -160,20 +135,16 @@ describe('mcp.ts', () => {
 
       expect(mockCallTool).toHaveBeenCalledWith({
         name: 'test-tool',
-        arguments: { param: 'value' }
+        arguments: {param: 'value'},
       })
       expect(result).toEqual({
         tool_call_id: 'call-123',
         role: 'tool',
         name: 'test-tool',
-        content: JSON.stringify(toolResult.content)
+        content: JSON.stringify(toolResult.content),
       })
-      expect(core.info).toHaveBeenCalledWith(
-        'Executing GitHub MCP tool: test-tool with args: {"param": "value"}'
-      )
-      expect(core.info).toHaveBeenCalledWith(
-        'GitHub MCP tool test-tool executed successfully'
-      )
+      expect(core.info).toHaveBeenCalledWith('Executing GitHub MCP tool: test-tool with args: {"param": "value"}')
+      expect(core.info).toHaveBeenCalledWith('GitHub MCP tool test-tool executed successfully')
     })
 
     it('handles tool execution errors gracefully', async () => {
@@ -182,8 +153,8 @@ describe('mcp.ts', () => {
         type: 'function',
         function: {
           name: 'failing-tool',
-          arguments: '{"param": "value"}'
-        }
+          arguments: '{"param": "value"}',
+        },
       }
       const toolError = new Error('Tool execution failed')
 
@@ -195,10 +166,10 @@ describe('mcp.ts', () => {
         tool_call_id: 'call-456',
         role: 'tool',
         name: 'failing-tool',
-        content: 'Error: Error: Tool execution failed'
+        content: 'Error: Error: Tool execution failed',
       })
       expect(core.warning).toHaveBeenCalledWith(
-        'Failed to execute GitHub MCP tool failing-tool: Error: Tool execution failed'
+        'Failed to execute GitHub MCP tool failing-tool: Error: Tool execution failed',
       )
     })
 
@@ -208,8 +179,8 @@ describe('mcp.ts', () => {
         type: 'function',
         function: {
           name: 'test-tool',
-          arguments: 'invalid-json'
-        }
+          arguments: 'invalid-json',
+        },
       }
 
       const result = await executeToolCall(mockClient, toolCall)
@@ -218,9 +189,7 @@ describe('mcp.ts', () => {
       expect(result.role).toBe('tool')
       expect(result.name).toBe('test-tool')
       expect(result.content).toContain('Error:')
-      expect(core.warning).toHaveBeenCalledWith(
-        expect.stringContaining('Failed to execute GitHub MCP tool test-tool:')
-      )
+      expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Failed to execute GitHub MCP tool test-tool:'))
     })
   })
 
@@ -230,21 +199,21 @@ describe('mcp.ts', () => {
         {
           id: 'call-1',
           type: 'function',
-          function: { name: 'tool-1', arguments: '{}' }
+          function: {name: 'tool-1', arguments: '{}'},
         },
         {
           id: 'call-2',
           type: 'function',
-          function: { name: 'tool-2', arguments: '{"param": "value"}' }
-        }
+          function: {name: 'tool-2', arguments: '{"param": "value"}'},
+        },
       ]
 
       mockCallTool
         .mockResolvedValueOnce({
-          content: [{ type: 'text', text: 'Result 1' }]
+          content: [{type: 'text', text: 'Result 1'}],
         })
         .mockResolvedValueOnce({
-          content: [{ type: 'text', text: 'Result 2' }]
+          content: [{type: 'text', text: 'Result 2'}],
         })
 
       const results = await executeToolCalls(mockClient, toolCalls)
@@ -267,18 +236,18 @@ describe('mcp.ts', () => {
         {
           id: 'call-1',
           type: 'function',
-          function: { name: 'tool-1', arguments: '{}' }
+          function: {name: 'tool-1', arguments: '{}'},
         },
         {
           id: 'call-2',
           type: 'function',
-          function: { name: 'tool-2', arguments: '{}' }
-        }
+          function: {name: 'tool-2', arguments: '{}'},
+        },
       ]
 
       mockCallTool
         .mockResolvedValueOnce({
-          content: [{ type: 'text', text: 'Result 1' }]
+          content: [{type: 'text', text: 'Result 1'}],
         })
         .mockRejectedValueOnce(new Error('Tool 2 failed'))
 

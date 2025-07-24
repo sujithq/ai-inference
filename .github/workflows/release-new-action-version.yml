@@ -11,8 +11,7 @@ permissions:
 
 jobs:
   update_tag:
-    name:
-      Update the major tag to include the ${{ github.event.release.tag_name }}
+    name: Update the major tag to include the ${{ github.event.release.tag_name }}
       changes
     runs-on: ubuntu-latest
     steps:

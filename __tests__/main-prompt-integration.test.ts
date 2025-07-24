@@ -1,12 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeEach,
-  vi,
-  type MockedFunction,
-  type Mock
-} from 'vitest'
+import {describe, it, expect, beforeEach, vi, type MockedFunction, type Mock} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Create fs mocks
@@ -26,25 +18,25 @@ const mockConnectToGitHubMCP = vi.fn()
 vi.mock('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync,
-  writeFileSync: mockWriteFileSync
+  writeFileSync: mockWriteFileSync,
 }))
 
 // Mock the inference functions
 vi.mock('../src/inference.js', () => ({
   simpleInference: mockSimpleInference,
-  mcpInference: mockMcpInference
+  mcpInference: mockMcpInference,
 }))
 
 // Mock the MCP connection
 vi.mock('../src/mcp.js', () => ({
-  connectToGitHubMCP: mockConnectToGitHubMCP
+  connectToGitHubMCP: mockConnectToGitHubMCP,
 }))
 
 vi.mock('@actions/core', () => core)
 
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
-const { run } = await import('../src/main.js')
+const {run} = await import('../src/main.js')
 
 describe('main.ts - prompt.yml integration', () => {
   beforeEach(() => {
@@ -119,29 +111,23 @@ model: openai/gpt-4o
         messages: [
           {
             role: 'system',
-            content: 'Be as concise as possible'
+            content: 'Be as concise as possible',
           },
           {
             role: 'user',
-            content: 'Compare cats and dogs, please'
-          }
+            content: 'Compare cats and dogs, please',
+          },
         ],
         modelName: 'openai/gpt-4o',
         maxTokens: 200,
         endpoint: 'https://models.github.ai/inference',
-        token: 'test-token'
-      })
+        token: 'test-token',
+      }),
     )
 
     // Verify outputs were set
-    expect(core.setOutput).toHaveBeenCalledWith(
-      'response',
-      'Mocked AI response'
-    )
-    expect(core.setOutput).toHaveBeenCalledWith(
-      'response-file',
-      expect.any(String)
-    )
+    expect(core.setOutput).toHaveBeenCalledWith('response', 'Mocked AI response')
+    expect(core.setOutput).toHaveBeenCalledWith('response-file', expect.any(String))
   })
 
   it('should fall back to legacy format when not using prompt YAML', async () => {
@@ -173,18 +159,18 @@ model: openai/gpt-4o
         messages: [
           {
             role: 'system',
-            content: 'You are helpful'
+            content: 'You are helpful',
           },
           {
             role: 'user',
-            content: 'Hello, world!'
-          }
+            content: 'Hello, world!',
+          },
         ],
         modelName: 'openai/gpt-4o',
         maxTokens: 200,
         endpoint: 'https://models.github.ai/inference',
-        token: 'test-token'
-      })
+        token: 'test-token',
+      }),
     )
   })
 })

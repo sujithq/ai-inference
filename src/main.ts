@@ -2,15 +2,10 @@ import * as core from '@actions/core'
 import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
-import { connectToGitHubMCP } from './mcp.js'
-import { simpleInference, mcpInference } from './inference.js'
-import { loadContentFromFileOrInput, buildInferenceRequest } from './helpers.js'
-import {
-  loadPromptFile,
-  parseTemplateVariables,
-  isPromptYamlFile,
-  PromptConfig
-} from './prompt.js'
+import {connectToGitHubMCP} from './mcp.js'
+import {simpleInference, mcpInference} from './inference.js'
+import {loadContentFromFileOrInput, buildInferenceRequest} from './helpers.js'
+import {loadPromptFile, parseTemplateVariables, isPromptYamlFile, PromptConfig} from './prompt.js'
 
 const RESPONSE_FILE = 'modelResponse.txt'
 
@@ -42,11 +37,7 @@ export async function run(): Promise<void> {
       core.info('Using legacy prompt format')
 
       prompt = loadContentFromFileOrInput('prompt-file', 'prompt')
-      systemPrompt = loadContentFromFileOrInput(
-        'system-prompt-file',
-        'system-prompt',
-        'You are a helpful assistant'
-      )
+      systemPrompt = loadContentFromFileOrInput('system-prompt-file', 'system-prompt', 'You are a helpful assistant')
     }
 
     // Get common parameters
@@ -68,7 +59,7 @@ export async function run(): Promise<void> {
       modelName,
       maxTokens,
       endpoint,
-      token
+      token,
     )
 
     const enableMcp = core.getBooleanInput('enable-github-mcp') || false

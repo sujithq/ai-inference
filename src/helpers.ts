@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import { GetChatCompletionsDefaultResponse } from '@azure-rest/ai-inference'
+import {GetChatCompletionsDefaultResponse} from '@azure-rest/ai-inference'
 import * as fs from 'fs'
-import { PromptConfig } from './prompt.js'
-import { InferenceRequest } from './inference.js'
+import {PromptConfig} from './prompt.js'
+import {InferenceRequest} from './inference.js'
 
 /**
  * Helper function to load content from a file or use fallback input
@@ -11,11 +11,7 @@ import { InferenceRequest } from './inference.js'
  * @param defaultValue - Default value to use if neither file nor content is provided
  * @returns The loaded content
  */
-export function loadContentFromFileOrInput(
-  filePathInput: string,
-  contentInput: string,
-  defaultValue?: string
-): string {
+export function loadContentFromFileOrInput(filePathInput: string, contentInput: string, defaultValue?: string): string {
   const filePath = core.getInput(filePathInput)
   const contentString = core.getInput(contentInput)
 
@@ -38,9 +34,7 @@ export function loadContentFromFileOrInput(
  * @param response - The response object from the AI service
  * @throws Error with appropriate error message based on response content
  */
-export function handleUnexpectedResponse(
-  response: GetChatCompletionsDefaultResponse
-): never {
+export function handleUnexpectedResponse(response: GetChatCompletionsDefaultResponse): never {
   // Extract x-ms-error-code from headers if available
   const errorCode = response.headers['x-ms-error-code']
   const errorCodeMsg = errorCode ? ` (error code: ${errorCode})` : ''
@@ -54,16 +48,14 @@ export function handleUnexpectedResponse(
   if (!response.body) {
     throw new Error(
       `Failed to get response from AI service (status: ${response.status})${errorCodeMsg}. ` +
-        'Please check network connection and endpoint configuration.'
+        'Please check network connection and endpoint configuration.',
     )
   }
 
   // Handle other error cases
   throw new Error(
     `AI service returned error response (status: ${response.status})${errorCodeMsg}: ` +
-      (typeof response.body === 'string'
-        ? response.body
-        : JSON.stringify(response.body))
+      (typeof response.body === 'string' ? response.body : JSON.stringify(response.body)),
   )
 }
 
@@ -73,22 +65,22 @@ export function handleUnexpectedResponse(
 export function buildMessages(
   promptConfig?: PromptConfig,
   systemPrompt?: string,
-  prompt?: string
-): Array<{ role: string; content: string }> {
+  prompt?: string,
+): Array<{role: string; content: string}> {
   if (promptConfig?.messages && promptConfig.messages.length > 0) {
     // Use new message format
-    return promptConfig.messages.map((msg) => ({
+    return promptConfig.messages.map(msg => ({
       role: msg.role,
-      content: msg.content
+      content: msg.content,
     }))
   } else {
     // Use legacy format
     return [
       {
         role: 'system',
-        content: systemPrompt || 'You are a helpful assistant'
+        content: systemPrompt || 'You are a helpful assistant',
       },
-      { role: 'user', content: prompt || '' }
+      {role: 'user', content: prompt || ''},
     ]
   }
 }
@@ -97,22 +89,17 @@ export function buildMessages(
  * Build response format object for API from prompt config
  */
 export function buildResponseFormat(
-  promptConfig?: PromptConfig
-): { type: 'json_schema'; json_schema: unknown } | undefined {
-  if (
-    promptConfig?.responseFormat === 'json_schema' &&
-    promptConfig.jsonSchema
-  ) {
+  promptConfig?: PromptConfig,
+): {type: 'json_schema'; json_schema: unknown} | undefined {
+  if (promptConfig?.responseFormat === 'json_schema' && promptConfig.jsonSchema) {
     try {
       const schema = JSON.parse(promptConfig.jsonSchema)
       return {
         type: 'json_schema',
-        json_schema: schema
+        json_schema: schema,
       }
     } catch (error) {
-      throw new Error(
-        `Invalid JSON schema: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
+      throw new Error(`Invalid JSON schema: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
   return undefined
@@ -128,7 +115,7 @@ export function buildInferenceRequest(
   modelName: string,
   maxTokens: number,
   endpoint: string,
-  token: string
+  token: string,
 ): InferenceRequest {
   const messages = buildMessages(promptConfig, systemPrompt, prompt)
   const responseFormat = buildResponseFormat(promptConfig)
@@ -139,6 +126,6 @@ export function buildInferenceRequest(
     maxTokens,
     endpoint,
     token,
-    responseFormat
+    responseFormat,
   }
 }

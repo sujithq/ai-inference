@@ -1,23 +1,12 @@
-import {
-  vi,
-  describe,
-  expect,
-  it,
-  beforeEach,
-  type MockedFunction
-} from 'vitest'
+import {vi, describe, expect, it, beforeEach, type MockedFunction} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Default to throwing errors to catch unexpected calls
 const mockExistsSync = vi.fn().mockImplementation(() => {
-  throw new Error(
-    'Unexpected call to existsSync - test should override this implementation'
-  )
+  throw new Error('Unexpected call to existsSync - test should override this implementation')
 })
 const mockReadFileSync = vi.fn().mockImplementation(() => {
-  throw new Error(
-    'Unexpected call to readFileSync - test should override this implementation'
-  )
+  throw new Error('Unexpected call to readFileSync - test should override this implementation')
 })
 const mockWriteFileSync = vi.fn()
 
@@ -26,10 +15,7 @@ const mockWriteFileSync = vi.fn()
  * @param fileContents - Object mapping file paths to their contents
  * @param nonExistentFiles - Array of file paths that should be treated as non-existent
  */
-function mockFileContent(
-  fileContents: Record<string, string> = {},
-  nonExistentFiles: string[] = []
-): void {
+function mockFileContent(fileContents: Record<string, string> = {}, nonExistentFiles: string[] = []): void {
   // Mock existsSync to return true for files that exist, false for those that don't
   mockExistsSync.mockImplementation((...args: unknown[]): boolean => {
     const [path] = args as [string]
@@ -59,11 +45,11 @@ function mockInputs(inputs: Record<string, string> = {}): void {
     token: 'fake-token',
     model: 'gpt-4',
     'max-tokens': '100',
-    endpoint: 'https://api.test.com'
+    endpoint: 'https://api.test.com',
   }
 
   // Combine defaults with user-provided inputs
-  const allInputs: Record<string, string> = { ...defaultInputs, ...inputs }
+  const allInputs: Record<string, string> = {...defaultInputs, ...inputs}
 
   core.getInput.mockImplementation((name: string) => {
     return allInputs[name] || ''
@@ -80,17 +66,13 @@ function mockInputs(inputs: Record<string, string> = {}): void {
  */
 function verifyStandardResponse(): void {
   expect(core.setOutput).toHaveBeenNthCalledWith(1, 'response', 'Hello, user!')
-  expect(core.setOutput).toHaveBeenNthCalledWith(
-    2,
-    'response-file',
-    expect.stringContaining('modelResponse.txt')
-  )
+  expect(core.setOutput).toHaveBeenNthCalledWith(2, 'response-file', expect.stringContaining('modelResponse.txt'))
 }
 
 vi.mock('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync,
-  writeFileSync: mockWriteFileSync
+  writeFileSync: mockWriteFileSync,
 }))
 
 // Mock MCP and inference modules
@@ -102,19 +84,19 @@ const mockSimpleInference = vi.fn() as MockedFunction<any>
 const mockMcpInference = vi.fn() as MockedFunction<any>
 
 vi.mock('../src/mcp.js', () => ({
-  connectToGitHubMCP: mockConnectToGitHubMCP
+  connectToGitHubMCP: mockConnectToGitHubMCP,
 }))
 
 vi.mock('../src/inference.js', () => ({
   simpleInference: mockSimpleInference,
-  mcpInference: mockMcpInference
+  mcpInference: mockMcpInference,
 }))
 
 vi.mock('@actions/core', () => core)
 
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
-const { run } = await import('../src/main.js')
+const {run} = await import('../src/main.js')
 
 describe('main.ts', () => {
   // Reset all mocks before each test
@@ -132,7 +114,7 @@ describe('main.ts', () => {
   it('Sets the response output', async () => {
     mockInputs({
       prompt: 'Hello, AI!',
-      'system-prompt': 'You are a test assistant.'
+      'system-prompt': 'You are a test assistant.',
     })
 
     await run()
@@ -144,36 +126,33 @@ describe('main.ts', () => {
   it('Sets a failed status when no prompt is set', async () => {
     mockInputs({
       prompt: '',
-      'prompt-file': ''
+      'prompt-file': '',
     })
 
     await run()
 
-    expect(core.setFailed).toHaveBeenNthCalledWith(
-      1,
-      'Neither prompt-file nor prompt was set'
-    )
+    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'Neither prompt-file nor prompt was set')
   })
 
   it('uses simple inference when MCP is disabled', async () => {
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-github-mcp': 'false'
+      'enable-github-mcp': 'false',
     })
 
     await run()
 
     expect(mockSimpleInference).toHaveBeenCalledWith({
       messages: [
-        { role: 'system', content: 'You are a test assistant.' },
-        { role: 'user', content: 'Hello, AI!' }
+        {role: 'system', content: 'You are a test assistant.'},
+        {role: 'user', content: 'Hello, AI!'},
       ],
       modelName: 'gpt-4',
       maxTokens: 100,
       endpoint: 'https://api.test.com',
       token: 'fake-token',
-      responseFormat: undefined
+      responseFormat: undefined,
     })
     expect(mockConnectToGitHubMCP).not.toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
@@ -184,13 +163,13 @@ describe('main.ts', () => {
     const mockMcpClient = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       client: {} as any,
-      tools: [{ type: 'function', function: { name: 'test-tool' } }]
+      tools: [{type: 'function', function: {name: 'test-tool'}}],
     }
 
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-github-mcp': 'true'
+      'enable-github-mcp': 'true',
     })
 
     mockConnectToGitHubMCP.mockResolvedValue(mockMcpClient)
@@ -201,12 +180,12 @@ describe('main.ts', () => {
     expect(mockMcpInference).toHaveBeenCalledWith(
       expect.objectContaining({
         messages: [
-          { role: 'system', content: 'You are a test assistant.' },
-          { role: 'user', content: 'Hello, AI!' }
+          {role: 'system', content: 'You are a test assistant.'},
+          {role: 'user', content: 'Hello, AI!'},
         ],
-        token: 'fake-token'
+        token: 'fake-token',
       }),
-      mockMcpClient
+      mockMcpClient,
     )
     expect(mockSimpleInference).not.toHaveBeenCalled()
     verifyStandardResponse()
@@ -216,7 +195,7 @@ describe('main.ts', () => {
     mockInputs({
       prompt: 'Hello, AI!',
       'system-prompt': 'You are a test assistant.',
-      'enable-github-mcp': 'true'
+      'enable-github-mcp': 'true',
     })
 
     mockConnectToGitHubMCP.mockResolvedValue(null)
@@ -226,9 +205,7 @@ describe('main.ts', () => {
     expect(mockConnectToGitHubMCP).toHaveBeenCalledWith('fake-token')
     expect(mockSimpleInference).toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
-    expect(core.warning).toHaveBeenCalledWith(
-      'MCP connection failed, falling back to simple inference'
-    )
+    expect(core.warning).toHaveBeenCalledWith('MCP connection failed, falling back to simple inference')
     verifyStandardResponse()
   })
 
@@ -240,27 +217,27 @@ describe('main.ts', () => {
 
     mockFileContent({
       [promptFile]: promptContent,
-      [systemPromptFile]: systemPromptContent
+      [systemPromptFile]: systemPromptContent,
     })
 
     mockInputs({
       'prompt-file': promptFile,
       'system-prompt-file': systemPromptFile,
-      'enable-github-mcp': 'false'
+      'enable-github-mcp': 'false',
     })
 
     await run()
 
     expect(mockSimpleInference).toHaveBeenCalledWith({
       messages: [
-        { role: 'system', content: systemPromptContent },
-        { role: 'user', content: promptContent }
+        {role: 'system', content: systemPromptContent},
+        {role: 'user', content: promptContent},
       ],
       modelName: 'gpt-4',
       maxTokens: 100,
       endpoint: 'https://api.test.com',
       token: 'fake-token',
-      responseFormat: undefined
+      responseFormat: undefined,
     })
     verifyStandardResponse()
   })
@@ -271,13 +248,11 @@ describe('main.ts', () => {
     mockFileContent({}, [promptFile])
 
     mockInputs({
-      'prompt-file': promptFile
+      'prompt-file': promptFile,
     })
 
     await run()
 
-    expect(core.setFailed).toHaveBeenCalledWith(
-      `File for prompt-file was not found: ${promptFile}`
-    )
+    expect(core.setFailed).toHaveBeenCalledWith(`File for prompt-file was not found: ${promptFile}`)
   })
 })

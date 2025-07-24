@@ -1,12 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import {describe, it, expect} from 'vitest'
 import * as path from 'path'
-import { fileURLToPath } from 'url'
-import {
-  parseTemplateVariables,
-  replaceTemplateVariables,
-  loadPromptFile,
-  isPromptYamlFile
-} from '../src/prompt'
+import {fileURLToPath} from 'url'
+import {parseTemplateVariables, replaceTemplateVariables, loadPromptFile, isPromptYamlFile} from '../src/prompt'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -19,7 +14,7 @@ a: hello
 b: world
       `
       const result = parseTemplateVariables(input)
-      expect(result).toEqual({ a: 'hello', b: 'world' })
+      expect(result).toEqual({a: 'hello', b: 'world'})
     })
 
     it('should parse multiline variables', () => {
@@ -49,14 +44,14 @@ var2: |
   describe('replaceTemplateVariables', () => {
     it('should replace simple variables', () => {
       const text = 'Hello {{name}}, welcome to {{place}}!'
-      const variables = { name: 'John', place: 'GitHub' }
+      const variables = {name: 'John', place: 'GitHub'}
       const result = replaceTemplateVariables(text, variables)
       expect(result).toBe('Hello John, welcome to GitHub!')
     })
 
     it('should leave unreplaced variables as is', () => {
       const text = 'Hello {{name}}, welcome to {{unknown}}!'
-      const variables = { name: 'John' }
+      const variables = {name: 'John'}
       const result = replaceTemplateVariables(text, variables)
       expect(result).toBe('Hello John, welcome to {{unknown}}!')
     })
@@ -90,31 +85,25 @@ var2: |
 
   describe('loadPromptFile', () => {
     it('should load simple prompt file', () => {
-      const filePath = path.join(
-        __dirname,
-        '../__fixtures__/prompts/simple.prompt.yml'
-      )
-      const variables = { a: 'cats', b: 'dogs' }
+      const filePath = path.join(__dirname, '../__fixtures__/prompts/simple.prompt.yml')
+      const variables = {a: 'cats', b: 'dogs'}
       const result = loadPromptFile(filePath, variables)
 
       expect(result.messages).toHaveLength(2)
       expect(result.messages[0]).toEqual({
         role: 'system',
-        content: 'Be as concise as possible'
+        content: 'Be as concise as possible',
       })
       expect(result.messages[1]).toEqual({
         role: 'user',
-        content: 'Compare cats and dogs, please'
+        content: 'Compare cats and dogs, please',
       })
       expect(result.model).toBe('openai/gpt-4o')
     })
 
     it('should load JSON schema prompt file', () => {
-      const filePath = path.join(
-        __dirname,
-        '../__fixtures__/prompts/json-schema.prompt.yml'
-      )
-      const variables = { animal: 'dog' }
+      const filePath = path.join(__dirname, '../__fixtures__/prompts/json-schema.prompt.yml')
+      const variables = {animal: 'dog'}
       const result = loadPromptFile(filePath, variables)
 
       expect(result.messages).toHaveLength(2)
@@ -125,9 +114,7 @@ var2: |
     })
 
     it('should throw error for non-existent file', () => {
-      expect(() => loadPromptFile('non-existent.prompt.yml')).toThrow(
-        'Prompt file not found'
-      )
+      expect(() => loadPromptFile('non-existent.prompt.yml')).toThrow('Prompt file not found')
     })
   })
 })

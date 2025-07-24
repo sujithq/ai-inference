@@ -1,5 +1,5 @@
 import type * as core from '@actions/core'
-import { vi } from 'vitest'
+import {vi} from 'vitest'
 
 export const debug = vi.fn<typeof core.debug>()
 export const error = vi.fn<typeof core.error>()
