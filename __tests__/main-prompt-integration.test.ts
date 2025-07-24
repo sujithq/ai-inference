@@ -1,38 +1,46 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals'
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type MockedFunction,
+  type Mock
+} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Create fs mocks
-const mockExistsSync = jest.fn()
-const mockReadFileSync = jest.fn()
-const mockWriteFileSync = jest.fn()
+const mockExistsSync = vi.fn()
+const mockReadFileSync = vi.fn()
+const mockWriteFileSync = vi.fn()
 
 // Create inference mocks
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockSimpleInference = jest.fn() as jest.MockedFunction<any>
-const mockMcpInference = jest.fn()
+const mockSimpleInference = vi.fn() as MockedFunction<any>
+const mockMcpInference = vi.fn()
 
 // Create MCP mocks
-const mockConnectToGitHubMCP = jest.fn()
+const mockConnectToGitHubMCP = vi.fn()
 
 // Mock fs module
-jest.unstable_mockModule('fs', () => ({
+vi.mock('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync,
   writeFileSync: mockWriteFileSync
 }))
 
 // Mock the inference functions
-jest.unstable_mockModule('../src/inference.js', () => ({
+vi.mock('../src/inference.js', () => ({
   simpleInference: mockSimpleInference,
   mcpInference: mockMcpInference
 }))
 
 // Mock the MCP connection
-jest.unstable_mockModule('../src/mcp.js', () => ({
+vi.mock('../src/mcp.js', () => ({
   connectToGitHubMCP: mockConnectToGitHubMCP
 }))
 
-jest.unstable_mockModule('@actions/core', () => core)
+vi.mock('@actions/core', () => core)
 
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
@@ -40,7 +48,7 @@ const { run } = await import('../src/main.js')
 
 describe('main.ts - prompt.yml integration', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Mock environment variables
     process.env['GITHUB_TOKEN'] = 'test-token'
@@ -62,7 +70,7 @@ describe('main.ts - prompt.yml integration', () => {
     })
 
     // Mock core.getBooleanInput
-    const mockGetBooleanInput = core.getBooleanInput as jest.Mock
+    const mockGetBooleanInput = core.getBooleanInput as Mock
     mockGetBooleanInput.mockReturnValue(false)
 
     // Mock fs.readFileSync for prompt file

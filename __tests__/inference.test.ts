@@ -1,32 +1,34 @@
-/**
- * Unit tests for the inference module, src/inference.ts
- */
-import { jest } from '@jest/globals'
+import {
+  vi,
+  type MockedFunction,
+  beforeEach,
+  expect,
+  describe,
+  it
+} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
-// Mock Azure AI Inference
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockPost = jest.fn() as jest.MockedFunction<any>
-const mockPath = jest.fn(() => ({ post: mockPost }))
-const mockClient = jest.fn(() => ({ path: mockPath }))
+const mockPost = vi.fn() as MockedFunction<any>
+const mockPath = vi.fn(() => ({ post: mockPost }))
+const mockClient = vi.fn(() => ({ path: mockPath }))
 
-jest.unstable_mockModule('@azure-rest/ai-inference', () => ({
+vi.mock('@azure-rest/ai-inference', () => ({
   default: mockClient,
-  isUnexpected: jest.fn(() => false)
+  isUnexpected: vi.fn(() => false)
 }))
 
-jest.unstable_mockModule('@azure/core-auth', () => ({
-  AzureKeyCredential: jest.fn()
+vi.mock('@azure/core-auth', () => ({
+  AzureKeyCredential: vi.fn()
 }))
 
-// Mock MCP functions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockExecuteToolCalls = jest.fn() as jest.MockedFunction<any>
-jest.unstable_mockModule('../src/mcp.js', () => ({
+const mockExecuteToolCalls = vi.fn() as MockedFunction<any>
+vi.mock('../src/mcp.js', () => ({
   executeToolCalls: mockExecuteToolCalls
 }))
 
-jest.unstable_mockModule('@actions/core', () => core)
+vi.mock('@actions/core', () => core)
 
 // Import the module being tested
 const { simpleInference, mcpInference } = await import('../src/inference.js')
@@ -44,7 +46,7 @@ describe('inference.ts', () => {
   }
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('simpleInference', () => {

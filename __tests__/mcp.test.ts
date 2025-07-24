@@ -1,16 +1,20 @@
-/**
- * Unit tests for the MCP module, src/mcp.ts
- */
-import { jest } from '@jest/globals'
+import {
+  vi,
+  type MockedFunction,
+  describe,
+  it,
+  expect,
+  beforeEach
+} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Mock MCP SDK
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockConnect = jest.fn() as jest.MockedFunction<any>
+const mockConnect = vi.fn() as MockedFunction<any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockListTools = jest.fn() as jest.MockedFunction<any>
+const mockListTools = vi.fn() as MockedFunction<any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockCallTool = jest.fn() as jest.MockedFunction<any>
+const mockCallTool = vi.fn() as MockedFunction<any>
 
 const mockClient = {
   connect: mockConnect,
@@ -19,18 +23,15 @@ const mockClient = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any
 
-jest.unstable_mockModule('@modelcontextprotocol/sdk/client/index.js', () => ({
-  Client: jest.fn(() => mockClient)
+vi.mock('@modelcontextprotocol/sdk/client/index.js', () => ({
+  Client: vi.fn(() => mockClient)
 }))
 
-jest.unstable_mockModule(
-  '@modelcontextprotocol/sdk/client/streamableHttp.js',
-  () => ({
-    StreamableHTTPClientTransport: jest.fn()
-  })
-)
+vi.mock('@modelcontextprotocol/sdk/client/streamableHttp.js', () => ({
+  StreamableHTTPClientTransport: vi.fn()
+}))
 
-jest.unstable_mockModule('@actions/core', () => core)
+vi.mock('@actions/core', () => core)
 
 // Import the module being tested
 const { connectToGitHubMCP, executeToolCall, executeToolCalls } = await import(
@@ -39,7 +40,7 @@ const { connectToGitHubMCP, executeToolCall, executeToolCalls } = await import(
 
 describe('mcp.ts', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('connectToGitHubMCP', () => {
