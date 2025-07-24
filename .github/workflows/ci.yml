@@ -43,7 +43,7 @@ jobs:
 
       - name: Test
         id: npm-ci-test
-        run: npm run ci-test
+        run: npm run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
 

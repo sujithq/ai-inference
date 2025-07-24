@@ -1,21 +1,25 @@
-/**
- * Unit tests for the action's main functionality, src/main.ts
- */
-import { jest } from '@jest/globals'
+import {
+  vi,
+  describe,
+  expect,
+  it,
+  beforeEach,
+  type MockedFunction
+} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // Default to throwing errors to catch unexpected calls
-const mockExistsSync = jest.fn().mockImplementation(() => {
+const mockExistsSync = vi.fn().mockImplementation(() => {
   throw new Error(
     'Unexpected call to existsSync - test should override this implementation'
   )
 })
-const mockReadFileSync = jest.fn().mockImplementation(() => {
+const mockReadFileSync = vi.fn().mockImplementation(() => {
   throw new Error(
     'Unexpected call to readFileSync - test should override this implementation'
   )
 })
-const mockWriteFileSync = jest.fn()
+const mockWriteFileSync = vi.fn()
 
 /**
  * Helper function to mock file system operations for one or more files
@@ -83,7 +87,7 @@ function verifyStandardResponse(): void {
   )
 }
 
-jest.unstable_mockModule('fs', () => ({
+vi.mock('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync,
   writeFileSync: mockWriteFileSync
@@ -91,22 +95,22 @@ jest.unstable_mockModule('fs', () => ({
 
 // Mock MCP and inference modules
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockConnectToGitHubMCP = jest.fn() as jest.MockedFunction<any>
+const mockConnectToGitHubMCP = vi.fn() as MockedFunction<any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockSimpleInference = jest.fn() as jest.MockedFunction<any>
+const mockSimpleInference = vi.fn() as MockedFunction<any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockMcpInference = jest.fn() as jest.MockedFunction<any>
+const mockMcpInference = vi.fn() as MockedFunction<any>
 
-jest.unstable_mockModule('../src/mcp.js', () => ({
+vi.mock('../src/mcp.js', () => ({
   connectToGitHubMCP: mockConnectToGitHubMCP
 }))
 
-jest.unstable_mockModule('../src/inference.js', () => ({
+vi.mock('../src/inference.js', () => ({
   simpleInference: mockSimpleInference,
   mcpInference: mockMcpInference
 }))
 
-jest.unstable_mockModule('@actions/core', () => core)
+vi.mock('@actions/core', () => core)
 
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
@@ -115,7 +119,7 @@ const { run } = await import('../src/main.js')
 describe('main.ts', () => {
   // Reset all mocks before each test
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Remove any existing GITHUB_TOKEN
     delete process.env.GITHUB_TOKEN

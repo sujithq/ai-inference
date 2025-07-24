@@ -1,26 +1,21 @@
-/**
- * Unit tests for the helpers module, src/helpers.ts
- */
-import { jest } from '@jest/globals'
+import { vi, it, expect, beforeEach, describe } from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
-// Mock fs module
-const mockExistsSync = jest.fn()
-const mockReadFileSync = jest.fn()
+const mockExistsSync = vi.fn()
+const mockReadFileSync = vi.fn()
 
-jest.unstable_mockModule('fs', () => ({
+vi.mock('fs', () => ({
   existsSync: mockExistsSync,
   readFileSync: mockReadFileSync
 }))
 
-jest.unstable_mockModule('@actions/core', () => core)
+vi.mock('@actions/core', () => core)
 
-// Import the module being tested
 const { loadContentFromFileOrInput } = await import('../src/helpers.js')
 
 describe('helpers.ts', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('loadContentFromFileOrInput', () => {
