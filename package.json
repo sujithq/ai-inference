@@ -10,7 +10,6 @@
   },
   "scripts": {
     "bundle": "npm run format:write && npm run package",
-    "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "lint": "npx eslint .",
@@ -19,7 +18,7 @@
     "package:watch": "npm run package -- --watch",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
-    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
+    "all": "npm run format:write && npm run lint && npm run test && npm run package"
   },
   "license": "MIT",
   "dependencies": {
@@ -47,7 +46,6 @@
     "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.4.1",
-    "make-coverage-badge": "^1.2.0",
     "prettier": "^3.5.3",
     "prettier-eslint": "^16.4.2",
     "rollup": "^4.43.0",
