@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
-import { Client } from '@modelcontextprotocol/sdk/client/index.js'
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import {Client} from '@modelcontextprotocol/sdk/client/index.js'
+import {StreamableHTTPClientTransport} from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 
 export interface ToolResult {
   tool_call_id: string
@@ -35,9 +35,7 @@ export interface GitHubMCPClient {
 /**
  * Connect to the GitHub MCP server and retrieve available tools
  */
-export async function connectToGitHubMCP(
-  token: string
-): Promise<GitHubMCPClient | null> {
+export async function connectToGitHubMCP(token: string): Promise<GitHubMCPClient | null> {
   const githubMcpUrl = 'https://api.githubcopilot.com/mcp/'
 
   core.info('Connecting to GitHub MCP server...')
@@ -46,15 +44,15 @@ export async function connectToGitHubMCP(
     requestInit: {
       headers: {
         Authorization: `Bearer ${token}`,
-        'X-MCP-Readonly': 'true'
-      }
-    }
+        'X-MCP-Readonly': 'true',
+      },
+    },
   })
 
   const client = new Client({
     name: 'ai-inference-action',
     version: '1.0.0',
-    transport
+    transport,
   })
 
   try {
@@ -67,42 +65,35 @@ export async function connectToGitHubMCP(
   core.info('Successfully connected to GitHub MCP server')
 
   const toolsResponse = await client.listTools()
-  core.info(
-    `Retrieved ${toolsResponse.tools?.length || 0} tools from GitHub MCP server`
-  )
+  core.info(`Retrieved ${toolsResponse.tools?.length || 0} tools from GitHub MCP server`)
 
   // Map GitHub MCP tools → Azure AI Inference tool definitions
-  const tools = (toolsResponse.tools || []).map((t) => ({
+  const tools = (toolsResponse.tools || []).map(t => ({
     type: 'function' as const,
     function: {
       name: t.name,
       description: t.description,
-      parameters: t.inputSchema
-    }
+      parameters: t.inputSchema,
+    },
   }))
 
   core.info(`Mapped ${tools.length} GitHub MCP tools for Azure AI Inference`)
 
-  return { client, tools }
+  return {client, tools}
 }
 
 /**
  * Execute a single tool call via GitHub MCP
  */
-export async function executeToolCall(
-  githubMcpClient: Client,
-  toolCall: ToolCall
-): Promise<ToolResult> {
-  core.info(
-    `Executing GitHub MCP tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`
-  )
+export async function executeToolCall(githubMcpClient: Client, toolCall: ToolCall): Promise<ToolResult> {
+  core.info(`Executing GitHub MCP tool: ${toolCall.function.name} with args: ${toolCall.function.arguments}`)
 
   try {
     const args = JSON.parse(toolCall.function.arguments)
 
     const result = await githubMcpClient.callTool({
       name: toolCall.function.name,
-      arguments: args
+      arguments: args,
     })
 
     core.info(`GitHub MCP tool ${toolCall.function.name} executed successfully`)
@@ -111,18 +102,16 @@ export async function executeToolCall(
       tool_call_id: toolCall.id,
       role: 'tool',
       name: toolCall.function.name,
-      content: JSON.stringify(result.content)
+      content: JSON.stringify(result.content),
     }
   } catch (toolError) {
-    core.warning(
-      `Failed to execute GitHub MCP tool ${toolCall.function.name}: ${toolError}`
-    )
+    core.warning(`Failed to execute GitHub MCP tool ${toolCall.function.name}: ${toolError}`)
 
     return {
       tool_call_id: toolCall.id,
       role: 'tool',
       name: toolCall.function.name,
-      content: `Error: ${toolError}`
+      content: `Error: ${toolError}`,
     }
   }
 }
@@ -130,10 +119,7 @@ export async function executeToolCall(
 /**
  * Execute all tool calls from a response via GitHub MCP
  */
-export async function executeToolCalls(
-  githubMcpClient: Client,
-  toolCalls: ToolCall[]
-): Promise<ToolResult[]> {
+export async function executeToolCalls(githubMcpClient: Client, toolCalls: ToolCall[]): Promise<ToolResult[]> {
   const toolResults: ToolResult[] = []
 
   for (const toolCall of toolCalls) {

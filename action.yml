@@ -14,8 +14,7 @@ inputs:
     required: false
     default: ''
   prompt-file:
-    description:
-      Path to a file containing the prompt (supports .txt and .prompt.yml
+    description: Path to a file containing the prompt (supports .txt and .prompt.yml
       formats)
     required: false
     default: ''

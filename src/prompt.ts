@@ -33,26 +33,19 @@ export function parseTemplateVariables(input: string): TemplateVariables {
     }
     return parsed
   } catch (error) {
-    throw new Error(
-      `Failed to parse template variables: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+    throw new Error(`Failed to parse template variables: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
 /**
  * Replace template variables in text using {{variable}} syntax
  */
-export function replaceTemplateVariables(
-  text: string,
-  variables: TemplateVariables
-): string {
+export function replaceTemplateVariables(text: string, variables: TemplateVariables): string {
   return text.replace(/\{\{([\w.-]+)\}\}/g, (match, variableName) => {
     if (variableName in variables) {
       return variables[variableName]
     }
-    core.warning(
-      `Template variable '${variableName}' not found in input variables`
-    )
+    core.warning(`Template variable '${variableName}' not found in input variables`)
     return match // Return the original placeholder if variable not found
   })
 }
@@ -60,10 +53,7 @@ export function replaceTemplateVariables(
 /**
  * Load and parse a prompt YAML file with template variable substitution
  */
-export function loadPromptFile(
-  filePath: string,
-  templateVariables: TemplateVariables = {}
-): PromptConfig {
+export function loadPromptFile(filePath: string, templateVariables: TemplateVariables = {}): PromptConfig {
   if (!fs.existsSync(filePath)) {
     throw new Error(`Prompt file not found: ${filePath}`)
   }
@@ -71,10 +61,7 @@ export function loadPromptFile(
   const fileContent = fs.readFileSync(filePath, 'utf-8')
 
   // Apply template variable substitution
-  const processedContent = replaceTemplateVariables(
-    fileContent,
-    templateVariables
-  )
+  const processedContent = replaceTemplateVariables(fileContent, templateVariables)
 
   try {
     const config = yaml.load(processedContent) as PromptConfig
@@ -86,9 +73,7 @@ export function loadPromptFile(
     // Validate messages
     for (const message of config.messages) {
       if (!message.role || !message.content) {
-        throw new Error(
-          'Each message must have "role" and "content" properties'
-        )
+        throw new Error('Each message must have "role" and "content" properties')
       }
       if (!['system', 'user', 'assistant'].includes(message.role)) {
         throw new Error(`Invalid message role: ${message.role}`)
@@ -97,9 +82,7 @@ export function loadPromptFile(
 
     return config
   } catch (error) {
-    throw new Error(
-      `Failed to parse prompt file: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+    throw new Error(`Failed to parse prompt file: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 

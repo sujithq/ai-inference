@@ -1,48 +1,41 @@
-import {
-  vi,
-  type MockedFunction,
-  beforeEach,
-  expect,
-  describe,
-  it
-} from 'vitest'
+import {vi, type MockedFunction, beforeEach, expect, describe, it} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockPost = vi.fn() as MockedFunction<any>
-const mockPath = vi.fn(() => ({ post: mockPost }))
-const mockClient = vi.fn(() => ({ path: mockPath }))
+const mockPath = vi.fn(() => ({post: mockPost}))
+const mockClient = vi.fn(() => ({path: mockPath}))
 
 vi.mock('@azure-rest/ai-inference', () => ({
   default: mockClient,
-  isUnexpected: vi.fn(() => false)
+  isUnexpected: vi.fn(() => false),
 }))
 
 vi.mock('@azure/core-auth', () => ({
-  AzureKeyCredential: vi.fn()
+  AzureKeyCredential: vi.fn(),
 }))
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockExecuteToolCalls = vi.fn() as MockedFunction<any>
 vi.mock('../src/mcp.js', () => ({
-  executeToolCalls: mockExecuteToolCalls
+  executeToolCalls: mockExecuteToolCalls,
 }))
 
 vi.mock('@actions/core', () => core)
 
 // Import the module being tested
-const { simpleInference, mcpInference } = await import('../src/inference.js')
+const {simpleInference, mcpInference} = await import('../src/inference.js')
 
 describe('inference.ts', () => {
   const mockRequest = {
     messages: [
-      { role: 'system', content: 'You are a test assistant' },
-      { role: 'user', content: 'Hello, AI!' }
+      {role: 'system', content: 'You are a test assistant'},
+      {role: 'user', content: 'Hello, AI!'},
     ],
     modelName: 'gpt-4',
     maxTokens: 100,
     endpoint: 'https://api.test.com',
-    token: 'test-token'
+    token: 'test-token',
   }
 
   beforeEach(() => {
@@ -56,11 +49,11 @@ describe('inference.ts', () => {
           choices: [
             {
               message: {
-                content: 'Hello, user!'
-              }
-            }
-          ]
-        }
+                content: 'Hello, user!',
+              },
+            },
+          ],
+        },
       }
 
       mockPost.mockResolvedValue(mockResponse)
@@ -68,9 +61,7 @@ describe('inference.ts', () => {
       const result = await simpleInference(mockRequest)
 
       expect(result).toBe('Hello, user!')
-      expect(core.info).toHaveBeenCalledWith(
-        'Running simple inference without tools'
-      )
+      expect(core.info).toHaveBeenCalledWith('Running simple inference without tools')
       expect(core.info).toHaveBeenCalledWith('Model response: Hello, user!')
 
       // Verify the request structure
@@ -79,16 +70,16 @@ describe('inference.ts', () => {
           messages: [
             {
               role: 'system',
-              content: 'You are a test assistant'
+              content: 'You are a test assistant',
             },
             {
               role: 'user',
-              content: 'Hello, AI!'
-            }
+              content: 'Hello, AI!',
+            },
           ],
           max_tokens: 100,
-          model: 'gpt-4'
-        }
+          model: 'gpt-4',
+        },
       })
     })
 
@@ -98,11 +89,11 @@ describe('inference.ts', () => {
           choices: [
             {
               message: {
-                content: null
-              }
-            }
-          ]
-        }
+                content: null,
+              },
+            },
+          ],
+        },
       }
 
       mockPost.mockResolvedValue(mockResponse)
@@ -110,9 +101,7 @@ describe('inference.ts', () => {
       const result = await simpleInference(mockRequest)
 
       expect(result).toBeNull()
-      expect(core.info).toHaveBeenCalledWith(
-        'Model response: No response content'
-      )
+      expect(core.info).toHaveBeenCalledWith('Model response: No response content')
     })
   })
 
@@ -126,10 +115,10 @@ describe('inference.ts', () => {
           function: {
             name: 'test-tool',
             description: 'A test tool',
-            parameters: { type: 'object' }
-          }
-        }
-      ]
+            parameters: {type: 'object'},
+          },
+        },
+      ],
     }
 
     it('performs inference without tool calls', async () => {
@@ -139,11 +128,11 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'Hello, user!',
-                tool_calls: null
-              }
-            }
-          ]
-        }
+                tool_calls: null,
+              },
+            },
+          ],
+        },
       }
 
       mockPost.mockResolvedValue(mockResponse)
@@ -151,13 +140,9 @@ describe('inference.ts', () => {
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(result).toBe('Hello, user!')
-      expect(core.info).toHaveBeenCalledWith(
-        'Running GitHub MCP inference with tools'
-      )
+      expect(core.info).toHaveBeenCalledWith('Running GitHub MCP inference with tools')
       expect(core.info).toHaveBeenCalledWith('MCP inference iteration 1')
-      expect(core.info).toHaveBeenCalledWith(
-        'No tool calls requested, ending GitHub MCP inference loop'
-      )
+      expect(core.info).toHaveBeenCalledWith('No tool calls requested, ending GitHub MCP inference loop')
 
       // The MCP inference loop will always add the assistant message, even when there are no tool calls
       // So we don't check the exact messages, just that tools were included
@@ -175,9 +160,9 @@ describe('inference.ts', () => {
           id: 'call-123',
           function: {
             name: 'test-tool',
-            arguments: '{"param": "value"}'
-          }
-        }
+            arguments: '{"param": "value"}',
+          },
+        },
       ]
 
       const toolResults = [
@@ -185,8 +170,8 @@ describe('inference.ts', () => {
           tool_call_id: 'call-123',
           role: 'tool',
           name: 'test-tool',
-          content: 'Tool result'
-        }
+          content: 'Tool result',
+        },
       ]
 
       // First response with tool calls
@@ -196,11 +181,11 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'I need to use a tool.',
-                tool_calls: toolCalls
-              }
-            }
-          ]
-        }
+                tool_calls: toolCalls,
+              },
+            },
+          ],
+        },
       }
 
       // Second response after tool execution
@@ -210,26 +195,21 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'Here is the final answer.',
-                tool_calls: null
-              }
-            }
-          ]
-        }
+                tool_calls: null,
+              },
+            },
+          ],
+        },
       }
 
-      mockPost
-        .mockResolvedValueOnce(firstResponse)
-        .mockResolvedValueOnce(secondResponse)
+      mockPost.mockResolvedValueOnce(firstResponse).mockResolvedValueOnce(secondResponse)
 
       mockExecuteToolCalls.mockResolvedValue(toolResults)
 
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(result).toBe('Here is the final answer.')
-      expect(mockExecuteToolCalls).toHaveBeenCalledWith(
-        mockMcpClient.client,
-        toolCalls
-      )
+      expect(mockExecuteToolCalls).toHaveBeenCalledWith(mockMcpClient.client, toolCalls)
       expect(mockPost).toHaveBeenCalledTimes(2)
 
       // Verify the second call includes the conversation history
@@ -247,9 +227,9 @@ describe('inference.ts', () => {
           id: 'call-123',
           function: {
             name: 'test-tool',
-            arguments: '{}'
-          }
-        }
+            arguments: '{}',
+          },
+        },
       ]
 
       const toolResults = [
@@ -257,8 +237,8 @@ describe('inference.ts', () => {
           tool_call_id: 'call-123',
           role: 'tool',
           name: 'test-tool',
-          content: 'Tool result'
-        }
+          content: 'Tool result',
+        },
       ]
 
       // Always respond with tool calls to trigger infinite loop
@@ -268,11 +248,11 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'Using tool again.',
-                tool_calls: toolCalls
-              }
-            }
-          ]
-        }
+                tool_calls: toolCalls,
+              },
+            },
+          ],
+        },
       }
 
       mockPost.mockResolvedValue(responseWithToolCalls)
@@ -281,9 +261,7 @@ describe('inference.ts', () => {
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(mockPost).toHaveBeenCalledTimes(5) // Max iterations reached
-      expect(core.warning).toHaveBeenCalledWith(
-        'GitHub MCP inference loop exceeded maximum iterations (5)'
-      )
+      expect(core.warning).toHaveBeenCalledWith('GitHub MCP inference loop exceeded maximum iterations (5)')
       expect(result).toBe('Using tool again.') // Last assistant message
     })
 
@@ -294,11 +272,11 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'Hello, user!',
-                tool_calls: []
-              }
-            }
-          ]
-        }
+                tool_calls: [],
+              },
+            },
+          ],
+        },
       }
 
       mockPost.mockResolvedValue(mockResponse)
@@ -306,9 +284,7 @@ describe('inference.ts', () => {
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(result).toBe('Hello, user!')
-      expect(core.info).toHaveBeenCalledWith(
-        'No tool calls requested, ending GitHub MCP inference loop'
-      )
+      expect(core.info).toHaveBeenCalledWith('No tool calls requested, ending GitHub MCP inference loop')
       expect(mockExecuteToolCalls).not.toHaveBeenCalled()
     })
 
@@ -316,8 +292,8 @@ describe('inference.ts', () => {
       const toolCalls = [
         {
           id: 'call-123',
-          function: { name: 'test-tool', arguments: '{}' }
-        }
+          function: {name: 'test-tool', arguments: '{}'},
+        },
       ]
 
       const firstResponse = {
@@ -326,11 +302,11 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'First message',
-                tool_calls: toolCalls
-              }
-            }
-          ]
-        }
+                tool_calls: toolCalls,
+              },
+            },
+          ],
+        },
       }
 
       const secondResponse = {
@@ -339,24 +315,22 @@ describe('inference.ts', () => {
             {
               message: {
                 content: 'Second message',
-                tool_calls: toolCalls
-              }
-            }
-          ]
-        }
+                tool_calls: toolCalls,
+              },
+            },
+          ],
+        },
       }
 
-      mockPost
-        .mockResolvedValueOnce(firstResponse)
-        .mockResolvedValue(secondResponse)
+      mockPost.mockResolvedValueOnce(firstResponse).mockResolvedValue(secondResponse)
 
       mockExecuteToolCalls.mockResolvedValue([
         {
           tool_call_id: 'call-123',
           role: 'tool',
           name: 'test-tool',
-          content: 'result'
-        }
+          content: 'result',
+        },
       ])
 
       const result = await mcpInference(mockRequest, mockMcpClient)

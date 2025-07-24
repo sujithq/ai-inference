@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import ModelClient, { isUnexpected } from '@azure-rest/ai-inference'
-import { AzureKeyCredential } from '@azure/core-auth'
-import { GitHubMCPClient, executeToolCalls, MCPTool, ToolCall } from './mcp.js'
-import { handleUnexpectedResponse } from './helpers.js'
+import ModelClient, {isUnexpected} from '@azure-rest/ai-inference'
+import {AzureKeyCredential} from '@azure/core-auth'
+import {GitHubMCPClient, executeToolCalls, MCPTool, ToolCall} from './mcp.js'
+import {handleUnexpectedResponse} from './helpers.js'
 
 interface ChatMessage {
   role: string
@@ -14,17 +14,17 @@ interface ChatCompletionsRequestBody {
   messages: ChatMessage[]
   max_tokens: number
   model: string
-  response_format?: { type: 'json_schema'; json_schema: unknown }
+  response_format?: {type: 'json_schema'; json_schema: unknown}
   tools?: MCPTool[]
 }
 
 export interface InferenceRequest {
-  messages: Array<{ role: string; content: string }>
+  messages: Array<{role: string; content: string}>
   modelName: string
   maxTokens: number
   endpoint: string
   token: string
-  responseFormat?: { type: 'json_schema'; json_schema: unknown } // Processed response format for the API
+  responseFormat?: {type: 'json_schema'; json_schema: unknown} // Processed response format for the API
 }
 
 export interface InferenceResponse {
@@ -42,23 +42,17 @@ export interface InferenceResponse {
 /**
  * Simple one-shot inference without tools
  */
-export async function simpleInference(
-  request: InferenceRequest
-): Promise<string | null> {
+export async function simpleInference(request: InferenceRequest): Promise<string | null> {
   core.info('Running simple inference without tools')
 
-  const client = ModelClient(
-    request.endpoint,
-    new AzureKeyCredential(request.token),
-    {
-      userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
-    }
-  )
+  const client = ModelClient(request.endpoint, new AzureKeyCredential(request.token), {
+    userAgentOptions: {userAgentPrefix: 'github-actions-ai-inference'},
+  })
 
   const requestBody: ChatCompletionsRequestBody = {
     messages: request.messages,
     max_tokens: request.maxTokens,
-    model: request.modelName
+    model: request.modelName,
   }
 
   // Add response format if specified
@@ -67,7 +61,7 @@ export async function simpleInference(
   }
 
   const response = await client.path('/chat/completions').post({
-    body: requestBody
+    body: requestBody,
   })
 
   if (isUnexpected(response)) {
@@ -85,17 +79,13 @@ export async function simpleInference(
  */
 export async function mcpInference(
   request: InferenceRequest,
-  githubMcpClient: GitHubMCPClient
+  githubMcpClient: GitHubMCPClient,
 ): Promise<string | null> {
   core.info('Running GitHub MCP inference with tools')
 
-  const client = ModelClient(
-    request.endpoint,
-    new AzureKeyCredential(request.token),
-    {
-      userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
-    }
-  )
+  const client = ModelClient(request.endpoint, new AzureKeyCredential(request.token), {
+    userAgentOptions: {userAgentPrefix: 'github-actions-ai-inference'},
+  })
 
   // Start with the pre-processed messages
   const messages: ChatMessage[] = [...request.messages]
@@ -111,7 +101,7 @@ export async function mcpInference(
       messages: messages,
       max_tokens: request.maxTokens,
       model: request.modelName,
-      tools: githubMcpClient.tools
+      tools: githubMcpClient.tools,
     }
 
     // Add response format if specified (only on first iteration to avoid conflicts)
@@ -120,7 +110,7 @@ export async function mcpInference(
     }
 
     const response = await client.path('/chat/completions').post({
-      body: requestBody
+      body: requestBody,
     })
 
     if (isUnexpected(response)) {
@@ -136,7 +126,7 @@ export async function mcpInference(
     messages.push({
       role: 'assistant',
       content: modelResponse || '',
-      ...(toolCalls && { tool_calls: toolCalls })
+      ...(toolCalls && {tool_calls: toolCalls}),
     })
 
     if (!toolCalls || toolCalls.length === 0) {
@@ -147,10 +137,7 @@ export async function mcpInference(
     core.info(`Model requested ${toolCalls.length} tool calls`)
 
     // Execute all tool calls via GitHub MCP
-    const toolResults = await executeToolCalls(
-      githubMcpClient.client,
-      toolCalls
-    )
+    const toolResults = await executeToolCalls(githubMcpClient.client, toolCalls)
 
     // Add tool results to the conversation
     messages.push(...toolResults)
@@ -158,15 +145,13 @@ export async function mcpInference(
     core.info('Tool results added, continuing conversation...')
   }
 
-  core.warning(
-    `GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`
-  )
+  core.warning(`GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`)
 
   // Return the last assistant message content
   const lastAssistantMessage = messages
     .slice()
     .reverse()
-    .find((msg) => msg.role === 'assistant')
+    .find(msg => msg.role === 'assistant')
 
   return lastAssistantMessage?.content || null
 }

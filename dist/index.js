@@ -41878,14 +41878,14 @@ async function connectToGitHubMCP(token) {
         requestInit: {
             headers: {
                 Authorization: `Bearer ${token}`,
-                'X-MCP-Readonly': 'true'
-            }
-        }
+                'X-MCP-Readonly': 'true',
+            },
+        },
     });
     const client = new Client({
         name: 'ai-inference-action',
         version: '1.0.0',
-        transport
+        transport,
     });
     try {
         await client.connect(transport);
@@ -41898,13 +41898,13 @@ async function connectToGitHubMCP(token) {
     const toolsResponse = await client.listTools();
     coreExports.info(`Retrieved ${toolsResponse.tools?.length || 0} tools from GitHub MCP server`);
     // Map GitHub MCP tools → Azure AI Inference tool definitions
-    const tools = (toolsResponse.tools || []).map((t) => ({
+    const tools = (toolsResponse.tools || []).map(t => ({
         type: 'function',
         function: {
             name: t.name,
             description: t.description,
-            parameters: t.inputSchema
-        }
+            parameters: t.inputSchema,
+        },
     }));
     coreExports.info(`Mapped ${tools.length} GitHub MCP tools for Azure AI Inference`);
     return { client, tools };
@@ -41918,14 +41918,14 @@ async function executeToolCall(githubMcpClient, toolCall) {
         const args = JSON.parse(toolCall.function.arguments);
         const result = await githubMcpClient.callTool({
             name: toolCall.function.name,
-            arguments: args
+            arguments: args,
         });
         coreExports.info(`GitHub MCP tool ${toolCall.function.name} executed successfully`);
         return {
             tool_call_id: toolCall.id,
             role: 'tool',
             name: toolCall.function.name,
-            content: JSON.stringify(result.content)
+            content: JSON.stringify(result.content),
         };
     }
     catch (toolError) {
@@ -41934,7 +41934,7 @@ async function executeToolCall(githubMcpClient, toolCall) {
             tool_call_id: toolCall.id,
             role: 'tool',
             name: toolCall.function.name,
-            content: `Error: ${toolError}`
+            content: `Error: ${toolError}`,
         };
     }
 }
@@ -49083,9 +49083,7 @@ function handleUnexpectedResponse(response) {
     }
     // Handle other error cases
     throw new Error(`AI service returned error response (status: ${response.status})${errorCodeMsg}: ` +
-        (typeof response.body === 'string'
-            ? response.body
-            : JSON.stringify(response.body)));
+        (typeof response.body === 'string' ? response.body : JSON.stringify(response.body)));
 }
 /**
  * Build messages array from either prompt config or legacy format
@@ -49093,9 +49091,9 @@ function handleUnexpectedResponse(response) {
 function buildMessages(promptConfig, systemPrompt, prompt) {
     if (promptConfig?.messages && promptConfig.messages.length > 0) {
         // Use new message format
-        return promptConfig.messages.map((msg) => ({
+        return promptConfig.messages.map(msg => ({
             role: msg.role,
-            content: msg.content
+            content: msg.content,
         }));
     }
     else {
@@ -49103,9 +49101,9 @@ function buildMessages(promptConfig, systemPrompt, prompt) {
         return [
             {
                 role: 'system',
-                content: systemPrompt || 'You are a helpful assistant'
+                content: systemPrompt || 'You are a helpful assistant',
             },
-            { role: 'user', content: prompt || '' }
+            { role: 'user', content: prompt || '' },
         ];
     }
 }
@@ -49113,13 +49111,12 @@ function buildMessages(promptConfig, systemPrompt, prompt) {
  * Build response format object for API from prompt config
  */
 function buildResponseFormat(promptConfig) {
-    if (promptConfig?.responseFormat === 'json_schema' &&
-        promptConfig.jsonSchema) {
+    if (promptConfig?.responseFormat === 'json_schema' && promptConfig.jsonSchema) {
         try {
             const schema = JSON.parse(promptConfig.jsonSchema);
             return {
                 type: 'json_schema',
-                json_schema: schema
+                json_schema: schema,
             };
         }
         catch (error) {
@@ -49140,7 +49137,7 @@ function buildInferenceRequest(promptConfig, systemPrompt, prompt, modelName, ma
         maxTokens,
         endpoint,
         token,
-        responseFormat
+        responseFormat,
     };
 }
 
@@ -49150,19 +49147,19 @@ function buildInferenceRequest(promptConfig, systemPrompt, prompt, modelName, ma
 async function simpleInference(request) {
     coreExports.info('Running simple inference without tools');
     const client = createClient(request.endpoint, new AzureKeyCredential(request.token), {
-        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
+        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' },
     });
     const requestBody = {
         messages: request.messages,
         max_tokens: request.maxTokens,
-        model: request.modelName
+        model: request.modelName,
     };
     // Add response format if specified
     if (request.responseFormat) {
         requestBody.response_format = request.responseFormat;
     }
     const response = await client.path('/chat/completions').post({
-        body: requestBody
+        body: requestBody,
     });
     if (isUnexpected(response)) {
         handleUnexpectedResponse(response);
@@ -49177,7 +49174,7 @@ async function simpleInference(request) {
 async function mcpInference(request, githubMcpClient) {
     coreExports.info('Running GitHub MCP inference with tools');
     const client = createClient(request.endpoint, new AzureKeyCredential(request.token), {
-        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' }
+        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' },
     });
     // Start with the pre-processed messages
     const messages = [...request.messages];
@@ -49190,14 +49187,14 @@ async function mcpInference(request, githubMcpClient) {
             messages: messages,
             max_tokens: request.maxTokens,
             model: request.modelName,
-            tools: githubMcpClient.tools
+            tools: githubMcpClient.tools,
         };
         // Add response format if specified (only on first iteration to avoid conflicts)
         if (iterationCount === 1 && request.responseFormat) {
             requestBody.response_format = request.responseFormat;
         }
         const response = await client.path('/chat/completions').post({
-            body: requestBody
+            body: requestBody,
         });
         if (isUnexpected(response)) {
             handleUnexpectedResponse(response);
@@ -49209,7 +49206,7 @@ async function mcpInference(request, githubMcpClient) {
         messages.push({
             role: 'assistant',
             content: modelResponse || '',
-            ...(toolCalls && { tool_calls: toolCalls })
+            ...(toolCalls && { tool_calls: toolCalls }),
         });
         if (!toolCalls || toolCalls.length === 0) {
             coreExports.info('No tool calls requested, ending GitHub MCP inference loop');
@@ -49227,7 +49224,7 @@ async function mcpInference(request, githubMcpClient) {
     const lastAssistantMessage = messages
         .slice()
         .reverse()
-        .find((msg) => msg.role === 'assistant');
+        .find(msg => msg.role === 'assistant');
     return lastAssistantMessage?.content || null;
 }
 
