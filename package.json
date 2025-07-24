@@ -24,8 +24,6 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@modelcontextprotocol/sdk": "^1.15.1",
-    "@rollup/plugin-json": "^6.1.0",
-    "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.0",
     "pkce-challenge": "^5.0.0"
   },
@@ -50,7 +48,9 @@
     "prettier-eslint": "^16.4.2",
     "rollup": "^4.43.0",
     "typescript": "^5.8.3",
-    "vitest": "^3"
+    "vitest": "^3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/js-yaml": "^4.0.9"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
