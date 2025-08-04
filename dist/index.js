@@ -52162,8 +52162,10 @@ async function run() {
             coreExports.setFailed(error.message);
         }
         else {
-            coreExports.setFailed('An unexpected error occurred');
+            coreExports.setFailed(`An unexpected error occurred: ${JSON.stringify(error, null, 2)}`);
         }
+        // Force exit to prevent hanging on open connections
+        process.exit(1);
     }
 }
 function tempDir() {
