@@ -94,6 +94,11 @@ vi.mock('../src/inference.js', () => ({
 
 vi.mock('@actions/core', () => core)
 
+// Mock process.exit to prevent it from actually exiting during tests
+const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
+  throw new Error('process.exit called')
+})
+
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
 const {run} = await import('../src/main.js')
@@ -102,6 +107,7 @@ describe('main.ts', () => {
   // Reset all mocks before each test
   beforeEach(() => {
     vi.clearAllMocks()
+    mockProcessExit.mockClear()
 
     // Remove any existing GITHUB_TOKEN
     delete process.env.GITHUB_TOKEN
@@ -129,9 +135,11 @@ describe('main.ts', () => {
       'prompt-file': '',
     })
 
-    await run()
+    // Expect the run function to throw due to process.exit being mocked
+    await expect(run()).rejects.toThrow('process.exit called')
 
-    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'Neither prompt-file nor prompt was set')
+    expect(core.setFailed).toHaveBeenCalledWith('Neither prompt-file nor prompt was set')
+    expect(mockProcessExit).toHaveBeenCalledWith(1)
   })
 
   it('uses simple inference when MCP is disabled', async () => {
@@ -251,8 +259,10 @@ describe('main.ts', () => {
       'prompt-file': promptFile,
     })
 
-    await run()
+    // Expect the run function to throw due to process.exit being mocked
+    await expect(run()).rejects.toThrow('process.exit called')
 
     expect(core.setFailed).toHaveBeenCalledWith(`File for prompt-file was not found: ${promptFile}`)
+    expect(mockProcessExit).toHaveBeenCalledWith(1)
   })
 })
