@@ -168,7 +168,7 @@ steps:
       token: ${{ secrets.USER_PAT }}
 ```
 
-If you want, yu can use separate tokens for the AI inference endpoint
+If you want, you can use separate tokens for the AI inference endpoint
 and the GitHub MCP server:
 
 ```yaml
