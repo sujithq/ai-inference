@@ -168,7 +168,7 @@ steps:
       token: ${{ secrets.USER_PAT }}
 ```
 
-For enhanced security, you can use separate tokens for the AI inference endpoint
+If you want, yu can use separate tokens for the AI inference endpoint
 and the GitHub MCP server:
 
 ```yaml
@@ -179,15 +179,12 @@ steps:
     with:
       prompt: 'List my open pull requests and create a summary'
       enable-github-mcp: true
-      token: ${{ secrets.AI_INFERENCE_TOKEN }}
-      github-mcp-token: ${{ secrets.GITHUB_MCP_TOKEN }}
+      token: ${{ secrets.GITHUB_TOKEN }}
+      github-mcp-token: ${{ secrets.USER_PAT }}
 ```
 
 When MCP is enabled, the AI model will have access to GitHub tools and can
 perform actions like searching issues and PRs.
-
-**Note:** You can use the built-in `GITHUB_TOKEN`, or provide a separate GitHub
-PAT via `github-mcp-token` for tighter security and permissions control.
 
 ## Inputs
 
