@@ -52130,13 +52130,15 @@ async function run() {
         if (token === undefined) {
             throw new Error('GITHUB_TOKEN is not set');
         }
+        // Get GitHub MCP token (use dedicated token if provided, otherwise fall back to main token)
+        const githubMcpToken = coreExports.getInput('github-mcp-token') || token;
         const endpoint = coreExports.getInput('endpoint');
         // Build the inference request with pre-processed messages and response format
         const inferenceRequest = buildInferenceRequest(promptConfig, systemPrompt, prompt, modelName, maxTokens, endpoint, token);
         const enableMcp = coreExports.getBooleanInput('enable-github-mcp') || false;
         let modelResponse = null;
         if (enableMcp) {
-            const mcpClient = await connectToGitHubMCP(inferenceRequest.token);
+            const mcpClient = await connectToGitHubMCP(githubMcpToken);
             if (mcpClient) {
                 modelResponse = await mcpInference(inferenceRequest, mcpClient);
             }

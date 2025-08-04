@@ -168,11 +168,23 @@ steps:
       token: ${{ secrets.USER_PAT }}
 ```
 
+If you want, you can use separate tokens for the AI inference endpoint
+and the GitHub MCP server:
+
+```yaml
+steps:
+  - name: AI Inference with Separate MCP Token
+    id: inference
+    uses: actions/ai-inference@v1.2
+    with:
+      prompt: 'List my open pull requests and create a summary'
+      enable-github-mcp: true
+      token: ${{ secrets.GITHUB_TOKEN }}
+      github-mcp-token: ${{ secrets.USER_PAT }}
+```
+
 When MCP is enabled, the AI model will have access to GitHub tools and can
 perform actions like searching issues and PRs.
-
-**Note:** For now, MCP integration cannot be used with the built-in token. You
-must pass a GitHub PAT into `token:` instead.
 
 ## Inputs
 
@@ -191,6 +203,7 @@ the action:
 | `endpoint`           | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint                         | `https://models.github.ai/inference` |
 | `max-tokens`         | The max number of tokens to generate                                                                                                                          | 200                                  |
 | `enable-github-mcp`  | Enable Model Context Protocol integration with GitHub tools                                                                                                   | `false`                              |
+| `github-mcp-token`   | Token to use for GitHub MCP server (defaults to the main token if not specified). Use a separate PAT for tighter security                                     | `""`                                 |
 
 ## Outputs
 

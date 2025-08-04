@@ -50,6 +50,10 @@ inputs:
     description: Enable Model Context Protocol integration with GitHub tools
     required: false
     default: 'false'
+  github-mcp-token:
+    description: The token to use for GitHub MCP server (defaults to GITHUB_TOKEN if not specified)
+    required: false
+    default: ''
 
 # Define your outputs here.
 outputs:
