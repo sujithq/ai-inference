@@ -96,6 +96,9 @@ export async function run(): Promise<void> {
     } else {
       core.setFailed(`An unexpected error occurred: ${JSON.stringify(error)}`)
     }
+
+    // Force exit to prevent hanging on open connections
+    process.exit(1)
   }
 }
 
