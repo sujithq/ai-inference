@@ -49,6 +49,9 @@ export async function run(): Promise<void> {
       throw new Error('GITHUB_TOKEN is not set')
     }
 
+    // Get GitHub MCP token (use dedicated token if provided, otherwise fall back to main token)
+    const githubMcpToken = core.getInput('github-mcp-token') || token
+
     const endpoint = core.getInput('endpoint')
 
     // Build the inference request with pre-processed messages and response format
@@ -67,7 +70,7 @@ export async function run(): Promise<void> {
     let modelResponse: string | null = null
 
     if (enableMcp) {
-      const mcpClient = await connectToGitHubMCP(inferenceRequest.token)
+      const mcpClient = await connectToGitHubMCP(githubMcpToken)
 
       if (mcpClient) {
         modelResponse = await mcpInference(inferenceRequest, mcpClient)
