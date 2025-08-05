@@ -48695,8 +48695,7 @@ async function mcpInference(request, githubMcpClient) {
         try {
             const response = await client.chat.completions.create(chatCompletionRequest);
             if (!('choices' in response)) {
-                coreExports.error('Unexpected response format from OpenAI API');
-                return null;
+                throw new Error(`Unexpected response format from API: ${JSON.stringify(response)}`);
             }
             const assistantMessage = response.choices[0]?.message;
             const modelResponse = assistantMessage?.content;
