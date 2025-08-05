@@ -1,7 +1,13 @@
 import {describe, it, expect} from 'vitest'
 import * as path from 'path'
 import {fileURLToPath} from 'url'
-import {parseTemplateVariables, replaceTemplateVariables, loadPromptFile, isPromptYamlFile} from '../src/prompt'
+import {
+  parseTemplateVariables,
+  replaceTemplateVariables,
+  loadPromptFile,
+  isPromptYamlFile,
+  parseFileTemplateVariables,
+} from '../src/prompt'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -10,8 +16,8 @@ describe('prompt.ts', () => {
   describe('parseTemplateVariables', () => {
     it('should parse simple YAML variables', () => {
       const input = `
-a: hello
-b: world
+ a: hello
+ b: world
       `
       const result = parseTemplateVariables(input)
       expect(result).toEqual({a: 'hello', b: 'world'})
@@ -19,10 +25,10 @@ b: world
 
     it('should parse multiline variables', () => {
       const input = `
-var1: hello
-var2: |
-  This is a
-  multiline string
+ var1: hello
+ var2: |
+   This is a
+   multiline string
       `
       const result = parseTemplateVariables(input)
       expect(result.var1).toBe('hello')
@@ -115,6 +121,19 @@ var2: |
 
     it('should throw error for non-existent file', () => {
       expect(() => loadPromptFile('non-existent.prompt.yml')).toThrow('Prompt file not found')
+    })
+  })
+
+  describe('parseFileTemplateVariables', () => {
+    it('reads file contents for variables', () => {
+      const configPath = path.join(__dirname, '../__fixtures__/prompts/json-schema.prompt.yml')
+      const data = parseFileTemplateVariables(`sample: ${configPath}`)
+      expect(data.sample).toContain('messages:')
+      expect(data.sample).toContain('responseFormat:')
+    })
+
+    it('errors on missing files', () => {
+      expect(() => parseFileTemplateVariables('x: ./does-not-exist.txt')).toThrow('was not found')
     })
   })
 })
