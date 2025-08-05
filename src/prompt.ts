@@ -65,7 +65,7 @@ export function parseFileTemplateVariables(fileInput: string): TemplateVariables
         result[key] = fs.readFileSync(filePath, 'utf-8')
       } catch (err) {
         throw new Error(
-          `Failed to read file for template variable '${key}' at path '${filePath}': ${err instanceof Error ? err.message : 'Unknown error'}`
+          `Failed to read file for template variable '${key}' at path '${filePath}': ${err instanceof Error ? err.message : 'Unknown error'}`,
         )
       }
     }
