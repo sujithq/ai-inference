@@ -48656,12 +48656,12 @@ async function simpleInference(request) {
             return modelResponse || null;
         }
         else {
-            coreExports.error('Unexpected response format from OpenAI API');
+            coreExports.error(`Unexpected response format from API: ${JSON.stringify(response)}`);
             return null;
         }
     }
     catch (error) {
-        coreExports.error(`OpenAI API error: ${error}`);
+        coreExports.error(`API error: ${error}`);
         throw error;
     }
 }
