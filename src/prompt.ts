@@ -61,7 +61,13 @@ export function parseFileTemplateVariables(fileInput: string): TemplateVariables
       if (!fs.existsSync(filePath)) {
         throw new Error(`File for template variable '${key}' was not found: ${filePath}`)
       }
-      result[key] = fs.readFileSync(filePath, 'utf-8')
+      try {
+        result[key] = fs.readFileSync(filePath, 'utf-8')
+      } catch (err) {
+        throw new Error(
+          `Failed to read file for template variable '${key}' at path '${filePath}': ${err instanceof Error ? err.message : 'Unknown error'}`
+        )
+      }
     }
 
     return result
