@@ -130,6 +130,49 @@ model: openai/gpt-4o
     expect(core.setOutput).toHaveBeenCalledWith('response-file', expect.any(String))
   })
 
+  it('supports file_input variables to load file contents', async () => {
+    mockExistsSync.mockReturnValue(true)
+
+    // First call: reading the prompt file. Second call: reading file_input referenced file contents.
+    const externalFilePath = 'vars.txt'
+    mockReadFileSync.mockImplementation((path: string) => {
+      if (path === 'test.prompt.yml') {
+        return `messages:\n  - role: user\n    content: 'Here is the data: {{blob}}'\nmodel: openai/gpt-4o\n`
+      }
+      if (path === externalFilePath) {
+        return 'FILE_CONTENTS'
+      }
+      return ''
+    })
+
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'prompt-file':
+          return 'test.prompt.yml'
+        case 'file_input':
+          return `blob: ${externalFilePath}`
+        case 'model':
+          return 'openai/gpt-4o'
+        case 'max-tokens':
+          return '200'
+        case 'endpoint':
+          return 'https://models.github.ai/inference'
+        case 'enable-github-mcp':
+          return 'false'
+        default:
+          return ''
+      }
+    })
+
+    await run()
+
+    expect(mockSimpleInference).toHaveBeenCalledWith(
+      expect.objectContaining({
+        messages: [{role: 'user', content: 'Here is the data: FILE_CONTENTS'}],
+      }),
+    )
+  })
+
   it('should fall back to legacy format when not using prompt YAML', async () => {
     mockExistsSync.mockReturnValue(false)
     core.getInput.mockImplementation((name: string) => {
