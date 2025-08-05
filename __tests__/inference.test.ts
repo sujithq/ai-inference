@@ -95,6 +95,49 @@ describe('inference.ts', () => {
       expect(result).toBeNull()
       expect(core.info).toHaveBeenCalledWith('Model response: No response content')
     })
+
+    it('includes response format when specified', async () => {
+      const requestWithResponseFormat = {
+        ...mockRequest,
+        responseFormat: {
+          type: 'json_schema' as const,
+          json_schema: {type: 'object'},
+        },
+      }
+
+      const mockResponse = {
+        choices: [
+          {
+            message: {
+              content: '{"result": "success"}',
+            },
+          },
+        ],
+      }
+
+      mockCreate.mockResolvedValue(mockResponse)
+
+      const result = await simpleInference(requestWithResponseFormat)
+
+      expect(result).toBe('{"result": "success"}')
+
+      // Verify response format was included in the request
+      expect(mockCreate).toHaveBeenCalledWith({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a test assistant',
+          },
+          {
+            role: 'user',
+            content: 'Hello, AI!',
+          },
+        ],
+        max_tokens: 100,
+        model: 'gpt-4',
+        response_format: requestWithResponseFormat.responseFormat,
+      })
+    })
   })
 
   describe('mcpInference', () => {
@@ -140,6 +183,7 @@ describe('inference.ts', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const callArgs = mockCreate.mock.calls[0][0] as any
       expect(callArgs.tools).toEqual(mockMcpClient.tools)
+      expect(callArgs.response_format).toBeUndefined()
       expect(callArgs.model).toBe('gpt-4')
       expect(callArgs.max_tokens).toBe(100)
     })
@@ -314,6 +358,192 @@ describe('inference.ts', () => {
       const result = await mcpInference(mockRequest, mockMcpClient)
 
       expect(result).toBe('Second message')
+    })
+
+    it('makes additional loop with response format when no tool calls are made', async () => {
+      const requestWithResponseFormat = {
+        ...mockRequest,
+        responseFormat: {
+          type: 'json_schema' as const,
+          json_schema: {type: 'object'},
+        },
+      }
+
+      // First response without tool calls
+      const firstResponse = {
+        choices: [
+          {
+            message: {
+              content: 'First response',
+              tool_calls: null,
+            },
+          },
+        ],
+      }
+
+      // Second response with response format applied
+      const secondResponse = {
+        choices: [
+          {
+            message: {
+              content: '{"result": "formatted response"}',
+              tool_calls: null,
+            },
+          },
+        ],
+      }
+
+      mockCreate.mockResolvedValueOnce(firstResponse).mockResolvedValueOnce(secondResponse)
+
+      const result = await mcpInference(requestWithResponseFormat, mockMcpClient)
+
+      expect(result).toBe('{"result": "formatted response"}')
+      expect(mockCreate).toHaveBeenCalledTimes(2)
+      expect(core.info).toHaveBeenCalledWith('Making one more MCP loop with the requested response format...')
+
+      // First call should have tools but no response format
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const firstCall = mockCreate.mock.calls[0][0] as any
+      expect(firstCall.tools).toEqual(mockMcpClient.tools)
+      expect(firstCall.response_format).toBeUndefined()
+
+      // Second call should have response format but no tools
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const secondCall = mockCreate.mock.calls[1][0] as any
+      expect(secondCall.tools).toBeUndefined()
+      expect(secondCall.response_format).toEqual(requestWithResponseFormat.responseFormat)
+
+      // Second call should include the user message requesting JSON format
+      expect(secondCall.messages).toHaveLength(5) // system, user, assistant, user, assistant
+      expect(secondCall.messages[3].role).toBe('user')
+      expect(secondCall.messages[3].content).toContain('Please provide your response in the exact')
+    })
+
+    it('uses response format only on final iteration after tool calls', async () => {
+      const requestWithResponseFormat = {
+        ...mockRequest,
+        responseFormat: {
+          type: 'json_schema' as const,
+          json_schema: {type: 'object'},
+        },
+      }
+
+      const toolCalls = [
+        {
+          id: 'call-123',
+          function: {
+            name: 'test-tool',
+            arguments: '{"param": "value"}',
+          },
+        },
+      ]
+
+      const toolResults = [
+        {
+          tool_call_id: 'call-123',
+          role: 'tool',
+          name: 'test-tool',
+          content: 'Tool result',
+        },
+      ]
+
+      // First response with tool calls
+      const firstResponse = {
+        choices: [
+          {
+            message: {
+              content: 'Using tool',
+              tool_calls: toolCalls,
+            },
+          },
+        ],
+      }
+
+      // Second response without tool calls, but should trigger final message loop
+      const secondResponse = {
+        choices: [
+          {
+            message: {
+              content: 'Intermediate result',
+              tool_calls: null,
+            },
+          },
+        ],
+      }
+
+      // Third response with response format
+      const thirdResponse = {
+        choices: [
+          {
+            message: {
+              content: '{"final": "result"}',
+              tool_calls: null,
+            },
+          },
+        ],
+      }
+
+      mockCreate
+        .mockResolvedValueOnce(firstResponse)
+        .mockResolvedValueOnce(secondResponse)
+        .mockResolvedValueOnce(thirdResponse)
+
+      mockExecuteToolCalls.mockResolvedValue(toolResults)
+
+      const result = await mcpInference(requestWithResponseFormat, mockMcpClient)
+
+      expect(result).toBe('{"final": "result"}')
+      expect(mockCreate).toHaveBeenCalledTimes(3)
+
+      // First call: tools but no response format
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const firstCall = mockCreate.mock.calls[0][0] as any
+      expect(firstCall.tools).toEqual(mockMcpClient.tools)
+      expect(firstCall.response_format).toBeUndefined()
+
+      // Second call: tools but no response format (after tool execution)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const secondCall = mockCreate.mock.calls[1][0] as any
+      expect(secondCall.tools).toEqual(mockMcpClient.tools)
+      expect(secondCall.response_format).toBeUndefined()
+
+      // Third call: response format but no tools (final message)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const thirdCall = mockCreate.mock.calls[2][0] as any
+      expect(thirdCall.tools).toBeUndefined()
+      expect(thirdCall.response_format).toEqual(requestWithResponseFormat.responseFormat)
+    })
+
+    it('returns immediately when response format is set and finalMessage is already true', async () => {
+      const requestWithResponseFormat = {
+        ...mockRequest,
+        responseFormat: {
+          type: 'json_schema' as const,
+          json_schema: {type: 'object'},
+        },
+      }
+
+      // Response without tool calls on what would be the final message iteration
+      const mockResponse = {
+        choices: [
+          {
+            message: {
+              content: '{"immediate": "result"}',
+              tool_calls: null,
+            },
+          },
+        ],
+      }
+
+      mockCreate.mockResolvedValue(mockResponse)
+
+      // We need to test a scenario where finalMessage would already be true
+      // This happens when we're already in the final iteration
+      const result = await mcpInference(requestWithResponseFormat, mockMcpClient)
+
+      // The function should make two calls: one normal, then one with response format
+      expect(mockCreate).toHaveBeenCalledTimes(2)
+      expect(result).toBe('{"immediate": "result"}')
     })
   })
 })

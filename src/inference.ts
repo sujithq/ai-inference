@@ -89,6 +89,9 @@ export async function mcpInference(
 
   let iterationCount = 0
   const maxIterations = 5 // Prevent infinite loops
+  // We want to use response_format (e.g. JSON) on the last iteration only, so the model can output
+  // the final result in the expected format without interfering with tool calls
+  let finalMessage = false
 
   while (iterationCount < maxIterations) {
     iterationCount++
@@ -98,13 +101,14 @@ export async function mcpInference(
       messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
       max_tokens: request.maxTokens,
       model: request.modelName,
-      tools: githubMcpClient.tools as OpenAI.Chat.Completions.ChatCompletionTool[],
     }
 
-    // Add response format if specified (only on first iteration to avoid conflicts)
-    if (iterationCount === 1 && request.responseFormat) {
+    // Add response format if specified (only on final iteration to avoid conflicts with tool calls)
+    if (finalMessage && request.responseFormat) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       chatCompletionRequest.response_format = request.responseFormat as any
+    } else {
+      chatCompletionRequest.tools = githubMcpClient.tools as OpenAI.Chat.Completions.ChatCompletionTool[]
     }
 
     try {
@@ -128,7 +132,25 @@ export async function mcpInference(
 
       if (!toolCalls || toolCalls.length === 0) {
         core.info('No tool calls requested, ending GitHub MCP inference loop')
-        return modelResponse || null
+
+        // If we have a response format set and we haven't explicitly run one final message iteration,
+        // do another loop with the response format set
+        if (request.responseFormat && !finalMessage) {
+          core.info('Making one more MCP loop with the requested response format...')
+
+          // Add a user message requesting JSON format and try again
+          messages.push({
+            role: 'user',
+            content: `Please provide your response in the exact ${request.responseFormat} format specified.`,
+          })
+
+          finalMessage = true
+
+          // Continue the loop to get a properly formatted response
+          continue
+        } else {
+          return modelResponse || null
+        }
       }
 
       core.info(`Model requested ${toolCalls.length} tool calls`)
