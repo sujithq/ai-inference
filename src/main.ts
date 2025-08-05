@@ -5,7 +5,13 @@ import * as path from 'path'
 import {connectToGitHubMCP} from './mcp.js'
 import {simpleInference, mcpInference} from './inference.js'
 import {loadContentFromFileOrInput, buildInferenceRequest} from './helpers.js'
-import {loadPromptFile, parseTemplateVariables, isPromptYamlFile, PromptConfig} from './prompt.js'
+import {
+  loadPromptFile,
+  parseTemplateVariables,
+  isPromptYamlFile,
+  PromptConfig,
+  parseFileTemplateVariables,
+} from './prompt.js'
 
 const RESPONSE_FILE = 'modelResponse.txt'
 
@@ -18,6 +24,7 @@ export async function run(): Promise<void> {
   try {
     const promptFilePath = core.getInput('prompt-file')
     const inputVariables = core.getInput('input')
+    const fileInputVariables = core.getInput('file_input')
 
     let promptConfig: PromptConfig | undefined = undefined
     let systemPrompt: string | undefined = undefined
@@ -27,8 +34,10 @@ export async function run(): Promise<void> {
     if (promptFilePath && isPromptYamlFile(promptFilePath)) {
       core.info('Using prompt YAML file format')
 
-      // Parse template variables
-      const templateVariables = parseTemplateVariables(inputVariables)
+      // Parse template variables from both string inputs and file-based inputs
+      const stringVars = parseTemplateVariables(inputVariables)
+      const fileVars = parseFileTemplateVariables(fileInputVariables)
+      const templateVariables = {...stringVars, ...fileVars}
 
       // Load and process prompt file
       promptConfig = loadPromptFile(promptFilePath, templateVariables)

@@ -51634,6 +51634,41 @@ function parseTemplateVariables(input) {
     }
 }
 /**
+ * Parse file-based template variables from YAML input string. The YAML should map
+ * variable names to file paths. File contents are read and returned as variables.
+ */
+function parseFileTemplateVariables(fileInput) {
+    if (!fileInput.trim()) {
+        return {};
+    }
+    try {
+        const parsed = load(fileInput);
+        if (typeof parsed !== 'object' || parsed === null) {
+            throw new Error('File template variables must be a YAML object');
+        }
+        const result = {};
+        for (const [key, value] of Object.entries(parsed)) {
+            if (typeof value !== 'string') {
+                throw new Error(`File template variable '${key}' must be a string file path`);
+            }
+            const filePath = value;
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`File for template variable '${key}' was not found: ${filePath}`);
+            }
+            try {
+                result[key] = fs.readFileSync(filePath, 'utf-8');
+            }
+            catch (err) {
+                throw new Error(`Failed to read file for template variable '${key}' at path '${filePath}': ${err instanceof Error ? err.message : 'Unknown error'}`);
+            }
+        }
+        return result;
+    }
+    catch (error) {
+        throw new Error(`Failed to parse file template variables: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+}
+/**
  * Replace template variables in text using {{variable}} syntax
  */
 function replaceTemplateVariables(text, variables) {
@@ -51692,14 +51727,17 @@ async function run() {
     try {
         const promptFilePath = coreExports.getInput('prompt-file');
         const inputVariables = coreExports.getInput('input');
+        const fileInputVariables = coreExports.getInput('file_input');
         let promptConfig = undefined;
         let systemPrompt = undefined;
         let prompt = undefined;
         // Check if we're using a prompt YAML file
         if (promptFilePath && isPromptYamlFile(promptFilePath)) {
             coreExports.info('Using prompt YAML file format');
-            // Parse template variables
-            const templateVariables = parseTemplateVariables(inputVariables);
+            // Parse template variables from both string inputs and file-based inputs
+            const stringVars = parseTemplateVariables(inputVariables);
+            const fileVars = parseFileTemplateVariables(fileInputVariables);
+            const templateVariables = { ...stringVars, ...fileVars };
             // Load and process prompt file
             promptConfig = loadPromptFile(promptFilePath, templateVariables);
         }
