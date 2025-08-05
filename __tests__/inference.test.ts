@@ -2,17 +2,15 @@ import {vi, type MockedFunction, beforeEach, expect, describe, it} from 'vitest'
 import * as core from '../__fixtures__/core.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mockPost = vi.fn() as MockedFunction<any>
-const mockPath = vi.fn(() => ({post: mockPost}))
-const mockClient = vi.fn(() => ({path: mockPath}))
-
-vi.mock('@azure-rest/ai-inference', () => ({
-  default: mockClient,
-  isUnexpected: vi.fn(() => false),
+const mockCreate = vi.fn() as MockedFunction<any>
+const mockCompletions = {create: mockCreate}
+const mockChat = {completions: mockCompletions}
+const mockOpenAIClient = vi.fn(() => ({
+  chat: mockChat,
 }))
 
-vi.mock('@azure/core-auth', () => ({
-  AzureKeyCredential: vi.fn(),
+vi.mock('openai', () => ({
+  default: mockOpenAIClient,
 }))
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,8 +27,8 @@ const {simpleInference, mcpInference} = await import('../src/inference.js')
 describe('inference.ts', () => {
   const mockRequest = {
     messages: [
-      {role: 'system', content: 'You are a test assistant'},
-      {role: 'user', content: 'Hello, AI!'},
+      {role: 'system' as const, content: 'You are a test assistant'},
+      {role: 'user' as const, content: 'Hello, AI!'},
     ],
     modelName: 'gpt-4',
     maxTokens: 100,
@@ -45,18 +43,16 @@ describe('inference.ts', () => {
   describe('simpleInference', () => {
     it('performs simple inference without tools', async () => {
       const mockResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Hello, user!',
-              },
+        choices: [
+          {
+            message: {
+              content: 'Hello, user!',
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValue(mockResponse)
+      mockCreate.mockResolvedValue(mockResponse)
 
       const result = await simpleInference(mockRequest)
 
@@ -65,38 +61,34 @@ describe('inference.ts', () => {
       expect(core.info).toHaveBeenCalledWith('Model response: Hello, user!')
 
       // Verify the request structure
-      expect(mockPost).toHaveBeenCalledWith({
-        body: {
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a test assistant',
-            },
-            {
-              role: 'user',
-              content: 'Hello, AI!',
-            },
-          ],
-          max_tokens: 100,
-          model: 'gpt-4',
-        },
+      expect(mockCreate).toHaveBeenCalledWith({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a test assistant',
+          },
+          {
+            role: 'user',
+            content: 'Hello, AI!',
+          },
+        ],
+        max_tokens: 100,
+        model: 'gpt-4',
       })
     })
 
     it('handles null response content', async () => {
       const mockResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: null,
-              },
+        choices: [
+          {
+            message: {
+              content: null,
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValue(mockResponse)
+      mockCreate.mockResolvedValue(mockResponse)
 
       const result = await simpleInference(mockRequest)
 
@@ -123,19 +115,17 @@ describe('inference.ts', () => {
 
     it('performs inference without tool calls', async () => {
       const mockResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Hello, user!',
-                tool_calls: null,
-              },
+        choices: [
+          {
+            message: {
+              content: 'Hello, user!',
+              tool_calls: null,
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValue(mockResponse)
+      mockCreate.mockResolvedValue(mockResponse)
 
       const result = await mcpInference(mockRequest, mockMcpClient)
 
@@ -146,12 +136,12 @@ describe('inference.ts', () => {
 
       // The MCP inference loop will always add the assistant message, even when there are no tool calls
       // So we don't check the exact messages, just that tools were included
-      expect(mockPost).toHaveBeenCalledTimes(1)
+      expect(mockCreate).toHaveBeenCalledTimes(1)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const callArgs = mockPost.mock.calls[0][0] as any
-      expect(callArgs.body.tools).toEqual(mockMcpClient.tools)
-      expect(callArgs.body.model).toBe('gpt-4')
-      expect(callArgs.body.max_tokens).toBe(100)
+      const callArgs = mockCreate.mock.calls[0][0] as any
+      expect(callArgs.tools).toEqual(mockMcpClient.tools)
+      expect(callArgs.model).toBe('gpt-4')
+      expect(callArgs.max_tokens).toBe(100)
     })
 
     it('executes tool calls and continues conversation', async () => {
@@ -176,33 +166,29 @@ describe('inference.ts', () => {
 
       // First response with tool calls
       const firstResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'I need to use a tool.',
-                tool_calls: toolCalls,
-              },
+        choices: [
+          {
+            message: {
+              content: 'I need to use a tool.',
+              tool_calls: toolCalls,
             },
-          ],
-        },
+          },
+        ],
       }
 
       // Second response after tool execution
       const secondResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Here is the final answer.',
-                tool_calls: null,
-              },
+        choices: [
+          {
+            message: {
+              content: 'Here is the final answer.',
+              tool_calls: null,
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValueOnce(firstResponse).mockResolvedValueOnce(secondResponse)
+      mockCreate.mockResolvedValueOnce(firstResponse).mockResolvedValueOnce(secondResponse)
 
       mockExecuteToolCalls.mockResolvedValue(toolResults)
 
@@ -210,15 +196,15 @@ describe('inference.ts', () => {
 
       expect(result).toBe('Here is the final answer.')
       expect(mockExecuteToolCalls).toHaveBeenCalledWith(mockMcpClient.client, toolCalls)
-      expect(mockPost).toHaveBeenCalledTimes(2)
+      expect(mockCreate).toHaveBeenCalledTimes(2)
 
       // Verify the second call includes the conversation history
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const secondCall = mockPost.mock.calls[1][0] as any
-      expect(secondCall.body.messages).toHaveLength(5) // system, user, assistant, tool, assistant
-      expect(secondCall.body.messages[2].role).toBe('assistant')
-      expect(secondCall.body.messages[2].tool_calls).toEqual(toolCalls)
-      expect(secondCall.body.messages[3]).toEqual(toolResults[0])
+      const secondCall = mockCreate.mock.calls[1][0] as any
+      expect(secondCall.messages).toHaveLength(5) // system, user, assistant, tool, assistant
+      expect(secondCall.messages[2].role).toBe('assistant')
+      expect(secondCall.messages[2].tool_calls).toEqual(toolCalls)
+      expect(secondCall.messages[3]).toEqual(toolResults[0])
     })
 
     it('handles maximum iteration limit', async () => {
@@ -243,43 +229,39 @@ describe('inference.ts', () => {
 
       // Always respond with tool calls to trigger infinite loop
       const responseWithToolCalls = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Using tool again.',
-                tool_calls: toolCalls,
-              },
+        choices: [
+          {
+            message: {
+              content: 'Using tool again.',
+              tool_calls: toolCalls,
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValue(responseWithToolCalls)
+      mockCreate.mockResolvedValue(responseWithToolCalls)
       mockExecuteToolCalls.mockResolvedValue(toolResults)
 
       const result = await mcpInference(mockRequest, mockMcpClient)
 
-      expect(mockPost).toHaveBeenCalledTimes(5) // Max iterations reached
+      expect(mockCreate).toHaveBeenCalledTimes(5) // Max iterations reached
       expect(core.warning).toHaveBeenCalledWith('GitHub MCP inference loop exceeded maximum iterations (5)')
       expect(result).toBe('Using tool again.') // Last assistant message
     })
 
     it('handles empty tool calls array', async () => {
       const mockResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Hello, user!',
-                tool_calls: [],
-              },
+        choices: [
+          {
+            message: {
+              content: 'Hello, user!',
+              tool_calls: [],
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValue(mockResponse)
+      mockCreate.mockResolvedValue(mockResponse)
 
       const result = await mcpInference(mockRequest, mockMcpClient)
 
@@ -297,32 +279,28 @@ describe('inference.ts', () => {
       ]
 
       const firstResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'First message',
-                tool_calls: toolCalls,
-              },
+        choices: [
+          {
+            message: {
+              content: 'First message',
+              tool_calls: toolCalls,
             },
-          ],
-        },
+          },
+        ],
       }
 
       const secondResponse = {
-        body: {
-          choices: [
-            {
-              message: {
-                content: 'Second message',
-                tool_calls: toolCalls,
-              },
+        choices: [
+          {
+            message: {
+              content: 'Second message',
+              tool_calls: toolCalls,
             },
-          ],
-        },
+          },
+        ],
       }
 
-      mockPost.mockResolvedValueOnce(firstResponse).mockResolvedValue(secondResponse)
+      mockCreate.mockResolvedValueOnce(firstResponse).mockResolvedValue(secondResponse)
 
       mockExecuteToolCalls.mockResolvedValue([
         {

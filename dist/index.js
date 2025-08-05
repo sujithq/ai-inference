@@ -6,38 +6,30 @@ import fs__default from 'fs';
 import * as require$$1 from 'path';
 import require$$1__default from 'path';
 import require$$2 from 'http';
-import require$$1$1 from 'https';
+import require$$3 from 'https';
 import require$$0$4 from 'net';
-import require$$1$2 from 'tls';
+import require$$1$1 from 'tls';
 import require$$4 from 'events';
 import require$$0$3 from 'assert';
 import require$$0$2 from 'util';
-import require$$0$5, { Readable } from 'stream';
+import require$$0$5 from 'stream';
 import require$$7 from 'buffer';
 import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
-import require$$0$7, { Transform } from 'node:stream';
-import require$$1$3, { inspect } from 'node:util';
+import require$$0$7 from 'node:stream';
+import require$$1$2 from 'node:util';
 import require$$0$6 from 'node:events';
 import require$$0$8 from 'worker_threads';
 import require$$2$1 from 'perf_hooks';
 import require$$5 from 'util/types';
 import require$$4$1 from 'async_hooks';
-import require$$1$4 from 'console';
-import require$$5$1 from 'url';
-import require$$3 from 'zlib';
+import require$$1$3 from 'console';
+import require$$1$4 from 'url';
+import require$$3$1 from 'zlib';
 import require$$6 from 'string_decoder';
 import require$$0$9 from 'diagnostics_channel';
 import require$$2$2 from 'child_process';
 import require$$6$1 from 'timers';
-import * as os from 'node:os';
-import { EOL } from 'node:os';
-import * as process$1 from 'node:process';
-import { randomUUID as randomUUID$1 } from 'node:crypto';
-import require$$1$5 from 'tty';
-import * as http from 'node:http';
-import * as https from 'node:https';
-import * as zlib from 'node:zlib';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -387,9 +379,9 @@ var hasRequiredTunnel$1;
 function requireTunnel$1 () {
 	if (hasRequiredTunnel$1) return tunnel$1;
 	hasRequiredTunnel$1 = 1;
-	var tls = require$$1$2;
+	var tls = require$$1$1;
 	var http = require$$2;
-	var https = require$$1$1;
+	var https = require$$3;
 	var events = require$$4;
 	var util = require$$0$2;
 
@@ -1769,7 +1761,7 @@ function requireSbmh () {
 	 * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
 	 */
 	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$3.inherits;
+	const inherits = require$$1$2.inherits;
 
 	function SBMH (needle) {
 	  if (typeof needle === 'string') {
@@ -1978,7 +1970,7 @@ function requirePartStream () {
 	if (hasRequiredPartStream) return PartStream_1;
 	hasRequiredPartStream = 1;
 
-	const inherits = require$$1$3.inherits;
+	const inherits = require$$1$2.inherits;
 	const ReadableStream = require$$0$7.Readable;
 
 	function PartStream (opts) {
@@ -2024,7 +2016,7 @@ function requireHeaderParser () {
 	hasRequiredHeaderParser = 1;
 
 	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$3.inherits;
+	const inherits = require$$1$2.inherits;
 	const getLimit = requireGetLimit();
 
 	const StreamSearch = requireSbmh();
@@ -2132,7 +2124,7 @@ function requireDicer () {
 	hasRequiredDicer = 1;
 
 	const WritableStream = require$$0$7.Writable;
-	const inherits = require$$1$3.inherits;
+	const inherits = require$$1$2.inherits;
 
 	const StreamSearch = requireSbmh();
 
@@ -2709,7 +2701,7 @@ function requireMultipart () {
 	//     -- this will require modifications to utils.parseParams
 
 	const { Readable } = require$$0$7;
-	const { inherits } = require$$1$3;
+	const { inherits } = require$$1$2;
 
 	const Dicer = requireDicer();
 
@@ -3275,7 +3267,7 @@ function requireMain () {
 	hasRequiredMain = 1;
 
 	const WritableStream = require$$0$7.Writable;
-	const { inherits } = require$$1$3;
+	const { inherits } = require$$1$2;
 	const Dicer = requireDicer();
 
 	const MultipartParser = requireMultipart();
@@ -8099,7 +8091,7 @@ function requireConnect () {
 	    let socket;
 	    if (protocol === 'https:') {
 	      if (!tls) {
-	        tls = require$$1$2;
+	        tls = require$$1$1;
 	      }
 	      servername = servername || options.servername || util.getServerName(host) || null;
 
@@ -14123,7 +14115,7 @@ function requirePendingInterceptorsFormatter () {
 	hasRequiredPendingInterceptorsFormatter = 1;
 
 	const { Transform } = require$$0$5;
-	const { Console } = require$$1$4;
+	const { Console } = require$$1$3;
 
 	/**
 	 * Gets the output of `console.table(…)` as a string.
@@ -14350,7 +14342,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$5$1;
+	const { URL } = require$$1$4;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -17108,7 +17100,7 @@ function requireFetch () {
 	} = requireResponse();
 	const { Headers } = requireHeaders();
 	const { Request, makeRequest } = requireRequest();
-	const zlib = require$$3;
+	const zlib = require$$3$1;
 	const {
 	  bytesMatch,
 	  makePolicyContainer,
@@ -24403,7 +24395,7 @@ function requireLib () {
 	Object.defineProperty(lib, "__esModule", { value: true });
 	lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
 	const http = __importStar(require$$2);
-	const https = __importStar(require$$1$1);
+	const https = __importStar(require$$3);
 	const pm = __importStar(requireProxy());
 	const tunnel = __importStar(requireTunnel());
 	const undici_1 = requireUndici();
@@ -39127,13 +39119,13 @@ function requireAsync () {
 	return async;
 }
 
-var custom$1;
+var custom;
 var hasRequiredCustom;
 
 function requireCustom () {
-	if (hasRequiredCustom) return custom$1;
+	if (hasRequiredCustom) return custom;
 	hasRequiredCustom = 1;
-	custom$1 = function generate_custom(it, $keyword, $ruleType) {
+	custom = function generate_custom(it, $keyword, $ruleType) {
 	  var out = ' ';
 	  var $lvl = it.level;
 	  var $dataLvl = it.dataLevel;
@@ -39360,7 +39352,7 @@ function requireCustom () {
 	  }
 	  return out;
 	};
-	return custom$1;
+	return custom;
 }
 
 var $schema$1 = "http://json-schema.org/draft-07/schema#";
@@ -40629,8 +40621,8 @@ class Client extends Protocol {
     }
 }
 
-let crypto;
-crypto =
+let crypto$1;
+crypto$1 =
     globalThis.crypto?.webcrypto ?? // Node.js [18-16] REPL
         globalThis.crypto ?? // Node.js >18
         import('node:crypto').then(m => m.webcrypto); // Node.js <18 Non-REPL
@@ -40640,7 +40632,7 @@ crypto =
  * @returns Array of random ints (0 to 255)
  */
 async function getRandomValues(size) {
-    return (await crypto).getRandomValues(new Uint8Array(size));
+    return (await crypto$1).getRandomValues(new Uint8Array(size));
 }
 /** Generate cryptographically strong random string
  * @param size The desired length of the string
@@ -40669,7 +40661,7 @@ async function generateVerifier(length) {
  * @returns The base64 url encoded code challenge
  */
 async function generateChallenge(code_verifier) {
-    const buffer = await (await crypto).subtle.digest("SHA-256", new TextEncoder().encode(code_verifier));
+    const buffer = await (await crypto$1).subtle.digest("SHA-256", new TextEncoder().encode(code_verifier));
     // Generate base64url string
     // btoa is deprecated in Node.js but is used here for web browser compatibility
     // (which has no good replacement yet, see also https://github.com/whatwg/html/issues/6811)
@@ -41376,14 +41368,14 @@ class ParseError extends Error {
     super(message), this.name = "ParseError", this.type = options.type, this.field = options.field, this.value = options.value, this.line = options.line;
   }
 }
-function noop(_arg) {
+function noop$1(_arg) {
 }
 function createParser(callbacks) {
   if (typeof callbacks == "function")
     throw new TypeError(
       "`callbacks` must be an object, got a function instead. Did you mean `{onEvent: fn}`?"
     );
-  const { onEvent = noop, onError = noop, onRetry = noop, onComment } = callbacks;
+  const { onEvent = noop$1, onError = noop$1, onRetry = noop$1, onComment } = callbacks;
   let incompleteLine = "", isFirstChunk = true, id, data = "", eventType = "";
   function feed(newChunk) {
     const chunk = isFirstChunk ? newChunk.replace(/^\xEF\xBB\xBF/, "") : newChunk, [complete, incomplete] = splitLines(`${incompleteLine}${chunk}`);
@@ -41950,7091 +41942,6793 @@ async function executeToolCalls(githubMcpClient, toolCalls) {
     return toolResults;
 }
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
-
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (typeof state === "function" ? receiver !== state || true : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return state.set(receiver, value), value;
+}
+function __classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function awaitReturn(f) { return function (v) { return Promise.resolve(v).then(f, reject); }; }
-    function verb(n, f) { if (g[n]) { i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; if (f) i[n] = f(i[n]); } }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-    var e = new Error(message);
-    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * https://stackoverflow.com/a/2117523
+ */
+let uuid4 = function () {
+    const { crypto } = globalThis;
+    if (crypto?.randomUUID) {
+        uuid4 = crypto.randomUUID.bind(crypto);
+        return crypto.randomUUID();
+    }
+    const u8 = new Uint8Array(1);
+    const randomByte = crypto ? () => crypto.getRandomValues(u8)[0] : () => (Math.random() * 0xff) & 0xff;
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (+c ^ (randomByte() & (15 >> (+c / 4)))).toString(16));
 };
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * This error is thrown when an asynchronous operation has been aborted.
- * Check for this error by testing the `name` that the name property of the
- * error matches `"AbortError"`.
- *
- * @example
- * ```ts snippet:ReadmeSampleAbortError
- * import { AbortError } from "@typespec/ts-http-runtime";
- *
- * async function doAsyncWork(options: { abortSignal: AbortSignal }): Promise<void> {
- *   if (options.abortSignal.aborted) {
- *     throw new AbortError();
- *   }
- *
- *   // do async work
- * }
- *
- * const controller = new AbortController();
- * controller.abort();
- *
- * try {
- *   doAsyncWork({ abortSignal: controller.signal });
- * } catch (e) {
- *   if (e instanceof Error && e.name === "AbortError") {
- *     // handle abort error here.
- *   }
- * }
- * ```
- */
-let AbortError$1 = class AbortError extends Error {
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+function isAbortError(err) {
+    return (typeof err === 'object' &&
+        err !== null &&
+        // Spec-compliant fetch implementations
+        (('name' in err && err.name === 'AbortError') ||
+            // Expo fetch
+            ('message' in err && String(err.message).includes('FetchRequestCanceledException'))));
+}
+const castToError = (err) => {
+    if (err instanceof Error)
+        return err;
+    if (typeof err === 'object' && err !== null) {
+        try {
+            if (Object.prototype.toString.call(err) === '[object Error]') {
+                // @ts-ignore - not all envs have native support for cause yet
+                const error = new Error(err.message, err.cause ? { cause: err.cause } : {});
+                if (err.stack)
+                    error.stack = err.stack;
+                // @ts-ignore - not all envs have native support for cause yet
+                if (err.cause && !error.cause)
+                    error.cause = err.cause;
+                if (err.name)
+                    error.name = err.name;
+                return error;
+            }
+        }
+        catch { }
+        try {
+            return new Error(JSON.stringify(err));
+        }
+        catch { }
+    }
+    return new Error(err);
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class OpenAIError extends Error {
+}
+class APIError extends OpenAIError {
+    constructor(status, error, message, headers) {
+        super(`${APIError.makeMessage(status, error, message)}`);
+        this.status = status;
+        this.headers = headers;
+        this.requestID = headers?.get('x-request-id');
+        this.error = error;
+        const data = error;
+        this.code = data?.['code'];
+        this.param = data?.['param'];
+        this.type = data?.['type'];
+    }
+    static makeMessage(status, error, message) {
+        const msg = error?.message ?
+            typeof error.message === 'string' ?
+                error.message
+                : JSON.stringify(error.message)
+            : error ? JSON.stringify(error)
+                : message;
+        if (status && msg) {
+            return `${status} ${msg}`;
+        }
+        if (status) {
+            return `${status} status code (no body)`;
+        }
+        if (msg) {
+            return msg;
+        }
+        return '(no status code or body)';
+    }
+    static generate(status, errorResponse, message, headers) {
+        if (!status || !headers) {
+            return new APIConnectionError({ message, cause: castToError(errorResponse) });
+        }
+        const error = errorResponse?.['error'];
+        if (status === 400) {
+            return new BadRequestError(status, error, message, headers);
+        }
+        if (status === 401) {
+            return new AuthenticationError(status, error, message, headers);
+        }
+        if (status === 403) {
+            return new PermissionDeniedError(status, error, message, headers);
+        }
+        if (status === 404) {
+            return new NotFoundError(status, error, message, headers);
+        }
+        if (status === 409) {
+            return new ConflictError(status, error, message, headers);
+        }
+        if (status === 422) {
+            return new UnprocessableEntityError(status, error, message, headers);
+        }
+        if (status === 429) {
+            return new RateLimitError(status, error, message, headers);
+        }
+        if (status >= 500) {
+            return new InternalServerError(status, error, message, headers);
+        }
+        return new APIError(status, error, message, headers);
+    }
+}
+class APIUserAbortError extends APIError {
+    constructor({ message } = {}) {
+        super(undefined, undefined, message || 'Request was aborted.', undefined);
+    }
+}
+class APIConnectionError extends APIError {
+    constructor({ message, cause }) {
+        super(undefined, undefined, message || 'Connection error.', undefined);
+        // in some environments the 'cause' property is already declared
+        // @ts-ignore
+        if (cause)
+            this.cause = cause;
+    }
+}
+class APIConnectionTimeoutError extends APIConnectionError {
+    constructor({ message } = {}) {
+        super({ message: message ?? 'Request timed out.' });
+    }
+}
+class BadRequestError extends APIError {
+}
+class AuthenticationError extends APIError {
+}
+class PermissionDeniedError extends APIError {
+}
+class NotFoundError extends APIError {
+}
+class ConflictError extends APIError {
+}
+class UnprocessableEntityError extends APIError {
+}
+class RateLimitError extends APIError {
+}
+class InternalServerError extends APIError {
+}
+class LengthFinishReasonError extends OpenAIError {
+    constructor() {
+        super(`Could not parse response content as the length limit was reached`);
+    }
+}
+class ContentFilterFinishReasonError extends OpenAIError {
+    constructor() {
+        super(`Could not parse response content as the request was rejected by the content filter`);
+    }
+}
+class InvalidWebhookSignatureError extends Error {
     constructor(message) {
         super(message);
-        this.name = "AbortError";
     }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// https://url.spec.whatwg.org/#url-scheme-string
+const startsWithSchemeRegexp = /^[a-z][a-z0-9+.-]*:/i;
+const isAbsoluteURL = (url) => {
+    return startsWithSchemeRegexp.test(url);
 };
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function log(message, ...args) {
-    process$1.stderr.write(`${require$$1$3.format(message, ...args)}${EOL}`);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const debugEnvVariable = (typeof process !== "undefined" && process.env && process.env.DEBUG) || undefined;
-let enabledString;
-let enabledNamespaces = [];
-let skippedNamespaces = [];
-const debuggers = [];
-if (debugEnvVariable) {
-    enable(debugEnvVariable);
-}
-const debugObj = Object.assign((namespace) => {
-    return createDebugger(namespace);
-}, {
-    enable,
-    enabled,
-    disable,
-    log,
-});
-function enable(namespaces) {
-    enabledString = namespaces;
-    enabledNamespaces = [];
-    skippedNamespaces = [];
-    const wildcard = /\*/g;
-    const namespaceList = namespaces.split(",").map((ns) => ns.trim().replace(wildcard, ".*?"));
-    for (const ns of namespaceList) {
-        if (ns.startsWith("-")) {
-            skippedNamespaces.push(new RegExp(`^${ns.substr(1)}$`));
-        }
-        else {
-            enabledNamespaces.push(new RegExp(`^${ns}$`));
-        }
+let isArray = (val) => ((isArray = Array.isArray), isArray(val));
+let isReadonlyArray = isArray;
+/** Returns an object if the given value isn't an object, otherwise returns as-is */
+function maybeObj(x) {
+    if (typeof x !== 'object') {
+        return {};
     }
-    for (const instance of debuggers) {
-        instance.enabled = enabled(instance.namespace);
-    }
+    return x ?? {};
 }
-function enabled(namespace) {
-    if (namespace.endsWith("*")) {
+// https://stackoverflow.com/a/34491287
+function isEmptyObj(obj) {
+    if (!obj)
         return true;
-    }
-    for (const skipped of skippedNamespaces) {
-        if (skipped.test(namespace)) {
-            return false;
-        }
-    }
-    for (const enabledNamespace of enabledNamespaces) {
-        if (enabledNamespace.test(namespace)) {
-            return true;
-        }
-    }
-    return false;
+    for (const _k in obj)
+        return false;
+    return true;
 }
-function disable() {
-    const result = enabledString || "";
-    enable("");
-    return result;
+// https://eslint.org/docs/latest/rules/no-prototype-builtins
+function hasOwn(obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
 }
-function createDebugger(namespace) {
-    const newDebugger = Object.assign(debug, {
-        enabled: enabled(namespace),
-        destroy,
-        log: debugObj.log,
-        namespace,
-        extend: extend$1,
-    });
-    function debug(...args) {
-        if (!newDebugger.enabled) {
-            return;
-        }
-        if (args.length > 0) {
-            args[0] = `${namespace} ${args[0]}`;
-        }
-        newDebugger.log(...args);
+function isObj(obj) {
+    return obj != null && typeof obj === 'object' && !Array.isArray(obj);
+}
+const validatePositiveInteger = (name, n) => {
+    if (typeof n !== 'number' || !Number.isInteger(n)) {
+        throw new OpenAIError(`${name} must be an integer`);
     }
-    debuggers.push(newDebugger);
-    return newDebugger;
-}
-function destroy() {
-    const index = debuggers.indexOf(this);
-    if (index >= 0) {
-        debuggers.splice(index, 1);
-        return true;
+    if (n < 0) {
+        throw new OpenAIError(`${name} must be a positive integer`);
     }
-    return false;
-}
-function extend$1(namespace) {
-    const newDebugger = createDebugger(`${this.namespace}:${namespace}`);
-    newDebugger.log = this.log;
-    return newDebugger;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const TYPESPEC_RUNTIME_LOG_LEVELS = ["verbose", "info", "warning", "error"];
-const levelMap = {
-    verbose: 400,
-    info: 300,
-    warning: 200,
-    error: 100,
+    return n;
 };
-function patchLogMethod(parent, child) {
-    child.log = (...args) => {
-        parent.log(...args);
-    };
-}
-function isTypeSpecRuntimeLogLevel(level) {
-    return TYPESPEC_RUNTIME_LOG_LEVELS.includes(level);
-}
-/**
- * Creates a logger context base on the provided options.
- * @param options - The options for creating a logger context.
- * @returns The logger context.
- */
-function createLoggerContext(options) {
-    const registeredLoggers = new Set();
-    const logLevelFromEnv = (typeof process !== "undefined" && process.env && process.env[options.logLevelEnvVarName]) ||
-        undefined;
-    let logLevel;
-    const clientLogger = debugObj(options.namespace);
-    clientLogger.log = (...args) => {
-        debugObj.log(...args);
-    };
-    if (logLevelFromEnv) {
-        // avoid calling setLogLevel because we don't want a mis-set environment variable to crash
-        if (isTypeSpecRuntimeLogLevel(logLevelFromEnv)) {
-            setLogLevel(logLevelFromEnv);
-        }
-        else {
-            console.error(`${options.logLevelEnvVarName} set to unknown log level '${logLevelFromEnv}'; logging is not enabled. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(", ")}.`);
-        }
-    }
-    function shouldEnable(logger) {
-        return Boolean(logLevel && levelMap[logger.level] <= levelMap[logLevel]);
-    }
-    function createLogger(parent, level) {
-        const logger = Object.assign(parent.extend(level), {
-            level,
-        });
-        patchLogMethod(parent, logger);
-        if (shouldEnable(logger)) {
-            const enabledNamespaces = debugObj.disable();
-            debugObj.enable(enabledNamespaces + "," + logger.namespace);
-        }
-        registeredLoggers.add(logger);
-        return logger;
-    }
-    return {
-        setLogLevel(level) {
-            if (level && !isTypeSpecRuntimeLogLevel(level)) {
-                throw new Error(`Unknown log level '${level}'. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(",")}`);
-            }
-            logLevel = level;
-            const enabledNamespaces = [];
-            for (const logger of registeredLoggers) {
-                if (shouldEnable(logger)) {
-                    enabledNamespaces.push(logger.namespace);
-                }
-            }
-            debugObj.enable(enabledNamespaces.join(","));
-        },
-        getLogLevel() {
-            return logLevel;
-        },
-        createClientLogger(namespace) {
-            const clientRootLogger = clientLogger.extend(namespace);
-            patchLogMethod(clientLogger, clientRootLogger);
-            return {
-                error: createLogger(clientRootLogger, "error"),
-                warning: createLogger(clientRootLogger, "warning"),
-                info: createLogger(clientRootLogger, "info"),
-                verbose: createLogger(clientRootLogger, "verbose"),
-            };
-        },
-        logger: clientLogger,
-    };
-}
-const context$1 = createLoggerContext({
-    logLevelEnvVarName: "TYPESPEC_RUNTIME_LOG_LEVEL",
-    namespace: "typeSpecRuntime",
-});
-/**
- * Retrieves the currently specified log level.
- */
-function setLogLevel(logLevel) {
-    context$1.setLogLevel(logLevel);
-}
-/**
- * Creates a logger for use by the SDKs that inherits from `TypeSpecRuntimeLogger`.
- * @param namespace - The name of the SDK package.
- * @hidden
- */
-function createClientLogger$1(namespace) {
-    return context$1.createClientLogger(namespace);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function normalizeName(name) {
-    return name.toLowerCase();
-}
-function* headerIterator(map) {
-    for (const entry of map.values()) {
-        yield [entry.name, entry.value];
-    }
-}
-class HttpHeadersImpl {
-    constructor(rawHeaders) {
-        this._headersMap = new Map();
-        if (rawHeaders) {
-            for (const headerName of Object.keys(rawHeaders)) {
-                this.set(headerName, rawHeaders[headerName]);
-            }
-        }
-    }
-    /**
-     * Set a header in this collection with the provided name and value. The name is
-     * case-insensitive.
-     * @param name - The name of the header to set. This value is case-insensitive.
-     * @param value - The value of the header to set.
-     */
-    set(name, value) {
-        this._headersMap.set(normalizeName(name), { name, value: String(value).trim() });
-    }
-    /**
-     * Get the header value for the provided header name, or undefined if no header exists in this
-     * collection with the provided name.
-     * @param name - The name of the header. This value is case-insensitive.
-     */
-    get(name) {
-        var _a;
-        return (_a = this._headersMap.get(normalizeName(name))) === null || _a === void 0 ? void 0 : _a.value;
-    }
-    /**
-     * Get whether or not this header collection contains a header entry for the provided header name.
-     * @param name - The name of the header to set. This value is case-insensitive.
-     */
-    has(name) {
-        return this._headersMap.has(normalizeName(name));
-    }
-    /**
-     * Remove the header with the provided headerName.
-     * @param name - The name of the header to remove.
-     */
-    delete(name) {
-        this._headersMap.delete(normalizeName(name));
-    }
-    /**
-     * Get the JSON object representation of this HTTP header collection.
-     */
-    toJSON(options = {}) {
-        const result = {};
-        if (options.preserveCase) {
-            for (const entry of this._headersMap.values()) {
-                result[entry.name] = entry.value;
-            }
-        }
-        else {
-            for (const [normalizedName, entry] of this._headersMap) {
-                result[normalizedName] = entry.value;
-            }
-        }
-        return result;
-    }
-    /**
-     * Get the string representation of this HTTP header collection.
-     */
-    toString() {
-        return JSON.stringify(this.toJSON({ preserveCase: true }));
-    }
-    /**
-     * Iterate over tuples of header [name, value] pairs.
-     */
-    [Symbol.iterator]() {
-        return headerIterator(this._headersMap);
-    }
-}
-/**
- * Creates an object that satisfies the `HttpHeaders` interface.
- * @param rawHeaders - A simple object representing initial headers
- */
-function createHttpHeaders(rawHeaders) {
-    return new HttpHeadersImpl(rawHeaders);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-var _a$1;
-// NOTE: This is a workaround until we can use `globalThis.crypto.randomUUID` in Node.js 19+.
-const uuidFunction = typeof ((_a$1 = globalThis === null || globalThis === void 0 ? void 0 : globalThis.crypto) === null || _a$1 === void 0 ? void 0 : _a$1.randomUUID) === "function"
-    ? globalThis.crypto.randomUUID.bind(globalThis.crypto)
-    : randomUUID$1;
-/**
- * Generated Universally Unique Identifier
- *
- * @returns RFC4122 v4 UUID.
- */
-function randomUUID() {
-    return uuidFunction();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-class PipelineRequestImpl {
-    constructor(options) {
-        var _a, _b, _c, _d, _e, _f, _g;
-        this.url = options.url;
-        this.body = options.body;
-        this.headers = (_a = options.headers) !== null && _a !== void 0 ? _a : createHttpHeaders();
-        this.method = (_b = options.method) !== null && _b !== void 0 ? _b : "GET";
-        this.timeout = (_c = options.timeout) !== null && _c !== void 0 ? _c : 0;
-        this.multipartBody = options.multipartBody;
-        this.formData = options.formData;
-        this.disableKeepAlive = (_d = options.disableKeepAlive) !== null && _d !== void 0 ? _d : false;
-        this.proxySettings = options.proxySettings;
-        this.streamResponseStatusCodes = options.streamResponseStatusCodes;
-        this.withCredentials = (_e = options.withCredentials) !== null && _e !== void 0 ? _e : false;
-        this.abortSignal = options.abortSignal;
-        this.onUploadProgress = options.onUploadProgress;
-        this.onDownloadProgress = options.onDownloadProgress;
-        this.requestId = options.requestId || randomUUID();
-        this.allowInsecureConnection = (_f = options.allowInsecureConnection) !== null && _f !== void 0 ? _f : false;
-        this.enableBrowserStreams = (_g = options.enableBrowserStreams) !== null && _g !== void 0 ? _g : false;
-        this.requestOverrides = options.requestOverrides;
-    }
-}
-/**
- * Creates a new pipeline request with the given options.
- * This method is to allow for the easy setting of default values and not required.
- * @param options - The options to create the request with.
- */
-function createPipelineRequest(options) {
-    return new PipelineRequestImpl(options);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const ValidPhaseNames = new Set(["Deserialize", "Serialize", "Retry", "Sign"]);
-/**
- * A private implementation of Pipeline.
- * Do not export this class from the package.
- * @internal
- */
-class HttpPipeline {
-    constructor(policies) {
-        var _a;
-        this._policies = [];
-        this._policies = (_a = policies === null || policies === void 0 ? void 0 : policies.slice(0)) !== null && _a !== void 0 ? _a : [];
-        this._orderedPolicies = undefined;
-    }
-    addPolicy(policy, options = {}) {
-        if (options.phase && options.afterPhase) {
-            throw new Error("Policies inside a phase cannot specify afterPhase.");
-        }
-        if (options.phase && !ValidPhaseNames.has(options.phase)) {
-            throw new Error(`Invalid phase name: ${options.phase}`);
-        }
-        if (options.afterPhase && !ValidPhaseNames.has(options.afterPhase)) {
-            throw new Error(`Invalid afterPhase name: ${options.afterPhase}`);
-        }
-        this._policies.push({
-            policy,
-            options,
-        });
-        this._orderedPolicies = undefined;
-    }
-    removePolicy(options) {
-        const removedPolicies = [];
-        this._policies = this._policies.filter((policyDescriptor) => {
-            if ((options.name && policyDescriptor.policy.name === options.name) ||
-                (options.phase && policyDescriptor.options.phase === options.phase)) {
-                removedPolicies.push(policyDescriptor.policy);
-                return false;
-            }
-            else {
-                return true;
-            }
-        });
-        this._orderedPolicies = undefined;
-        return removedPolicies;
-    }
-    sendRequest(httpClient, request) {
-        const policies = this.getOrderedPolicies();
-        const pipeline = policies.reduceRight((next, policy) => {
-            return (req) => {
-                return policy.sendRequest(req, next);
-            };
-        }, (req) => httpClient.sendRequest(req));
-        return pipeline(request);
-    }
-    getOrderedPolicies() {
-        if (!this._orderedPolicies) {
-            this._orderedPolicies = this.orderPolicies();
-        }
-        return this._orderedPolicies;
-    }
-    clone() {
-        return new HttpPipeline(this._policies);
-    }
-    static create() {
-        return new HttpPipeline();
-    }
-    orderPolicies() {
-        /**
-         * The goal of this method is to reliably order pipeline policies
-         * based on their declared requirements when they were added.
-         *
-         * Order is first determined by phase:
-         *
-         * 1. Serialize Phase
-         * 2. Policies not in a phase
-         * 3. Deserialize Phase
-         * 4. Retry Phase
-         * 5. Sign Phase
-         *
-         * Within each phase, policies are executed in the order
-         * they were added unless they were specified to execute
-         * before/after other policies or after a particular phase.
-         *
-         * To determine the final order, we will walk the policy list
-         * in phase order multiple times until all dependencies are
-         * satisfied.
-         *
-         * `afterPolicies` are the set of policies that must be
-         * executed before a given policy. This requirement is
-         * considered satisfied when each of the listed policies
-         * have been scheduled.
-         *
-         * `beforePolicies` are the set of policies that must be
-         * executed after a given policy. Since this dependency
-         * can be expressed by converting it into a equivalent
-         * `afterPolicies` declarations, they are normalized
-         * into that form for simplicity.
-         *
-         * An `afterPhase` dependency is considered satisfied when all
-         * policies in that phase have scheduled.
-         *
-         */
-        const result = [];
-        // Track all policies we know about.
-        const policyMap = new Map();
-        function createPhase(name) {
-            return {
-                name,
-                policies: new Set(),
-                hasRun: false,
-                hasAfterPolicies: false,
-            };
-        }
-        // Track policies for each phase.
-        const serializePhase = createPhase("Serialize");
-        const noPhase = createPhase("None");
-        const deserializePhase = createPhase("Deserialize");
-        const retryPhase = createPhase("Retry");
-        const signPhase = createPhase("Sign");
-        // a list of phases in order
-        const orderedPhases = [serializePhase, noPhase, deserializePhase, retryPhase, signPhase];
-        // Small helper function to map phase name to each Phase
-        function getPhase(phase) {
-            if (phase === "Retry") {
-                return retryPhase;
-            }
-            else if (phase === "Serialize") {
-                return serializePhase;
-            }
-            else if (phase === "Deserialize") {
-                return deserializePhase;
-            }
-            else if (phase === "Sign") {
-                return signPhase;
-            }
-            else {
-                return noPhase;
-            }
-        }
-        // First walk each policy and create a node to track metadata.
-        for (const descriptor of this._policies) {
-            const policy = descriptor.policy;
-            const options = descriptor.options;
-            const policyName = policy.name;
-            if (policyMap.has(policyName)) {
-                throw new Error("Duplicate policy names not allowed in pipeline");
-            }
-            const node = {
-                policy,
-                dependsOn: new Set(),
-                dependants: new Set(),
-            };
-            if (options.afterPhase) {
-                node.afterPhase = getPhase(options.afterPhase);
-                node.afterPhase.hasAfterPolicies = true;
-            }
-            policyMap.set(policyName, node);
-            const phase = getPhase(options.phase);
-            phase.policies.add(node);
-        }
-        // Now that each policy has a node, connect dependency references.
-        for (const descriptor of this._policies) {
-            const { policy, options } = descriptor;
-            const policyName = policy.name;
-            const node = policyMap.get(policyName);
-            if (!node) {
-                throw new Error(`Missing node for policy ${policyName}`);
-            }
-            if (options.afterPolicies) {
-                for (const afterPolicyName of options.afterPolicies) {
-                    const afterNode = policyMap.get(afterPolicyName);
-                    if (afterNode) {
-                        // Linking in both directions helps later
-                        // when we want to notify dependants.
-                        node.dependsOn.add(afterNode);
-                        afterNode.dependants.add(node);
-                    }
-                }
-            }
-            if (options.beforePolicies) {
-                for (const beforePolicyName of options.beforePolicies) {
-                    const beforeNode = policyMap.get(beforePolicyName);
-                    if (beforeNode) {
-                        // To execute before another node, make it
-                        // depend on the current node.
-                        beforeNode.dependsOn.add(node);
-                        node.dependants.add(beforeNode);
-                    }
-                }
-            }
-        }
-        function walkPhase(phase) {
-            phase.hasRun = true;
-            // Sets iterate in insertion order
-            for (const node of phase.policies) {
-                if (node.afterPhase && (!node.afterPhase.hasRun || node.afterPhase.policies.size)) {
-                    // If this node is waiting on a phase to complete,
-                    // we need to skip it for now.
-                    // Even if the phase is empty, we should wait for it
-                    // to be walked to avoid re-ordering policies.
-                    continue;
-                }
-                if (node.dependsOn.size === 0) {
-                    // If there's nothing else we're waiting for, we can
-                    // add this policy to the result list.
-                    result.push(node.policy);
-                    // Notify anything that depends on this policy that
-                    // the policy has been scheduled.
-                    for (const dependant of node.dependants) {
-                        dependant.dependsOn.delete(node);
-                    }
-                    policyMap.delete(node.policy.name);
-                    phase.policies.delete(node);
-                }
-            }
-        }
-        function walkPhases() {
-            for (const phase of orderedPhases) {
-                walkPhase(phase);
-                // if the phase isn't complete
-                if (phase.policies.size > 0 && phase !== noPhase) {
-                    if (!noPhase.hasRun) {
-                        // Try running noPhase to see if that unblocks this phase next tick.
-                        // This can happen if a phase that happens before noPhase
-                        // is waiting on a noPhase policy to complete.
-                        walkPhase(noPhase);
-                    }
-                    // Don't proceed to the next phase until this phase finishes.
-                    return;
-                }
-                if (phase.hasAfterPolicies) {
-                    // Run any policies unblocked by this phase
-                    walkPhase(noPhase);
-                }
-            }
-        }
-        // Iterate until we've put every node in the result list.
-        let iteration = 0;
-        while (policyMap.size > 0) {
-            iteration++;
-            const initialResultLength = result.length;
-            // Keep walking each phase in order until we can order every node.
-            walkPhases();
-            // The result list *should* get at least one larger each time
-            // after the first full pass.
-            // Otherwise, we're going to loop forever.
-            if (result.length <= initialResultLength && iteration > 1) {
-                throw new Error("Cannot satisfy policy dependencies due to requirements cycle.");
-            }
-        }
-        return result;
-    }
-}
-/**
- * Creates a totally empty pipeline.
- * Useful for testing or creating a custom one.
- */
-function createEmptyPipeline$1() {
-    return HttpPipeline.create();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Helper to determine when an input is a generic JS object.
- * @returns true when input is an object type that is not null, Array, RegExp, or Date.
- */
-function isObject$1(input) {
-    return (typeof input === "object" &&
-        input !== null &&
-        !Array.isArray(input) &&
-        !(input instanceof RegExp) &&
-        !(input instanceof Date));
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Typeguard for an error object shape (has name and message)
- * @param e - Something caught by a catch clause.
- */
-function isError$1(e) {
-    if (isObject$1(e)) {
-        const hasName = typeof e.name === "string";
-        const hasMessage = typeof e.message === "string";
-        return hasName && hasMessage;
-    }
-    return false;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const custom = inspect.custom;
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const RedactedString = "REDACTED";
-// Make sure this list is up-to-date with the one under core/logger/Readme#Keyconcepts
-const defaultAllowedHeaderNames = [
-    "x-ms-client-request-id",
-    "x-ms-return-client-request-id",
-    "x-ms-useragent",
-    "x-ms-correlation-request-id",
-    "x-ms-request-id",
-    "client-request-id",
-    "ms-cv",
-    "return-client-request-id",
-    "traceparent",
-    "Access-Control-Allow-Credentials",
-    "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Methods",
-    "Access-Control-Allow-Origin",
-    "Access-Control-Expose-Headers",
-    "Access-Control-Max-Age",
-    "Access-Control-Request-Headers",
-    "Access-Control-Request-Method",
-    "Origin",
-    "Accept",
-    "Accept-Encoding",
-    "Cache-Control",
-    "Connection",
-    "Content-Length",
-    "Content-Type",
-    "Date",
-    "ETag",
-    "Expires",
-    "If-Match",
-    "If-Modified-Since",
-    "If-None-Match",
-    "If-Unmodified-Since",
-    "Last-Modified",
-    "Pragma",
-    "Request-Id",
-    "Retry-After",
-    "Server",
-    "Transfer-Encoding",
-    "User-Agent",
-    "WWW-Authenticate",
-];
-const defaultAllowedQueryParameters = ["api-version"];
-/**
- * A utility class to sanitize objects for logging.
- */
-class Sanitizer {
-    constructor({ additionalAllowedHeaderNames: allowedHeaderNames = [], additionalAllowedQueryParameters: allowedQueryParameters = [], } = {}) {
-        allowedHeaderNames = defaultAllowedHeaderNames.concat(allowedHeaderNames);
-        allowedQueryParameters = defaultAllowedQueryParameters.concat(allowedQueryParameters);
-        this.allowedHeaderNames = new Set(allowedHeaderNames.map((n) => n.toLowerCase()));
-        this.allowedQueryParameters = new Set(allowedQueryParameters.map((p) => p.toLowerCase()));
-    }
-    /**
-     * Sanitizes an object for logging.
-     * @param obj - The object to sanitize
-     * @returns - The sanitized object as a string
-     */
-    sanitize(obj) {
-        const seen = new Set();
-        return JSON.stringify(obj, (key, value) => {
-            // Ensure Errors include their interesting non-enumerable members
-            if (value instanceof Error) {
-                return Object.assign(Object.assign({}, value), { name: value.name, message: value.message });
-            }
-            if (key === "headers") {
-                return this.sanitizeHeaders(value);
-            }
-            else if (key === "url") {
-                return this.sanitizeUrl(value);
-            }
-            else if (key === "query") {
-                return this.sanitizeQuery(value);
-            }
-            else if (key === "body") {
-                // Don't log the request body
-                return undefined;
-            }
-            else if (key === "response") {
-                // Don't log response again
-                return undefined;
-            }
-            else if (key === "operationSpec") {
-                // When using sendOperationRequest, the request carries a massive
-                // field with the autorest spec. No need to log it.
-                return undefined;
-            }
-            else if (Array.isArray(value) || isObject$1(value)) {
-                if (seen.has(value)) {
-                    return "[Circular]";
-                }
-                seen.add(value);
-            }
-            return value;
-        }, 2);
-    }
-    /**
-     * Sanitizes a URL for logging.
-     * @param value - The URL to sanitize
-     * @returns - The sanitized URL as a string
-     */
-    sanitizeUrl(value) {
-        if (typeof value !== "string" || value === null || value === "") {
-            return value;
-        }
-        const url = new URL(value);
-        if (!url.search) {
-            return value;
-        }
-        for (const [key] of url.searchParams) {
-            if (!this.allowedQueryParameters.has(key.toLowerCase())) {
-                url.searchParams.set(key, RedactedString);
-            }
-        }
-        return url.toString();
-    }
-    sanitizeHeaders(obj) {
-        const sanitized = {};
-        for (const key of Object.keys(obj)) {
-            if (this.allowedHeaderNames.has(key.toLowerCase())) {
-                sanitized[key] = obj[key];
-            }
-            else {
-                sanitized[key] = RedactedString;
-            }
-        }
-        return sanitized;
-    }
-    sanitizeQuery(value) {
-        if (typeof value !== "object" || value === null) {
-            return value;
-        }
-        const sanitized = {};
-        for (const k of Object.keys(value)) {
-            if (this.allowedQueryParameters.has(k.toLowerCase())) {
-                sanitized[k] = value[k];
-            }
-            else {
-                sanitized[k] = RedactedString;
-            }
-        }
-        return sanitized;
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const errorSanitizer = new Sanitizer();
-/**
- * A custom error type for failed pipeline requests.
- */
-let RestError$1 = class RestError extends Error {
-    constructor(message, options = {}) {
-        super(message);
-        this.name = "RestError";
-        this.code = options.code;
-        this.statusCode = options.statusCode;
-        // The request and response may contain sensitive information in the headers or body.
-        // To help prevent this sensitive information being accidentally logged, the request and response
-        // properties are marked as non-enumerable here. This prevents them showing up in the output of
-        // JSON.stringify and console.log.
-        Object.defineProperty(this, "request", { value: options.request, enumerable: false });
-        Object.defineProperty(this, "response", { value: options.response, enumerable: false });
-        // Logging method for util.inspect in Node
-        Object.defineProperty(this, custom, {
-            value: () => {
-                // Extract non-enumerable properties and add them back. This is OK since in this output the request and
-                // response get sanitized.
-                return `RestError: ${this.message} \n ${errorSanitizer.sanitize(Object.assign(Object.assign({}, this), { request: this.request, response: this.response }))}`;
-            },
-            enumerable: false,
-        });
-        Object.setPrototypeOf(this, RestError.prototype);
-    }
-};
-/**
- * Something went wrong when making the request.
- * This means the actual request failed for some reason,
- * such as a DNS issue or the connection being lost.
- */
-RestError$1.REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
-/**
- * This means that parsing the response from the server failed.
- * It may have been malformed.
- */
-RestError$1.PARSE_ERROR = "PARSE_ERROR";
-/**
- * Typeguard for RestError
- * @param e - Something caught by a catch clause.
- */
-function isRestError$1(e) {
-    if (e instanceof RestError$1) {
-        return true;
-    }
-    return isError$1(e) && e.name === "RestError";
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The helper that transforms bytes with specific character encoding into string
- * @param bytes - the uint8array bytes
- * @param format - the format we use to encode the byte
- * @returns a string of the encoded string
- */
-function uint8ArrayToString(bytes, format) {
-    return Buffer.from(bytes).toString(format);
-}
-/**
- * The helper that transforms string to specific character encoded bytes array.
- * @param value - the string to be converted
- * @param format - the format we use to decode the value
- * @returns a uint8array
- */
-function stringToUint8Array(value, format) {
-    return Buffer.from(value, format);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const logger$2 = createClientLogger$1("ts-http-runtime");
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const DEFAULT_TLS_SETTINGS = {};
-function isReadableStream$1(body) {
-    return body && typeof body.pipe === "function";
-}
-function isStreamComplete(stream) {
-    if (stream.readable === false) {
-        return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-        const handler = () => {
-            resolve();
-            stream.removeListener("close", handler);
-            stream.removeListener("end", handler);
-            stream.removeListener("error", handler);
-        };
-        stream.on("close", handler);
-        stream.on("end", handler);
-        stream.on("error", handler);
-    });
-}
-function isArrayBuffer(body) {
-    return body && typeof body.byteLength === "number";
-}
-class ReportTransform extends Transform {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    _transform(chunk, _encoding, callback) {
-        this.push(chunk);
-        this.loadedBytes += chunk.length;
-        try {
-            this.progressCallback({ loadedBytes: this.loadedBytes });
-            callback();
-        }
-        catch (e) {
-            callback(e);
-        }
-    }
-    constructor(progressCallback) {
-        super();
-        this.loadedBytes = 0;
-        this.progressCallback = progressCallback;
-    }
-}
-/**
- * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
- * @internal
- */
-class NodeHttpClient {
-    constructor() {
-        this.cachedHttpsAgents = new WeakMap();
-    }
-    /**
-     * Makes a request over an underlying transport layer and returns the response.
-     * @param request - The request to be made.
-     */
-    async sendRequest(request) {
-        var _a, _b, _c;
-        const abortController = new AbortController();
-        let abortListener;
-        if (request.abortSignal) {
-            if (request.abortSignal.aborted) {
-                throw new AbortError$1("The operation was aborted. Request has already been canceled.");
-            }
-            abortListener = (event) => {
-                if (event.type === "abort") {
-                    abortController.abort();
-                }
-            };
-            request.abortSignal.addEventListener("abort", abortListener);
-        }
-        let timeoutId;
-        if (request.timeout > 0) {
-            timeoutId = setTimeout(() => {
-                const sanitizer = new Sanitizer();
-                logger$2.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
-                abortController.abort();
-            }, request.timeout);
-        }
-        const acceptEncoding = request.headers.get("Accept-Encoding");
-        const shouldDecompress = (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("gzip")) || (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("deflate"));
-        let body = typeof request.body === "function" ? request.body() : request.body;
-        if (body && !request.headers.has("Content-Length")) {
-            const bodyLength = getBodyLength(body);
-            if (bodyLength !== null) {
-                request.headers.set("Content-Length", bodyLength);
-            }
-        }
-        let responseStream;
-        try {
-            if (body && request.onUploadProgress) {
-                const onUploadProgress = request.onUploadProgress;
-                const uploadReportStream = new ReportTransform(onUploadProgress);
-                uploadReportStream.on("error", (e) => {
-                    logger$2.error("Error in upload progress", e);
-                });
-                if (isReadableStream$1(body)) {
-                    body.pipe(uploadReportStream);
-                }
-                else {
-                    uploadReportStream.end(body);
-                }
-                body = uploadReportStream;
-            }
-            const res = await this.makeRequest(request, abortController, body);
-            if (timeoutId !== undefined) {
-                clearTimeout(timeoutId);
-            }
-            const headers = getResponseHeaders(res);
-            const status = (_a = res.statusCode) !== null && _a !== void 0 ? _a : 0;
-            const response = {
-                status,
-                headers,
-                request,
-            };
-            // Responses to HEAD must not have a body.
-            // If they do return a body, that body must be ignored.
-            if (request.method === "HEAD") {
-                // call resume() and not destroy() to avoid closing the socket
-                // and losing keep alive
-                res.resume();
-                return response;
-            }
-            responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
-            const onDownloadProgress = request.onDownloadProgress;
-            if (onDownloadProgress) {
-                const downloadReportStream = new ReportTransform(onDownloadProgress);
-                downloadReportStream.on("error", (e) => {
-                    logger$2.error("Error in download progress", e);
-                });
-                responseStream.pipe(downloadReportStream);
-                responseStream = downloadReportStream;
-            }
-            if (
-            // Value of POSITIVE_INFINITY in streamResponseStatusCodes is considered as any status code
-            ((_b = request.streamResponseStatusCodes) === null || _b === void 0 ? void 0 : _b.has(Number.POSITIVE_INFINITY)) ||
-                ((_c = request.streamResponseStatusCodes) === null || _c === void 0 ? void 0 : _c.has(response.status))) {
-                response.readableStreamBody = responseStream;
-            }
-            else {
-                response.bodyAsText = await streamToText(responseStream);
-            }
-            return response;
-        }
-        finally {
-            // clean up event listener
-            if (request.abortSignal && abortListener) {
-                let uploadStreamDone = Promise.resolve();
-                if (isReadableStream$1(body)) {
-                    uploadStreamDone = isStreamComplete(body);
-                }
-                let downloadStreamDone = Promise.resolve();
-                if (isReadableStream$1(responseStream)) {
-                    downloadStreamDone = isStreamComplete(responseStream);
-                }
-                Promise.all([uploadStreamDone, downloadStreamDone])
-                    .then(() => {
-                    var _a;
-                    // eslint-disable-next-line promise/always-return
-                    if (abortListener) {
-                        (_a = request.abortSignal) === null || _a === void 0 ? void 0 : _a.removeEventListener("abort", abortListener);
-                    }
-                })
-                    .catch((e) => {
-                    logger$2.warning("Error when cleaning up abortListener on httpRequest", e);
-                });
-            }
-        }
-    }
-    makeRequest(request, abortController, body) {
-        var _a;
-        const url = new URL(request.url);
-        const isInsecure = url.protocol !== "https:";
-        if (isInsecure && !request.allowInsecureConnection) {
-            throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
-        }
-        const agent = (_a = request.agent) !== null && _a !== void 0 ? _a : this.getOrCreateAgent(request, isInsecure);
-        const options = Object.assign({ agent, hostname: url.hostname, path: `${url.pathname}${url.search}`, port: url.port, method: request.method, headers: request.headers.toJSON({ preserveCase: true }) }, request.requestOverrides);
-        return new Promise((resolve, reject) => {
-            const req = isInsecure ? http.request(options, resolve) : https.request(options, resolve);
-            req.once("error", (err) => {
-                var _a;
-                reject(new RestError$1(err.message, { code: (_a = err.code) !== null && _a !== void 0 ? _a : RestError$1.REQUEST_SEND_ERROR, request }));
-            });
-            abortController.signal.addEventListener("abort", () => {
-                const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
-                req.destroy(abortError);
-                reject(abortError);
-            });
-            if (body && isReadableStream$1(body)) {
-                body.pipe(req);
-            }
-            else if (body) {
-                if (typeof body === "string" || Buffer.isBuffer(body)) {
-                    req.end(body);
-                }
-                else if (isArrayBuffer(body)) {
-                    req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer) : Buffer.from(body));
-                }
-                else {
-                    logger$2.error("Unrecognized body type", body);
-                    reject(new RestError$1("Unrecognized body type"));
-                }
-            }
-            else {
-                // streams don't like "undefined" being passed as data
-                req.end();
-            }
-        });
-    }
-    getOrCreateAgent(request, isInsecure) {
-        var _a;
-        const disableKeepAlive = request.disableKeepAlive;
-        // Handle Insecure requests first
-        if (isInsecure) {
-            if (disableKeepAlive) {
-                // keepAlive:false is the default so we don't need a custom Agent
-                return http.globalAgent;
-            }
-            if (!this.cachedHttpAgent) {
-                // If there is no cached agent create a new one and cache it.
-                this.cachedHttpAgent = new http.Agent({ keepAlive: true });
-            }
-            return this.cachedHttpAgent;
-        }
-        else {
-            if (disableKeepAlive && !request.tlsSettings) {
-                // When there are no tlsSettings and keepAlive is false
-                // we don't need a custom agent
-                return https.globalAgent;
-            }
-            // We use the tlsSettings to index cached clients
-            const tlsSettings = (_a = request.tlsSettings) !== null && _a !== void 0 ? _a : DEFAULT_TLS_SETTINGS;
-            // Get the cached agent or create a new one with the
-            // provided values for keepAlive and tlsSettings
-            let agent = this.cachedHttpsAgents.get(tlsSettings);
-            if (agent && agent.options.keepAlive === !disableKeepAlive) {
-                return agent;
-            }
-            logger$2.info("No cached TLS Agent exist, creating a new Agent");
-            agent = new https.Agent(Object.assign({ 
-                // keepAlive is true if disableKeepAlive is false.
-                keepAlive: !disableKeepAlive }, tlsSettings));
-            this.cachedHttpsAgents.set(tlsSettings, agent);
-            return agent;
-        }
-    }
-}
-function getResponseHeaders(res) {
-    const headers = createHttpHeaders();
-    for (const header of Object.keys(res.headers)) {
-        const value = res.headers[header];
-        if (Array.isArray(value)) {
-            if (value.length > 0) {
-                headers.set(header, value[0]);
-            }
-        }
-        else if (value) {
-            headers.set(header, value);
-        }
-    }
-    return headers;
-}
-function getDecodedResponseStream(stream, headers) {
-    const contentEncoding = headers.get("Content-Encoding");
-    if (contentEncoding === "gzip") {
-        const unzip = zlib.createGunzip();
-        stream.pipe(unzip);
-        return unzip;
-    }
-    else if (contentEncoding === "deflate") {
-        const inflate = zlib.createInflate();
-        stream.pipe(inflate);
-        return inflate;
-    }
-    return stream;
-}
-function streamToText(stream) {
-    return new Promise((resolve, reject) => {
-        const buffer = [];
-        stream.on("data", (chunk) => {
-            if (Buffer.isBuffer(chunk)) {
-                buffer.push(chunk);
-            }
-            else {
-                buffer.push(Buffer.from(chunk));
-            }
-        });
-        stream.on("end", () => {
-            resolve(Buffer.concat(buffer).toString("utf8"));
-        });
-        stream.on("error", (e) => {
-            if (e && (e === null || e === void 0 ? void 0 : e.name) === "AbortError") {
-                reject(e);
-            }
-            else {
-                reject(new RestError$1(`Error reading response as text: ${e.message}`, {
-                    code: RestError$1.PARSE_ERROR,
-                }));
-            }
-        });
-    });
-}
-/** @internal */
-function getBodyLength(body) {
-    if (!body) {
-        return 0;
-    }
-    else if (Buffer.isBuffer(body)) {
-        return body.length;
-    }
-    else if (isReadableStream$1(body)) {
-        return null;
-    }
-    else if (isArrayBuffer(body)) {
-        return body.byteLength;
-    }
-    else if (typeof body === "string") {
-        return Buffer.from(body).length;
-    }
-    else {
-        return null;
-    }
-}
-/**
- * Create a new HttpClient instance for the NodeJS environment.
- * @internal
- */
-function createNodeHttpClient() {
-    return new NodeHttpClient();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Create the correct HttpClient for the current environment.
- */
-function createDefaultHttpClient() {
-    return createNodeHttpClient();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the logPolicy.
- */
-const logPolicyName = "logPolicy";
-/**
- * A policy that logs all requests and responses.
- * @param options - Options to configure logPolicy.
- */
-function logPolicy$1(options = {}) {
-    var _a;
-    const logger = (_a = options.logger) !== null && _a !== void 0 ? _a : logger$2.info;
-    const sanitizer = new Sanitizer({
-        additionalAllowedHeaderNames: options.additionalAllowedHeaderNames,
-        additionalAllowedQueryParameters: options.additionalAllowedQueryParameters,
-    });
-    return {
-        name: logPolicyName,
-        async sendRequest(request, next) {
-            if (!logger.enabled) {
-                return next(request);
-            }
-            logger(`Request: ${sanitizer.sanitize(request)}`);
-            const response = await next(request);
-            logger(`Response status code: ${response.status}`);
-            logger(`Headers: ${sanitizer.sanitize(response.headers)}`);
-            return response;
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the redirectPolicy.
- */
-const redirectPolicyName = "redirectPolicy";
-/**
- * Methods that are allowed to follow redirects 301 and 302
- */
-const allowedRedirect = ["GET", "HEAD"];
-/**
- * A policy to follow Location headers from the server in order
- * to support server-side redirection.
- * In the browser, this policy is not used.
- * @param options - Options to control policy behavior.
- */
-function redirectPolicy$1(options = {}) {
-    const { maxRetries = 20 } = options;
-    return {
-        name: redirectPolicyName,
-        async sendRequest(request, next) {
-            const response = await next(request);
-            return handleRedirect(next, response, maxRetries);
-        },
-    };
-}
-async function handleRedirect(next, response, maxRetries, currentRetries = 0) {
-    const { request, status, headers } = response;
-    const locationHeader = headers.get("location");
-    if (locationHeader &&
-        (status === 300 ||
-            (status === 301 && allowedRedirect.includes(request.method)) ||
-            (status === 302 && allowedRedirect.includes(request.method)) ||
-            (status === 303 && request.method === "POST") ||
-            status === 307) &&
-        currentRetries < maxRetries) {
-        const url = new URL(locationHeader, request.url);
-        request.url = url.toString();
-        // POST request with Status code 303 should be converted into a
-        // redirected GET request if the redirect url is present in the location header
-        if (status === 303) {
-            request.method = "GET";
-            request.headers.delete("Content-Length");
-            delete request.body;
-        }
-        request.headers.delete("Authorization");
-        const res = await next(request);
-        return handleRedirect(next, res, maxRetries, currentRetries + 1);
-    }
-    return response;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * @internal
- */
-function getHeaderName$1() {
-    return "User-Agent";
-}
-/**
- * @internal
- */
-async function setPlatformSpecificData$1(map) {
-    if (process$1 && process$1.versions) {
-        const versions = process$1.versions;
-        if (versions.bun) {
-            map.set("Bun", versions.bun);
-        }
-        else if (versions.deno) {
-            map.set("Deno", versions.deno);
-        }
-        else if (versions.node) {
-            map.set("Node", versions.node);
-        }
-    }
-    map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const SDK_VERSION$2 = "0.2.2";
-const DEFAULT_RETRY_POLICY_COUNT = 3;
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function getUserAgentString$1(telemetryInfo) {
-    const parts = [];
-    for (const [key, value] of telemetryInfo) {
-        const token = value ? `${key}/${value}` : key;
-        parts.push(token);
-    }
-    return parts.join(" ");
-}
-/**
- * @internal
- */
-function getUserAgentHeaderName$1() {
-    return getHeaderName$1();
-}
-/**
- * @internal
- */
-async function getUserAgentValue$1(prefix) {
-    const runtimeInfo = new Map();
-    runtimeInfo.set("ts-http-runtime", SDK_VERSION$2);
-    await setPlatformSpecificData$1(runtimeInfo);
-    const defaultAgent = getUserAgentString$1(runtimeInfo);
-    const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
-    return userAgentValue;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const UserAgentHeaderName$1 = getUserAgentHeaderName$1();
-/**
- * The programmatic identifier of the userAgentPolicy.
- */
-const userAgentPolicyName$1 = "userAgentPolicy";
-/**
- * A policy that sets the User-Agent header (or equivalent) to reflect
- * the library version.
- * @param options - Options to customize the user agent value.
- */
-function userAgentPolicy$1(options = {}) {
-    const userAgentValue = getUserAgentValue$1(options.userAgentPrefix);
-    return {
-        name: userAgentPolicyName$1,
-        async sendRequest(request, next) {
-            if (!request.headers.has(UserAgentHeaderName$1)) {
-                request.headers.set(UserAgentHeaderName$1, await userAgentValue);
-            }
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the decompressResponsePolicy.
- */
-const decompressResponsePolicyName = "decompressResponsePolicy";
-/**
- * A policy to enable response decompression according to Accept-Encoding header
- * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
- */
-function decompressResponsePolicy$1() {
-    return {
-        name: decompressResponsePolicyName,
-        async sendRequest(request, next) {
-            // HEAD requests have no body
-            if (request.method !== "HEAD") {
-                request.headers.set("Accept-Encoding", "gzip,deflate");
-            }
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Returns a random integer value between a lower and upper bound,
- * inclusive of both bounds.
- * Note that this uses Math.random and isn't secure. If you need to use
- * this for any kind of security purpose, find a better source of random.
- * @param min - The smallest integer value allowed.
- * @param max - The largest integer value allowed.
- */
-function getRandomIntegerInclusive(min, max) {
-    // Make sure inputs are integers.
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    // Pick a random offset from zero to the size of the range.
-    // Since Math.random() can never return 1, we have to make the range one larger
-    // in order to be inclusive of the maximum value after we take the floor.
-    const offset = Math.floor(Math.random() * (max - min + 1));
-    return offset + min;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Calculates the delay interval for retry attempts using exponential delay with jitter.
- * @param retryAttempt - The current retry attempt number.
- * @param config - The exponential retry configuration.
- * @returns An object containing the calculated retry delay.
- */
-function calculateRetryDelay(retryAttempt, config) {
-    // Exponentially increase the delay each time
-    const exponentialDelay = config.retryDelayInMs * Math.pow(2, retryAttempt);
-    // Don't let the delay exceed the maximum
-    const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
-    // Allow the final value to have some "jitter" (within 50% of the delay size) so
-    // that retries across multiple clients don't occur simultaneously.
-    const retryAfterInMs = clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2);
-    return { retryAfterInMs };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const StandardAbortMessage$1 = "The operation was aborted.";
-/**
- * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
- * @param delayInMs - The number of milliseconds to be delayed.
- * @param value - The value to be resolved with after a timeout of t milliseconds.
- * @param options - The options for delay - currently abort options
- *                  - abortSignal - The abortSignal associated with containing operation.
- *                  - abortErrorMsg - The abort error message associated with containing operation.
- * @returns Resolved promise
- */
-function delay$1(delayInMs, value, options) {
-    return new Promise((resolve, reject) => {
-        let timer = undefined;
-        let onAborted = undefined;
-        const rejectOnAbort = () => {
-            return reject(new AbortError$1((options === null || options === void 0 ? void 0 : options.abortErrorMsg) ? options === null || options === void 0 ? void 0 : options.abortErrorMsg : StandardAbortMessage$1));
-        };
-        const removeListeners = () => {
-            if ((options === null || options === void 0 ? void 0 : options.abortSignal) && onAborted) {
-                options.abortSignal.removeEventListener("abort", onAborted);
-            }
-        };
-        onAborted = () => {
-            if (timer) {
-                clearTimeout(timer);
-            }
-            removeListeners();
-            return rejectOnAbort();
-        };
-        if ((options === null || options === void 0 ? void 0 : options.abortSignal) && options.abortSignal.aborted) {
-            return rejectOnAbort();
-        }
-        timer = setTimeout(() => {
-            removeListeners();
-            resolve(value);
-        }, delayInMs);
-        if (options === null || options === void 0 ? void 0 : options.abortSignal) {
-            options.abortSignal.addEventListener("abort", onAborted);
-        }
-    });
-}
-/**
- * @internal
- * @returns the parsed value or undefined if the parsed value is invalid.
- */
-function parseHeaderValueAsNumber(response, headerName) {
-    const value = response.headers.get(headerName);
-    if (!value)
-        return;
-    const valueAsNum = Number(value);
-    if (Number.isNaN(valueAsNum))
-        return;
-    return valueAsNum;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The header that comes back from services representing
- * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
- */
-const RetryAfterHeader = "Retry-After";
-/**
- * The headers that come back from services representing
- * the amount of time (minimum) to wait to retry.
- *
- * "retry-after-ms", "x-ms-retry-after-ms" : milliseconds
- * "Retry-After" : seconds or timestamp
- */
-const AllRetryAfterHeaders = ["retry-after-ms", "x-ms-retry-after-ms", RetryAfterHeader];
-/**
- * A response is a throttling retry response if it has a throttling status code (429 or 503),
- * as long as one of the [ "Retry-After" or "retry-after-ms" or "x-ms-retry-after-ms" ] headers has a valid value.
- *
- * Returns the `retryAfterInMs` value if the response is a throttling retry response.
- * If not throttling retry response, returns `undefined`.
- *
- * @internal
- */
-function getRetryAfterInMs(response) {
-    if (!(response && [429, 503].includes(response.status)))
-        return undefined;
+const safeJSON = (text) => {
     try {
-        // Headers: "retry-after-ms", "x-ms-retry-after-ms", "Retry-After"
-        for (const header of AllRetryAfterHeaders) {
-            const retryAfterValue = parseHeaderValueAsNumber(response, header);
-            if (retryAfterValue === 0 || retryAfterValue) {
-                // "Retry-After" header ==> seconds
-                // "retry-after-ms", "x-ms-retry-after-ms" headers ==> milli-seconds
-                const multiplyingFactor = header === RetryAfterHeader ? 1000 : 1;
-                return retryAfterValue * multiplyingFactor; // in milli-seconds
-            }
-        }
-        // RetryAfterHeader ("Retry-After") has a special case where it might be formatted as a date instead of a number of seconds
-        const retryAfterHeader = response.headers.get(RetryAfterHeader);
-        if (!retryAfterHeader)
-            return;
-        const date = Date.parse(retryAfterHeader);
-        const diff = date - Date.now();
-        // negative diff would mean a date in the past, so retry asap with 0 milliseconds
-        return Number.isFinite(diff) ? Math.max(0, diff) : undefined;
+        return JSON.parse(text);
     }
-    catch (_a) {
+    catch (err) {
         return undefined;
     }
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const VERSION = '5.11.0'; // x-release-please-version
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+const isRunningInBrowser = () => {
+    return (
+    // @ts-ignore
+    typeof window !== 'undefined' &&
+        // @ts-ignore
+        typeof window.document !== 'undefined' &&
+        // @ts-ignore
+        typeof navigator !== 'undefined');
+};
+/**
+ * Note this does not detect 'browser'; for that, use getBrowserInfo().
+ */
+function getDetectedPlatform() {
+    if (typeof Deno !== 'undefined' && Deno.build != null) {
+        return 'deno';
+    }
+    if (typeof EdgeRuntime !== 'undefined') {
+        return 'edge';
+    }
+    if (Object.prototype.toString.call(typeof globalThis.process !== 'undefined' ? globalThis.process : 0) === '[object process]') {
+        return 'node';
+    }
+    return 'unknown';
+}
+const getPlatformProperties = () => {
+    const detectedPlatform = getDetectedPlatform();
+    if (detectedPlatform === 'deno') {
+        return {
+            'X-Stainless-Lang': 'js',
+            'X-Stainless-Package-Version': VERSION,
+            'X-Stainless-OS': normalizePlatform(Deno.build.os),
+            'X-Stainless-Arch': normalizeArch(Deno.build.arch),
+            'X-Stainless-Runtime': 'deno',
+            'X-Stainless-Runtime-Version': typeof Deno.version === 'string' ? Deno.version : Deno.version?.deno ?? 'unknown',
+        };
+    }
+    if (typeof EdgeRuntime !== 'undefined') {
+        return {
+            'X-Stainless-Lang': 'js',
+            'X-Stainless-Package-Version': VERSION,
+            'X-Stainless-OS': 'Unknown',
+            'X-Stainless-Arch': `other:${EdgeRuntime}`,
+            'X-Stainless-Runtime': 'edge',
+            'X-Stainless-Runtime-Version': globalThis.process.version,
+        };
+    }
+    // Check if Node.js
+    if (detectedPlatform === 'node') {
+        return {
+            'X-Stainless-Lang': 'js',
+            'X-Stainless-Package-Version': VERSION,
+            'X-Stainless-OS': normalizePlatform(globalThis.process.platform ?? 'unknown'),
+            'X-Stainless-Arch': normalizeArch(globalThis.process.arch ?? 'unknown'),
+            'X-Stainless-Runtime': 'node',
+            'X-Stainless-Runtime-Version': globalThis.process.version ?? 'unknown',
+        };
+    }
+    const browserInfo = getBrowserInfo();
+    if (browserInfo) {
+        return {
+            'X-Stainless-Lang': 'js',
+            'X-Stainless-Package-Version': VERSION,
+            'X-Stainless-OS': 'Unknown',
+            'X-Stainless-Arch': 'unknown',
+            'X-Stainless-Runtime': `browser:${browserInfo.browser}`,
+            'X-Stainless-Runtime-Version': browserInfo.version,
+        };
+    }
+    // TODO add support for Cloudflare workers, etc.
+    return {
+        'X-Stainless-Lang': 'js',
+        'X-Stainless-Package-Version': VERSION,
+        'X-Stainless-OS': 'Unknown',
+        'X-Stainless-Arch': 'unknown',
+        'X-Stainless-Runtime': 'unknown',
+        'X-Stainless-Runtime-Version': 'unknown',
+    };
+};
+// Note: modified from https://github.com/JS-DevTools/host-environment/blob/b1ab79ecde37db5d6e163c050e54fe7d287d7c92/src/isomorphic.browser.ts
+function getBrowserInfo() {
+    if (typeof navigator === 'undefined' || !navigator) {
+        return null;
+    }
+    // NOTE: The order matters here!
+    const browserPatterns = [
+        { key: 'edge', pattern: /Edge(?:\W+(\d+)\.(\d+)(?:\.(\d+))?)?/ },
+        { key: 'ie', pattern: /MSIE(?:\W+(\d+)\.(\d+)(?:\.(\d+))?)?/ },
+        { key: 'ie', pattern: /Trident(?:.*rv\:(\d+)\.(\d+)(?:\.(\d+))?)?/ },
+        { key: 'chrome', pattern: /Chrome(?:\W+(\d+)\.(\d+)(?:\.(\d+))?)?/ },
+        { key: 'firefox', pattern: /Firefox(?:\W+(\d+)\.(\d+)(?:\.(\d+))?)?/ },
+        { key: 'safari', pattern: /(?:Version\W+(\d+)\.(\d+)(?:\.(\d+))?)?(?:\W+Mobile\S*)?\W+Safari/ },
+    ];
+    // Find the FIRST matching browser
+    for (const { key, pattern } of browserPatterns) {
+        const match = pattern.exec(navigator.userAgent);
+        if (match) {
+            const major = match[1] || 0;
+            const minor = match[2] || 0;
+            const patch = match[3] || 0;
+            return { browser: key, version: `${major}.${minor}.${patch}` };
+        }
+    }
+    return null;
+}
+const normalizeArch = (arch) => {
+    // Node docs:
+    // - https://nodejs.org/api/process.html#processarch
+    // Deno docs:
+    // - https://doc.deno.land/deno/stable/~/Deno.build
+    if (arch === 'x32')
+        return 'x32';
+    if (arch === 'x86_64' || arch === 'x64')
+        return 'x64';
+    if (arch === 'arm')
+        return 'arm';
+    if (arch === 'aarch64' || arch === 'arm64')
+        return 'arm64';
+    if (arch)
+        return `other:${arch}`;
+    return 'unknown';
+};
+const normalizePlatform = (platform) => {
+    // Node platforms:
+    // - https://nodejs.org/api/process.html#processplatform
+    // Deno platforms:
+    // - https://doc.deno.land/deno/stable/~/Deno.build
+    // - https://github.com/denoland/deno/issues/14799
+    platform = platform.toLowerCase();
+    // NOTE: this iOS check is untested and may not work
+    // Node does not work natively on IOS, there is a fork at
+    // https://github.com/nodejs-mobile/nodejs-mobile
+    // however it is unknown at the time of writing how to detect if it is running
+    if (platform.includes('ios'))
+        return 'iOS';
+    if (platform === 'android')
+        return 'Android';
+    if (platform === 'darwin')
+        return 'MacOS';
+    if (platform === 'win32')
+        return 'Windows';
+    if (platform === 'freebsd')
+        return 'FreeBSD';
+    if (platform === 'openbsd')
+        return 'OpenBSD';
+    if (platform === 'linux')
+        return 'Linux';
+    if (platform)
+        return `Other:${platform}`;
+    return 'Unknown';
+};
+let _platformHeaders;
+const getPlatformHeaders = () => {
+    return (_platformHeaders ?? (_platformHeaders = getPlatformProperties()));
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+function getDefaultFetch() {
+    if (typeof fetch !== 'undefined') {
+        return fetch;
+    }
+    throw new Error('`fetch` is not defined as a global; Either pass `fetch` to the client, `new OpenAI({ fetch })` or polyfill the global, `globalThis.fetch = fetch`');
+}
+function makeReadableStream(...args) {
+    const ReadableStream = globalThis.ReadableStream;
+    if (typeof ReadableStream === 'undefined') {
+        // Note: All of the platforms / runtimes we officially support already define
+        // `ReadableStream` as a global, so this should only ever be hit on unsupported runtimes.
+        throw new Error('`ReadableStream` is not defined as a global; You will need to polyfill it, `globalThis.ReadableStream = ReadableStream`');
+    }
+    return new ReadableStream(...args);
+}
+function ReadableStreamFrom(iterable) {
+    let iter = Symbol.asyncIterator in iterable ? iterable[Symbol.asyncIterator]() : iterable[Symbol.iterator]();
+    return makeReadableStream({
+        start() { },
+        async pull(controller) {
+            const { done, value } = await iter.next();
+            if (done) {
+                controller.close();
+            }
+            else {
+                controller.enqueue(value);
+            }
+        },
+        async cancel() {
+            await iter.return?.();
+        },
+    });
 }
 /**
- * A response is a retry response if it has a throttling status code (429 or 503),
- * as long as one of the [ "Retry-After" or "retry-after-ms" or "x-ms-retry-after-ms" ] headers has a valid value.
+ * Most browsers don't yet have async iterable support for ReadableStream,
+ * and Node has a very different way of reading bytes from its "ReadableStream".
+ *
+ * This polyfill was pulled from https://github.com/MattiasBuelens/web-streams-polyfill/pull/122#issuecomment-1627354490
  */
-function isThrottlingRetryResponse(response) {
-    return Number.isFinite(getRetryAfterInMs(response));
-}
-function throttlingRetryStrategy() {
+function ReadableStreamToAsyncIterable(stream) {
+    if (stream[Symbol.asyncIterator])
+        return stream;
+    const reader = stream.getReader();
     return {
-        name: "throttlingRetryStrategy",
-        retry({ response }) {
-            const retryAfterInMs = getRetryAfterInMs(response);
-            if (!Number.isFinite(retryAfterInMs)) {
-                return { skipStrategy: true };
+        async next() {
+            try {
+                const result = await reader.read();
+                if (result?.done)
+                    reader.releaseLock(); // release lock when stream becomes closed
+                return result;
             }
-            return {
-                retryAfterInMs,
-            };
+            catch (e) {
+                reader.releaseLock(); // release lock when stream becomes errored
+                throw e;
+            }
+        },
+        async return() {
+            const cancelPromise = reader.cancel();
+            reader.releaseLock();
+            await cancelPromise;
+            return { done: true, value: undefined };
+        },
+        [Symbol.asyncIterator]() {
+            return this;
         },
     };
+}
+/**
+ * Cancels a ReadableStream we don't need to consume.
+ * See https://undici.nodejs.org/#/?id=garbage-collection
+ */
+async function CancelReadableStream(stream) {
+    if (stream === null || typeof stream !== 'object')
+        return;
+    if (stream[Symbol.asyncIterator]) {
+        await stream[Symbol.asyncIterator]().return?.();
+        return;
+    }
+    const reader = stream.getReader();
+    const cancelPromise = reader.cancel();
+    reader.releaseLock();
+    await cancelPromise;
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-// intervals are in milliseconds
-const DEFAULT_CLIENT_RETRY_INTERVAL = 1000;
-const DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 1000 * 64;
-/**
- * A retry strategy that retries with an exponentially increasing delay in these two cases:
- * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
- * - Or otherwise if the outgoing request fails (408, greater or equal than 500, except for 501 and 505).
- */
-function exponentialRetryStrategy(options = {}) {
-    var _a, _b;
-    const retryInterval = (_a = options.retryDelayInMs) !== null && _a !== void 0 ? _a : DEFAULT_CLIENT_RETRY_INTERVAL;
-    const maxRetryInterval = (_b = options.maxRetryDelayInMs) !== null && _b !== void 0 ? _b : DEFAULT_CLIENT_MAX_RETRY_INTERVAL;
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+const FallbackEncoder = ({ headers, body }) => {
     return {
-        name: "exponentialRetryStrategy",
-        retry({ retryCount, response, responseError }) {
-            const matchedSystemError = isSystemError(responseError);
-            const ignoreSystemErrors = matchedSystemError && options.ignoreSystemErrors;
-            const isExponential = isExponentialRetryResponse(response);
-            const ignoreExponentialResponse = isExponential && options.ignoreHttpStatusCodes;
-            const unknownResponse = response && (isThrottlingRetryResponse(response) || !isExponential);
-            if (unknownResponse || ignoreExponentialResponse || ignoreSystemErrors) {
-                return { skipStrategy: true };
-            }
-            if (responseError && !matchedSystemError && !isExponential) {
-                return { errorToThrow: responseError };
-            }
-            return calculateRetryDelay(retryCount, {
-                retryDelayInMs: retryInterval,
-                maxRetryDelayInMs: maxRetryInterval,
-            });
+        bodyHeaders: {
+            'content-type': 'application/json',
         },
+        body: JSON.stringify(body),
     };
-}
-/**
- * A response is a retry response if it has status codes:
- * - 408, or
- * - Greater or equal than 500, except for 501 and 505.
- */
-function isExponentialRetryResponse(response) {
-    return Boolean(response &&
-        response.status !== undefined &&
-        (response.status >= 500 || response.status === 408) &&
-        response.status !== 501 &&
-        response.status !== 505);
-}
-/**
- * Determines whether an error from a pipeline response was triggered in the network layer.
- */
-function isSystemError(err) {
-    if (!err) {
+};
+
+const default_format = 'RFC3986';
+const default_formatter = (v) => String(v);
+const formatters = {
+    RFC1738: (v) => String(v).replace(/%20/g, '+'),
+    RFC3986: default_formatter,
+};
+const RFC1738 = 'RFC1738';
+
+let has = (obj, key) => ((has = Object.hasOwn ?? Function.prototype.call.bind(Object.prototype.hasOwnProperty)),
+    has(obj, key));
+const hex_table = /* @__PURE__ */ (() => {
+    const array = [];
+    for (let i = 0; i < 256; ++i) {
+        array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
+    }
+    return array;
+})();
+const limit = 1024;
+const encode = (str, _defaultEncoder, charset, _kind, format) => {
+    // This code was originally written by Brian White for the io.js core querystring library.
+    // It has been adapted here for stricter adherence to RFC 3986
+    if (str.length === 0) {
+        return str;
+    }
+    let string = str;
+    if (typeof str === 'symbol') {
+        string = Symbol.prototype.toString.call(str);
+    }
+    else if (typeof str !== 'string') {
+        string = String(str);
+    }
+    if (charset === 'iso-8859-1') {
+        return escape(string).replace(/%u[0-9a-f]{4}/gi, function ($0) {
+            return '%26%23' + parseInt($0.slice(2), 16) + '%3B';
+        });
+    }
+    let out = '';
+    for (let j = 0; j < string.length; j += limit) {
+        const segment = string.length >= limit ? string.slice(j, j + limit) : string;
+        const arr = [];
+        for (let i = 0; i < segment.length; ++i) {
+            let c = segment.charCodeAt(i);
+            if (c === 0x2d || // -
+                c === 0x2e || // .
+                c === 0x5f || // _
+                c === 0x7e || // ~
+                (c >= 0x30 && c <= 0x39) || // 0-9
+                (c >= 0x41 && c <= 0x5a) || // a-z
+                (c >= 0x61 && c <= 0x7a) || // A-Z
+                (format === RFC1738 && (c === 0x28 || c === 0x29)) // ( )
+            ) {
+                arr[arr.length] = segment.charAt(i);
+                continue;
+            }
+            if (c < 0x80) {
+                arr[arr.length] = hex_table[c];
+                continue;
+            }
+            if (c < 0x800) {
+                arr[arr.length] = hex_table[0xc0 | (c >> 6)] + hex_table[0x80 | (c & 0x3f)];
+                continue;
+            }
+            if (c < 0xd800 || c >= 0xe000) {
+                arr[arr.length] =
+                    hex_table[0xe0 | (c >> 12)] + hex_table[0x80 | ((c >> 6) & 0x3f)] + hex_table[0x80 | (c & 0x3f)];
+                continue;
+            }
+            i += 1;
+            c = 0x10000 + (((c & 0x3ff) << 10) | (segment.charCodeAt(i) & 0x3ff));
+            arr[arr.length] =
+                hex_table[0xf0 | (c >> 18)] +
+                    hex_table[0x80 | ((c >> 12) & 0x3f)] +
+                    hex_table[0x80 | ((c >> 6) & 0x3f)] +
+                    hex_table[0x80 | (c & 0x3f)];
+        }
+        out += arr.join('');
+    }
+    return out;
+};
+function is_buffer(obj) {
+    if (!obj || typeof obj !== 'object') {
         return false;
     }
-    return (err.code === "ETIMEDOUT" ||
-        err.code === "ESOCKETTIMEDOUT" ||
-        err.code === "ECONNREFUSED" ||
-        err.code === "ECONNRESET" ||
-        err.code === "ENOENT" ||
-        err.code === "ENOTFOUND");
+    return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
+}
+function maybe_map(val, fn) {
+    if (isArray(val)) {
+        const mapped = [];
+        for (let i = 0; i < val.length; i += 1) {
+            mapped.push(fn(val[i]));
+        }
+        return mapped;
+    }
+    return fn(val);
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
-/**
- * The programmatic identifier of the retryPolicy.
- */
-const retryPolicyName = "retryPolicy";
-/**
- * retryPolicy is a generic policy to enable retrying requests when certain conditions are met
- */
-function retryPolicy(strategies, options = { maxRetries: DEFAULT_RETRY_POLICY_COUNT }) {
-    const logger = options.logger || retryPolicyLogger;
+const array_prefix_generators = {
+    brackets(prefix) {
+        return String(prefix) + '[]';
+    },
+    comma: 'comma',
+    indices(prefix, key) {
+        return String(prefix) + '[' + key + ']';
+    },
+    repeat(prefix) {
+        return String(prefix);
+    },
+};
+const push_to_array = function (arr, value_or_array) {
+    Array.prototype.push.apply(arr, isArray(value_or_array) ? value_or_array : [value_or_array]);
+};
+let toISOString;
+const defaults = {
+    addQueryPrefix: false,
+    allowDots: false,
+    allowEmptyArrays: false,
+    arrayFormat: 'indices',
+    charset: 'utf-8',
+    charsetSentinel: false,
+    delimiter: '&',
+    encode: true,
+    encodeDotInKeys: false,
+    encoder: encode,
+    encodeValuesOnly: false,
+    format: default_format,
+    formatter: default_formatter,
+    /** @deprecated */
+    indices: false,
+    serializeDate(date) {
+        return (toISOString ?? (toISOString = Function.prototype.call.bind(Date.prototype.toISOString)))(date);
+    },
+    skipNulls: false,
+    strictNullHandling: false,
+};
+function is_non_nullish_primitive(v) {
+    return (typeof v === 'string' ||
+        typeof v === 'number' ||
+        typeof v === 'boolean' ||
+        typeof v === 'symbol' ||
+        typeof v === 'bigint');
+}
+const sentinel = {};
+function inner_stringify(object, prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, sideChannel) {
+    let obj = object;
+    let tmp_sc = sideChannel;
+    let step = 0;
+    let find_flag = false;
+    while ((tmp_sc = tmp_sc.get(sentinel)) !== void undefined && !find_flag) {
+        // Where object last appeared in the ref tree
+        const pos = tmp_sc.get(object);
+        step += 1;
+        if (typeof pos !== 'undefined') {
+            if (pos === step) {
+                throw new RangeError('Cyclic object value');
+            }
+            else {
+                find_flag = true; // Break while
+            }
+        }
+        if (typeof tmp_sc.get(sentinel) === 'undefined') {
+            step = 0;
+        }
+    }
+    if (typeof filter === 'function') {
+        obj = filter(prefix, obj);
+    }
+    else if (obj instanceof Date) {
+        obj = serializeDate?.(obj);
+    }
+    else if (generateArrayPrefix === 'comma' && isArray(obj)) {
+        obj = maybe_map(obj, function (value) {
+            if (value instanceof Date) {
+                return serializeDate?.(value);
+            }
+            return value;
+        });
+    }
+    if (obj === null) {
+        if (strictNullHandling) {
+            return encoder && !encodeValuesOnly ?
+                // @ts-expect-error
+                encoder(prefix, defaults.encoder, charset, 'key', format)
+                : prefix;
+        }
+        obj = '';
+    }
+    if (is_non_nullish_primitive(obj) || is_buffer(obj)) {
+        if (encoder) {
+            const key_value = encodeValuesOnly ? prefix
+                // @ts-expect-error
+                : encoder(prefix, defaults.encoder, charset, 'key', format);
+            return [
+                formatter?.(key_value) +
+                    '=' +
+                    // @ts-expect-error
+                    formatter?.(encoder(obj, defaults.encoder, charset, 'value', format)),
+            ];
+        }
+        return [formatter?.(prefix) + '=' + formatter?.(String(obj))];
+    }
+    const values = [];
+    if (typeof obj === 'undefined') {
+        return values;
+    }
+    let obj_keys;
+    if (generateArrayPrefix === 'comma' && isArray(obj)) {
+        // we need to join elements in
+        if (encodeValuesOnly && encoder) {
+            // @ts-expect-error values only
+            obj = maybe_map(obj, encoder);
+        }
+        obj_keys = [{ value: obj.length > 0 ? obj.join(',') || null : void undefined }];
+    }
+    else if (isArray(filter)) {
+        obj_keys = filter;
+    }
+    else {
+        const keys = Object.keys(obj);
+        obj_keys = sort ? keys.sort(sort) : keys;
+    }
+    const encoded_prefix = encodeDotInKeys ? String(prefix).replace(/\./g, '%2E') : String(prefix);
+    const adjusted_prefix = commaRoundTrip && isArray(obj) && obj.length === 1 ? encoded_prefix + '[]' : encoded_prefix;
+    if (allowEmptyArrays && isArray(obj) && obj.length === 0) {
+        return adjusted_prefix + '[]';
+    }
+    for (let j = 0; j < obj_keys.length; ++j) {
+        const key = obj_keys[j];
+        const value = 
+        // @ts-ignore
+        typeof key === 'object' && typeof key.value !== 'undefined' ? key.value : obj[key];
+        if (skipNulls && value === null) {
+            continue;
+        }
+        // @ts-ignore
+        const encoded_key = allowDots && encodeDotInKeys ? key.replace(/\./g, '%2E') : key;
+        const key_prefix = isArray(obj) ?
+            typeof generateArrayPrefix === 'function' ?
+                generateArrayPrefix(adjusted_prefix, encoded_key)
+                : adjusted_prefix
+            : adjusted_prefix + (allowDots ? '.' + encoded_key : '[' + encoded_key + ']');
+        sideChannel.set(object, step);
+        const valueSideChannel = new WeakMap();
+        valueSideChannel.set(sentinel, sideChannel);
+        push_to_array(values, inner_stringify(value, key_prefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, 
+        // @ts-ignore
+        generateArrayPrefix === 'comma' && encodeValuesOnly && isArray(obj) ? null : encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, valueSideChannel));
+    }
+    return values;
+}
+function normalize_stringify_options(opts = defaults) {
+    if (typeof opts.allowEmptyArrays !== 'undefined' && typeof opts.allowEmptyArrays !== 'boolean') {
+        throw new TypeError('`allowEmptyArrays` option can only be `true` or `false`, when provided');
+    }
+    if (typeof opts.encodeDotInKeys !== 'undefined' && typeof opts.encodeDotInKeys !== 'boolean') {
+        throw new TypeError('`encodeDotInKeys` option can only be `true` or `false`, when provided');
+    }
+    if (opts.encoder !== null && typeof opts.encoder !== 'undefined' && typeof opts.encoder !== 'function') {
+        throw new TypeError('Encoder has to be a function.');
+    }
+    const charset = opts.charset || defaults.charset;
+    if (typeof opts.charset !== 'undefined' && opts.charset !== 'utf-8' && opts.charset !== 'iso-8859-1') {
+        throw new TypeError('The charset option must be either utf-8, iso-8859-1, or undefined');
+    }
+    let format = default_format;
+    if (typeof opts.format !== 'undefined') {
+        if (!has(formatters, opts.format)) {
+            throw new TypeError('Unknown format option provided.');
+        }
+        format = opts.format;
+    }
+    const formatter = formatters[format];
+    let filter = defaults.filter;
+    if (typeof opts.filter === 'function' || isArray(opts.filter)) {
+        filter = opts.filter;
+    }
+    let arrayFormat;
+    if (opts.arrayFormat && opts.arrayFormat in array_prefix_generators) {
+        arrayFormat = opts.arrayFormat;
+    }
+    else if ('indices' in opts) {
+        arrayFormat = opts.indices ? 'indices' : 'repeat';
+    }
+    else {
+        arrayFormat = defaults.arrayFormat;
+    }
+    if ('commaRoundTrip' in opts && typeof opts.commaRoundTrip !== 'boolean') {
+        throw new TypeError('`commaRoundTrip` must be a boolean, or absent');
+    }
+    const allowDots = typeof opts.allowDots === 'undefined' ?
+        !!opts.encodeDotInKeys === true ?
+            true
+            : defaults.allowDots
+        : !!opts.allowDots;
     return {
-        name: retryPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b;
-            let response;
-            let responseError;
-            let retryCount = -1;
-            retryRequest: while (true) {
-                retryCount += 1;
-                response = undefined;
-                responseError = undefined;
-                try {
-                    logger.info(`Retry ${retryCount}: Attempting to send request`, request.requestId);
-                    response = await next(request);
-                    logger.info(`Retry ${retryCount}: Received a response from request`, request.requestId);
-                }
-                catch (e) {
-                    logger.error(`Retry ${retryCount}: Received an error from request`, request.requestId);
-                    // RestErrors are valid targets for the retry strategies.
-                    // If none of the retry strategies can work with them, they will be thrown later in this policy.
-                    // If the received error is not a RestError, it is immediately thrown.
-                    responseError = e;
-                    if (!e || responseError.name !== "RestError") {
-                        throw e;
+        addQueryPrefix: typeof opts.addQueryPrefix === 'boolean' ? opts.addQueryPrefix : defaults.addQueryPrefix,
+        // @ts-ignore
+        allowDots: allowDots,
+        allowEmptyArrays: typeof opts.allowEmptyArrays === 'boolean' ? !!opts.allowEmptyArrays : defaults.allowEmptyArrays,
+        arrayFormat: arrayFormat,
+        charset: charset,
+        charsetSentinel: typeof opts.charsetSentinel === 'boolean' ? opts.charsetSentinel : defaults.charsetSentinel,
+        commaRoundTrip: !!opts.commaRoundTrip,
+        delimiter: typeof opts.delimiter === 'undefined' ? defaults.delimiter : opts.delimiter,
+        encode: typeof opts.encode === 'boolean' ? opts.encode : defaults.encode,
+        encodeDotInKeys: typeof opts.encodeDotInKeys === 'boolean' ? opts.encodeDotInKeys : defaults.encodeDotInKeys,
+        encoder: typeof opts.encoder === 'function' ? opts.encoder : defaults.encoder,
+        encodeValuesOnly: typeof opts.encodeValuesOnly === 'boolean' ? opts.encodeValuesOnly : defaults.encodeValuesOnly,
+        filter: filter,
+        format: format,
+        formatter: formatter,
+        serializeDate: typeof opts.serializeDate === 'function' ? opts.serializeDate : defaults.serializeDate,
+        skipNulls: typeof opts.skipNulls === 'boolean' ? opts.skipNulls : defaults.skipNulls,
+        // @ts-ignore
+        sort: typeof opts.sort === 'function' ? opts.sort : null,
+        strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling,
+    };
+}
+function stringify(object, opts = {}) {
+    let obj = object;
+    const options = normalize_stringify_options(opts);
+    let obj_keys;
+    let filter;
+    if (typeof options.filter === 'function') {
+        filter = options.filter;
+        obj = filter('', obj);
+    }
+    else if (isArray(options.filter)) {
+        filter = options.filter;
+        obj_keys = filter;
+    }
+    const keys = [];
+    if (typeof obj !== 'object' || obj === null) {
+        return '';
+    }
+    const generateArrayPrefix = array_prefix_generators[options.arrayFormat];
+    const commaRoundTrip = generateArrayPrefix === 'comma' && options.commaRoundTrip;
+    if (!obj_keys) {
+        obj_keys = Object.keys(obj);
+    }
+    if (options.sort) {
+        obj_keys.sort(options.sort);
+    }
+    const sideChannel = new WeakMap();
+    for (let i = 0; i < obj_keys.length; ++i) {
+        const key = obj_keys[i];
+        if (options.skipNulls && obj[key] === null) {
+            continue;
+        }
+        push_to_array(keys, inner_stringify(obj[key], key, 
+        // @ts-expect-error
+        generateArrayPrefix, commaRoundTrip, options.allowEmptyArrays, options.strictNullHandling, options.skipNulls, options.encodeDotInKeys, options.encode ? options.encoder : null, options.filter, options.sort, options.allowDots, options.serializeDate, options.format, options.formatter, options.encodeValuesOnly, options.charset, sideChannel));
+    }
+    const joined = keys.join(options.delimiter);
+    let prefix = options.addQueryPrefix === true ? '?' : '';
+    if (options.charsetSentinel) {
+        if (options.charset === 'iso-8859-1') {
+            // encodeURIComponent('&#10003;'), the "numeric entity" representation of a checkmark
+            prefix += 'utf8=%26%2310003%3B&';
+        }
+        else {
+            // encodeURIComponent('✓')
+            prefix += 'utf8=%E2%9C%93&';
+        }
+    }
+    return joined.length > 0 ? prefix + joined : '';
+}
+
+function concatBytes(buffers) {
+    let length = 0;
+    for (const buffer of buffers) {
+        length += buffer.length;
+    }
+    const output = new Uint8Array(length);
+    let index = 0;
+    for (const buffer of buffers) {
+        output.set(buffer, index);
+        index += buffer.length;
+    }
+    return output;
+}
+let encodeUTF8_;
+function encodeUTF8(str) {
+    let encoder;
+    return (encodeUTF8_ ??
+        ((encoder = new globalThis.TextEncoder()), (encodeUTF8_ = encoder.encode.bind(encoder))))(str);
+}
+let decodeUTF8_;
+function decodeUTF8(bytes) {
+    let decoder;
+    return (decodeUTF8_ ??
+        ((decoder = new globalThis.TextDecoder()), (decodeUTF8_ = decoder.decode.bind(decoder))))(bytes);
+}
+
+var _LineDecoder_buffer, _LineDecoder_carriageReturnIndex;
+/**
+ * A re-implementation of httpx's `LineDecoder` in Python that handles incrementally
+ * reading lines from text.
+ *
+ * https://github.com/encode/httpx/blob/920333ea98118e9cf617f246905d7b202510941c/httpx/_decoders.py#L258
+ */
+class LineDecoder {
+    constructor() {
+        _LineDecoder_buffer.set(this, void 0);
+        _LineDecoder_carriageReturnIndex.set(this, void 0);
+        __classPrivateFieldSet(this, _LineDecoder_buffer, new Uint8Array());
+        __classPrivateFieldSet(this, _LineDecoder_carriageReturnIndex, null);
+    }
+    decode(chunk) {
+        if (chunk == null) {
+            return [];
+        }
+        const binaryChunk = chunk instanceof ArrayBuffer ? new Uint8Array(chunk)
+            : typeof chunk === 'string' ? encodeUTF8(chunk)
+                : chunk;
+        __classPrivateFieldSet(this, _LineDecoder_buffer, concatBytes([__classPrivateFieldGet(this, _LineDecoder_buffer, "f"), binaryChunk]));
+        const lines = [];
+        let patternIndex;
+        while ((patternIndex = findNewlineIndex(__classPrivateFieldGet(this, _LineDecoder_buffer, "f"), __classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f"))) != null) {
+            if (patternIndex.carriage && __classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f") == null) {
+                // skip until we either get a corresponding `\n`, a new `\r` or nothing
+                __classPrivateFieldSet(this, _LineDecoder_carriageReturnIndex, patternIndex.index);
+                continue;
+            }
+            // we got double \r or \rtext\n
+            if (__classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f") != null &&
+                (patternIndex.index !== __classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f") + 1 || patternIndex.carriage)) {
+                lines.push(decodeUTF8(__classPrivateFieldGet(this, _LineDecoder_buffer, "f").subarray(0, __classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f") - 1)));
+                __classPrivateFieldSet(this, _LineDecoder_buffer, __classPrivateFieldGet(this, _LineDecoder_buffer, "f").subarray(__classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f")));
+                __classPrivateFieldSet(this, _LineDecoder_carriageReturnIndex, null);
+                continue;
+            }
+            const endIndex = __classPrivateFieldGet(this, _LineDecoder_carriageReturnIndex, "f") !== null ? patternIndex.preceding - 1 : patternIndex.preceding;
+            const line = decodeUTF8(__classPrivateFieldGet(this, _LineDecoder_buffer, "f").subarray(0, endIndex));
+            lines.push(line);
+            __classPrivateFieldSet(this, _LineDecoder_buffer, __classPrivateFieldGet(this, _LineDecoder_buffer, "f").subarray(patternIndex.index));
+            __classPrivateFieldSet(this, _LineDecoder_carriageReturnIndex, null);
+        }
+        return lines;
+    }
+    flush() {
+        if (!__classPrivateFieldGet(this, _LineDecoder_buffer, "f").length) {
+            return [];
+        }
+        return this.decode('\n');
+    }
+}
+_LineDecoder_buffer = new WeakMap(), _LineDecoder_carriageReturnIndex = new WeakMap();
+// prettier-ignore
+LineDecoder.NEWLINE_CHARS = new Set(['\n', '\r']);
+LineDecoder.NEWLINE_REGEXP = /\r\n|[\n\r]/g;
+/**
+ * This function searches the buffer for the end patterns, (\r or \n)
+ * and returns an object with the index preceding the matched newline and the
+ * index after the newline char. `null` is returned if no new line is found.
+ *
+ * ```ts
+ * findNewLineIndex('abc\ndef') -> { preceding: 2, index: 3 }
+ * ```
+ */
+function findNewlineIndex(buffer, startIndex) {
+    const newline = 0x0a; // \n
+    const carriage = 0x0d; // \r
+    for (let i = startIndex ?? 0; i < buffer.length; i++) {
+        if (buffer[i] === newline) {
+            return { preceding: i, index: i + 1, carriage: false };
+        }
+        if (buffer[i] === carriage) {
+            return { preceding: i, index: i + 1, carriage: true };
+        }
+    }
+    return null;
+}
+function findDoubleNewlineIndex(buffer) {
+    // This function searches the buffer for the end patterns (\r\r, \n\n, \r\n\r\n)
+    // and returns the index right after the first occurrence of any pattern,
+    // or -1 if none of the patterns are found.
+    const newline = 0x0a; // \n
+    const carriage = 0x0d; // \r
+    for (let i = 0; i < buffer.length - 1; i++) {
+        if (buffer[i] === newline && buffer[i + 1] === newline) {
+            // \n\n
+            return i + 2;
+        }
+        if (buffer[i] === carriage && buffer[i + 1] === carriage) {
+            // \r\r
+            return i + 2;
+        }
+        if (buffer[i] === carriage &&
+            buffer[i + 1] === newline &&
+            i + 3 < buffer.length &&
+            buffer[i + 2] === carriage &&
+            buffer[i + 3] === newline) {
+            // \r\n\r\n
+            return i + 4;
+        }
+    }
+    return -1;
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+const levelNumbers = {
+    off: 0,
+    error: 200,
+    warn: 300,
+    info: 400,
+    debug: 500,
+};
+const parseLogLevel = (maybeLevel, sourceName, client) => {
+    if (!maybeLevel) {
+        return undefined;
+    }
+    if (hasOwn(levelNumbers, maybeLevel)) {
+        return maybeLevel;
+    }
+    loggerFor(client).warn(`${sourceName} was set to ${JSON.stringify(maybeLevel)}, expected one of ${JSON.stringify(Object.keys(levelNumbers))}`);
+    return undefined;
+};
+function noop() { }
+function makeLogFn(fnLevel, logger, logLevel) {
+    if (!logger || levelNumbers[fnLevel] > levelNumbers[logLevel]) {
+        return noop;
+    }
+    else {
+        // Don't wrap logger functions, we want the stacktrace intact!
+        return logger[fnLevel].bind(logger);
+    }
+}
+const noopLogger = {
+    error: noop,
+    warn: noop,
+    info: noop,
+    debug: noop,
+};
+let cachedLoggers = /* @__PURE__ */ new WeakMap();
+function loggerFor(client) {
+    const logger = client.logger;
+    const logLevel = client.logLevel ?? 'off';
+    if (!logger) {
+        return noopLogger;
+    }
+    const cachedLogger = cachedLoggers.get(logger);
+    if (cachedLogger && cachedLogger[0] === logLevel) {
+        return cachedLogger[1];
+    }
+    const levelLogger = {
+        error: makeLogFn('error', logger, logLevel),
+        warn: makeLogFn('warn', logger, logLevel),
+        info: makeLogFn('info', logger, logLevel),
+        debug: makeLogFn('debug', logger, logLevel),
+    };
+    cachedLoggers.set(logger, [logLevel, levelLogger]);
+    return levelLogger;
+}
+const formatRequestDetails = (details) => {
+    if (details.options) {
+        details.options = { ...details.options };
+        delete details.options['headers']; // redundant + leaks internals
+    }
+    if (details.headers) {
+        details.headers = Object.fromEntries((details.headers instanceof Headers ? [...details.headers] : Object.entries(details.headers)).map(([name, value]) => [
+            name,
+            (name.toLowerCase() === 'authorization' ||
+                name.toLowerCase() === 'cookie' ||
+                name.toLowerCase() === 'set-cookie') ?
+                '***'
+                : value,
+        ]));
+    }
+    if ('retryOfRequestLogID' in details) {
+        if (details.retryOfRequestLogID) {
+            details.retryOf = details.retryOfRequestLogID;
+        }
+        delete details.retryOfRequestLogID;
+    }
+    return details;
+};
+
+var _Stream_client;
+class Stream {
+    constructor(iterator, controller, client) {
+        this.iterator = iterator;
+        _Stream_client.set(this, void 0);
+        this.controller = controller;
+        __classPrivateFieldSet(this, _Stream_client, client);
+    }
+    static fromSSEResponse(response, controller, client) {
+        let consumed = false;
+        const logger = client ? loggerFor(client) : console;
+        async function* iterator() {
+            if (consumed) {
+                throw new OpenAIError('Cannot iterate over a consumed stream, use `.tee()` to split the stream.');
+            }
+            consumed = true;
+            let done = false;
+            try {
+                for await (const sse of _iterSSEMessages(response, controller)) {
+                    if (done)
+                        continue;
+                    if (sse.data.startsWith('[DONE]')) {
+                        done = true;
+                        continue;
                     }
-                    response = responseError.response;
-                }
-                if ((_a = request.abortSignal) === null || _a === void 0 ? void 0 : _a.aborted) {
-                    logger.error(`Retry ${retryCount}: Request aborted.`);
-                    const abortError = new AbortError$1();
-                    throw abortError;
-                }
-                if (retryCount >= ((_b = options.maxRetries) !== null && _b !== void 0 ? _b : DEFAULT_RETRY_POLICY_COUNT)) {
-                    logger.info(`Retry ${retryCount}: Maximum retries reached. Returning the last received response, or throwing the last received error.`);
-                    if (responseError) {
-                        throw responseError;
-                    }
-                    else if (response) {
-                        return response;
+                    if (sse.event === null || !sse.event.startsWith('thread.')) {
+                        let data;
+                        try {
+                            data = JSON.parse(sse.data);
+                        }
+                        catch (e) {
+                            logger.error(`Could not parse message into JSON:`, sse.data);
+                            logger.error(`From chunk:`, sse.raw);
+                            throw e;
+                        }
+                        if (data && data.error) {
+                            throw new APIError(undefined, data.error, undefined, response.headers);
+                        }
+                        yield data;
                     }
                     else {
-                        throw new Error("Maximum retries reached with no response or error to throw");
+                        let data;
+                        try {
+                            data = JSON.parse(sse.data);
+                        }
+                        catch (e) {
+                            console.error(`Could not parse message into JSON:`, sse.data);
+                            console.error(`From chunk:`, sse.raw);
+                            throw e;
+                        }
+                        // TODO: Is this where the error should be thrown?
+                        if (sse.event == 'error') {
+                            throw new APIError(undefined, data.error, data.message, undefined);
+                        }
+                        yield { event: sse.event, data: data };
                     }
                 }
-                logger.info(`Retry ${retryCount}: Processing ${strategies.length} retry strategies.`);
-                strategiesLoop: for (const strategy of strategies) {
-                    const strategyLogger = strategy.logger || logger;
-                    strategyLogger.info(`Retry ${retryCount}: Processing retry strategy ${strategy.name}.`);
-                    const modifiers = strategy.retry({
-                        retryCount,
-                        response,
-                        responseError,
-                    });
-                    if (modifiers.skipStrategy) {
-                        strategyLogger.info(`Retry ${retryCount}: Skipped.`);
-                        continue strategiesLoop;
+                done = true;
+            }
+            catch (e) {
+                // If the user calls `stream.controller.abort()`, we should exit without throwing.
+                if (isAbortError(e))
+                    return;
+                throw e;
+            }
+            finally {
+                // If the user `break`s, abort the ongoing request.
+                if (!done)
+                    controller.abort();
+            }
+        }
+        return new Stream(iterator, controller, client);
+    }
+    /**
+     * Generates a Stream from a newline-separated ReadableStream
+     * where each item is a JSON value.
+     */
+    static fromReadableStream(readableStream, controller, client) {
+        let consumed = false;
+        async function* iterLines() {
+            const lineDecoder = new LineDecoder();
+            const iter = ReadableStreamToAsyncIterable(readableStream);
+            for await (const chunk of iter) {
+                for (const line of lineDecoder.decode(chunk)) {
+                    yield line;
+                }
+            }
+            for (const line of lineDecoder.flush()) {
+                yield line;
+            }
+        }
+        async function* iterator() {
+            if (consumed) {
+                throw new OpenAIError('Cannot iterate over a consumed stream, use `.tee()` to split the stream.');
+            }
+            consumed = true;
+            let done = false;
+            try {
+                for await (const line of iterLines()) {
+                    if (done)
+                        continue;
+                    if (line)
+                        yield JSON.parse(line);
+                }
+                done = true;
+            }
+            catch (e) {
+                // If the user calls `stream.controller.abort()`, we should exit without throwing.
+                if (isAbortError(e))
+                    return;
+                throw e;
+            }
+            finally {
+                // If the user `break`s, abort the ongoing request.
+                if (!done)
+                    controller.abort();
+            }
+        }
+        return new Stream(iterator, controller, client);
+    }
+    [(_Stream_client = new WeakMap(), Symbol.asyncIterator)]() {
+        return this.iterator();
+    }
+    /**
+     * Splits the stream into two streams which can be
+     * independently read from at different speeds.
+     */
+    tee() {
+        const left = [];
+        const right = [];
+        const iterator = this.iterator();
+        const teeIterator = (queue) => {
+            return {
+                next: () => {
+                    if (queue.length === 0) {
+                        const result = iterator.next();
+                        left.push(result);
+                        right.push(result);
                     }
-                    const { errorToThrow, retryAfterInMs, redirectTo } = modifiers;
-                    if (errorToThrow) {
-                        strategyLogger.error(`Retry ${retryCount}: Retry strategy ${strategy.name} throws error:`, errorToThrow);
-                        throw errorToThrow;
-                    }
-                    if (retryAfterInMs || retryAfterInMs === 0) {
-                        strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} retries after ${retryAfterInMs}`);
-                        await delay$1(retryAfterInMs, undefined, { abortSignal: request.abortSignal });
-                        continue retryRequest;
-                    }
-                    if (redirectTo) {
-                        strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} redirects to ${redirectTo}`);
-                        request.url = redirectTo;
-                        continue retryRequest;
-                    }
+                    return queue.shift();
+                },
+            };
+        };
+        return [
+            new Stream(() => teeIterator(left), this.controller, __classPrivateFieldGet(this, _Stream_client, "f")),
+            new Stream(() => teeIterator(right), this.controller, __classPrivateFieldGet(this, _Stream_client, "f")),
+        ];
+    }
+    /**
+     * Converts this stream to a newline-separated ReadableStream of
+     * JSON stringified values in the stream
+     * which can be turned back into a Stream with `Stream.fromReadableStream()`.
+     */
+    toReadableStream() {
+        const self = this;
+        let iter;
+        return makeReadableStream({
+            async start() {
+                iter = self[Symbol.asyncIterator]();
+            },
+            async pull(ctrl) {
+                try {
+                    const { value, done } = await iter.next();
+                    if (done)
+                        return ctrl.close();
+                    const bytes = encodeUTF8(JSON.stringify(value) + '\n');
+                    ctrl.enqueue(bytes);
                 }
-                if (responseError) {
-                    logger.info(`None of the retry strategies could work with the received error. Throwing it.`);
-                    throw responseError;
+                catch (err) {
+                    ctrl.error(err);
                 }
-                if (response) {
-                    logger.info(`None of the retry strategies could work with the received response. Returning it.`);
-                    return response;
-                }
-                // If all the retries skip and there's no response,
-                // we're still in the retry loop, so a new request will be sent
-                // until `maxRetries` is reached.
-            }
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the {@link defaultRetryPolicy}
- */
-const defaultRetryPolicyName = "defaultRetryPolicy";
-/**
- * A policy that retries according to three strategies:
- * - When the server sends a 429 response with a Retry-After header.
- * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
- * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
- */
-function defaultRetryPolicy$1(options = {}) {
-    var _a;
-    return {
-        name: defaultRetryPolicyName,
-        sendRequest: retryPolicy([throttlingRetryStrategy(), exponentialRetryStrategy(options)], {
-            maxRetries: (_a = options.maxRetries) !== null && _a !== void 0 ? _a : DEFAULT_RETRY_POLICY_COUNT,
-        }).sendRequest,
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-var _a, _b, _c, _d;
-/**
- * A constant that indicates whether the environment the code is running is a Web Worker.
- */
-typeof self === "object" &&
-    typeof (self === null || self === void 0 ? void 0 : self.importScripts) === "function" &&
-    (((_a = self.constructor) === null || _a === void 0 ? void 0 : _a.name) === "DedicatedWorkerGlobalScope" ||
-        ((_b = self.constructor) === null || _b === void 0 ? void 0 : _b.name) === "ServiceWorkerGlobalScope" ||
-        ((_c = self.constructor) === null || _c === void 0 ? void 0 : _c.name) === "SharedWorkerGlobalScope");
-/**
- * A constant that indicates whether the environment the code is running is Deno.
- */
-typeof Deno !== "undefined" &&
-    typeof Deno.version !== "undefined" &&
-    typeof Deno.version.deno !== "undefined";
-/**
- * A constant that indicates whether the environment the code is running is Bun.sh.
- */
-typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
-/**
- * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
- */
-const isNodeLike$1 = typeof globalThis.process !== "undefined" &&
-    Boolean(globalThis.process.version) &&
-    Boolean((_d = globalThis.process.versions) === null || _d === void 0 ? void 0 : _d.node);
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the formDataPolicy.
- */
-const formDataPolicyName = "formDataPolicy";
-function formDataToFormDataMap(formData) {
-    var _a;
-    const formDataMap = {};
-    for (const [key, value] of formData.entries()) {
-        (_a = formDataMap[key]) !== null && _a !== void 0 ? _a : (formDataMap[key] = []);
-        formDataMap[key].push(value);
+            },
+            async cancel() {
+                await iter.return?.();
+            },
+        });
     }
-    return formDataMap;
 }
-/**
- * A policy that encodes FormData on the request into the body.
- */
-function formDataPolicy$1() {
-    return {
-        name: formDataPolicyName,
-        async sendRequest(request, next) {
-            if (isNodeLike$1 && typeof FormData !== "undefined" && request.body instanceof FormData) {
-                request.formData = formDataToFormDataMap(request.body);
-                request.body = undefined;
-            }
-            if (request.formData) {
-                const contentType = request.headers.get("Content-Type");
-                if (contentType && contentType.indexOf("application/x-www-form-urlencoded") !== -1) {
-                    request.body = wwwFormUrlEncode(request.formData);
-                }
-                else {
-                    await prepareFormData(request.formData, request);
-                }
-                request.formData = undefined;
-            }
-            return next(request);
-        },
-    };
-}
-function wwwFormUrlEncode(formData) {
-    const urlSearchParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(formData)) {
-        if (Array.isArray(value)) {
-            for (const subValue of value) {
-                urlSearchParams.append(key, subValue.toString());
-            }
+async function* _iterSSEMessages(response, controller) {
+    if (!response.body) {
+        controller.abort();
+        if (typeof globalThis.navigator !== 'undefined' &&
+            globalThis.navigator.product === 'ReactNative') {
+            throw new OpenAIError(`The default react-native fetch implementation does not support streaming. Please use expo/fetch: https://docs.expo.dev/versions/latest/sdk/expo/#expofetch-api`);
         }
-        else {
-            urlSearchParams.append(key, value.toString());
+        throw new OpenAIError(`Attempted to iterate over a response with no body`);
+    }
+    const sseDecoder = new SSEDecoder();
+    const lineDecoder = new LineDecoder();
+    const iter = ReadableStreamToAsyncIterable(response.body);
+    for await (const sseChunk of iterSSEChunks(iter)) {
+        for (const line of lineDecoder.decode(sseChunk)) {
+            const sse = sseDecoder.decode(line);
+            if (sse)
+                yield sse;
         }
     }
-    return urlSearchParams.toString();
-}
-async function prepareFormData(formData, request) {
-    // validate content type (multipart/form-data)
-    const contentType = request.headers.get("Content-Type");
-    if (contentType && !contentType.startsWith("multipart/form-data")) {
-        // content type is specified and is not multipart/form-data. Exit.
-        return;
+    for (const line of lineDecoder.flush()) {
+        const sse = sseDecoder.decode(line);
+        if (sse)
+            yield sse;
     }
-    request.headers.set("Content-Type", contentType !== null && contentType !== void 0 ? contentType : "multipart/form-data");
-    // set body to MultipartRequestBody using content from FormDataMap
-    const parts = [];
-    for (const [fieldName, values] of Object.entries(formData)) {
-        for (const value of Array.isArray(values) ? values : [values]) {
-            if (typeof value === "string") {
-                parts.push({
-                    headers: createHttpHeaders({
-                        "Content-Disposition": `form-data; name="${fieldName}"`,
-                    }),
-                    body: stringToUint8Array(value, "utf-8"),
-                });
-            }
-            else if (value === undefined || value === null || typeof value !== "object") {
-                throw new Error(`Unexpected value for key ${fieldName}: ${value}. Value should be serialized to string first.`);
-            }
-            else {
-                // using || instead of ?? here since if value.name is empty we should create a file name
-                const fileName = value.name || "blob";
-                const headers = createHttpHeaders();
-                headers.set("Content-Disposition", `form-data; name="${fieldName}"; filename="${fileName}"`);
-                // again, || is used since an empty value.type means the content type is unset
-                headers.set("Content-Type", value.type || "application/octet-stream");
-                parts.push({
-                    headers,
-                    body: value,
-                });
-            }
+}
+/**
+ * Given an async iterable iterator, iterates over it and yields full
+ * SSE chunks, i.e. yields when a double new-line is encountered.
+ */
+async function* iterSSEChunks(iterator) {
+    let data = new Uint8Array();
+    for await (const chunk of iterator) {
+        if (chunk == null) {
+            continue;
+        }
+        const binaryChunk = chunk instanceof ArrayBuffer ? new Uint8Array(chunk)
+            : typeof chunk === 'string' ? encodeUTF8(chunk)
+                : chunk;
+        let newData = new Uint8Array(data.length + binaryChunk.length);
+        newData.set(data);
+        newData.set(binaryChunk, data.length);
+        data = newData;
+        let patternIndex;
+        while ((patternIndex = findDoubleNewlineIndex(data)) !== -1) {
+            yield data.slice(0, patternIndex);
+            data = data.slice(patternIndex);
         }
     }
-    request.multipartBody = { parts };
-}
-
-var dist$2 = {};
-
-var src = {exports: {}};
-
-var browser = {exports: {}};
-
-/**
- * Helpers.
- */
-
-var ms;
-var hasRequiredMs;
-
-function requireMs () {
-	if (hasRequiredMs) return ms;
-	hasRequiredMs = 1;
-	var s = 1000;
-	var m = s * 60;
-	var h = m * 60;
-	var d = h * 24;
-	var w = d * 7;
-	var y = d * 365.25;
-
-	/**
-	 * Parse or format the given `val`.
-	 *
-	 * Options:
-	 *
-	 *  - `long` verbose formatting [false]
-	 *
-	 * @param {String|Number} val
-	 * @param {Object} [options]
-	 * @throws {Error} throw an error if val is not a non-empty string or a number
-	 * @return {String|Number}
-	 * @api public
-	 */
-
-	ms = function (val, options) {
-	  options = options || {};
-	  var type = typeof val;
-	  if (type === 'string' && val.length > 0) {
-	    return parse(val);
-	  } else if (type === 'number' && isFinite(val)) {
-	    return options.long ? fmtLong(val) : fmtShort(val);
-	  }
-	  throw new Error(
-	    'val is not a non-empty string or a valid number. val=' +
-	      JSON.stringify(val)
-	  );
-	};
-
-	/**
-	 * Parse the given `str` and return milliseconds.
-	 *
-	 * @param {String} str
-	 * @return {Number}
-	 * @api private
-	 */
-
-	function parse(str) {
-	  str = String(str);
-	  if (str.length > 100) {
-	    return;
-	  }
-	  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
-	    str
-	  );
-	  if (!match) {
-	    return;
-	  }
-	  var n = parseFloat(match[1]);
-	  var type = (match[2] || 'ms').toLowerCase();
-	  switch (type) {
-	    case 'years':
-	    case 'year':
-	    case 'yrs':
-	    case 'yr':
-	    case 'y':
-	      return n * y;
-	    case 'weeks':
-	    case 'week':
-	    case 'w':
-	      return n * w;
-	    case 'days':
-	    case 'day':
-	    case 'd':
-	      return n * d;
-	    case 'hours':
-	    case 'hour':
-	    case 'hrs':
-	    case 'hr':
-	    case 'h':
-	      return n * h;
-	    case 'minutes':
-	    case 'minute':
-	    case 'mins':
-	    case 'min':
-	    case 'm':
-	      return n * m;
-	    case 'seconds':
-	    case 'second':
-	    case 'secs':
-	    case 'sec':
-	    case 's':
-	      return n * s;
-	    case 'milliseconds':
-	    case 'millisecond':
-	    case 'msecs':
-	    case 'msec':
-	    case 'ms':
-	      return n;
-	    default:
-	      return undefined;
-	  }
-	}
-
-	/**
-	 * Short format for `ms`.
-	 *
-	 * @param {Number} ms
-	 * @return {String}
-	 * @api private
-	 */
-
-	function fmtShort(ms) {
-	  var msAbs = Math.abs(ms);
-	  if (msAbs >= d) {
-	    return Math.round(ms / d) + 'd';
-	  }
-	  if (msAbs >= h) {
-	    return Math.round(ms / h) + 'h';
-	  }
-	  if (msAbs >= m) {
-	    return Math.round(ms / m) + 'm';
-	  }
-	  if (msAbs >= s) {
-	    return Math.round(ms / s) + 's';
-	  }
-	  return ms + 'ms';
-	}
-
-	/**
-	 * Long format for `ms`.
-	 *
-	 * @param {Number} ms
-	 * @return {String}
-	 * @api private
-	 */
-
-	function fmtLong(ms) {
-	  var msAbs = Math.abs(ms);
-	  if (msAbs >= d) {
-	    return plural(ms, msAbs, d, 'day');
-	  }
-	  if (msAbs >= h) {
-	    return plural(ms, msAbs, h, 'hour');
-	  }
-	  if (msAbs >= m) {
-	    return plural(ms, msAbs, m, 'minute');
-	  }
-	  if (msAbs >= s) {
-	    return plural(ms, msAbs, s, 'second');
-	  }
-	  return ms + ' ms';
-	}
-
-	/**
-	 * Pluralization helper.
-	 */
-
-	function plural(ms, msAbs, n, name) {
-	  var isPlural = msAbs >= n * 1.5;
-	  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
-	}
-	return ms;
-}
-
-var common$1;
-var hasRequiredCommon;
-
-function requireCommon () {
-	if (hasRequiredCommon) return common$1;
-	hasRequiredCommon = 1;
-	/**
-	 * This is the common logic for both the Node.js and web browser
-	 * implementations of `debug()`.
-	 */
-
-	function setup(env) {
-		createDebug.debug = createDebug;
-		createDebug.default = createDebug;
-		createDebug.coerce = coerce;
-		createDebug.disable = disable;
-		createDebug.enable = enable;
-		createDebug.enabled = enabled;
-		createDebug.humanize = requireMs();
-		createDebug.destroy = destroy;
-
-		Object.keys(env).forEach(key => {
-			createDebug[key] = env[key];
-		});
-
-		/**
-		* The currently active debug mode names, and names to skip.
-		*/
-
-		createDebug.names = [];
-		createDebug.skips = [];
-
-		/**
-		* Map of special "%n" handling functions, for the debug "format" argument.
-		*
-		* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
-		*/
-		createDebug.formatters = {};
-
-		/**
-		* Selects a color for a debug namespace
-		* @param {String} namespace The namespace string for the debug instance to be colored
-		* @return {Number|String} An ANSI color code for the given namespace
-		* @api private
-		*/
-		function selectColor(namespace) {
-			let hash = 0;
-
-			for (let i = 0; i < namespace.length; i++) {
-				hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
-				hash |= 0; // Convert to 32bit integer
-			}
-
-			return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
-		}
-		createDebug.selectColor = selectColor;
-
-		/**
-		* Create a debugger with the given `namespace`.
-		*
-		* @param {String} namespace
-		* @return {Function}
-		* @api public
-		*/
-		function createDebug(namespace) {
-			let prevTime;
-			let enableOverride = null;
-			let namespacesCache;
-			let enabledCache;
-
-			function debug(...args) {
-				// Disabled?
-				if (!debug.enabled) {
-					return;
-				}
-
-				const self = debug;
-
-				// Set `diff` timestamp
-				const curr = Number(new Date());
-				const ms = curr - (prevTime || curr);
-				self.diff = ms;
-				self.prev = prevTime;
-				self.curr = curr;
-				prevTime = curr;
-
-				args[0] = createDebug.coerce(args[0]);
-
-				if (typeof args[0] !== 'string') {
-					// Anything else let's inspect with %O
-					args.unshift('%O');
-				}
-
-				// Apply any `formatters` transformations
-				let index = 0;
-				args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
-					// If we encounter an escaped % then don't increase the array index
-					if (match === '%%') {
-						return '%';
-					}
-					index++;
-					const formatter = createDebug.formatters[format];
-					if (typeof formatter === 'function') {
-						const val = args[index];
-						match = formatter.call(self, val);
-
-						// Now we need to remove `args[index]` since it's inlined in the `format`
-						args.splice(index, 1);
-						index--;
-					}
-					return match;
-				});
-
-				// Apply env-specific formatting (colors, etc.)
-				createDebug.formatArgs.call(self, args);
-
-				const logFn = self.log || createDebug.log;
-				logFn.apply(self, args);
-			}
-
-			debug.namespace = namespace;
-			debug.useColors = createDebug.useColors();
-			debug.color = createDebug.selectColor(namespace);
-			debug.extend = extend;
-			debug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.
-
-			Object.defineProperty(debug, 'enabled', {
-				enumerable: true,
-				configurable: false,
-				get: () => {
-					if (enableOverride !== null) {
-						return enableOverride;
-					}
-					if (namespacesCache !== createDebug.namespaces) {
-						namespacesCache = createDebug.namespaces;
-						enabledCache = createDebug.enabled(namespace);
-					}
-
-					return enabledCache;
-				},
-				set: v => {
-					enableOverride = v;
-				}
-			});
-
-			// Env-specific initialization logic for debug instances
-			if (typeof createDebug.init === 'function') {
-				createDebug.init(debug);
-			}
-
-			return debug;
-		}
-
-		function extend(namespace, delimiter) {
-			const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
-			newDebug.log = this.log;
-			return newDebug;
-		}
-
-		/**
-		* Enables a debug mode by namespaces. This can include modes
-		* separated by a colon and wildcards.
-		*
-		* @param {String} namespaces
-		* @api public
-		*/
-		function enable(namespaces) {
-			createDebug.save(namespaces);
-			createDebug.namespaces = namespaces;
-
-			createDebug.names = [];
-			createDebug.skips = [];
-
-			const split = (typeof namespaces === 'string' ? namespaces : '')
-				.trim()
-				.replace(/\s+/g, ',')
-				.split(',')
-				.filter(Boolean);
-
-			for (const ns of split) {
-				if (ns[0] === '-') {
-					createDebug.skips.push(ns.slice(1));
-				} else {
-					createDebug.names.push(ns);
-				}
-			}
-		}
-
-		/**
-		 * Checks if the given string matches a namespace template, honoring
-		 * asterisks as wildcards.
-		 *
-		 * @param {String} search
-		 * @param {String} template
-		 * @return {Boolean}
-		 */
-		function matchesTemplate(search, template) {
-			let searchIndex = 0;
-			let templateIndex = 0;
-			let starIndex = -1;
-			let matchIndex = 0;
-
-			while (searchIndex < search.length) {
-				if (templateIndex < template.length && (template[templateIndex] === search[searchIndex] || template[templateIndex] === '*')) {
-					// Match character or proceed with wildcard
-					if (template[templateIndex] === '*') {
-						starIndex = templateIndex;
-						matchIndex = searchIndex;
-						templateIndex++; // Skip the '*'
-					} else {
-						searchIndex++;
-						templateIndex++;
-					}
-				} else if (starIndex !== -1) { // eslint-disable-line no-negated-condition
-					// Backtrack to the last '*' and try to match more characters
-					templateIndex = starIndex + 1;
-					matchIndex++;
-					searchIndex = matchIndex;
-				} else {
-					return false; // No match
-				}
-			}
-
-			// Handle trailing '*' in template
-			while (templateIndex < template.length && template[templateIndex] === '*') {
-				templateIndex++;
-			}
-
-			return templateIndex === template.length;
-		}
-
-		/**
-		* Disable debug output.
-		*
-		* @return {String} namespaces
-		* @api public
-		*/
-		function disable() {
-			const namespaces = [
-				...createDebug.names,
-				...createDebug.skips.map(namespace => '-' + namespace)
-			].join(',');
-			createDebug.enable('');
-			return namespaces;
-		}
-
-		/**
-		* Returns true if the given mode name is enabled, false otherwise.
-		*
-		* @param {String} name
-		* @return {Boolean}
-		* @api public
-		*/
-		function enabled(name) {
-			for (const skip of createDebug.skips) {
-				if (matchesTemplate(name, skip)) {
-					return false;
-				}
-			}
-
-			for (const ns of createDebug.names) {
-				if (matchesTemplate(name, ns)) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		/**
-		* Coerce `val`.
-		*
-		* @param {Mixed} val
-		* @return {Mixed}
-		* @api private
-		*/
-		function coerce(val) {
-			if (val instanceof Error) {
-				return val.stack || val.message;
-			}
-			return val;
-		}
-
-		/**
-		* XXX DO NOT USE. This is a temporary stub function.
-		* XXX It WILL be removed in the next major release.
-		*/
-		function destroy() {
-			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
-		}
-
-		createDebug.enable(createDebug.load());
-
-		return createDebug;
-	}
-
-	common$1 = setup;
-	return common$1;
-}
-
-/* eslint-env browser */
-
-var hasRequiredBrowser;
-
-function requireBrowser () {
-	if (hasRequiredBrowser) return browser.exports;
-	hasRequiredBrowser = 1;
-	(function (module, exports) {
-		/**
-		 * This is the web browser implementation of `debug()`.
-		 */
-
-		exports.formatArgs = formatArgs;
-		exports.save = save;
-		exports.load = load;
-		exports.useColors = useColors;
-		exports.storage = localstorage();
-		exports.destroy = (() => {
-			let warned = false;
-
-			return () => {
-				if (!warned) {
-					warned = true;
-					console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
-				}
-			};
-		})();
-
-		/**
-		 * Colors.
-		 */
-
-		exports.colors = [
-			'#0000CC',
-			'#0000FF',
-			'#0033CC',
-			'#0033FF',
-			'#0066CC',
-			'#0066FF',
-			'#0099CC',
-			'#0099FF',
-			'#00CC00',
-			'#00CC33',
-			'#00CC66',
-			'#00CC99',
-			'#00CCCC',
-			'#00CCFF',
-			'#3300CC',
-			'#3300FF',
-			'#3333CC',
-			'#3333FF',
-			'#3366CC',
-			'#3366FF',
-			'#3399CC',
-			'#3399FF',
-			'#33CC00',
-			'#33CC33',
-			'#33CC66',
-			'#33CC99',
-			'#33CCCC',
-			'#33CCFF',
-			'#6600CC',
-			'#6600FF',
-			'#6633CC',
-			'#6633FF',
-			'#66CC00',
-			'#66CC33',
-			'#9900CC',
-			'#9900FF',
-			'#9933CC',
-			'#9933FF',
-			'#99CC00',
-			'#99CC33',
-			'#CC0000',
-			'#CC0033',
-			'#CC0066',
-			'#CC0099',
-			'#CC00CC',
-			'#CC00FF',
-			'#CC3300',
-			'#CC3333',
-			'#CC3366',
-			'#CC3399',
-			'#CC33CC',
-			'#CC33FF',
-			'#CC6600',
-			'#CC6633',
-			'#CC9900',
-			'#CC9933',
-			'#CCCC00',
-			'#CCCC33',
-			'#FF0000',
-			'#FF0033',
-			'#FF0066',
-			'#FF0099',
-			'#FF00CC',
-			'#FF00FF',
-			'#FF3300',
-			'#FF3333',
-			'#FF3366',
-			'#FF3399',
-			'#FF33CC',
-			'#FF33FF',
-			'#FF6600',
-			'#FF6633',
-			'#FF9900',
-			'#FF9933',
-			'#FFCC00',
-			'#FFCC33'
-		];
-
-		/**
-		 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
-		 * and the Firebug extension (any Firefox version) are known
-		 * to support "%c" CSS customizations.
-		 *
-		 * TODO: add a `localStorage` variable to explicitly enable/disable colors
-		 */
-
-		// eslint-disable-next-line complexity
-		function useColors() {
-			// NB: In an Electron preload script, document will be defined but not fully
-			// initialized. Since we know we're in Chrome, we'll just detect this case
-			// explicitly
-			if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
-				return true;
-			}
-
-			// Internet Explorer and Edge do not support colors.
-			if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
-				return false;
-			}
-
-			let m;
-
-			// Is webkit? http://stackoverflow.com/a/16459606/376773
-			// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-			// eslint-disable-next-line no-return-assign
-			return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
-				// Is firebug? http://stackoverflow.com/a/398120/376773
-				(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
-				// Is firefox >= v31?
-				// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-				(typeof navigator !== 'undefined' && navigator.userAgent && (m = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(m[1], 10) >= 31) ||
-				// Double check webkit in userAgent just in case we are in a worker
-				(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
-		}
-
-		/**
-		 * Colorize log arguments if enabled.
-		 *
-		 * @api public
-		 */
-
-		function formatArgs(args) {
-			args[0] = (this.useColors ? '%c' : '') +
-				this.namespace +
-				(this.useColors ? ' %c' : ' ') +
-				args[0] +
-				(this.useColors ? '%c ' : ' ') +
-				'+' + module.exports.humanize(this.diff);
-
-			if (!this.useColors) {
-				return;
-			}
-
-			const c = 'color: ' + this.color;
-			args.splice(1, 0, c, 'color: inherit');
-
-			// The final "%c" is somewhat tricky, because there could be other
-			// arguments passed either before or after the %c, so we need to
-			// figure out the correct index to insert the CSS into
-			let index = 0;
-			let lastC = 0;
-			args[0].replace(/%[a-zA-Z%]/g, match => {
-				if (match === '%%') {
-					return;
-				}
-				index++;
-				if (match === '%c') {
-					// We only are interested in the *last* %c
-					// (the user may have provided their own)
-					lastC = index;
-				}
-			});
-
-			args.splice(lastC, 0, c);
-		}
-
-		/**
-		 * Invokes `console.debug()` when available.
-		 * No-op when `console.debug` is not a "function".
-		 * If `console.debug` is not available, falls back
-		 * to `console.log`.
-		 *
-		 * @api public
-		 */
-		exports.log = console.debug || console.log || (() => {});
-
-		/**
-		 * Save `namespaces`.
-		 *
-		 * @param {String} namespaces
-		 * @api private
-		 */
-		function save(namespaces) {
-			try {
-				if (namespaces) {
-					exports.storage.setItem('debug', namespaces);
-				} else {
-					exports.storage.removeItem('debug');
-				}
-			} catch (error) {
-				// Swallow
-				// XXX (@Qix-) should we be logging these?
-			}
-		}
-
-		/**
-		 * Load `namespaces`.
-		 *
-		 * @return {String} returns the previously persisted debug modes
-		 * @api private
-		 */
-		function load() {
-			let r;
-			try {
-				r = exports.storage.getItem('debug') || exports.storage.getItem('DEBUG') ;
-			} catch (error) {
-				// Swallow
-				// XXX (@Qix-) should we be logging these?
-			}
-
-			// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
-			if (!r && typeof process !== 'undefined' && 'env' in process) {
-				r = process.env.DEBUG;
-			}
-
-			return r;
-		}
-
-		/**
-		 * Localstorage attempts to return the localstorage.
-		 *
-		 * This is necessary because safari throws
-		 * when a user disables cookies/localstorage
-		 * and you attempt to access it.
-		 *
-		 * @return {LocalStorage}
-		 * @api private
-		 */
-
-		function localstorage() {
-			try {
-				// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
-				// The Browser also has localStorage in the global context.
-				return localStorage;
-			} catch (error) {
-				// Swallow
-				// XXX (@Qix-) should we be logging these?
-			}
-		}
-
-		module.exports = requireCommon()(exports);
-
-		const {formatters} = module.exports;
-
-		/**
-		 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
-		 */
-
-		formatters.j = function (v) {
-			try {
-				return JSON.stringify(v);
-			} catch (error) {
-				return '[UnexpectedJSONParseError]: ' + error.message;
-			}
-		}; 
-	} (browser, browser.exports));
-	return browser.exports;
-}
-
-var node = {exports: {}};
-
-var hasFlag;
-var hasRequiredHasFlag;
-
-function requireHasFlag () {
-	if (hasRequiredHasFlag) return hasFlag;
-	hasRequiredHasFlag = 1;
-
-	hasFlag = (flag, argv = process.argv) => {
-		const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
-		const position = argv.indexOf(prefix + flag);
-		const terminatorPosition = argv.indexOf('--');
-		return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
-	};
-	return hasFlag;
-}
-
-var supportsColor_1;
-var hasRequiredSupportsColor;
-
-function requireSupportsColor () {
-	if (hasRequiredSupportsColor) return supportsColor_1;
-	hasRequiredSupportsColor = 1;
-	const os = require$$0__default;
-	const tty = require$$1$5;
-	const hasFlag = requireHasFlag();
-
-	const {env} = process;
-
-	let forceColor;
-	if (hasFlag('no-color') ||
-		hasFlag('no-colors') ||
-		hasFlag('color=false') ||
-		hasFlag('color=never')) {
-		forceColor = 0;
-	} else if (hasFlag('color') ||
-		hasFlag('colors') ||
-		hasFlag('color=true') ||
-		hasFlag('color=always')) {
-		forceColor = 1;
-	}
-
-	if ('FORCE_COLOR' in env) {
-		if (env.FORCE_COLOR === 'true') {
-			forceColor = 1;
-		} else if (env.FORCE_COLOR === 'false') {
-			forceColor = 0;
-		} else {
-			forceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
-		}
-	}
-
-	function translateLevel(level) {
-		if (level === 0) {
-			return false;
-		}
-
-		return {
-			level,
-			hasBasic: true,
-			has256: level >= 2,
-			has16m: level >= 3
-		};
-	}
-
-	function supportsColor(haveStream, streamIsTTY) {
-		if (forceColor === 0) {
-			return 0;
-		}
-
-		if (hasFlag('color=16m') ||
-			hasFlag('color=full') ||
-			hasFlag('color=truecolor')) {
-			return 3;
-		}
-
-		if (hasFlag('color=256')) {
-			return 2;
-		}
-
-		if (haveStream && !streamIsTTY && forceColor === undefined) {
-			return 0;
-		}
-
-		const min = forceColor || 0;
-
-		if (env.TERM === 'dumb') {
-			return min;
-		}
-
-		if (process.platform === 'win32') {
-			// Windows 10 build 10586 is the first Windows release that supports 256 colors.
-			// Windows 10 build 14931 is the first release that supports 16m/TrueColor.
-			const osRelease = os.release().split('.');
-			if (
-				Number(osRelease[0]) >= 10 &&
-				Number(osRelease[2]) >= 10586
-			) {
-				return Number(osRelease[2]) >= 14931 ? 3 : 2;
-			}
-
-			return 1;
-		}
-
-		if ('CI' in env) {
-			if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
-				return 1;
-			}
-
-			return min;
-		}
-
-		if ('TEAMCITY_VERSION' in env) {
-			return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
-		}
-
-		if (env.COLORTERM === 'truecolor') {
-			return 3;
-		}
-
-		if ('TERM_PROGRAM' in env) {
-			const version = parseInt((env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
-
-			switch (env.TERM_PROGRAM) {
-				case 'iTerm.app':
-					return version >= 3 ? 3 : 2;
-				case 'Apple_Terminal':
-					return 2;
-				// No default
-			}
-		}
-
-		if (/-256(color)?$/i.test(env.TERM)) {
-			return 2;
-		}
-
-		if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
-			return 1;
-		}
-
-		if ('COLORTERM' in env) {
-			return 1;
-		}
-
-		return min;
-	}
-
-	function getSupportLevel(stream) {
-		const level = supportsColor(stream, stream && stream.isTTY);
-		return translateLevel(level);
-	}
-
-	supportsColor_1 = {
-		supportsColor: getSupportLevel,
-		stdout: translateLevel(supportsColor(true, tty.isatty(1))),
-		stderr: translateLevel(supportsColor(true, tty.isatty(2)))
-	};
-	return supportsColor_1;
-}
-
-/**
- * Module dependencies.
- */
-
-var hasRequiredNode;
-
-function requireNode () {
-	if (hasRequiredNode) return node.exports;
-	hasRequiredNode = 1;
-	(function (module, exports) {
-		const tty = require$$1$5;
-		const util = require$$0$2;
-
-		/**
-		 * This is the Node.js implementation of `debug()`.
-		 */
-
-		exports.init = init;
-		exports.log = log;
-		exports.formatArgs = formatArgs;
-		exports.save = save;
-		exports.load = load;
-		exports.useColors = useColors;
-		exports.destroy = util.deprecate(
-			() => {},
-			'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'
-		);
-
-		/**
-		 * Colors.
-		 */
-
-		exports.colors = [6, 2, 3, 4, 5, 1];
-
-		try {
-			// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
-			// eslint-disable-next-line import/no-extraneous-dependencies
-			const supportsColor = requireSupportsColor();
-
-			if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
-				exports.colors = [
-					20,
-					21,
-					26,
-					27,
-					32,
-					33,
-					38,
-					39,
-					40,
-					41,
-					42,
-					43,
-					44,
-					45,
-					56,
-					57,
-					62,
-					63,
-					68,
-					69,
-					74,
-					75,
-					76,
-					77,
-					78,
-					79,
-					80,
-					81,
-					92,
-					93,
-					98,
-					99,
-					112,
-					113,
-					128,
-					129,
-					134,
-					135,
-					148,
-					149,
-					160,
-					161,
-					162,
-					163,
-					164,
-					165,
-					166,
-					167,
-					168,
-					169,
-					170,
-					171,
-					172,
-					173,
-					178,
-					179,
-					184,
-					185,
-					196,
-					197,
-					198,
-					199,
-					200,
-					201,
-					202,
-					203,
-					204,
-					205,
-					206,
-					207,
-					208,
-					209,
-					214,
-					215,
-					220,
-					221
-				];
-			}
-		} catch (error) {
-			// Swallow - we only care if `supports-color` is available; it doesn't have to be.
-		}
-
-		/**
-		 * Build up the default `inspectOpts` object from the environment variables.
-		 *
-		 *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
-		 */
-
-		exports.inspectOpts = Object.keys(process.env).filter(key => {
-			return /^debug_/i.test(key);
-		}).reduce((obj, key) => {
-			// Camel-case
-			const prop = key
-				.substring(6)
-				.toLowerCase()
-				.replace(/_([a-z])/g, (_, k) => {
-					return k.toUpperCase();
-				});
-
-			// Coerce string value into JS value
-			let val = process.env[key];
-			if (/^(yes|on|true|enabled)$/i.test(val)) {
-				val = true;
-			} else if (/^(no|off|false|disabled)$/i.test(val)) {
-				val = false;
-			} else if (val === 'null') {
-				val = null;
-			} else {
-				val = Number(val);
-			}
-
-			obj[prop] = val;
-			return obj;
-		}, {});
-
-		/**
-		 * Is stdout a TTY? Colored output is enabled when `true`.
-		 */
-
-		function useColors() {
-			return 'colors' in exports.inspectOpts ?
-				Boolean(exports.inspectOpts.colors) :
-				tty.isatty(process.stderr.fd);
-		}
-
-		/**
-		 * Adds ANSI color escape codes if enabled.
-		 *
-		 * @api public
-		 */
-
-		function formatArgs(args) {
-			const {namespace: name, useColors} = this;
-
-			if (useColors) {
-				const c = this.color;
-				const colorCode = '\u001B[3' + (c < 8 ? c : '8;5;' + c);
-				const prefix = `  ${colorCode};1m${name} \u001B[0m`;
-
-				args[0] = prefix + args[0].split('\n').join('\n' + prefix);
-				args.push(colorCode + 'm+' + module.exports.humanize(this.diff) + '\u001B[0m');
-			} else {
-				args[0] = getDate() + name + ' ' + args[0];
-			}
-		}
-
-		function getDate() {
-			if (exports.inspectOpts.hideDate) {
-				return '';
-			}
-			return new Date().toISOString() + ' ';
-		}
-
-		/**
-		 * Invokes `util.formatWithOptions()` with the specified arguments and writes to stderr.
-		 */
-
-		function log(...args) {
-			return process.stderr.write(util.formatWithOptions(exports.inspectOpts, ...args) + '\n');
-		}
-
-		/**
-		 * Save `namespaces`.
-		 *
-		 * @param {String} namespaces
-		 * @api private
-		 */
-		function save(namespaces) {
-			if (namespaces) {
-				process.env.DEBUG = namespaces;
-			} else {
-				// If you set a process.env field to null or undefined, it gets cast to the
-				// string 'null' or 'undefined'. Just delete instead.
-				delete process.env.DEBUG;
-			}
-		}
-
-		/**
-		 * Load `namespaces`.
-		 *
-		 * @return {String} returns the previously persisted debug modes
-		 * @api private
-		 */
-
-		function load() {
-			return process.env.DEBUG;
-		}
-
-		/**
-		 * Init logic for `debug` instances.
-		 *
-		 * Create a new `inspectOpts` object in case `useColors` is set
-		 * differently for a particular `debug` instance.
-		 */
-
-		function init(debug) {
-			debug.inspectOpts = {};
-
-			const keys = Object.keys(exports.inspectOpts);
-			for (let i = 0; i < keys.length; i++) {
-				debug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
-			}
-		}
-
-		module.exports = requireCommon()(exports);
-
-		const {formatters} = module.exports;
-
-		/**
-		 * Map %o to `util.inspect()`, all on a single line.
-		 */
-
-		formatters.o = function (v) {
-			this.inspectOpts.colors = this.useColors;
-			return util.inspect(v, this.inspectOpts)
-				.split('\n')
-				.map(str => str.trim())
-				.join(' ');
-		};
-
-		/**
-		 * Map %O to `util.inspect()`, allowing multiple lines if needed.
-		 */
-
-		formatters.O = function (v) {
-			this.inspectOpts.colors = this.useColors;
-			return util.inspect(v, this.inspectOpts);
-		}; 
-	} (node, node.exports));
-	return node.exports;
-}
-
-/**
- * Detect Electron renderer / nwjs process, which is node, but we should
- * treat as a browser.
- */
-
-var hasRequiredSrc;
-
-function requireSrc () {
-	if (hasRequiredSrc) return src.exports;
-	hasRequiredSrc = 1;
-	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
-		src.exports = requireBrowser();
-	} else {
-		src.exports = requireNode();
-	}
-	return src.exports;
-}
-
-var dist$1 = {};
-
-var helpers = {};
-
-var hasRequiredHelpers;
-
-function requireHelpers () {
-	if (hasRequiredHelpers) return helpers;
-	hasRequiredHelpers = 1;
-	var __createBinding = (helpers && helpers.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    var desc = Object.getOwnPropertyDescriptor(m, k);
-	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-	      desc = { enumerable: true, get: function() { return m[k]; } };
-	    }
-	    Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    o[k2] = m[k];
-	}));
-	var __setModuleDefault = (helpers && helpers.__setModuleDefault) || (Object.create ? (function(o, v) {
-	    Object.defineProperty(o, "default", { enumerable: true, value: v });
-	}) : function(o, v) {
-	    o["default"] = v;
-	});
-	var __importStar = (helpers && helpers.__importStar) || function (mod) {
-	    if (mod && mod.__esModule) return mod;
-	    var result = {};
-	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-	    __setModuleDefault(result, mod);
-	    return result;
-	};
-	Object.defineProperty(helpers, "__esModule", { value: true });
-	helpers.req = helpers.json = helpers.toBuffer = void 0;
-	const http = __importStar(require$$2);
-	const https = __importStar(require$$1$1);
-	async function toBuffer(stream) {
-	    let length = 0;
-	    const chunks = [];
-	    for await (const chunk of stream) {
-	        length += chunk.length;
-	        chunks.push(chunk);
-	    }
-	    return Buffer.concat(chunks, length);
-	}
-	helpers.toBuffer = toBuffer;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async function json(stream) {
-	    const buf = await toBuffer(stream);
-	    const str = buf.toString('utf8');
-	    try {
-	        return JSON.parse(str);
-	    }
-	    catch (_err) {
-	        const err = _err;
-	        err.message += ` (input: ${str})`;
-	        throw err;
-	    }
-	}
-	helpers.json = json;
-	function req(url, opts = {}) {
-	    const href = typeof url === 'string' ? url : url.href;
-	    const req = (href.startsWith('https:') ? https : http).request(url, opts);
-	    const promise = new Promise((resolve, reject) => {
-	        req
-	            .once('response', resolve)
-	            .once('error', reject)
-	            .end();
-	    });
-	    req.then = promise.then.bind(promise);
-	    return req;
-	}
-	helpers.req = req;
-	
-	return helpers;
-}
-
-var hasRequiredDist$2;
-
-function requireDist$2 () {
-	if (hasRequiredDist$2) return dist$1;
-	hasRequiredDist$2 = 1;
-	(function (exports) {
-		var __createBinding = (dist$1 && dist$1.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-		    if (k2 === undefined) k2 = k;
-		    var desc = Object.getOwnPropertyDescriptor(m, k);
-		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-		      desc = { enumerable: true, get: function() { return m[k]; } };
-		    }
-		    Object.defineProperty(o, k2, desc);
-		}) : (function(o, m, k, k2) {
-		    if (k2 === undefined) k2 = k;
-		    o[k2] = m[k];
-		}));
-		var __setModuleDefault = (dist$1 && dist$1.__setModuleDefault) || (Object.create ? (function(o, v) {
-		    Object.defineProperty(o, "default", { enumerable: true, value: v });
-		}) : function(o, v) {
-		    o["default"] = v;
-		});
-		var __importStar = (dist$1 && dist$1.__importStar) || function (mod) {
-		    if (mod && mod.__esModule) return mod;
-		    var result = {};
-		    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-		    __setModuleDefault(result, mod);
-		    return result;
-		};
-		var __exportStar = (dist$1 && dist$1.__exportStar) || function(m, exports) {
-		    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-		};
-		Object.defineProperty(exports, "__esModule", { value: true });
-		exports.Agent = void 0;
-		const net = __importStar(require$$0$4);
-		const http = __importStar(require$$2);
-		const https_1 = require$$1$1;
-		__exportStar(requireHelpers(), exports);
-		const INTERNAL = Symbol('AgentBaseInternalState');
-		class Agent extends http.Agent {
-		    constructor(opts) {
-		        super(opts);
-		        this[INTERNAL] = {};
-		    }
-		    /**
-		     * Determine whether this is an `http` or `https` request.
-		     */
-		    isSecureEndpoint(options) {
-		        if (options) {
-		            // First check the `secureEndpoint` property explicitly, since this
-		            // means that a parent `Agent` is "passing through" to this instance.
-		            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-		            if (typeof options.secureEndpoint === 'boolean') {
-		                return options.secureEndpoint;
-		            }
-		            // If no explicit `secure` endpoint, check if `protocol` property is
-		            // set. This will usually be the case since using a full string URL
-		            // or `URL` instance should be the most common usage.
-		            if (typeof options.protocol === 'string') {
-		                return options.protocol === 'https:';
-		            }
-		        }
-		        // Finally, if no `protocol` property was set, then fall back to
-		        // checking the stack trace of the current call stack, and try to
-		        // detect the "https" module.
-		        const { stack } = new Error();
-		        if (typeof stack !== 'string')
-		            return false;
-		        return stack
-		            .split('\n')
-		            .some((l) => l.indexOf('(https.js:') !== -1 ||
-		            l.indexOf('node:https:') !== -1);
-		    }
-		    // In order to support async signatures in `connect()` and Node's native
-		    // connection pooling in `http.Agent`, the array of sockets for each origin
-		    // has to be updated synchronously. This is so the length of the array is
-		    // accurate when `addRequest()` is next called. We achieve this by creating a
-		    // fake socket and adding it to `sockets[origin]` and incrementing
-		    // `totalSocketCount`.
-		    incrementSockets(name) {
-		        // If `maxSockets` and `maxTotalSockets` are both Infinity then there is no
-		        // need to create a fake socket because Node.js native connection pooling
-		        // will never be invoked.
-		        if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) {
-		            return null;
-		        }
-		        // All instances of `sockets` are expected TypeScript errors. The
-		        // alternative is to add it as a private property of this class but that
-		        // will break TypeScript subclassing.
-		        if (!this.sockets[name]) {
-		            // @ts-expect-error `sockets` is readonly in `@types/node`
-		            this.sockets[name] = [];
-		        }
-		        const fakeSocket = new net.Socket({ writable: false });
-		        this.sockets[name].push(fakeSocket);
-		        // @ts-expect-error `totalSocketCount` isn't defined in `@types/node`
-		        this.totalSocketCount++;
-		        return fakeSocket;
-		    }
-		    decrementSockets(name, socket) {
-		        if (!this.sockets[name] || socket === null) {
-		            return;
-		        }
-		        const sockets = this.sockets[name];
-		        const index = sockets.indexOf(socket);
-		        if (index !== -1) {
-		            sockets.splice(index, 1);
-		            // @ts-expect-error  `totalSocketCount` isn't defined in `@types/node`
-		            this.totalSocketCount--;
-		            if (sockets.length === 0) {
-		                // @ts-expect-error `sockets` is readonly in `@types/node`
-		                delete this.sockets[name];
-		            }
-		        }
-		    }
-		    // In order to properly update the socket pool, we need to call `getName()` on
-		    // the core `https.Agent` if it is a secureEndpoint.
-		    getName(options) {
-		        const secureEndpoint = typeof options.secureEndpoint === 'boolean'
-		            ? options.secureEndpoint
-		            : this.isSecureEndpoint(options);
-		        if (secureEndpoint) {
-		            // @ts-expect-error `getName()` isn't defined in `@types/node`
-		            return https_1.Agent.prototype.getName.call(this, options);
-		        }
-		        // @ts-expect-error `getName()` isn't defined in `@types/node`
-		        return super.getName(options);
-		    }
-		    createSocket(req, options, cb) {
-		        const connectOpts = {
-		            ...options,
-		            secureEndpoint: this.isSecureEndpoint(options),
-		        };
-		        const name = this.getName(connectOpts);
-		        const fakeSocket = this.incrementSockets(name);
-		        Promise.resolve()
-		            .then(() => this.connect(req, connectOpts))
-		            .then((socket) => {
-		            this.decrementSockets(name, fakeSocket);
-		            if (socket instanceof http.Agent) {
-		                try {
-		                    // @ts-expect-error `addRequest()` isn't defined in `@types/node`
-		                    return socket.addRequest(req, connectOpts);
-		                }
-		                catch (err) {
-		                    return cb(err);
-		                }
-		            }
-		            this[INTERNAL].currentSocket = socket;
-		            // @ts-expect-error `createSocket()` isn't defined in `@types/node`
-		            super.createSocket(req, options, cb);
-		        }, (err) => {
-		            this.decrementSockets(name, fakeSocket);
-		            cb(err);
-		        });
-		    }
-		    createConnection() {
-		        const socket = this[INTERNAL].currentSocket;
-		        this[INTERNAL].currentSocket = undefined;
-		        if (!socket) {
-		            throw new Error('No socket was returned in the `connect()` function');
-		        }
-		        return socket;
-		    }
-		    get defaultPort() {
-		        return (this[INTERNAL].defaultPort ??
-		            (this.protocol === 'https:' ? 443 : 80));
-		    }
-		    set defaultPort(v) {
-		        if (this[INTERNAL]) {
-		            this[INTERNAL].defaultPort = v;
-		        }
-		    }
-		    get protocol() {
-		        return (this[INTERNAL].protocol ??
-		            (this.isSecureEndpoint() ? 'https:' : 'http:'));
-		    }
-		    set protocol(v) {
-		        if (this[INTERNAL]) {
-		            this[INTERNAL].protocol = v;
-		        }
-		    }
-		}
-		exports.Agent = Agent;
-		
-	} (dist$1));
-	return dist$1;
-}
-
-var parseProxyResponse = {};
-
-var hasRequiredParseProxyResponse;
-
-function requireParseProxyResponse () {
-	if (hasRequiredParseProxyResponse) return parseProxyResponse;
-	hasRequiredParseProxyResponse = 1;
-	var __importDefault = (parseProxyResponse && parseProxyResponse.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
-	Object.defineProperty(parseProxyResponse, "__esModule", { value: true });
-	parseProxyResponse.parseProxyResponse = void 0;
-	const debug_1 = __importDefault(requireSrc());
-	const debug = (0, debug_1.default)('https-proxy-agent:parse-proxy-response');
-	function parseProxyResponse$1(socket) {
-	    return new Promise((resolve, reject) => {
-	        // we need to buffer any HTTP traffic that happens with the proxy before we get
-	        // the CONNECT response, so that if the response is anything other than an "200"
-	        // response code, then we can re-play the "data" events on the socket once the
-	        // HTTP parser is hooked up...
-	        let buffersLength = 0;
-	        const buffers = [];
-	        function read() {
-	            const b = socket.read();
-	            if (b)
-	                ondata(b);
-	            else
-	                socket.once('readable', read);
-	        }
-	        function cleanup() {
-	            socket.removeListener('end', onend);
-	            socket.removeListener('error', onerror);
-	            socket.removeListener('readable', read);
-	        }
-	        function onend() {
-	            cleanup();
-	            debug('onend');
-	            reject(new Error('Proxy connection ended before receiving CONNECT response'));
-	        }
-	        function onerror(err) {
-	            cleanup();
-	            debug('onerror %o', err);
-	            reject(err);
-	        }
-	        function ondata(b) {
-	            buffers.push(b);
-	            buffersLength += b.length;
-	            const buffered = Buffer.concat(buffers, buffersLength);
-	            const endOfHeaders = buffered.indexOf('\r\n\r\n');
-	            if (endOfHeaders === -1) {
-	                // keep buffering
-	                debug('have not received end of HTTP headers yet...');
-	                read();
-	                return;
-	            }
-	            const headerParts = buffered
-	                .slice(0, endOfHeaders)
-	                .toString('ascii')
-	                .split('\r\n');
-	            const firstLine = headerParts.shift();
-	            if (!firstLine) {
-	                socket.destroy();
-	                return reject(new Error('No header received from proxy CONNECT response'));
-	            }
-	            const firstLineParts = firstLine.split(' ');
-	            const statusCode = +firstLineParts[1];
-	            const statusText = firstLineParts.slice(2).join(' ');
-	            const headers = {};
-	            for (const header of headerParts) {
-	                if (!header)
-	                    continue;
-	                const firstColon = header.indexOf(':');
-	                if (firstColon === -1) {
-	                    socket.destroy();
-	                    return reject(new Error(`Invalid header from proxy CONNECT response: "${header}"`));
-	                }
-	                const key = header.slice(0, firstColon).toLowerCase();
-	                const value = header.slice(firstColon + 1).trimStart();
-	                const current = headers[key];
-	                if (typeof current === 'string') {
-	                    headers[key] = [current, value];
-	                }
-	                else if (Array.isArray(current)) {
-	                    current.push(value);
-	                }
-	                else {
-	                    headers[key] = value;
-	                }
-	            }
-	            debug('got proxy server response: %o %o', firstLine, headers);
-	            cleanup();
-	            resolve({
-	                connect: {
-	                    statusCode,
-	                    statusText,
-	                    headers,
-	                },
-	                buffered,
-	            });
-	        }
-	        socket.on('error', onerror);
-	        socket.on('end', onend);
-	        read();
-	    });
-	}
-	parseProxyResponse.parseProxyResponse = parseProxyResponse$1;
-	
-	return parseProxyResponse;
-}
-
-var hasRequiredDist$1;
-
-function requireDist$1 () {
-	if (hasRequiredDist$1) return dist$2;
-	hasRequiredDist$1 = 1;
-	var __createBinding = (dist$2 && dist$2.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    var desc = Object.getOwnPropertyDescriptor(m, k);
-	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-	      desc = { enumerable: true, get: function() { return m[k]; } };
-	    }
-	    Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    o[k2] = m[k];
-	}));
-	var __setModuleDefault = (dist$2 && dist$2.__setModuleDefault) || (Object.create ? (function(o, v) {
-	    Object.defineProperty(o, "default", { enumerable: true, value: v });
-	}) : function(o, v) {
-	    o["default"] = v;
-	});
-	var __importStar = (dist$2 && dist$2.__importStar) || function (mod) {
-	    if (mod && mod.__esModule) return mod;
-	    var result = {};
-	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-	    __setModuleDefault(result, mod);
-	    return result;
-	};
-	var __importDefault = (dist$2 && dist$2.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
-	Object.defineProperty(dist$2, "__esModule", { value: true });
-	dist$2.HttpsProxyAgent = void 0;
-	const net = __importStar(require$$0$4);
-	const tls = __importStar(require$$1$2);
-	const assert_1 = __importDefault(require$$0$3);
-	const debug_1 = __importDefault(requireSrc());
-	const agent_base_1 = requireDist$2();
-	const url_1 = require$$5$1;
-	const parse_proxy_response_1 = requireParseProxyResponse();
-	const debug = (0, debug_1.default)('https-proxy-agent');
-	const setServernameFromNonIpHost = (options) => {
-	    if (options.servername === undefined &&
-	        options.host &&
-	        !net.isIP(options.host)) {
-	        return {
-	            ...options,
-	            servername: options.host,
-	        };
-	    }
-	    return options;
-	};
-	/**
-	 * The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
-	 * the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
-	 *
-	 * Outgoing HTTP requests are first tunneled through the proxy server using the
-	 * `CONNECT` HTTP request method to establish a connection to the proxy server,
-	 * and then the proxy server connects to the destination target and issues the
-	 * HTTP request from the proxy server.
-	 *
-	 * `https:` requests have their socket connection upgraded to TLS once
-	 * the connection to the proxy server has been established.
-	 */
-	class HttpsProxyAgent extends agent_base_1.Agent {
-	    constructor(proxy, opts) {
-	        super(opts);
-	        this.options = { path: undefined };
-	        this.proxy = typeof proxy === 'string' ? new url_1.URL(proxy) : proxy;
-	        this.proxyHeaders = opts?.headers ?? {};
-	        debug('Creating new HttpsProxyAgent instance: %o', this.proxy.href);
-	        // Trim off the brackets from IPv6 addresses
-	        const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, '');
-	        const port = this.proxy.port
-	            ? parseInt(this.proxy.port, 10)
-	            : this.proxy.protocol === 'https:'
-	                ? 443
-	                : 80;
-	        this.connectOpts = {
-	            // Attempt to negotiate http/1.1 for proxy servers that support http/2
-	            ALPNProtocols: ['http/1.1'],
-	            ...(opts ? omit(opts, 'headers') : null),
-	            host,
-	            port,
-	        };
-	    }
-	    /**
-	     * Called when the node-core HTTP client library is creating a
-	     * new HTTP request.
-	     */
-	    async connect(req, opts) {
-	        const { proxy } = this;
-	        if (!opts.host) {
-	            throw new TypeError('No "host" provided');
-	        }
-	        // Create a socket connection to the proxy server.
-	        let socket;
-	        if (proxy.protocol === 'https:') {
-	            debug('Creating `tls.Socket`: %o', this.connectOpts);
-	            socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
-	        }
-	        else {
-	            debug('Creating `net.Socket`: %o', this.connectOpts);
-	            socket = net.connect(this.connectOpts);
-	        }
-	        const headers = typeof this.proxyHeaders === 'function'
-	            ? this.proxyHeaders()
-	            : { ...this.proxyHeaders };
-	        const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
-	        let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
-	        // Inject the `Proxy-Authorization` header if necessary.
-	        if (proxy.username || proxy.password) {
-	            const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-	            headers['Proxy-Authorization'] = `Basic ${Buffer.from(auth).toString('base64')}`;
-	        }
-	        headers.Host = `${host}:${opts.port}`;
-	        if (!headers['Proxy-Connection']) {
-	            headers['Proxy-Connection'] = this.keepAlive
-	                ? 'Keep-Alive'
-	                : 'close';
-	        }
-	        for (const name of Object.keys(headers)) {
-	            payload += `${name}: ${headers[name]}\r\n`;
-	        }
-	        const proxyResponsePromise = (0, parse_proxy_response_1.parseProxyResponse)(socket);
-	        socket.write(`${payload}\r\n`);
-	        const { connect, buffered } = await proxyResponsePromise;
-	        req.emit('proxyConnect', connect);
-	        this.emit('proxyConnect', connect, req);
-	        if (connect.statusCode === 200) {
-	            req.once('socket', resume);
-	            if (opts.secureEndpoint) {
-	                // The proxy is connecting to a TLS server, so upgrade
-	                // this socket connection to a TLS connection.
-	                debug('Upgrading socket connection to TLS');
-	                return tls.connect({
-	                    ...omit(setServernameFromNonIpHost(opts), 'host', 'path', 'port'),
-	                    socket,
-	                });
-	            }
-	            return socket;
-	        }
-	        // Some other status code that's not 200... need to re-play the HTTP
-	        // header "data" events onto the socket once the HTTP machinery is
-	        // attached so that the node core `http` can parse and handle the
-	        // error status code.
-	        // Close the original socket, and a new "fake" socket is returned
-	        // instead, so that the proxy doesn't get the HTTP request
-	        // written to it (which may contain `Authorization` headers or other
-	        // sensitive data).
-	        //
-	        // See: https://hackerone.com/reports/541502
-	        socket.destroy();
-	        const fakeSocket = new net.Socket({ writable: false });
-	        fakeSocket.readable = true;
-	        // Need to wait for the "socket" event to re-play the "data" events.
-	        req.once('socket', (s) => {
-	            debug('Replaying proxy buffer for failed request');
-	            (0, assert_1.default)(s.listenerCount('data') > 0);
-	            // Replay the "buffered" Buffer onto the fake `socket`, since at
-	            // this point the HTTP module machinery has been hooked up for
-	            // the user.
-	            s.push(buffered);
-	            s.push(null);
-	        });
-	        return fakeSocket;
-	    }
-	}
-	HttpsProxyAgent.protocols = ['http', 'https'];
-	dist$2.HttpsProxyAgent = HttpsProxyAgent;
-	function resume(socket) {
-	    socket.resume();
-	}
-	function omit(obj, ...keys) {
-	    const ret = {};
-	    let key;
-	    for (key in obj) {
-	        if (!keys.includes(key)) {
-	            ret[key] = obj[key];
-	        }
-	    }
-	    return ret;
-	}
-	
-	return dist$2;
-}
-
-var distExports$1 = requireDist$1();
-
-var dist = {};
-
-var hasRequiredDist;
-
-function requireDist () {
-	if (hasRequiredDist) return dist;
-	hasRequiredDist = 1;
-	var __createBinding = (dist && dist.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    var desc = Object.getOwnPropertyDescriptor(m, k);
-	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-	      desc = { enumerable: true, get: function() { return m[k]; } };
-	    }
-	    Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    o[k2] = m[k];
-	}));
-	var __setModuleDefault = (dist && dist.__setModuleDefault) || (Object.create ? (function(o, v) {
-	    Object.defineProperty(o, "default", { enumerable: true, value: v });
-	}) : function(o, v) {
-	    o["default"] = v;
-	});
-	var __importStar = (dist && dist.__importStar) || function (mod) {
-	    if (mod && mod.__esModule) return mod;
-	    var result = {};
-	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-	    __setModuleDefault(result, mod);
-	    return result;
-	};
-	var __importDefault = (dist && dist.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
-	Object.defineProperty(dist, "__esModule", { value: true });
-	dist.HttpProxyAgent = void 0;
-	const net = __importStar(require$$0$4);
-	const tls = __importStar(require$$1$2);
-	const debug_1 = __importDefault(requireSrc());
-	const events_1 = require$$4;
-	const agent_base_1 = requireDist$2();
-	const url_1 = require$$5$1;
-	const debug = (0, debug_1.default)('http-proxy-agent');
-	/**
-	 * The `HttpProxyAgent` implements an HTTP Agent subclass that connects
-	 * to the specified "HTTP proxy server" in order to proxy HTTP requests.
-	 */
-	class HttpProxyAgent extends agent_base_1.Agent {
-	    constructor(proxy, opts) {
-	        super(opts);
-	        this.proxy = typeof proxy === 'string' ? new url_1.URL(proxy) : proxy;
-	        this.proxyHeaders = opts?.headers ?? {};
-	        debug('Creating new HttpProxyAgent instance: %o', this.proxy.href);
-	        // Trim off the brackets from IPv6 addresses
-	        const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, '');
-	        const port = this.proxy.port
-	            ? parseInt(this.proxy.port, 10)
-	            : this.proxy.protocol === 'https:'
-	                ? 443
-	                : 80;
-	        this.connectOpts = {
-	            ...(opts ? omit(opts, 'headers') : null),
-	            host,
-	            port,
-	        };
-	    }
-	    addRequest(req, opts) {
-	        req._header = null;
-	        this.setRequestProps(req, opts);
-	        // @ts-expect-error `addRequest()` isn't defined in `@types/node`
-	        super.addRequest(req, opts);
-	    }
-	    setRequestProps(req, opts) {
-	        const { proxy } = this;
-	        const protocol = opts.secureEndpoint ? 'https:' : 'http:';
-	        const hostname = req.getHeader('host') || 'localhost';
-	        const base = `${protocol}//${hostname}`;
-	        const url = new url_1.URL(req.path, base);
-	        if (opts.port !== 80) {
-	            url.port = String(opts.port);
-	        }
-	        // Change the `http.ClientRequest` instance's "path" field
-	        // to the absolute path of the URL that will be requested.
-	        req.path = String(url);
-	        // Inject the `Proxy-Authorization` header if necessary.
-	        const headers = typeof this.proxyHeaders === 'function'
-	            ? this.proxyHeaders()
-	            : { ...this.proxyHeaders };
-	        if (proxy.username || proxy.password) {
-	            const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
-	            headers['Proxy-Authorization'] = `Basic ${Buffer.from(auth).toString('base64')}`;
-	        }
-	        if (!headers['Proxy-Connection']) {
-	            headers['Proxy-Connection'] = this.keepAlive
-	                ? 'Keep-Alive'
-	                : 'close';
-	        }
-	        for (const name of Object.keys(headers)) {
-	            const value = headers[name];
-	            if (value) {
-	                req.setHeader(name, value);
-	            }
-	        }
-	    }
-	    async connect(req, opts) {
-	        req._header = null;
-	        if (!req.path.includes('://')) {
-	            this.setRequestProps(req, opts);
-	        }
-	        // At this point, the http ClientRequest's internal `_header` field
-	        // might have already been set. If this is the case then we'll need
-	        // to re-generate the string since we just changed the `req.path`.
-	        let first;
-	        let endOfHeaders;
-	        debug('Regenerating stored HTTP header string for request');
-	        req._implicitHeader();
-	        if (req.outputData && req.outputData.length > 0) {
-	            debug('Patching connection write() output buffer with updated header');
-	            first = req.outputData[0].data;
-	            endOfHeaders = first.indexOf('\r\n\r\n') + 4;
-	            req.outputData[0].data =
-	                req._header + first.substring(endOfHeaders);
-	            debug('Output buffer: %o', req.outputData[0].data);
-	        }
-	        // Create a socket connection to the proxy server.
-	        let socket;
-	        if (this.proxy.protocol === 'https:') {
-	            debug('Creating `tls.Socket`: %o', this.connectOpts);
-	            socket = tls.connect(this.connectOpts);
-	        }
-	        else {
-	            debug('Creating `net.Socket`: %o', this.connectOpts);
-	            socket = net.connect(this.connectOpts);
-	        }
-	        // Wait for the socket's `connect` event, so that this `callback()`
-	        // function throws instead of the `http` request machinery. This is
-	        // important for i.e. `PacProxyAgent` which determines a failed proxy
-	        // connection via the `callback()` function throwing.
-	        await (0, events_1.once)(socket, 'connect');
-	        return socket;
-	    }
-	}
-	HttpProxyAgent.protocols = ['http', 'https'];
-	dist.HttpProxyAgent = HttpProxyAgent;
-	function omit(obj, ...keys) {
-	    const ret = {};
-	    let key;
-	    for (key in obj) {
-	        if (!keys.includes(key)) {
-	            ret[key] = obj[key];
-	        }
-	    }
-	    return ret;
-	}
-	
-	return dist;
-}
-
-var distExports = requireDist();
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const HTTPS_PROXY = "HTTPS_PROXY";
-const HTTP_PROXY = "HTTP_PROXY";
-const ALL_PROXY = "ALL_PROXY";
-const NO_PROXY = "NO_PROXY";
-/**
- * The programmatic identifier of the proxyPolicy.
- */
-const proxyPolicyName = "proxyPolicy";
-/**
- * Stores the patterns specified in NO_PROXY environment variable.
- * @internal
- */
-const globalNoProxyList = [];
-let noProxyListLoaded = false;
-/** A cache of whether a host should bypass the proxy. */
-const globalBypassedMap = new Map();
-function getEnvironmentValue(name) {
-    if (process.env[name]) {
-        return process.env[name];
+    if (data.length > 0) {
+        yield data;
     }
-    else if (process.env[name.toLowerCase()]) {
-        return process.env[name.toLowerCase()];
-    }
-    return undefined;
 }
-function loadEnvironmentProxyValue() {
-    if (!process) {
-        return undefined;
+class SSEDecoder {
+    constructor() {
+        this.event = null;
+        this.data = [];
+        this.chunks = [];
     }
-    const httpsProxy = getEnvironmentValue(HTTPS_PROXY);
-    const allProxy = getEnvironmentValue(ALL_PROXY);
-    const httpProxy = getEnvironmentValue(HTTP_PROXY);
-    return httpsProxy || allProxy || httpProxy;
-}
-/**
- * Check whether the host of a given `uri` matches any pattern in the no proxy list.
- * If there's a match, any request sent to the same host shouldn't have the proxy settings set.
- * This implementation is a port of https://github.com/Azure/azure-sdk-for-net/blob/8cca811371159e527159c7eb65602477898683e2/sdk/core/Azure.Core/src/Pipeline/Internal/HttpEnvironmentProxy.cs#L210
- */
-function isBypassed(uri, noProxyList, bypassedMap) {
-    if (noProxyList.length === 0) {
-        return false;
-    }
-    const host = new URL(uri).hostname;
-    if (bypassedMap === null || bypassedMap === void 0 ? void 0 : bypassedMap.has(host)) {
-        return bypassedMap.get(host);
-    }
-    let isBypassedFlag = false;
-    for (const pattern of noProxyList) {
-        if (pattern[0] === ".") {
-            // This should match either domain it self or any subdomain or host
-            // .foo.com will match foo.com it self or *.foo.com
-            if (host.endsWith(pattern)) {
-                isBypassedFlag = true;
-            }
-            else {
-                if (host.length === pattern.length - 1 && host === pattern.slice(1)) {
-                    isBypassedFlag = true;
-                }
-            }
+    decode(line) {
+        if (line.endsWith('\r')) {
+            line = line.substring(0, line.length - 1);
         }
-        else {
-            if (host === pattern) {
-                isBypassedFlag = true;
-            }
+        if (!line) {
+            // empty line and we didn't previously encounter any messages
+            if (!this.event && !this.data.length)
+                return null;
+            const sse = {
+                event: this.event,
+                data: this.data.join('\n'),
+                raw: this.chunks,
+            };
+            this.event = null;
+            this.data = [];
+            this.chunks = [];
+            return sse;
         }
-    }
-    bypassedMap === null || bypassedMap === void 0 ? void 0 : bypassedMap.set(host, isBypassedFlag);
-    return isBypassedFlag;
-}
-function loadNoProxy() {
-    const noProxy = getEnvironmentValue(NO_PROXY);
-    noProxyListLoaded = true;
-    if (noProxy) {
-        return noProxy
-            .split(",")
-            .map((item) => item.trim())
-            .filter((item) => item.length);
-    }
-    return [];
-}
-/**
- * This method attempts to parse a proxy URL from the environment
- * variables `HTTPS_PROXY` or `HTTP_PROXY`.
- */
-function getDefaultProxySettingsInternal() {
-    const envProxy = loadEnvironmentProxyValue();
-    return envProxy ? new URL(envProxy) : undefined;
-}
-function getUrlFromProxySettings(settings) {
-    let parsedProxyUrl;
-    try {
-        parsedProxyUrl = new URL(settings.host);
-    }
-    catch (_a) {
-        throw new Error(`Expecting a valid host string in proxy settings, but found "${settings.host}".`);
-    }
-    parsedProxyUrl.port = String(settings.port);
-    if (settings.username) {
-        parsedProxyUrl.username = settings.username;
-    }
-    if (settings.password) {
-        parsedProxyUrl.password = settings.password;
-    }
-    return parsedProxyUrl;
-}
-function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
-    // Custom Agent should take precedence so if one is present
-    // we should skip to avoid overwriting it.
-    if (request.agent) {
-        return;
-    }
-    const url = new URL(request.url);
-    const isInsecure = url.protocol !== "https:";
-    if (request.tlsSettings) {
-        logger$2.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
-    }
-    const headers = request.headers.toJSON();
-    if (isInsecure) {
-        if (!cachedAgents.httpProxyAgent) {
-            cachedAgents.httpProxyAgent = new distExports.HttpProxyAgent(proxyUrl, { headers });
+        this.chunks.push(line);
+        if (line.startsWith(':')) {
+            return null;
         }
-        request.agent = cachedAgents.httpProxyAgent;
-    }
-    else {
-        if (!cachedAgents.httpsProxyAgent) {
-            cachedAgents.httpsProxyAgent = new distExports$1.HttpsProxyAgent(proxyUrl, { headers });
+        let [fieldname, _, value] = partition(line, ':');
+        if (value.startsWith(' ')) {
+            value = value.substring(1);
         }
-        request.agent = cachedAgents.httpsProxyAgent;
+        if (fieldname === 'event') {
+            this.event = value;
+        }
+        else if (fieldname === 'data') {
+            this.data.push(value);
+        }
+        return null;
     }
 }
-/**
- * A policy that allows one to apply proxy settings to all requests.
- * If not passed static settings, they will be retrieved from the HTTPS_PROXY
- * or HTTP_PROXY environment variables.
- * @param proxySettings - ProxySettings to use on each request.
- * @param options - additional settings, for example, custom NO_PROXY patterns
- */
-function proxyPolicy$1(proxySettings, options) {
-    if (!noProxyListLoaded) {
-        globalNoProxyList.push(...loadNoProxy());
+function partition(str, delimiter) {
+    const index = str.indexOf(delimiter);
+    if (index !== -1) {
+        return [str.substring(0, index), delimiter, str.substring(index + delimiter.length)];
     }
-    const defaultProxy = proxySettings
-        ? getUrlFromProxySettings(proxySettings)
-        : getDefaultProxySettingsInternal();
-    const cachedAgents = {};
-    return {
-        name: proxyPolicyName,
-        async sendRequest(request, next) {
-            var _a;
-            if (!request.proxySettings &&
-                defaultProxy &&
-                !isBypassed(request.url, (_a = void 0 ) !== null && _a !== void 0 ? _a : globalNoProxyList, globalBypassedMap)) {
-                setProxyAgentOnRequest(request, cachedAgents, defaultProxy);
-            }
-            else if (request.proxySettings) {
-                setProxyAgentOnRequest(request, cachedAgents, getUrlFromProxySettings(request.proxySettings));
-            }
-            return next(request);
-        },
-    };
+    return [str, '', ''];
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the Agent Policy
- */
-const agentPolicyName = "agentPolicy";
-/**
- * Gets a pipeline policy that sets http.agent
- */
-function agentPolicy$1(agent) {
-    return {
-        name: agentPolicyName,
-        sendRequest: async (req, next) => {
-            // Users may define an agent on the request, honor it over the client level one
-            if (!req.agent) {
-                req.agent = agent;
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+async function defaultParseResponse(client, props) {
+    const { response, requestLogID, retryOfRequestLogID, startTime } = props;
+    const body = await (async () => {
+        if (props.options.stream) {
+            loggerFor(client).debug('response', response.status, response.url, response.headers, response.body);
+            // Note: there is an invariant here that isn't represented in the type system
+            // that if you set `stream: true` the response type must also be `Stream<T>`
+            if (props.options.__streamClass) {
+                return props.options.__streamClass.fromSSEResponse(response, props.controller, client);
             }
-            return next(req);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the TLS Policy
- */
-const tlsPolicyName = "tlsPolicy";
-/**
- * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
- */
-function tlsPolicy$1(tlsSettings) {
-    return {
-        name: tlsPolicyName,
-        sendRequest: async (req, next) => {
-            // Users may define a request tlsSettings, honor those over the client level one
-            if (!req.tlsSettings) {
-                req.tlsSettings = tlsSettings;
-            }
-            return next(req);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function isNodeReadableStream(x) {
-    return Boolean(x && typeof x["pipe"] === "function");
-}
-function isWebReadableStream(x) {
-    return Boolean(x &&
-        typeof x.getReader === "function" &&
-        typeof x.tee === "function");
-}
-function isBinaryBody(body) {
-    return (body !== undefined &&
-        (body instanceof Uint8Array ||
-            isReadableStream(body) ||
-            typeof body === "function" ||
-            body instanceof Blob));
-}
-function isReadableStream(x) {
-    return isNodeReadableStream(x) || isWebReadableStream(x);
-}
-function isBlob(x) {
-    return typeof x.stream === "function";
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function streamAsyncIterator() {
-    return __asyncGenerator(this, arguments, function* streamAsyncIterator_1() {
-        const reader = this.getReader();
-        try {
-            while (true) {
-                const { done, value } = yield __await(reader.read());
-                if (done) {
-                    return yield __await(void 0);
-                }
-                yield yield __await(value);
-            }
+            return Stream.fromSSEResponse(response, props.controller, client);
         }
-        finally {
-            reader.releaseLock();
+        // fetch refuses to read the body when the status code is 204.
+        if (response.status === 204) {
+            return null;
         }
+        if (props.options.__binaryResponse) {
+            return response;
+        }
+        const contentType = response.headers.get('content-type');
+        const mediaType = contentType?.split(';')[0]?.trim();
+        const isJSON = mediaType?.includes('application/json') || mediaType?.endsWith('+json');
+        if (isJSON) {
+            const json = await response.json();
+            return addRequestID(json, response);
+        }
+        const text = await response.text();
+        return text;
+    })();
+    loggerFor(client).debug(`[${requestLogID}] response parsed`, formatRequestDetails({
+        retryOfRequestLogID,
+        url: response.url,
+        status: response.status,
+        body,
+        durationMs: Date.now() - startTime,
+    }));
+    return body;
+}
+function addRequestID(value, response) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+        return value;
+    }
+    return Object.defineProperty(value, '_request_id', {
+        value: response.headers.get('x-request-id'),
+        enumerable: false,
     });
 }
-function makeAsyncIterable(webStream) {
-    if (!webStream[Symbol.asyncIterator]) {
-        webStream[Symbol.asyncIterator] = streamAsyncIterator.bind(webStream);
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+var _APIPromise_client;
+/**
+ * A subclass of `Promise` providing additional helper methods
+ * for interacting with the SDK.
+ */
+class APIPromise extends Promise {
+    constructor(client, responsePromise, parseResponse = defaultParseResponse) {
+        super((resolve) => {
+            // this is maybe a bit weird but this has to be a no-op to not implicitly
+            // parse the response body; instead .then, .catch, .finally are overridden
+            // to parse the response
+            resolve(null);
+        });
+        this.responsePromise = responsePromise;
+        this.parseResponse = parseResponse;
+        _APIPromise_client.set(this, void 0);
+        __classPrivateFieldSet(this, _APIPromise_client, client);
     }
-    if (!webStream.values) {
-        webStream.values = streamAsyncIterator.bind(webStream);
+    _thenUnwrap(transform) {
+        return new APIPromise(__classPrivateFieldGet(this, _APIPromise_client, "f"), this.responsePromise, async (client, props) => addRequestID(transform(await this.parseResponse(client, props), props), props.response));
+    }
+    /**
+     * Gets the raw `Response` instance instead of parsing the response
+     * data.
+     *
+     * If you want to parse the response body but still get the `Response`
+     * instance, you can use {@link withResponse()}.
+     *
+     * 👋 Getting the wrong TypeScript type for `Response`?
+     * Try setting `"moduleResolution": "NodeNext"` or add `"lib": ["DOM"]`
+     * to your `tsconfig.json`.
+     */
+    asResponse() {
+        return this.responsePromise.then((p) => p.response);
+    }
+    /**
+     * Gets the parsed response data, the raw `Response` instance and the ID of the request,
+     * returned via the X-Request-ID header which is useful for debugging requests and reporting
+     * issues to OpenAI.
+     *
+     * If you just want to get the raw `Response` instance without parsing it,
+     * you can use {@link asResponse()}.
+     *
+     * 👋 Getting the wrong TypeScript type for `Response`?
+     * Try setting `"moduleResolution": "NodeNext"` or add `"lib": ["DOM"]`
+     * to your `tsconfig.json`.
+     */
+    async withResponse() {
+        const [data, response] = await Promise.all([this.parse(), this.asResponse()]);
+        return { data, response, request_id: response.headers.get('x-request-id') };
+    }
+    parse() {
+        if (!this.parsedPromise) {
+            this.parsedPromise = this.responsePromise.then((data) => this.parseResponse(__classPrivateFieldGet(this, _APIPromise_client, "f"), data));
+        }
+        return this.parsedPromise;
+    }
+    then(onfulfilled, onrejected) {
+        return this.parse().then(onfulfilled, onrejected);
+    }
+    catch(onrejected) {
+        return this.parse().catch(onrejected);
+    }
+    finally(onfinally) {
+        return this.parse().finally(onfinally);
     }
 }
-function ensureNodeStream(stream) {
-    if (stream instanceof ReadableStream) {
-        makeAsyncIterable(stream);
-        return Readable.fromWeb(stream);
+_APIPromise_client = new WeakMap();
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+var _AbstractPage_client;
+class AbstractPage {
+    constructor(client, response, body, options) {
+        _AbstractPage_client.set(this, void 0);
+        __classPrivateFieldSet(this, _AbstractPage_client, client);
+        this.options = options;
+        this.response = response;
+        this.body = body;
     }
-    else {
-        return stream;
+    hasNextPage() {
+        const items = this.getPaginatedItems();
+        if (!items.length)
+            return false;
+        return this.nextPageRequestOptions() != null;
     }
-}
-function toStream(source) {
-    if (source instanceof Uint8Array) {
-        return Readable.from(Buffer.from(source));
+    async getNextPage() {
+        const nextOptions = this.nextPageRequestOptions();
+        if (!nextOptions) {
+            throw new OpenAIError('No next page expected; please check `.hasNextPage()` before calling `.getNextPage()`.');
+        }
+        return await __classPrivateFieldGet(this, _AbstractPage_client, "f").requestAPIList(this.constructor, nextOptions);
     }
-    else if (isBlob(source)) {
-        return ensureNodeStream(source.stream());
+    async *iterPages() {
+        let page = this;
+        yield page;
+        while (page.hasNextPage()) {
+            page = await page.getNextPage();
+            yield page;
+        }
     }
-    else {
-        return ensureNodeStream(source);
+    async *[(_AbstractPage_client = new WeakMap(), Symbol.asyncIterator)]() {
+        for await (const page of this.iterPages()) {
+            for (const item of page.getPaginatedItems()) {
+                yield item;
+            }
+        }
     }
 }
 /**
- * Utility function that concatenates a set of binary inputs into one combined output.
+ * This subclass of Promise will resolve to an instantiated Page once the request completes.
  *
- * @param sources - array of sources for the concatenation
- * @returns - in Node, a (() =\> NodeJS.ReadableStream) which, when read, produces a concatenation of all the inputs.
- *           In browser, returns a `Blob` representing all the concatenated inputs.
+ * It also implements AsyncIterable to allow auto-paginating iteration on an unawaited list call, eg:
  *
- * @internal
+ *    for await (const item of client.items.list()) {
+ *      console.log(item)
+ *    }
  */
-async function concat(sources) {
-    return function () {
-        const streams = sources.map((x) => (typeof x === "function" ? x() : x)).map(toStream);
-        return Readable.from((function () {
-            return __asyncGenerator(this, arguments, function* () {
-                var _a, e_1, _b, _c;
-                for (const stream of streams) {
-                    try {
-                        for (var _d = true, stream_1 = (e_1 = void 0, __asyncValues(stream)), stream_1_1; stream_1_1 = yield __await(stream_1.next()), _a = stream_1_1.done, !_a; _d = true) {
-                            _c = stream_1_1.value;
-                            _d = false;
-                            const chunk = _c;
-                            yield yield __await(chunk);
-                        }
-                    }
-                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                    finally {
-                        try {
-                            if (!_d && !_a && (_b = stream_1.return)) yield __await(_b.call(stream_1));
-                        }
-                        finally { if (e_1) throw e_1.error; }
-                    }
-                }
-            });
-        })());
-    };
+class PagePromise extends APIPromise {
+    constructor(client, request, Page) {
+        super(client, request, async (client, props) => new Page(client, props.response, await defaultParseResponse(client, props), props.options));
+    }
+    /**
+     * Allow auto-paginating iteration on an unawaited list call, eg:
+     *
+     *    for await (const item of client.items.list()) {
+     *      console.log(item)
+     *    }
+     */
+    async *[Symbol.asyncIterator]() {
+        const page = await this;
+        for await (const item of page) {
+            yield item;
+        }
+    }
+}
+/**
+ * Note: no pagination actually occurs yet, this is for forwards-compatibility.
+ */
+class Page extends AbstractPage {
+    constructor(client, response, body, options) {
+        super(client, response, body, options);
+        this.data = body.data || [];
+        this.object = body.object;
+    }
+    getPaginatedItems() {
+        return this.data ?? [];
+    }
+    nextPageRequestOptions() {
+        return null;
+    }
+}
+class CursorPage extends AbstractPage {
+    constructor(client, response, body, options) {
+        super(client, response, body, options);
+        this.data = body.data || [];
+        this.has_more = body.has_more || false;
+    }
+    getPaginatedItems() {
+        return this.data ?? [];
+    }
+    hasNextPage() {
+        if (this.has_more === false) {
+            return false;
+        }
+        return super.hasNextPage();
+    }
+    nextPageRequestOptions() {
+        const data = this.getPaginatedItems();
+        const id = data[data.length - 1]?.id;
+        if (!id) {
+            return null;
+        }
+        return {
+            ...this.options,
+            query: {
+                ...maybeObj(this.options.query),
+                after: id,
+            },
+        };
+    }
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function generateBoundary() {
-    return `----AzSDKFormBoundary${randomUUID()}`;
-}
-function encodeHeaders(headers) {
-    let result = "";
-    for (const [key, value] of headers) {
-        result += `${key}: ${value}\r\n`;
+const checkFileSupport = () => {
+    if (typeof File === 'undefined') {
+        const { process } = globalThis;
+        const isOldNode = typeof process?.versions?.node === 'string' && parseInt(process.versions.node.split('.')) < 20;
+        throw new Error('`File` is not defined as a global, which is required for file uploads.' +
+            (isOldNode ?
+                " Update to Node 20 LTS or newer, or set `globalThis.File` to `import('node:buffer').File`."
+                : ''));
     }
-    return result;
+};
+/**
+ * Construct a `File` instance. This is used to ensure a helpful error is thrown
+ * for environments that don't define a global `File` yet.
+ */
+function makeFile(fileBits, fileName, options) {
+    checkFileSupport();
+    return new File(fileBits, fileName ?? 'unknown_file', options);
 }
-function getLength(source) {
-    if (source instanceof Uint8Array) {
-        return source.byteLength;
+function getName(value) {
+    return (((typeof value === 'object' &&
+        value !== null &&
+        (('name' in value && value.name && String(value.name)) ||
+            ('url' in value && value.url && String(value.url)) ||
+            ('filename' in value && value.filename && String(value.filename)) ||
+            ('path' in value && value.path && String(value.path)))) ||
+        '')
+        .split(/[\\/]/)
+        .pop() || undefined);
+}
+const isAsyncIterable = (value) => value != null && typeof value === 'object' && typeof value[Symbol.asyncIterator] === 'function';
+const multipartFormRequestOptions = async (opts, fetch) => {
+    return { ...opts, body: await createForm(opts.body, fetch) };
+};
+const supportsFormDataMap = /* @__PURE__ */ new WeakMap();
+/**
+ * node-fetch doesn't support the global FormData object in recent node versions. Instead of sending
+ * properly-encoded form data, it just stringifies the object, resulting in a request body of "[object FormData]".
+ * This function detects if the fetch function provided supports the global FormData object to avoid
+ * confusing error messages later on.
+ */
+function supportsFormData(fetchObject) {
+    const fetch = typeof fetchObject === 'function' ? fetchObject : fetchObject.fetch;
+    const cached = supportsFormDataMap.get(fetch);
+    if (cached)
+        return cached;
+    const promise = (async () => {
+        try {
+            const FetchResponse = ('Response' in fetch ?
+                fetch.Response
+                : (await fetch('data:,')).constructor);
+            const data = new FormData();
+            if (data.toString() === (await new FetchResponse(data).text())) {
+                return false;
+            }
+            return true;
+        }
+        catch {
+            // avoid false negatives
+            return true;
+        }
+    })();
+    supportsFormDataMap.set(fetch, promise);
+    return promise;
+}
+const createForm = async (body, fetch) => {
+    if (!(await supportsFormData(fetch))) {
+        throw new TypeError('The provided fetch function does not support file uploads with the current global FormData class.');
     }
-    else if (isBlob(source)) {
-        // if was created using createFile then -1 means we have an unknown size
-        return source.size === -1 ? undefined : source.size;
+    const form = new FormData();
+    await Promise.all(Object.entries(body || {}).map(([key, value]) => addFormValue(form, key, value)));
+    return form;
+};
+// We check for Blob not File because Bun.File doesn't inherit from File,
+// but they both inherit from Blob and have a `name` property at runtime.
+const isNamedBlob = (value) => value instanceof Blob && 'name' in value;
+const addFormValue = async (form, key, value) => {
+    if (value === undefined)
+        return;
+    if (value == null) {
+        throw new TypeError(`Received null for "${key}"; to pass null in FormData, you must use the string 'null'`);
+    }
+    // TODO: make nested formats configurable
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+        form.append(key, String(value));
+    }
+    else if (value instanceof Response) {
+        form.append(key, makeFile([await value.blob()], getName(value)));
+    }
+    else if (isAsyncIterable(value)) {
+        form.append(key, makeFile([await new Response(ReadableStreamFrom(value)).blob()], getName(value)));
+    }
+    else if (isNamedBlob(value)) {
+        form.append(key, value, getName(value));
+    }
+    else if (Array.isArray(value)) {
+        await Promise.all(value.map((entry) => addFormValue(form, key + '[]', entry)));
+    }
+    else if (typeof value === 'object') {
+        await Promise.all(Object.entries(value).map(([name, prop]) => addFormValue(form, `${key}[${name}]`, prop)));
     }
     else {
-        return undefined;
+        throw new TypeError(`Invalid value given to form, expected a string, number, boolean, object, Array, File or Blob but got ${value} instead`);
+    }
+};
+
+/**
+ * This check adds the arrayBuffer() method type because it is available and used at runtime
+ */
+const isBlobLike = (value) => value != null &&
+    typeof value === 'object' &&
+    typeof value.size === 'number' &&
+    typeof value.type === 'string' &&
+    typeof value.text === 'function' &&
+    typeof value.slice === 'function' &&
+    typeof value.arrayBuffer === 'function';
+/**
+ * This check adds the arrayBuffer() method type because it is available and used at runtime
+ */
+const isFileLike = (value) => value != null &&
+    typeof value === 'object' &&
+    typeof value.name === 'string' &&
+    typeof value.lastModified === 'number' &&
+    isBlobLike(value);
+const isResponseLike = (value) => value != null &&
+    typeof value === 'object' &&
+    typeof value.url === 'string' &&
+    typeof value.blob === 'function';
+/**
+ * Helper for creating a {@link File} to pass to an SDK upload method from a variety of different data formats
+ * @param value the raw content of the file.  Can be an {@link Uploadable}, {@link BlobLikePart}, or {@link AsyncIterable} of {@link BlobLikePart}s
+ * @param {string=} name the name of the file. If omitted, toFile will try to determine a file name from bits if possible
+ * @param {Object=} options additional properties
+ * @param {string=} options.type the MIME type of the content
+ * @param {number=} options.lastModified the last modified timestamp
+ * @returns a {@link File} with the given properties
+ */
+async function toFile(value, name, options) {
+    checkFileSupport();
+    // If it's a promise, resolve it.
+    value = await value;
+    // If we've been given a `File` we don't need to do anything
+    if (isFileLike(value)) {
+        if (value instanceof File) {
+            return value;
+        }
+        return makeFile([await value.arrayBuffer()], value.name);
+    }
+    if (isResponseLike(value)) {
+        const blob = await value.blob();
+        name || (name = new URL(value.url).pathname.split(/[\\/]/).pop());
+        return makeFile(await getBytes(blob), name, options);
+    }
+    const parts = await getBytes(value);
+    name || (name = getName(value));
+    if (!options?.type) {
+        const type = parts.find((part) => typeof part === 'object' && 'type' in part && part.type);
+        if (typeof type === 'string') {
+            options = { ...options, type };
+        }
+    }
+    return makeFile(parts, name, options);
+}
+async function getBytes(value) {
+    let parts = [];
+    if (typeof value === 'string' ||
+        ArrayBuffer.isView(value) || // includes Uint8Array, Buffer, etc.
+        value instanceof ArrayBuffer) {
+        parts.push(value);
+    }
+    else if (isBlobLike(value)) {
+        parts.push(value instanceof Blob ? value : await value.arrayBuffer());
+    }
+    else if (isAsyncIterable(value) // includes Readable, ReadableStream, etc.
+    ) {
+        for await (const chunk of value) {
+            parts.push(...(await getBytes(chunk))); // TODO, consider validating?
+        }
+    }
+    else {
+        const constructor = value?.constructor?.name;
+        throw new Error(`Unexpected data type: ${typeof value}${constructor ? `; constructor: ${constructor}` : ''}${propsForError(value)}`);
+    }
+    return parts;
+}
+function propsForError(value) {
+    if (typeof value !== 'object' || value === null)
+        return '';
+    const props = Object.getOwnPropertyNames(value);
+    return `; props: [${props.map((p) => `"${p}"`).join(', ')}]`;
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class APIResource {
+    constructor(client) {
+        this._client = client;
     }
 }
-function getTotalLength(sources) {
-    let total = 0;
-    for (const source of sources) {
-        const partLength = getLength(source);
-        if (partLength === undefined) {
-            return undefined;
+
+/**
+ * Percent-encode everything that isn't safe to have in a path without encoding safe chars.
+ *
+ * Taken from https://datatracker.ietf.org/doc/html/rfc3986#section-3.3:
+ * > unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
+ * > sub-delims  = "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
+ * > pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
+ */
+function encodeURIPath(str) {
+    return str.replace(/[^A-Za-z0-9\-._~!$&'()*+,;=:@]+/g, encodeURIComponent);
+}
+const EMPTY = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.create(null));
+const createPathTagFunction = (pathEncoder = encodeURIPath) => function path(statics, ...params) {
+    // If there are no params, no processing is needed.
+    if (statics.length === 1)
+        return statics[0];
+    let postPath = false;
+    const invalidSegments = [];
+    const path = statics.reduce((previousValue, currentValue, index) => {
+        if (/[?#]/.test(currentValue)) {
+            postPath = true;
         }
-        else {
-            total += partLength;
+        const value = params[index];
+        let encoded = (postPath ? encodeURIComponent : pathEncoder)('' + value);
+        if (index !== params.length &&
+            (value == null ||
+                (typeof value === 'object' &&
+                    // handle values from other realms
+                    value.toString ===
+                        Object.getPrototypeOf(Object.getPrototypeOf(value.hasOwnProperty ?? EMPTY) ?? EMPTY)
+                            ?.toString))) {
+            encoded = value + '';
+            invalidSegments.push({
+                start: previousValue.length + currentValue.length,
+                length: encoded.length,
+                error: `Value of type ${Object.prototype.toString
+                    .call(value)
+                    .slice(8, -1)} is not a valid path parameter`,
+            });
+        }
+        return previousValue + currentValue + (index === params.length ? '' : encoded);
+    }, '');
+    const pathOnly = path.split(/[?#]/, 1)[0];
+    const invalidSegmentPattern = /(?<=^|\/)(?:\.|%2e){1,2}(?=\/|$)/gi;
+    let match;
+    // Find all invalid segments
+    while ((match = invalidSegmentPattern.exec(pathOnly)) !== null) {
+        invalidSegments.push({
+            start: match.index,
+            length: match[0].length,
+            error: `Value "${match[0]}" can\'t be safely passed as a path parameter`,
+        });
+    }
+    invalidSegments.sort((a, b) => a.start - b.start);
+    if (invalidSegments.length > 0) {
+        let lastEnd = 0;
+        const underline = invalidSegments.reduce((acc, segment) => {
+            const spaces = ' '.repeat(segment.start - lastEnd);
+            const arrows = '^'.repeat(segment.length);
+            lastEnd = segment.start + segment.length;
+            return acc + spaces + arrows;
+        }, '');
+        throw new OpenAIError(`Path parameters result in path with invalid segments:\n${invalidSegments
+            .map((e) => e.error)
+            .join('\n')}\n${path}\n${underline}`);
+    }
+    return path;
+};
+/**
+ * URI-encodes path params and ensures no unsafe /./ or /../ path segments are introduced.
+ */
+const path = /* @__PURE__ */ createPathTagFunction(encodeURIPath);
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Messages$1 = class Messages extends APIResource {
+    /**
+     * Get the messages in a stored chat completion. Only Chat Completions that have
+     * been created with the `store` parameter set to `true` will be returned.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const chatCompletionStoreMessage of client.chat.completions.messages.list(
+     *   'completion_id',
+     * )) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(completionID, query = {}, options) {
+        return this._client.getAPIList(path `/chat/completions/${completionID}/messages`, (CursorPage), { query, ...options });
+    }
+};
+
+function isRunnableFunctionWithParse(fn) {
+    return typeof fn.parse === 'function';
+}
+
+const isAssistantMessage = (message) => {
+    return message?.role === 'assistant';
+};
+const isToolMessage = (message) => {
+    return message?.role === 'tool';
+};
+
+var _EventStream_instances, _EventStream_connectedPromise, _EventStream_resolveConnectedPromise, _EventStream_rejectConnectedPromise, _EventStream_endPromise, _EventStream_resolveEndPromise, _EventStream_rejectEndPromise, _EventStream_listeners, _EventStream_ended, _EventStream_errored, _EventStream_aborted, _EventStream_catchingPromiseCreated, _EventStream_handleError;
+class EventStream {
+    constructor() {
+        _EventStream_instances.add(this);
+        this.controller = new AbortController();
+        _EventStream_connectedPromise.set(this, void 0);
+        _EventStream_resolveConnectedPromise.set(this, () => { });
+        _EventStream_rejectConnectedPromise.set(this, () => { });
+        _EventStream_endPromise.set(this, void 0);
+        _EventStream_resolveEndPromise.set(this, () => { });
+        _EventStream_rejectEndPromise.set(this, () => { });
+        _EventStream_listeners.set(this, {});
+        _EventStream_ended.set(this, false);
+        _EventStream_errored.set(this, false);
+        _EventStream_aborted.set(this, false);
+        _EventStream_catchingPromiseCreated.set(this, false);
+        __classPrivateFieldSet(this, _EventStream_connectedPromise, new Promise((resolve, reject) => {
+            __classPrivateFieldSet(this, _EventStream_resolveConnectedPromise, resolve, "f");
+            __classPrivateFieldSet(this, _EventStream_rejectConnectedPromise, reject, "f");
+        }));
+        __classPrivateFieldSet(this, _EventStream_endPromise, new Promise((resolve, reject) => {
+            __classPrivateFieldSet(this, _EventStream_resolveEndPromise, resolve, "f");
+            __classPrivateFieldSet(this, _EventStream_rejectEndPromise, reject, "f");
+        }));
+        // Don't let these promises cause unhandled rejection errors.
+        // we will manually cause an unhandled rejection error later
+        // if the user hasn't registered any error listener or called
+        // any promise-returning method.
+        __classPrivateFieldGet(this, _EventStream_connectedPromise, "f").catch(() => { });
+        __classPrivateFieldGet(this, _EventStream_endPromise, "f").catch(() => { });
+    }
+    _run(executor) {
+        // Unfortunately if we call `executor()` immediately we get runtime errors about
+        // references to `this` before the `super()` constructor call returns.
+        setTimeout(() => {
+            executor().then(() => {
+                this._emitFinal();
+                this._emit('end');
+            }, __classPrivateFieldGet(this, _EventStream_instances, "m", _EventStream_handleError).bind(this));
+        }, 0);
+    }
+    _connected() {
+        if (this.ended)
+            return;
+        __classPrivateFieldGet(this, _EventStream_resolveConnectedPromise, "f").call(this);
+        this._emit('connect');
+    }
+    get ended() {
+        return __classPrivateFieldGet(this, _EventStream_ended, "f");
+    }
+    get errored() {
+        return __classPrivateFieldGet(this, _EventStream_errored, "f");
+    }
+    get aborted() {
+        return __classPrivateFieldGet(this, _EventStream_aborted, "f");
+    }
+    abort() {
+        this.controller.abort();
+    }
+    /**
+     * Adds the listener function to the end of the listeners array for the event.
+     * No checks are made to see if the listener has already been added. Multiple calls passing
+     * the same combination of event and listener will result in the listener being added, and
+     * called, multiple times.
+     * @returns this ChatCompletionStream, so that calls can be chained
+     */
+    on(event, listener) {
+        const listeners = __classPrivateFieldGet(this, _EventStream_listeners, "f")[event] || (__classPrivateFieldGet(this, _EventStream_listeners, "f")[event] = []);
+        listeners.push({ listener });
+        return this;
+    }
+    /**
+     * Removes the specified listener from the listener array for the event.
+     * off() will remove, at most, one instance of a listener from the listener array. If any single
+     * listener has been added multiple times to the listener array for the specified event, then
+     * off() must be called multiple times to remove each instance.
+     * @returns this ChatCompletionStream, so that calls can be chained
+     */
+    off(event, listener) {
+        const listeners = __classPrivateFieldGet(this, _EventStream_listeners, "f")[event];
+        if (!listeners)
+            return this;
+        const index = listeners.findIndex((l) => l.listener === listener);
+        if (index >= 0)
+            listeners.splice(index, 1);
+        return this;
+    }
+    /**
+     * Adds a one-time listener function for the event. The next time the event is triggered,
+     * this listener is removed and then invoked.
+     * @returns this ChatCompletionStream, so that calls can be chained
+     */
+    once(event, listener) {
+        const listeners = __classPrivateFieldGet(this, _EventStream_listeners, "f")[event] || (__classPrivateFieldGet(this, _EventStream_listeners, "f")[event] = []);
+        listeners.push({ listener, once: true });
+        return this;
+    }
+    /**
+     * This is similar to `.once()`, but returns a Promise that resolves the next time
+     * the event is triggered, instead of calling a listener callback.
+     * @returns a Promise that resolves the next time given event is triggered,
+     * or rejects if an error is emitted.  (If you request the 'error' event,
+     * returns a promise that resolves with the error).
+     *
+     * Example:
+     *
+     *   const message = await stream.emitted('message') // rejects if the stream errors
+     */
+    emitted(event) {
+        return new Promise((resolve, reject) => {
+            __classPrivateFieldSet(this, _EventStream_catchingPromiseCreated, true);
+            if (event !== 'error')
+                this.once('error', reject);
+            this.once(event, resolve);
+        });
+    }
+    async done() {
+        __classPrivateFieldSet(this, _EventStream_catchingPromiseCreated, true);
+        await __classPrivateFieldGet(this, _EventStream_endPromise, "f");
+    }
+    _emit(event, ...args) {
+        // make sure we don't emit any events after end
+        if (__classPrivateFieldGet(this, _EventStream_ended, "f")) {
+            return;
+        }
+        if (event === 'end') {
+            __classPrivateFieldSet(this, _EventStream_ended, true);
+            __classPrivateFieldGet(this, _EventStream_resolveEndPromise, "f").call(this);
+        }
+        const listeners = __classPrivateFieldGet(this, _EventStream_listeners, "f")[event];
+        if (listeners) {
+            __classPrivateFieldGet(this, _EventStream_listeners, "f")[event] = listeners.filter((l) => !l.once);
+            listeners.forEach(({ listener }) => listener(...args));
+        }
+        if (event === 'abort') {
+            const error = args[0];
+            if (!__classPrivateFieldGet(this, _EventStream_catchingPromiseCreated, "f") && !listeners?.length) {
+                Promise.reject(error);
+            }
+            __classPrivateFieldGet(this, _EventStream_rejectConnectedPromise, "f").call(this, error);
+            __classPrivateFieldGet(this, _EventStream_rejectEndPromise, "f").call(this, error);
+            this._emit('end');
+            return;
+        }
+        if (event === 'error') {
+            // NOTE: _emit('error', error) should only be called from #handleError().
+            const error = args[0];
+            if (!__classPrivateFieldGet(this, _EventStream_catchingPromiseCreated, "f") && !listeners?.length) {
+                // Trigger an unhandled rejection if the user hasn't registered any error handlers.
+                // If you are seeing stack traces here, make sure to handle errors via either:
+                // - runner.on('error', () => ...)
+                // - await runner.done()
+                // - await runner.finalChatCompletion()
+                // - etc.
+                Promise.reject(error);
+            }
+            __classPrivateFieldGet(this, _EventStream_rejectConnectedPromise, "f").call(this, error);
+            __classPrivateFieldGet(this, _EventStream_rejectEndPromise, "f").call(this, error);
+            this._emit('end');
+        }
+    }
+    _emitFinal() { }
+}
+_EventStream_connectedPromise = new WeakMap(), _EventStream_resolveConnectedPromise = new WeakMap(), _EventStream_rejectConnectedPromise = new WeakMap(), _EventStream_endPromise = new WeakMap(), _EventStream_resolveEndPromise = new WeakMap(), _EventStream_rejectEndPromise = new WeakMap(), _EventStream_listeners = new WeakMap(), _EventStream_ended = new WeakMap(), _EventStream_errored = new WeakMap(), _EventStream_aborted = new WeakMap(), _EventStream_catchingPromiseCreated = new WeakMap(), _EventStream_instances = new WeakSet(), _EventStream_handleError = function _EventStream_handleError(error) {
+    __classPrivateFieldSet(this, _EventStream_errored, true);
+    if (error instanceof Error && error.name === 'AbortError') {
+        error = new APIUserAbortError();
+    }
+    if (error instanceof APIUserAbortError) {
+        __classPrivateFieldSet(this, _EventStream_aborted, true);
+        return this._emit('abort', error);
+    }
+    if (error instanceof OpenAIError) {
+        return this._emit('error', error);
+    }
+    if (error instanceof Error) {
+        const openAIError = new OpenAIError(error.message);
+        // @ts-ignore
+        openAIError.cause = error;
+        return this._emit('error', openAIError);
+    }
+    return this._emit('error', new OpenAIError(String(error)));
+};
+
+function isAutoParsableResponseFormat(response_format) {
+    return response_format?.['$brand'] === 'auto-parseable-response-format';
+}
+function isAutoParsableTool$1(tool) {
+    return tool?.['$brand'] === 'auto-parseable-tool';
+}
+function maybeParseChatCompletion(completion, params) {
+    if (!params || !hasAutoParseableInput$1(params)) {
+        return {
+            ...completion,
+            choices: completion.choices.map((choice) => ({
+                ...choice,
+                message: {
+                    ...choice.message,
+                    parsed: null,
+                    ...(choice.message.tool_calls ?
+                        {
+                            tool_calls: choice.message.tool_calls,
+                        }
+                        : undefined),
+                },
+            })),
+        };
+    }
+    return parseChatCompletion(completion, params);
+}
+function parseChatCompletion(completion, params) {
+    const choices = completion.choices.map((choice) => {
+        if (choice.finish_reason === 'length') {
+            throw new LengthFinishReasonError();
+        }
+        if (choice.finish_reason === 'content_filter') {
+            throw new ContentFilterFinishReasonError();
+        }
+        return {
+            ...choice,
+            message: {
+                ...choice.message,
+                ...(choice.message.tool_calls ?
+                    {
+                        tool_calls: choice.message.tool_calls?.map((toolCall) => parseToolCall$1(params, toolCall)) ?? undefined,
+                    }
+                    : undefined),
+                parsed: choice.message.content && !choice.message.refusal ?
+                    parseResponseFormat(params, choice.message.content)
+                    : null,
+            },
+        };
+    });
+    return { ...completion, choices };
+}
+function parseResponseFormat(params, content) {
+    if (params.response_format?.type !== 'json_schema') {
+        return null;
+    }
+    if (params.response_format?.type === 'json_schema') {
+        if ('$parseRaw' in params.response_format) {
+            const response_format = params.response_format;
+            return response_format.$parseRaw(content);
+        }
+        return JSON.parse(content);
+    }
+    return null;
+}
+function parseToolCall$1(params, toolCall) {
+    const inputTool = params.tools?.find((inputTool) => inputTool.function?.name === toolCall.function.name);
+    return {
+        ...toolCall,
+        function: {
+            ...toolCall.function,
+            parsed_arguments: isAutoParsableTool$1(inputTool) ? inputTool.$parseRaw(toolCall.function.arguments)
+                : inputTool?.function.strict ? JSON.parse(toolCall.function.arguments)
+                    : null,
+        },
+    };
+}
+function shouldParseToolCall(params, toolCall) {
+    if (!params) {
+        return false;
+    }
+    const inputTool = params.tools?.find((inputTool) => inputTool.function?.name === toolCall.function.name);
+    return isAutoParsableTool$1(inputTool) || inputTool?.function.strict || false;
+}
+function hasAutoParseableInput$1(params) {
+    if (isAutoParsableResponseFormat(params.response_format)) {
+        return true;
+    }
+    return (params.tools?.some((t) => isAutoParsableTool$1(t) || (t.type === 'function' && t.function.strict === true)) ?? false);
+}
+function validateInputTools(tools) {
+    for (const tool of tools ?? []) {
+        if (tool.type !== 'function') {
+            throw new OpenAIError(`Currently only \`function\` tool types support auto-parsing; Received \`${tool.type}\``);
+        }
+        if (tool.function.strict !== true) {
+            throw new OpenAIError(`The \`${tool.function.name}\` tool is not marked with \`strict: true\`. Only strict function tools can be auto-parsed`);
+        }
+    }
+}
+
+var _AbstractChatCompletionRunner_instances, _AbstractChatCompletionRunner_getFinalContent, _AbstractChatCompletionRunner_getFinalMessage, _AbstractChatCompletionRunner_getFinalFunctionToolCall, _AbstractChatCompletionRunner_getFinalFunctionToolCallResult, _AbstractChatCompletionRunner_calculateTotalUsage, _AbstractChatCompletionRunner_validateParams, _AbstractChatCompletionRunner_stringifyFunctionCallResult;
+const DEFAULT_MAX_CHAT_COMPLETIONS = 10;
+class AbstractChatCompletionRunner extends EventStream {
+    constructor() {
+        super(...arguments);
+        _AbstractChatCompletionRunner_instances.add(this);
+        this._chatCompletions = [];
+        this.messages = [];
+    }
+    _addChatCompletion(chatCompletion) {
+        this._chatCompletions.push(chatCompletion);
+        this._emit('chatCompletion', chatCompletion);
+        const message = chatCompletion.choices[0]?.message;
+        if (message)
+            this._addMessage(message);
+        return chatCompletion;
+    }
+    _addMessage(message, emit = true) {
+        if (!('content' in message))
+            message.content = null;
+        this.messages.push(message);
+        if (emit) {
+            this._emit('message', message);
+            if (isToolMessage(message) && message.content) {
+                // Note, this assumes that {role: 'tool', content: …} is always the result of a call of tool of type=function.
+                this._emit('functionToolCallResult', message.content);
+            }
+            else if (isAssistantMessage(message) && message.tool_calls) {
+                for (const tool_call of message.tool_calls) {
+                    if (tool_call.type === 'function') {
+                        this._emit('functionToolCall', tool_call.function);
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * @returns a promise that resolves with the final ChatCompletion, or rejects
+     * if an error occurred or the stream ended prematurely without producing a ChatCompletion.
+     */
+    async finalChatCompletion() {
+        await this.done();
+        const completion = this._chatCompletions[this._chatCompletions.length - 1];
+        if (!completion)
+            throw new OpenAIError('stream ended without producing a ChatCompletion');
+        return completion;
+    }
+    /**
+     * @returns a promise that resolves with the content of the final ChatCompletionMessage, or rejects
+     * if an error occurred or the stream ended prematurely without producing a ChatCompletionMessage.
+     */
+    async finalContent() {
+        await this.done();
+        return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalContent).call(this);
+    }
+    /**
+     * @returns a promise that resolves with the the final assistant ChatCompletionMessage response,
+     * or rejects if an error occurred or the stream ended prematurely without producing a ChatCompletionMessage.
+     */
+    async finalMessage() {
+        await this.done();
+        return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalMessage).call(this);
+    }
+    /**
+     * @returns a promise that resolves with the content of the final FunctionCall, or rejects
+     * if an error occurred or the stream ended prematurely without producing a ChatCompletionMessage.
+     */
+    async finalFunctionToolCall() {
+        await this.done();
+        return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalFunctionToolCall).call(this);
+    }
+    async finalFunctionToolCallResult() {
+        await this.done();
+        return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalFunctionToolCallResult).call(this);
+    }
+    async totalUsage() {
+        await this.done();
+        return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_calculateTotalUsage).call(this);
+    }
+    allChatCompletions() {
+        return [...this._chatCompletions];
+    }
+    _emitFinal() {
+        const completion = this._chatCompletions[this._chatCompletions.length - 1];
+        if (completion)
+            this._emit('finalChatCompletion', completion);
+        const finalMessage = __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalMessage).call(this);
+        if (finalMessage)
+            this._emit('finalMessage', finalMessage);
+        const finalContent = __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalContent).call(this);
+        if (finalContent)
+            this._emit('finalContent', finalContent);
+        const finalFunctionCall = __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalFunctionToolCall).call(this);
+        if (finalFunctionCall)
+            this._emit('finalFunctionToolCall', finalFunctionCall);
+        const finalFunctionCallResult = __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalFunctionToolCallResult).call(this);
+        if (finalFunctionCallResult != null)
+            this._emit('finalFunctionToolCallResult', finalFunctionCallResult);
+        if (this._chatCompletions.some((c) => c.usage)) {
+            this._emit('totalUsage', __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_calculateTotalUsage).call(this));
+        }
+    }
+    async _createChatCompletion(client, params, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_validateParams).call(this, params);
+        const chatCompletion = await client.chat.completions.create({ ...params, stream: false }, { ...options, signal: this.controller.signal });
+        this._connected();
+        return this._addChatCompletion(parseChatCompletion(chatCompletion, params));
+    }
+    async _runChatCompletion(client, params, options) {
+        for (const message of params.messages) {
+            this._addMessage(message, false);
+        }
+        return await this._createChatCompletion(client, params, options);
+    }
+    async _runTools(client, params, options) {
+        const role = 'tool';
+        const { tool_choice = 'auto', stream, ...restParams } = params;
+        const singleFunctionToCall = typeof tool_choice !== 'string' && tool_choice?.function?.name;
+        const { maxChatCompletions = DEFAULT_MAX_CHAT_COMPLETIONS } = options || {};
+        // TODO(someday): clean this logic up
+        const inputTools = params.tools.map((tool) => {
+            if (isAutoParsableTool$1(tool)) {
+                if (!tool.$callback) {
+                    throw new OpenAIError('Tool given to `.runTools()` that does not have an associated function');
+                }
+                return {
+                    type: 'function',
+                    function: {
+                        function: tool.$callback,
+                        name: tool.function.name,
+                        description: tool.function.description || '',
+                        parameters: tool.function.parameters,
+                        parse: tool.$parseRaw,
+                        strict: true,
+                    },
+                };
+            }
+            return tool;
+        });
+        const functionsByName = {};
+        for (const f of inputTools) {
+            if (f.type === 'function') {
+                functionsByName[f.function.name || f.function.function.name] = f.function;
+            }
+        }
+        const tools = 'tools' in params ?
+            inputTools.map((t) => t.type === 'function' ?
+                {
+                    type: 'function',
+                    function: {
+                        name: t.function.name || t.function.function.name,
+                        parameters: t.function.parameters,
+                        description: t.function.description,
+                        strict: t.function.strict,
+                    },
+                }
+                : t)
+            : undefined;
+        for (const message of params.messages) {
+            this._addMessage(message, false);
+        }
+        for (let i = 0; i < maxChatCompletions; ++i) {
+            const chatCompletion = await this._createChatCompletion(client, {
+                ...restParams,
+                tool_choice,
+                tools,
+                messages: [...this.messages],
+            }, options);
+            const message = chatCompletion.choices[0]?.message;
+            if (!message) {
+                throw new OpenAIError(`missing message in ChatCompletion response`);
+            }
+            if (!message.tool_calls?.length) {
+                return;
+            }
+            for (const tool_call of message.tool_calls) {
+                if (tool_call.type !== 'function')
+                    continue;
+                const tool_call_id = tool_call.id;
+                const { name, arguments: args } = tool_call.function;
+                const fn = functionsByName[name];
+                if (!fn) {
+                    const content = `Invalid tool_call: ${JSON.stringify(name)}. Available options are: ${Object.keys(functionsByName)
+                        .map((name) => JSON.stringify(name))
+                        .join(', ')}. Please try again`;
+                    this._addMessage({ role, tool_call_id, content });
+                    continue;
+                }
+                else if (singleFunctionToCall && singleFunctionToCall !== name) {
+                    const content = `Invalid tool_call: ${JSON.stringify(name)}. ${JSON.stringify(singleFunctionToCall)} requested. Please try again`;
+                    this._addMessage({ role, tool_call_id, content });
+                    continue;
+                }
+                let parsed;
+                try {
+                    parsed = isRunnableFunctionWithParse(fn) ? await fn.parse(args) : args;
+                }
+                catch (error) {
+                    const content = error instanceof Error ? error.message : String(error);
+                    this._addMessage({ role, tool_call_id, content });
+                    continue;
+                }
+                // @ts-expect-error it can't rule out `never` type.
+                const rawContent = await fn.function(parsed, this);
+                const content = __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_stringifyFunctionCallResult).call(this, rawContent);
+                this._addMessage({ role, tool_call_id, content });
+                if (singleFunctionToCall) {
+                    return;
+                }
+            }
+        }
+        return;
+    }
+}
+_AbstractChatCompletionRunner_instances = new WeakSet(), _AbstractChatCompletionRunner_getFinalContent = function _AbstractChatCompletionRunner_getFinalContent() {
+    return __classPrivateFieldGet(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalMessage).call(this).content ?? null;
+}, _AbstractChatCompletionRunner_getFinalMessage = function _AbstractChatCompletionRunner_getFinalMessage() {
+    let i = this.messages.length;
+    while (i-- > 0) {
+        const message = this.messages[i];
+        if (isAssistantMessage(message)) {
+            // TODO: support audio here
+            const ret = {
+                ...message,
+                content: message.content ?? null,
+                refusal: message.refusal ?? null,
+            };
+            return ret;
+        }
+    }
+    throw new OpenAIError('stream ended without producing a ChatCompletionMessage with role=assistant');
+}, _AbstractChatCompletionRunner_getFinalFunctionToolCall = function _AbstractChatCompletionRunner_getFinalFunctionToolCall() {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+        const message = this.messages[i];
+        if (isAssistantMessage(message) && message?.tool_calls?.length) {
+            return message.tool_calls.at(-1)?.function;
+        }
+    }
+    return;
+}, _AbstractChatCompletionRunner_getFinalFunctionToolCallResult = function _AbstractChatCompletionRunner_getFinalFunctionToolCallResult() {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+        const message = this.messages[i];
+        if (isToolMessage(message) &&
+            message.content != null &&
+            typeof message.content === 'string' &&
+            this.messages.some((x) => x.role === 'assistant' &&
+                x.tool_calls?.some((y) => y.type === 'function' && y.id === message.tool_call_id))) {
+            return message.content;
+        }
+    }
+    return;
+}, _AbstractChatCompletionRunner_calculateTotalUsage = function _AbstractChatCompletionRunner_calculateTotalUsage() {
+    const total = {
+        completion_tokens: 0,
+        prompt_tokens: 0,
+        total_tokens: 0,
+    };
+    for (const { usage } of this._chatCompletions) {
+        if (usage) {
+            total.completion_tokens += usage.completion_tokens;
+            total.prompt_tokens += usage.prompt_tokens;
+            total.total_tokens += usage.total_tokens;
         }
     }
     return total;
-}
-async function buildRequestBody(request, parts, boundary) {
-    const sources = [
-        stringToUint8Array(`--${boundary}`, "utf-8"),
-        ...parts.flatMap((part) => [
-            stringToUint8Array("\r\n", "utf-8"),
-            stringToUint8Array(encodeHeaders(part.headers), "utf-8"),
-            stringToUint8Array("\r\n", "utf-8"),
-            part.body,
-            stringToUint8Array(`\r\n--${boundary}`, "utf-8"),
-        ]),
-        stringToUint8Array("--\r\n\r\n", "utf-8"),
-    ];
-    const contentLength = getTotalLength(sources);
-    if (contentLength) {
-        request.headers.set("Content-Length", contentLength);
+}, _AbstractChatCompletionRunner_validateParams = function _AbstractChatCompletionRunner_validateParams(params) {
+    if (params.n != null && params.n > 1) {
+        throw new OpenAIError('ChatCompletion convenience helpers only support n=1 at this time. To use n>1, please use chat.completions.create() directly.');
     }
-    request.body = await concat(sources);
-}
-/**
- * Name of multipart policy
- */
-const multipartPolicyName$1 = "multipartPolicy";
-const maxBoundaryLength = 70;
-const validBoundaryCharacters = new Set(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()+,-./:=?`);
-function assertValidBoundary(boundary) {
-    if (boundary.length > maxBoundaryLength) {
-        throw new Error(`Multipart boundary "${boundary}" exceeds maximum length of 70 characters`);
-    }
-    if (Array.from(boundary).some((x) => !validBoundaryCharacters.has(x))) {
-        throw new Error(`Multipart boundary "${boundary}" contains invalid characters`);
-    }
-}
-/**
- * Pipeline policy for multipart requests
- */
-function multipartPolicy$1() {
-    return {
-        name: multipartPolicyName$1,
-        async sendRequest(request, next) {
-            var _a;
-            if (!request.multipartBody) {
-                return next(request);
-            }
-            if (request.body) {
-                throw new Error("multipartBody and regular body cannot be set at the same time");
-            }
-            let boundary = request.multipartBody.boundary;
-            const contentTypeHeader = (_a = request.headers.get("Content-Type")) !== null && _a !== void 0 ? _a : "multipart/mixed";
-            const parsedHeader = contentTypeHeader.match(/^(multipart\/[^ ;]+)(?:; *boundary=(.+))?$/);
-            if (!parsedHeader) {
-                throw new Error(`Got multipart request body, but content-type header was not multipart: ${contentTypeHeader}`);
-            }
-            const [, contentType, parsedBoundary] = parsedHeader;
-            if (parsedBoundary && boundary && parsedBoundary !== boundary) {
-                throw new Error(`Multipart boundary was specified as ${parsedBoundary} in the header, but got ${boundary} in the request body`);
-            }
-            boundary !== null && boundary !== void 0 ? boundary : (boundary = parsedBoundary);
-            if (boundary) {
-                assertValidBoundary(boundary);
-            }
-            else {
-                boundary = generateBoundary();
-            }
-            request.headers.set("Content-Type", `${contentType}; boundary=${boundary}`);
-            await buildRequestBody(request, request.multipartBody.parts, boundary);
-            request.multipartBody = undefined;
-            return next(request);
-        },
-    };
-}
+}, _AbstractChatCompletionRunner_stringifyFunctionCallResult = function _AbstractChatCompletionRunner_stringifyFunctionCallResult(rawContent) {
+    return (typeof rawContent === 'string' ? rawContent
+        : rawContent === undefined ? 'undefined'
+            : JSON.stringify(rawContent));
+};
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Create a new pipeline with a default set of customizable policies.
- * @param options - Options to configure a custom pipeline.
- */
-function createPipelineFromOptions$1(options) {
-    const pipeline = createEmptyPipeline$1();
-    if (isNodeLike$1) {
-        if (options.agent) {
-            pipeline.addPolicy(agentPolicy$1(options.agent));
+class ChatCompletionRunner extends AbstractChatCompletionRunner {
+    static runTools(client, params, options) {
+        const runner = new ChatCompletionRunner();
+        const opts = {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'runTools' },
+        };
+        runner._run(() => runner._runTools(client, params, opts));
+        return runner;
+    }
+    _addMessage(message, emit = true) {
+        super._addMessage(message, emit);
+        if (isAssistantMessage(message) && message.content) {
+            this._emit('content', message.content);
         }
-        if (options.tlsOptions) {
-            pipeline.addPolicy(tlsPolicy$1(options.tlsOptions));
-        }
-        pipeline.addPolicy(proxyPolicy$1(options.proxyOptions));
-        pipeline.addPolicy(decompressResponsePolicy$1());
     }
-    pipeline.addPolicy(formDataPolicy$1(), { beforePolicies: [multipartPolicyName$1] });
-    pipeline.addPolicy(userAgentPolicy$1(options.userAgentOptions));
-    // The multipart policy is added after policies with no phase, so that
-    // policies can be added between it and formDataPolicy to modify
-    // properties (e.g., making the boundary constant in recorded tests).
-    pipeline.addPolicy(multipartPolicy$1(), { afterPhase: "Deserialize" });
-    pipeline.addPolicy(defaultRetryPolicy$1(options.retryOptions), { phase: "Retry" });
-    if (isNodeLike$1) {
-        // Both XHR and Fetch expect to handle redirects automatically,
-        // so only include this policy when we're in Node.
-        pipeline.addPolicy(redirectPolicy$1(options.redirectOptions), { afterPhase: "Retry" });
-    }
-    pipeline.addPolicy(logPolicy$1(options.loggingOptions), { afterPhase: "Sign" });
-    return pipeline;
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const apiVersionPolicyName$1 = "ApiVersionPolicy";
+const STR = 0b000000001;
+const NUM = 0b000000010;
+const ARR = 0b000000100;
+const OBJ = 0b000001000;
+const NULL = 0b000010000;
+const BOOL = 0b000100000;
+const NAN = 0b001000000;
+const INFINITY = 0b010000000;
+const MINUS_INFINITY = 0b100000000;
+const INF = INFINITY | MINUS_INFINITY;
+const SPECIAL = NULL | BOOL | INF | NAN;
+const ATOM = STR | NUM | SPECIAL;
+const COLLECTION = ARR | OBJ;
+const ALL = ATOM | COLLECTION;
+const Allow = {
+    STR,
+    NUM,
+    ARR,
+    OBJ,
+    NULL,
+    BOOL,
+    NAN,
+    INFINITY,
+    MINUS_INFINITY,
+    INF,
+    SPECIAL,
+    ATOM,
+    COLLECTION,
+    ALL,
+};
+// The JSON string segment was unable to be parsed completely
+class PartialJSON extends Error {
+}
+class MalformedJSON extends Error {
+}
 /**
- * Creates a policy that sets the apiVersion as a query parameter on every request
- * @param options - Client options
- * @returns Pipeline policy that sets the apiVersion as a query parameter on every request
+ * Parse incomplete JSON
+ * @param {string} jsonString Partial JSON to be parsed
+ * @param {number} allowPartial Specify what types are allowed to be partial, see {@link Allow} for details
+ * @returns The parsed JSON
+ * @throws {PartialJSON} If the JSON is incomplete (related to the `allow` parameter)
+ * @throws {MalformedJSON} If the JSON is malformed
  */
-function apiVersionPolicy$1(options) {
-    return {
-        name: apiVersionPolicyName$1,
-        sendRequest: (req, next) => {
-            // Use the apiVesion defined in request url directly
-            // Append one if there is no apiVesion and we have one at client options
-            const url = new URL(req.url);
-            if (!url.searchParams.get("api-version") && options.apiVersion) {
-                req.url = `${req.url}${Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"}api-version=${options.apiVersion}`;
-            }
-            return next(req);
-        },
+function parseJSON(jsonString, allowPartial = Allow.ALL) {
+    if (typeof jsonString !== 'string') {
+        throw new TypeError(`expecting str, got ${typeof jsonString}`);
+    }
+    if (!jsonString.trim()) {
+        throw new Error(`${jsonString} is empty`);
+    }
+    return _parseJSON(jsonString.trim(), allowPartial);
+}
+const _parseJSON = (jsonString, allow) => {
+    const length = jsonString.length;
+    let index = 0;
+    const markPartialJSON = (msg) => {
+        throw new PartialJSON(`${msg} at position ${index}`);
     };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Type guard to check if a credential is an OAuth2 token credential.
- */
-function isOAuth2TokenCredential(credential) {
-    return "getOAuth2Token" in credential;
-}
-/**
- * Type guard to check if a credential is a Bearer token credential.
- */
-function isBearerTokenCredential(credential) {
-    return "getBearerToken" in credential;
-}
-/**
- * Type guard to check if a credential is a Basic auth credential.
- */
-function isBasicCredential(credential) {
-    return "username" in credential && "password" in credential;
-}
-/**
- * Type guard to check if a credential is an API key credential.
- */
-function isApiKeyCredential(credential) {
-    return "key" in credential;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-// Ensure the warining is only emitted once
-let insecureConnectionWarningEmmitted = false;
-/**
- * Checks if the request is allowed to be sent over an insecure connection.
- *
- * A request is allowed to be sent over an insecure connection when:
- * - The `allowInsecureConnection` option is set to `true`.
- * - The request has the `allowInsecureConnection` property set to `true`.
- * - The request is being sent to `localhost` or `127.0.0.1`
- */
-function allowInsecureConnection(request, options) {
-    if (options.allowInsecureConnection && request.allowInsecureConnection) {
-        const url = new URL(request.url);
-        if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+    const throwMalformedError = (msg) => {
+        throw new MalformedJSON(`${msg} at position ${index}`);
+    };
+    const parseAny = () => {
+        skipBlank();
+        if (index >= length)
+            markPartialJSON('Unexpected end of input');
+        if (jsonString[index] === '"')
+            return parseStr();
+        if (jsonString[index] === '{')
+            return parseObj();
+        if (jsonString[index] === '[')
+            return parseArr();
+        if (jsonString.substring(index, index + 4) === 'null' ||
+            (Allow.NULL & allow && length - index < 4 && 'null'.startsWith(jsonString.substring(index)))) {
+            index += 4;
+            return null;
+        }
+        if (jsonString.substring(index, index + 4) === 'true' ||
+            (Allow.BOOL & allow && length - index < 4 && 'true'.startsWith(jsonString.substring(index)))) {
+            index += 4;
             return true;
         }
-    }
-    return false;
-}
-/**
- * Logs a warning about sending a token over an insecure connection.
- *
- * This function will emit a node warning once, but log the warning every time.
- */
-function emitInsecureConnectionWarning() {
-    const warning = "Sending token over insecure transport. Assume any token issued is compromised.";
-    logger$2.warning(warning);
-    if (typeof (process === null || process === void 0 ? void 0 : process.emitWarning) === "function" && !insecureConnectionWarningEmmitted) {
-        insecureConnectionWarningEmmitted = true;
-        process.emitWarning(warning);
-    }
-}
-/**
- * Ensures that authentication is only allowed over HTTPS unless explicitly allowed.
- * Throws an error if the connection is not secure and not explicitly allowed.
- */
-function ensureSecureConnection(request, options) {
-    if (!request.url.toLowerCase().startsWith("https://")) {
-        if (allowInsecureConnection(request, options)) {
-            emitInsecureConnectionWarning();
-        }
-        else {
-            throw new Error("Authentication is not permitted for non-TLS protected (non-https) URLs when allowInsecureConnection is false.");
-        }
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the API Key Authentication Policy
- */
-const apiKeyAuthenticationPolicyName = "apiKeyAuthenticationPolicy";
-/**
- * Gets a pipeline policy that adds API key authentication to requests
- */
-function apiKeyAuthenticationPolicy(options) {
-    return {
-        name: apiKeyAuthenticationPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b;
-            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
-            ensureSecureConnection(request, options);
-            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "apiKey");
-            // Skip adding authentication header if no API key authentication scheme is found
-            if (!scheme) {
-                return next(request);
-            }
-            if (scheme.apiKeyLocation !== "header") {
-                throw new Error(`Unsupported API key location: ${scheme.apiKeyLocation}`);
-            }
-            request.headers.set(scheme.name, options.credential.key);
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the Basic Authentication Policy
- */
-const basicAuthenticationPolicyName = "bearerAuthenticationPolicy";
-/**
- * Gets a pipeline policy that adds basic authentication to requests
- */
-function basicAuthenticationPolicy(options) {
-    return {
-        name: basicAuthenticationPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b;
-            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
-            ensureSecureConnection(request, options);
-            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "basic");
-            // Skip adding authentication header if no basic authentication scheme is found
-            if (!scheme) {
-                return next(request);
-            }
-            const { username, password } = options.credential;
-            const headerValue = uint8ArrayToString(stringToUint8Array(`${username}:${password}`, "utf-8"), "base64");
-            request.headers.set("Authorization", `Basic ${headerValue}`);
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the Bearer Authentication Policy
- */
-const bearerAuthenticationPolicyName = "bearerAuthenticationPolicy";
-/**
- * Gets a pipeline policy that adds bearer token authentication to requests
- */
-function bearerAuthenticationPolicy(options) {
-    return {
-        name: bearerAuthenticationPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b;
-            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
-            ensureSecureConnection(request, options);
-            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "bearer");
-            // Skip adding authentication header if no bearer authentication scheme is found
-            if (!scheme) {
-                return next(request);
-            }
-            const token = await options.credential.getBearerToken({
-                abortSignal: request.abortSignal,
-            });
-            request.headers.set("Authorization", `Bearer ${token}`);
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of the OAuth2 Authentication Policy
- */
-const oauth2AuthenticationPolicyName = "oauth2AuthenticationPolicy";
-/**
- * Gets a pipeline policy that adds authorization header from OAuth2 schemes
- */
-function oauth2AuthenticationPolicy(options) {
-    return {
-        name: oauth2AuthenticationPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b;
-            // Ensure allowInsecureConnection is explicitly set when sending request to non-https URLs
-            ensureSecureConnection(request, options);
-            const scheme = (_b = ((_a = request.authSchemes) !== null && _a !== void 0 ? _a : options.authSchemes)) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "oauth2");
-            // Skip adding authentication header if no OAuth2 authentication scheme is found
-            if (!scheme) {
-                return next(request);
-            }
-            const token = await options.credential.getOAuth2Token(scheme.flows, {
-                abortSignal: request.abortSignal,
-            });
-            request.headers.set("Authorization", `Bearer ${token}`);
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-let cachedHttpClient;
-/**
- * Creates a default rest pipeline to re-use accross Rest Level Clients
- */
-function createDefaultPipeline$1(options = {}) {
-    const pipeline = createPipelineFromOptions$1(options);
-    pipeline.addPolicy(apiVersionPolicy$1(options));
-    const { credential, authSchemes, allowInsecureConnection } = options;
-    if (credential) {
-        if (isApiKeyCredential(credential)) {
-            pipeline.addPolicy(apiKeyAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
-        }
-        else if (isBasicCredential(credential)) {
-            pipeline.addPolicy(basicAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
-        }
-        else if (isBearerTokenCredential(credential)) {
-            pipeline.addPolicy(bearerAuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
-        }
-        else if (isOAuth2TokenCredential(credential)) {
-            pipeline.addPolicy(oauth2AuthenticationPolicy({ authSchemes, credential, allowInsecureConnection }));
-        }
-    }
-    return pipeline;
-}
-function getCachedDefaultHttpsClient() {
-    if (!cachedHttpClient) {
-        cachedHttpClient = createDefaultHttpClient();
-    }
-    return cachedHttpClient;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Get value of a header in the part descriptor ignoring case
- */
-function getHeaderValue(descriptor, headerName) {
-    if (descriptor.headers) {
-        const actualHeaderName = Object.keys(descriptor.headers).find((x) => x.toLowerCase() === headerName.toLowerCase());
-        if (actualHeaderName) {
-            return descriptor.headers[actualHeaderName];
-        }
-    }
-    return undefined;
-}
-function getPartContentType(descriptor) {
-    const contentTypeHeader = getHeaderValue(descriptor, "content-type");
-    if (contentTypeHeader) {
-        return contentTypeHeader;
-    }
-    // Special value of null means content type is to be omitted
-    if (descriptor.contentType === null) {
-        return undefined;
-    }
-    if (descriptor.contentType) {
-        return descriptor.contentType;
-    }
-    const { body } = descriptor;
-    if (body === null || body === undefined) {
-        return undefined;
-    }
-    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
-        return "text/plain; charset=UTF-8";
-    }
-    if (body instanceof Blob) {
-        return body.type || "application/octet-stream";
-    }
-    if (isBinaryBody(body)) {
-        return "application/octet-stream";
-    }
-    // arbitrary non-text object -> generic JSON content type by default. We will try to JSON.stringify the body.
-    return "application/json";
-}
-/**
- * Enclose value in quotes and escape special characters, for use in the Content-Disposition header
- */
-function escapeDispositionField(value) {
-    return JSON.stringify(value);
-}
-function getContentDisposition(descriptor) {
-    var _a;
-    const contentDispositionHeader = getHeaderValue(descriptor, "content-disposition");
-    if (contentDispositionHeader) {
-        return contentDispositionHeader;
-    }
-    if (descriptor.dispositionType === undefined &&
-        descriptor.name === undefined &&
-        descriptor.filename === undefined) {
-        return undefined;
-    }
-    const dispositionType = (_a = descriptor.dispositionType) !== null && _a !== void 0 ? _a : "form-data";
-    let disposition = dispositionType;
-    if (descriptor.name) {
-        disposition += `; name=${escapeDispositionField(descriptor.name)}`;
-    }
-    let filename = undefined;
-    if (descriptor.filename) {
-        filename = descriptor.filename;
-    }
-    else if (typeof File !== "undefined" && descriptor.body instanceof File) {
-        const filenameFromFile = descriptor.body.name;
-        if (filenameFromFile !== "") {
-            filename = filenameFromFile;
-        }
-    }
-    if (filename) {
-        disposition += `; filename=${escapeDispositionField(filename)}`;
-    }
-    return disposition;
-}
-function normalizeBody(body, contentType) {
-    if (body === undefined) {
-        // zero-length body
-        return new Uint8Array([]);
-    }
-    // binary and primitives should go straight on the wire regardless of content type
-    if (isBinaryBody(body)) {
-        return body;
-    }
-    if (typeof body === "string" || typeof body === "number" || typeof body === "boolean") {
-        return stringToUint8Array(String(body), "utf-8");
-    }
-    // stringify objects for JSON-ish content types e.g. application/json, application/merge-patch+json, application/vnd.oci.manifest.v1+json, application.json; charset=UTF-8
-    if (contentType && /application\/(.+\+)?json(;.+)?/i.test(String(contentType))) {
-        return stringToUint8Array(JSON.stringify(body), "utf-8");
-    }
-    throw new RestError$1(`Unsupported body/content-type combination: ${body}, ${contentType}`);
-}
-function buildBodyPart(descriptor) {
-    var _a;
-    const contentType = getPartContentType(descriptor);
-    const contentDisposition = getContentDisposition(descriptor);
-    const headers = createHttpHeaders((_a = descriptor.headers) !== null && _a !== void 0 ? _a : {});
-    if (contentType) {
-        headers.set("content-type", contentType);
-    }
-    if (contentDisposition) {
-        headers.set("content-disposition", contentDisposition);
-    }
-    const body = normalizeBody(descriptor.body, contentType);
-    return {
-        headers,
-        body,
-    };
-}
-function buildMultipartBody(parts) {
-    return { parts: parts.map(buildBodyPart) };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Helper function to send request used by the client
- * @param method - method to use to send the request
- * @param url - url to send the request to
- * @param pipeline - pipeline with the policies to run when sending the request
- * @param options - request options
- * @param customHttpClient - a custom HttpClient to use when making the request
- * @returns returns and HttpResponse
- */
-async function sendRequest(method, url, pipeline, options = {}, customHttpClient) {
-    var _a;
-    const httpClient = customHttpClient !== null && customHttpClient !== void 0 ? customHttpClient : getCachedDefaultHttpsClient();
-    const request = buildPipelineRequest(method, url, options);
-    try {
-        const response = await pipeline.sendRequest(httpClient, request);
-        const headers = response.headers.toJSON();
-        const stream = (_a = response.readableStreamBody) !== null && _a !== void 0 ? _a : response.browserStreamBody;
-        const parsedBody = options.responseAsStream || stream !== undefined ? undefined : getResponseBody(response);
-        const body = stream !== null && stream !== void 0 ? stream : parsedBody;
-        if (options === null || options === void 0 ? void 0 : options.onResponse) {
-            options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders: headers, parsedBody }));
-        }
-        return {
-            request,
-            headers,
-            status: `${response.status}`,
-            body,
-        };
-    }
-    catch (e) {
-        if (isRestError$1(e) && e.response && options.onResponse) {
-            const { response } = e;
-            const rawHeaders = response.headers.toJSON();
-            // UNBRANDED DIFFERENCE: onResponse callback does not have a second __legacyError property
-            options === null || options === void 0 ? void 0 : options.onResponse(Object.assign(Object.assign({}, response), { request, rawHeaders }), e);
-        }
-        throw e;
-    }
-}
-/**
- * Function to determine the request content type
- * @param options - request options InternalRequestParameters
- * @returns returns the content-type
- */
-function getRequestContentType(options = {}) {
-    var _a, _b, _c;
-    return ((_c = (_a = options.contentType) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b["content-type"]) !== null && _c !== void 0 ? _c : getContentType(options.body));
-}
-/**
- * Function to determine the content-type of a body
- * this is used if an explicit content-type is not provided
- * @param body - body in the request
- * @returns returns the content-type
- */
-function getContentType(body) {
-    if (ArrayBuffer.isView(body)) {
-        return "application/octet-stream";
-    }
-    if (typeof body === "string") {
-        try {
-            JSON.parse(body);
-            return "application/json";
-        }
-        catch (error) {
-            // If we fail to parse the body, it is not json
-            return undefined;
-        }
-    }
-    // By default return json
-    return "application/json";
-}
-function buildPipelineRequest(method, url, options = {}) {
-    var _a, _b, _c;
-    const requestContentType = getRequestContentType(options);
-    const { body, multipartBody } = getRequestBody$1(options.body, requestContentType);
-    const hasContent = body !== undefined || multipartBody !== undefined;
-    const headers = createHttpHeaders(Object.assign(Object.assign(Object.assign({}, (options.headers ? options.headers : {})), { accept: (_c = (_a = options.accept) !== null && _a !== void 0 ? _a : (_b = options.headers) === null || _b === void 0 ? void 0 : _b.accept) !== null && _c !== void 0 ? _c : "application/json" }), (hasContent &&
-        requestContentType && {
-        "content-type": requestContentType,
-    })));
-    return createPipelineRequest({
-        url,
-        method,
-        body,
-        multipartBody,
-        headers,
-        allowInsecureConnection: options.allowInsecureConnection,
-        abortSignal: options.abortSignal,
-        onUploadProgress: options.onUploadProgress,
-        onDownloadProgress: options.onDownloadProgress,
-        timeout: options.timeout,
-        enableBrowserStreams: true,
-        streamResponseStatusCodes: options.responseAsStream
-            ? new Set([Number.POSITIVE_INFINITY])
-            : undefined,
-    });
-}
-/**
- * Prepares the body before sending the request
- */
-function getRequestBody$1(body, contentType = "") {
-    if (body === undefined) {
-        return { body: undefined };
-    }
-    if (typeof FormData !== "undefined" && body instanceof FormData) {
-        return { body };
-    }
-    if (isReadableStream(body)) {
-        return { body };
-    }
-    if (ArrayBuffer.isView(body)) {
-        return { body: body instanceof Uint8Array ? body : JSON.stringify(body) };
-    }
-    const firstType = contentType.split(";")[0];
-    switch (firstType) {
-        case "application/json":
-            return { body: JSON.stringify(body) };
-        case "multipart/form-data":
-            if (Array.isArray(body)) {
-                return { multipartBody: buildMultipartBody(body) };
-            }
-            return { body: JSON.stringify(body) };
-        case "text/plain":
-            return { body: String(body) };
-        default:
-            if (typeof body === "string") {
-                return { body };
-            }
-            return { body: JSON.stringify(body) };
-    }
-}
-/**
- * Prepares the response body
- */
-function getResponseBody(response) {
-    var _a, _b;
-    // Set the default response type
-    const contentType = (_a = response.headers.get("content-type")) !== null && _a !== void 0 ? _a : "";
-    const firstType = contentType.split(";")[0];
-    const bodyToParse = (_b = response.bodyAsText) !== null && _b !== void 0 ? _b : "";
-    if (firstType === "text/plain") {
-        return String(bodyToParse);
-    }
-    // Default to "application/json" and fallback to string;
-    try {
-        return bodyToParse ? JSON.parse(bodyToParse) : undefined;
-    }
-    catch (error) {
-        // If we were supposed to get a JSON object and failed to
-        // parse, throw a parse error
-        if (firstType === "application/json") {
-            throw createParseError(response, error);
-        }
-        // We are not sure how to handle the response so we return it as
-        // plain text.
-        return String(bodyToParse);
-    }
-}
-function createParseError(response, err) {
-    var _a;
-    const msg = `Error "${err}" occurred while parsing the response body - ${response.bodyAsText}.`;
-    const errCode = (_a = err.code) !== null && _a !== void 0 ? _a : RestError$1.PARSE_ERROR;
-    return new RestError$1(msg, {
-        code: errCode,
-        statusCode: response.status,
-        request: response.request,
-        response: response,
-    });
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function isQueryParameterWithOptions(x) {
-    const value = x.value;
-    return (value !== undefined && value.toString !== undefined && typeof value.toString === "function");
-}
-/**
- * Builds the request url, filling in query and path parameters
- * @param endpoint - base url which can be a template url
- * @param routePath - path to append to the endpoint
- * @param pathParameters - values of the path parameters
- * @param options - request parameters including query parameters
- * @returns a full url with path and query parameters
- */
-function buildRequestUrl(endpoint, routePath, pathParameters, options = {}) {
-    if (routePath.startsWith("https://") || routePath.startsWith("http://")) {
-        return routePath;
-    }
-    endpoint = buildBaseUrl(endpoint, options);
-    routePath = buildRoutePath(routePath, pathParameters, options);
-    const requestUrl = appendQueryParams(`${endpoint}/${routePath}`, options);
-    const url = new URL(requestUrl);
-    return (url
-        .toString()
-        // Remove double forward slashes
-        .replace(/([^:]\/)\/+/g, "$1"));
-}
-function getQueryParamValue(key, allowReserved, style, param) {
-    let separator;
-    if (style === "pipeDelimited") {
-        separator = "|";
-    }
-    else if (style === "spaceDelimited") {
-        separator = "%20";
-    }
-    else {
-        separator = ",";
-    }
-    let paramValues;
-    if (Array.isArray(param)) {
-        paramValues = param;
-    }
-    else if (typeof param === "object" && param.toString === Object.prototype.toString) {
-        // If the parameter is an object without a custom toString implementation (e.g. a Date),
-        // then we should deconstruct the object into an array [key1, value1, key2, value2, ...].
-        paramValues = Object.entries(param).flat();
-    }
-    else {
-        paramValues = [param];
-    }
-    const value = paramValues
-        .map((p) => {
-        if (p === null || p === undefined) {
-            return "";
-        }
-        if (!p.toString || typeof p.toString !== "function") {
-            throw new Error(`Query parameters must be able to be represented as string, ${key} can't`);
-        }
-        const rawValue = p.toISOString !== undefined ? p.toISOString() : p.toString();
-        return allowReserved ? rawValue : encodeURIComponent(rawValue);
-    })
-        .join(separator);
-    return `${allowReserved ? key : encodeURIComponent(key)}=${value}`;
-}
-function appendQueryParams(url, options = {}) {
-    var _a, _b, _c, _d;
-    if (!options.queryParameters) {
-        return url;
-    }
-    const parsedUrl = new URL(url);
-    const queryParams = options.queryParameters;
-    const paramStrings = [];
-    for (const key of Object.keys(queryParams)) {
-        const param = queryParams[key];
-        if (param === undefined || param === null) {
-            continue;
-        }
-        const hasMetadata = isQueryParameterWithOptions(param);
-        const rawValue = hasMetadata ? param.value : param;
-        const explode = hasMetadata ? ((_a = param.explode) !== null && _a !== void 0 ? _a : false) : false;
-        const style = hasMetadata && param.style ? param.style : "form";
-        if (explode) {
-            if (Array.isArray(rawValue)) {
-                for (const item of rawValue) {
-                    paramStrings.push(getQueryParamValue(key, (_b = options.skipUrlEncoding) !== null && _b !== void 0 ? _b : false, style, item));
-                }
-            }
-            else if (typeof rawValue === "object") {
-                // For object explode, the name of the query parameter is ignored and we use the object key instead
-                for (const [actualKey, value] of Object.entries(rawValue)) {
-                    paramStrings.push(getQueryParamValue(actualKey, (_c = options.skipUrlEncoding) !== null && _c !== void 0 ? _c : false, style, value));
-                }
-            }
-            else {
-                // Explode doesn't really make sense for primitives
-                throw new Error("explode can only be set to true for objects and arrays");
-            }
-        }
-        else {
-            paramStrings.push(getQueryParamValue(key, (_d = options.skipUrlEncoding) !== null && _d !== void 0 ? _d : false, style, rawValue));
-        }
-    }
-    if (parsedUrl.search !== "") {
-        parsedUrl.search += "&";
-    }
-    parsedUrl.search += paramStrings.join("&");
-    return parsedUrl.toString();
-}
-function buildBaseUrl(endpoint, options) {
-    var _a;
-    if (!options.pathParameters) {
-        return endpoint;
-    }
-    const pathParams = options.pathParameters;
-    for (const [key, param] of Object.entries(pathParams)) {
-        if (param === undefined || param === null) {
-            throw new Error(`Path parameters ${key} must not be undefined or null`);
-        }
-        if (!param.toString || typeof param.toString !== "function") {
-            throw new Error(`Path parameters must be able to be represented as string, ${key} can't`);
-        }
-        let value = param.toISOString !== undefined ? param.toISOString() : String(param);
-        if (!options.skipUrlEncoding) {
-            value = encodeURIComponent(param);
-        }
-        endpoint = (_a = replaceAll(endpoint, `{${key}}`, value)) !== null && _a !== void 0 ? _a : "";
-    }
-    return endpoint;
-}
-function buildRoutePath(routePath, pathParameters, options = {}) {
-    var _a;
-    for (const pathParam of pathParameters) {
-        const allowReserved = typeof pathParam === "object" && ((_a = pathParam.allowReserved) !== null && _a !== void 0 ? _a : false);
-        let value = typeof pathParam === "object" ? pathParam.value : pathParam;
-        if (!options.skipUrlEncoding && !allowReserved) {
-            value = encodeURIComponent(value);
-        }
-        routePath = routePath.replace(/\{[\w-]+\}/, String(value));
-    }
-    return routePath;
-}
-/**
- * Replace all of the instances of searchValue in value with the provided replaceValue.
- * @param value - The value to search and replace in.
- * @param searchValue - The value to search for in the value argument.
- * @param replaceValue - The value to replace searchValue with in the value argument.
- * @returns The value where each instance of searchValue was replaced with replacedValue.
- */
-function replaceAll(value, searchValue, replaceValue) {
-    return !value || !searchValue ? value : value.split(searchValue).join(replaceValue || "");
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Creates a client with a default pipeline
- * @param endpoint - Base endpoint for the client
- * @param credentials - Credentials to authenticate the requests
- * @param options - Client options
- */
-function getClient$1(endpoint, clientOptions = {}) {
-    var _a, _b, _c;
-    const pipeline = (_a = clientOptions.pipeline) !== null && _a !== void 0 ? _a : createDefaultPipeline$1(clientOptions);
-    if ((_b = clientOptions.additionalPolicies) === null || _b === void 0 ? void 0 : _b.length) {
-        for (const { policy, position } of clientOptions.additionalPolicies) {
-            // Sign happens after Retry and is commonly needed to occur
-            // before policies that intercept post-retry.
-            const afterPhase = position === "perRetry" ? "Sign" : undefined;
-            pipeline.addPolicy(policy, {
-                afterPhase,
-            });
-        }
-    }
-    const { allowInsecureConnection, httpClient } = clientOptions;
-    const endpointUrl = (_c = clientOptions.endpoint) !== null && _c !== void 0 ? _c : endpoint;
-    const client = (path, ...args) => {
-        const getUrl = (requestOptions) => buildRequestUrl(endpointUrl, path, args, Object.assign({ allowInsecureConnection }, requestOptions));
-        return {
-            get: (requestOptions = {}) => {
-                return buildOperation("GET", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            post: (requestOptions = {}) => {
-                return buildOperation("POST", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            put: (requestOptions = {}) => {
-                return buildOperation("PUT", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            patch: (requestOptions = {}) => {
-                return buildOperation("PATCH", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            delete: (requestOptions = {}) => {
-                return buildOperation("DELETE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            head: (requestOptions = {}) => {
-                return buildOperation("HEAD", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            options: (requestOptions = {}) => {
-                return buildOperation("OPTIONS", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-            trace: (requestOptions = {}) => {
-                return buildOperation("TRACE", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
-            },
-        };
-    };
-    return {
-        path: client,
-        pathUnchecked: client,
-        pipeline,
-    };
-}
-function buildOperation(method, url, pipeline, options, allowInsecureConnection, httpClient) {
-    var _a;
-    allowInsecureConnection = (_a = options.allowInsecureConnection) !== null && _a !== void 0 ? _a : allowInsecureConnection;
-    return {
-        then: function (onFulfilled, onrejected) {
-            return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection }), httpClient).then(onFulfilled, onrejected);
-        },
-        async asBrowserStream() {
-            if (isNodeLike$1) {
-                throw new Error("`asBrowserStream` is supported only in the browser environment. Use `asNodeStream` instead to obtain the response body stream. If you require a Web stream of the response in Node, consider using `Readable.toWeb` on the result of `asNodeStream`.");
-            }
-            else {
-                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
-            }
-        },
-        async asNodeStream() {
-            if (isNodeLike$1) {
-                return sendRequest(method, url, pipeline, Object.assign(Object.assign({}, options), { allowInsecureConnection, responseAsStream: true }), httpClient);
-            }
-            else {
-                throw new Error("`isNodeStream` is not supported in the browser environment. Use `asBrowserStream` to obtain the response body stream.");
-            }
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Creates a totally empty pipeline.
- * Useful for testing or creating a custom one.
- */
-function createEmptyPipeline() {
-    return createEmptyPipeline$1();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const context = createLoggerContext({
-    logLevelEnvVarName: "AZURE_LOG_LEVEL",
-    namespace: "azure",
-});
-/**
- * Creates a logger for use by the Azure SDKs that inherits from `AzureLogger`.
- * @param namespace - The name of the SDK package.
- * @hidden
- */
-function createClientLogger(namespace) {
-    return context.createClientLogger(namespace);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const logger$1 = createClientLogger("core-rest-pipeline");
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy that logs all requests and responses.
- * @param options - Options to configure logPolicy.
- */
-function logPolicy(options = {}) {
-    return logPolicy$1(Object.assign({ logger: logger$1.info }, options));
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy to follow Location headers from the server in order
- * to support server-side redirection.
- * In the browser, this policy is not used.
- * @param options - Options to control policy behavior.
- */
-function redirectPolicy(options = {}) {
-    return redirectPolicy$1(options);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * @internal
- */
-function getHeaderName() {
-    return "User-Agent";
-}
-/**
- * @internal
- */
-async function setPlatformSpecificData(map) {
-    if (process$1 && process$1.versions) {
-        const versions = process$1.versions;
-        if (versions.bun) {
-            map.set("Bun", versions.bun);
-        }
-        else if (versions.deno) {
-            map.set("Deno", versions.deno);
-        }
-        else if (versions.node) {
-            map.set("Node", versions.node);
-        }
-    }
-    map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const SDK_VERSION$1 = "1.20.0";
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function getUserAgentString(telemetryInfo) {
-    const parts = [];
-    for (const [key, value] of telemetryInfo) {
-        const token = value ? `${key}/${value}` : key;
-        parts.push(token);
-    }
-    return parts.join(" ");
-}
-/**
- * @internal
- */
-function getUserAgentHeaderName() {
-    return getHeaderName();
-}
-/**
- * @internal
- */
-async function getUserAgentValue(prefix) {
-    const runtimeInfo = new Map();
-    runtimeInfo.set("core-rest-pipeline", SDK_VERSION$1);
-    await setPlatformSpecificData(runtimeInfo);
-    const defaultAgent = getUserAgentString(runtimeInfo);
-    const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
-    return userAgentValue;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const UserAgentHeaderName = getUserAgentHeaderName();
-/**
- * The programmatic identifier of the userAgentPolicy.
- */
-const userAgentPolicyName = "userAgentPolicy";
-/**
- * A policy that sets the User-Agent header (or equivalent) to reflect
- * the library version.
- * @param options - Options to customize the user agent value.
- */
-function userAgentPolicy(options = {}) {
-    const userAgentValue = getUserAgentValue(options.userAgentPrefix);
-    return {
-        name: userAgentPolicyName,
-        async sendRequest(request, next) {
-            if (!request.headers.has(UserAgentHeaderName)) {
-                request.headers.set(UserAgentHeaderName, await userAgentValue);
-            }
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-/**
- * This error is thrown when an asynchronous operation has been aborted.
- * Check for this error by testing the `name` that the name property of the
- * error matches `"AbortError"`.
- *
- * @example
- * ```ts
- * const controller = new AbortController();
- * controller.abort();
- * try {
- *   doAsyncWork(controller.signal)
- * } catch (e) {
- *   if (e.name === 'AbortError') {
- *     // handle abort error here.
- *   }
- * }
- * ```
- */
-class AbortError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "AbortError";
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Creates an abortable promise.
- * @param buildPromise - A function that takes the resolve and reject functions as parameters.
- * @param options - The options for the abortable promise.
- * @returns A promise that can be aborted.
- */
-function createAbortablePromise(buildPromise, options) {
-    const { cleanupBeforeAbort, abortSignal, abortErrorMsg } = options !== null && options !== void 0 ? options : {};
-    return new Promise((resolve, reject) => {
-        function rejectOnAbort() {
-            reject(new AbortError(abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : "The operation was aborted."));
-        }
-        function removeListeners() {
-            abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.removeEventListener("abort", onAbort);
-        }
-        function onAbort() {
-            cleanupBeforeAbort === null || cleanupBeforeAbort === void 0 ? void 0 : cleanupBeforeAbort();
-            removeListeners();
-            rejectOnAbort();
-        }
-        if (abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.aborted) {
-            return rejectOnAbort();
-        }
-        try {
-            buildPromise((x) => {
-                removeListeners();
-                resolve(x);
-            }, (x) => {
-                removeListeners();
-                reject(x);
-            });
-        }
-        catch (err) {
-            reject(err);
-        }
-        abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.addEventListener("abort", onAbort);
-    });
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const StandardAbortMessage = "The delay was aborted.";
-/**
- * A wrapper for setTimeout that resolves a promise after timeInMs milliseconds.
- * @param timeInMs - The number of milliseconds to be delayed.
- * @param options - The options for delay - currently abort options
- * @returns Promise that is resolved after timeInMs
- */
-function delay(timeInMs, options) {
-    let token;
-    const { abortSignal, abortErrorMsg } = {};
-    return createAbortablePromise((resolve) => {
-        token = setTimeout(resolve, timeInMs);
-    }, {
-        cleanupBeforeAbort: () => clearTimeout(token),
-        abortSignal,
-        abortErrorMsg: abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : StandardAbortMessage,
-    });
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Given what is thought to be an error object, return the message if possible.
- * If the message is missing, returns a stringified version of the input.
- * @param e - Something thrown from a try block
- * @returns The error message or a string of the input
- */
-function getErrorMessage(e) {
-    if (isError$1(e)) {
-        return e.message;
-    }
-    else {
-        let stringified;
-        try {
-            if (typeof e === "object" && e) {
-                stringified = JSON.stringify(e);
-            }
-            else {
-                stringified = String(e);
-            }
-        }
-        catch (err) {
-            stringified = "[unable to stringify input]";
-        }
-        return `Unknown error ${stringified}`;
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Helper TypeGuard that checks if something is defined or not.
- * @param thing - Anything
- */
-function isDefined(thing) {
-    return typeof thing !== "undefined" && thing !== null;
-}
-/**
- * Helper TypeGuard that checks if the input is an object with the specified properties.
- * @param thing - Anything.
- * @param properties - The name of the properties that should appear in the object.
- */
-function isObjectWithProperties(thing, properties) {
-    if (!isDefined(thing) || typeof thing !== "object") {
-        return false;
-    }
-    for (const property of properties) {
-        if (!objectHasProperty(thing, property)) {
+        if (jsonString.substring(index, index + 5) === 'false' ||
+            (Allow.BOOL & allow && length - index < 5 && 'false'.startsWith(jsonString.substring(index)))) {
+            index += 5;
             return false;
         }
-    }
-    return true;
-}
-/**
- * Helper TypeGuard that checks if the input is an object with the specified property.
- * @param thing - Any object.
- * @param property - The name of the property that should appear in the object.
- */
-function objectHasProperty(thing, property) {
-    return (isDefined(thing) && typeof thing === "object" && property in thing);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Typeguard for an error object shape (has name and message)
- *
- * @param e - Something caught by a catch clause.
- */
-function isError(e) {
-    return isError$1(e);
-}
-/**
- * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
- */
-const isNodeLike = isNodeLike$1;
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Private symbol used as key on objects created using createFile containing the
- * original source of the file object.
- *
- * This is used in Node to access the original Node stream without using Blob#stream, which
- * returns a web stream. This is done to avoid a couple of bugs to do with Blob#stream and
- * Readable#to/fromWeb in Node versions we support:
- * - https://github.com/nodejs/node/issues/42694 (fixed in Node 18.14)
- * - https://github.com/nodejs/node/issues/48916 (fixed in Node 20.6)
- *
- * Once these versions are no longer supported, we may be able to stop doing this.
- *
- * @internal
- */
-const rawContent = Symbol("rawContent");
-/**
- * Type guard to check if a given object is a blob-like object with a raw content property.
- */
-function hasRawContent(x) {
-    return typeof x[rawContent] === "function";
-}
-/**
- * Extract the raw content from a given blob-like object. If the input was created using createFile
- * or createFileFromStream, the exact content passed into createFile/createFileFromStream will be used.
- * For true instances of Blob and File, returns the actual blob.
- *
- * @internal
- */
-function getRawContent(blob) {
-    if (hasRawContent(blob)) {
-        return blob[rawContent]();
-    }
-    else {
-        return blob;
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Name of multipart policy
- */
-const multipartPolicyName = multipartPolicyName$1;
-/**
- * Pipeline policy for multipart requests
- */
-function multipartPolicy() {
-    const tspPolicy = multipartPolicy$1();
-    return {
-        name: multipartPolicyName,
-        sendRequest: async (request, next) => {
-            if (request.multipartBody) {
-                for (const part of request.multipartBody.parts) {
-                    if (hasRawContent(part.body)) {
-                        part.body = getRawContent(part.body);
-                    }
-                }
-            }
-            return tspPolicy.sendRequest(request, next);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy to enable response decompression according to Accept-Encoding header
- * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
- */
-function decompressResponsePolicy() {
-    return decompressResponsePolicy$1();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy that retries according to three strategies:
- * - When the server sends a 429 response with a Retry-After header.
- * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
- * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
- */
-function defaultRetryPolicy(options = {}) {
-    return defaultRetryPolicy$1(options);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy that encodes FormData on the request into the body.
- */
-function formDataPolicy() {
-    return formDataPolicy$1();
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A policy that allows one to apply proxy settings to all requests.
- * If not passed static settings, they will be retrieved from the HTTPS_PROXY
- * or HTTP_PROXY environment variables.
- * @param proxySettings - ProxySettings to use on each request.
- * @param options - additional settings, for example, custom NO_PROXY patterns
- */
-function proxyPolicy(proxySettings, options) {
-    return proxyPolicy$1(proxySettings);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the setClientRequestIdPolicy.
- */
-const setClientRequestIdPolicyName = "setClientRequestIdPolicy";
-/**
- * Each PipelineRequest gets a unique id upon creation.
- * This policy passes that unique id along via an HTTP header to enable better
- * telemetry and tracing.
- * @param requestIdHeaderName - The name of the header to pass the request ID to.
- */
-function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id") {
-    return {
-        name: setClientRequestIdPolicyName,
-        async sendRequest(request, next) {
-            if (!request.headers.has(requestIdHeaderName)) {
-                request.headers.set(requestIdHeaderName, request.requestId);
-            }
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Gets a pipeline policy that sets http.agent
- */
-function agentPolicy(agent) {
-    return agentPolicy$1(agent);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
- */
-function tlsPolicy(tlsSettings) {
-    return tlsPolicy$1(tlsSettings);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/** @internal */
-const knownContextKeys = {
-    span: Symbol.for("@azure/core-tracing span"),
-    namespace: Symbol.for("@azure/core-tracing namespace"),
-};
-/**
- * Creates a new {@link TracingContext} with the given options.
- * @param options - A set of known keys that may be set on the context.
- * @returns A new {@link TracingContext} with the given options.
- *
- * @internal
- */
-function createTracingContext(options = {}) {
-    let context = new TracingContextImpl(options.parentContext);
-    if (options.span) {
-        context = context.setValue(knownContextKeys.span, options.span);
-    }
-    if (options.namespace) {
-        context = context.setValue(knownContextKeys.namespace, options.namespace);
-    }
-    return context;
-}
-/** @internal */
-class TracingContextImpl {
-    constructor(initialContext) {
-        this._contextMap =
-            initialContext instanceof TracingContextImpl
-                ? new Map(initialContext._contextMap)
-                : new Map();
-    }
-    setValue(key, value) {
-        const newContext = new TracingContextImpl(this);
-        newContext._contextMap.set(key, value);
-        return newContext;
-    }
-    getValue(key) {
-        return this._contextMap.get(key);
-    }
-    deleteValue(key) {
-        const newContext = new TracingContextImpl(this);
-        newContext._contextMap.delete(key);
-        return newContext;
-    }
-}
-
-var state$1 = {};
-
-var hasRequiredState;
-
-function requireState () {
-	if (hasRequiredState) return state$1;
-	hasRequiredState = 1;
-	// Copyright (c) Microsoft Corporation.
-	// Licensed under the MIT License.
-	Object.defineProperty(state$1, "__esModule", { value: true });
-	state$1.state = void 0;
-	/**
-	 * @internal
-	 *
-	 * Holds the singleton instrumenter, to be shared across CJS and ESM imports.
-	 */
-	state$1.state = {
-	    instrumenterImplementation: undefined,
-	};
-	
-	return state$1;
-}
-
-var stateExports = requireState();
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-// @ts-expect-error The recommended approach to sharing module state between ESM and CJS.
-// See https://github.com/isaacs/tshy/blob/main/README.md#module-local-state for additional information.
-/**
- * Defines the shared state between CJS and ESM by re-exporting the CJS state.
- */
-const state = stateExports.state;
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-function createDefaultTracingSpan() {
-    return {
-        end: () => {
-            // noop
-        },
-        isRecording: () => false,
-        recordException: () => {
-            // noop
-        },
-        setAttribute: () => {
-            // noop
-        },
-        setStatus: () => {
-            // noop
-        },
-        addEvent: () => {
-            // noop
-        },
-    };
-}
-function createDefaultInstrumenter() {
-    return {
-        createRequestHeaders: () => {
-            return {};
-        },
-        parseTraceparentHeader: () => {
-            return undefined;
-        },
-        startSpan: (_name, spanOptions) => {
-            return {
-                span: createDefaultTracingSpan(),
-                tracingContext: createTracingContext({ parentContext: spanOptions.tracingContext }),
-            };
-        },
-        withContext(_context, callback, ...callbackArgs) {
-            return callback(...callbackArgs);
-        },
-    };
-}
-/**
- * Gets the currently set instrumenter, a No-Op instrumenter by default.
- *
- * @returns The currently set instrumenter
- */
-function getInstrumenter() {
-    if (!state.instrumenterImplementation) {
-        state.instrumenterImplementation = createDefaultInstrumenter();
-    }
-    return state.instrumenterImplementation;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Creates a new tracing client.
- *
- * @param options - Options used to configure the tracing client.
- * @returns - An instance of {@link TracingClient}.
- */
-function createTracingClient(options) {
-    const { namespace, packageName, packageVersion } = options;
-    function startSpan(name, operationOptions, spanOptions) {
-        var _a;
-        const startSpanResult = getInstrumenter().startSpan(name, Object.assign(Object.assign({}, spanOptions), { packageName: packageName, packageVersion: packageVersion, tracingContext: (_a = operationOptions === null || operationOptions === void 0 ? void 0 : operationOptions.tracingOptions) === null || _a === void 0 ? void 0 : _a.tracingContext }));
-        let tracingContext = startSpanResult.tracingContext;
-        const span = startSpanResult.span;
-        if (!tracingContext.getValue(knownContextKeys.namespace)) {
-            tracingContext = tracingContext.setValue(knownContextKeys.namespace, namespace);
+        if (jsonString.substring(index, index + 8) === 'Infinity' ||
+            (Allow.INFINITY & allow && length - index < 8 && 'Infinity'.startsWith(jsonString.substring(index)))) {
+            index += 8;
+            return Infinity;
         }
-        span.setAttribute("az.namespace", tracingContext.getValue(knownContextKeys.namespace));
-        const updatedOptions = Object.assign({}, operationOptions, {
-            tracingOptions: Object.assign(Object.assign({}, operationOptions === null || operationOptions === void 0 ? void 0 : operationOptions.tracingOptions), { tracingContext }),
-        });
-        return {
-            span,
-            updatedOptions,
-        };
-    }
-    async function withSpan(name, operationOptions, callback, spanOptions) {
-        const { span, updatedOptions } = startSpan(name, operationOptions, spanOptions);
+        if (jsonString.substring(index, index + 9) === '-Infinity' ||
+            (Allow.MINUS_INFINITY & allow &&
+                1 < length - index &&
+                length - index < 9 &&
+                '-Infinity'.startsWith(jsonString.substring(index)))) {
+            index += 9;
+            return -Infinity;
+        }
+        if (jsonString.substring(index, index + 3) === 'NaN' ||
+            (Allow.NAN & allow && length - index < 3 && 'NaN'.startsWith(jsonString.substring(index)))) {
+            index += 3;
+            return NaN;
+        }
+        return parseNum();
+    };
+    const parseStr = () => {
+        const start = index;
+        let escape = false;
+        index++; // skip initial quote
+        while (index < length && (jsonString[index] !== '"' || (escape && jsonString[index - 1] === '\\'))) {
+            escape = jsonString[index] === '\\' ? !escape : false;
+            index++;
+        }
+        if (jsonString.charAt(index) == '"') {
+            try {
+                return JSON.parse(jsonString.substring(start, ++index - Number(escape)));
+            }
+            catch (e) {
+                throwMalformedError(String(e));
+            }
+        }
+        else if (Allow.STR & allow) {
+            try {
+                return JSON.parse(jsonString.substring(start, index - Number(escape)) + '"');
+            }
+            catch (e) {
+                // SyntaxError: Invalid escape sequence
+                return JSON.parse(jsonString.substring(start, jsonString.lastIndexOf('\\')) + '"');
+            }
+        }
+        markPartialJSON('Unterminated string literal');
+    };
+    const parseObj = () => {
+        index++; // skip initial brace
+        skipBlank();
+        const obj = {};
         try {
-            const result = await withContext(updatedOptions.tracingOptions.tracingContext, () => Promise.resolve(callback(updatedOptions, span)));
-            span.setStatus({ status: "success" });
-            return result;
+            while (jsonString[index] !== '}') {
+                skipBlank();
+                if (index >= length && Allow.OBJ & allow)
+                    return obj;
+                const key = parseStr();
+                skipBlank();
+                index++; // skip colon
+                try {
+                    const value = parseAny();
+                    Object.defineProperty(obj, key, { value, writable: true, enumerable: true, configurable: true });
+                }
+                catch (e) {
+                    if (Allow.OBJ & allow)
+                        return obj;
+                    else
+                        throw e;
+                }
+                skipBlank();
+                if (jsonString[index] === ',')
+                    index++; // skip comma
+            }
         }
-        catch (err) {
-            span.setStatus({ status: "error", error: err });
-            throw err;
+        catch (e) {
+            if (Allow.OBJ & allow)
+                return obj;
+            else
+                markPartialJSON("Expected '}' at end of object");
         }
-        finally {
-            span.end();
-        }
-    }
-    function withContext(context, callback, ...callbackArgs) {
-        return getInstrumenter().withContext(context, callback, ...callbackArgs);
-    }
-    /**
-     * Parses a traceparent header value into a span identifier.
-     *
-     * @param traceparentHeader - The traceparent header to parse.
-     * @returns An implementation-specific identifier for the span.
-     */
-    function parseTraceparentHeader(traceparentHeader) {
-        return getInstrumenter().parseTraceparentHeader(traceparentHeader);
-    }
-    /**
-     * Creates a set of request headers to propagate tracing information to a backend.
-     *
-     * @param tracingContext - The context containing the span to serialize.
-     * @returns The set of headers to add to a request.
-     */
-    function createRequestHeaders(tracingContext) {
-        return getInstrumenter().createRequestHeaders(tracingContext);
-    }
-    return {
-        startSpan,
-        withSpan,
-        withContext,
-        parseTraceparentHeader,
-        createRequestHeaders,
+        index++; // skip final brace
+        return obj;
     };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A custom error type for failed pipeline requests.
- */
-class RestError extends Error {
-    constructor(message, options = {}) {
-        super(message);
-        // what is this??
-        // it turns out that you can return from a constructor and it causes
-        // calling `new` to return the value you return.
-        // this lets us wrap the TypeSpec RestError so that calling this constructor will give you the same type of object as calling the TypeSpec one,
-        // even though the constructor signatures (through RestErrorOptions) are slightly different.
-        return new RestError$1(message, options);
-    }
-}
-/**
- * Something went wrong when making the request.
- * This means the actual request failed for some reason,
- * such as a DNS issue or the connection being lost.
- */
-RestError.REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
-/**
- * This means that parsing the response from the server failed.
- * It may have been malformed.
- */
-RestError.PARSE_ERROR = "PARSE_ERROR";
-/**
- * Typeguard for RestError
- * @param e - Something caught by a catch clause.
- */
-function isRestError(e) {
-    return isRestError$1(e);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the tracingPolicy.
- */
-const tracingPolicyName$1 = "tracingPolicy";
-/**
- * A simple policy to create OpenTelemetry Spans for each request made by the pipeline
- * that has SpanOptions with a parent.
- * Requests made without a parent Span will not be recorded.
- * @param options - Options to configure the telemetry logged by the tracing policy.
- */
-function tracingPolicy$1(options = {}) {
-    const userAgentPromise = getUserAgentValue(options.userAgentPrefix);
-    const sanitizer = new Sanitizer({
-        additionalAllowedQueryParameters: options.additionalAllowedQueryParameters,
-    });
-    const tracingClient = tryCreateTracingClient();
-    return {
-        name: tracingPolicyName$1,
-        async sendRequest(request, next) {
-            var _a;
-            if (!tracingClient) {
-                return next(request);
+    const parseArr = () => {
+        index++; // skip initial bracket
+        const arr = [];
+        try {
+            while (jsonString[index] !== ']') {
+                arr.push(parseAny());
+                skipBlank();
+                if (jsonString[index] === ',') {
+                    index++; // skip comma
+                }
             }
-            const userAgent = await userAgentPromise;
-            const spanAttributes = {
-                "http.url": sanitizer.sanitizeUrl(request.url),
-                "http.method": request.method,
-                "http.user_agent": userAgent,
-                requestId: request.requestId,
-            };
-            if (userAgent) {
-                spanAttributes["http.user_agent"] = userAgent;
+        }
+        catch (e) {
+            if (Allow.ARR & allow) {
+                return arr;
             }
-            const { span, tracingContext } = (_a = tryCreateSpan$1(tracingClient, request, spanAttributes)) !== null && _a !== void 0 ? _a : {};
-            if (!span || !tracingContext) {
-                return next(request);
-            }
+            markPartialJSON("Expected ']' at end of array");
+        }
+        index++; // skip final bracket
+        return arr;
+    };
+    const parseNum = () => {
+        if (index === 0) {
+            if (jsonString === '-' && Allow.NUM & allow)
+                markPartialJSON("Not sure what '-' is");
             try {
-                const response = await tracingClient.withContext(tracingContext, next, request);
-                tryProcessResponse$1(span, response);
-                return response;
+                return JSON.parse(jsonString);
             }
-            catch (err) {
-                tryProcessError$1(span, err);
-                throw err;
-            }
-        },
-    };
-}
-function tryCreateTracingClient() {
-    try {
-        return createTracingClient({
-            namespace: "",
-            packageName: "@azure/core-rest-pipeline",
-            packageVersion: SDK_VERSION$1,
-        });
-    }
-    catch (e) {
-        logger$1.warning(`Error when creating the TracingClient: ${getErrorMessage(e)}`);
-        return undefined;
-    }
-}
-function tryCreateSpan$1(tracingClient, request, spanAttributes) {
-    try {
-        // As per spec, we do not need to differentiate between HTTP and HTTPS in span name.
-        const { span, updatedOptions } = tracingClient.startSpan(`HTTP ${request.method}`, { tracingOptions: request.tracingOptions }, {
-            spanKind: "client",
-            spanAttributes,
-        });
-        // If the span is not recording, don't do any more work.
-        if (!span.isRecording()) {
-            span.end();
-            return undefined;
-        }
-        // set headers
-        const headers = tracingClient.createRequestHeaders(updatedOptions.tracingOptions.tracingContext);
-        for (const [key, value] of Object.entries(headers)) {
-            request.headers.set(key, value);
-        }
-        return { span, tracingContext: updatedOptions.tracingOptions.tracingContext };
-    }
-    catch (e) {
-        logger$1.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
-        return undefined;
-    }
-}
-function tryProcessError$1(span, error) {
-    try {
-        span.setStatus({
-            status: "error",
-            error: isError(error) ? error : undefined,
-        });
-        if (isRestError(error) && error.statusCode) {
-            span.setAttribute("http.status_code", error.statusCode);
-        }
-        span.end();
-    }
-    catch (e) {
-        logger$1.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
-    }
-}
-function tryProcessResponse$1(span, response) {
-    try {
-        span.setAttribute("http.status_code", response.status);
-        const serviceRequestId = response.headers.get("x-ms-request-id");
-        if (serviceRequestId) {
-            span.setAttribute("serviceRequestId", serviceRequestId);
-        }
-        // Per semantic conventions, only set the status to error if the status code is 4xx or 5xx.
-        // Otherwise, the status MUST remain unset.
-        // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-        if (response.status >= 400) {
-            span.setStatus({
-                status: "error",
-            });
-        }
-        span.end();
-    }
-    catch (e) {
-        logger$1.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
- * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
- * @param abortSignalLike - The AbortSignalLike to wrap.
- * @returns - An object containing the native AbortSignal and an optional cleanup function. The cleanup function should be called when the AbortSignal is no longer needed.
- */
-function wrapAbortSignalLike(abortSignalLike) {
-    if (abortSignalLike instanceof AbortSignal) {
-        return { abortSignal: abortSignalLike };
-    }
-    if (abortSignalLike.aborted) {
-        return { abortSignal: AbortSignal.abort(abortSignalLike.reason) };
-    }
-    const controller = new AbortController();
-    let needsCleanup = true;
-    function cleanup() {
-        if (needsCleanup) {
-            abortSignalLike.removeEventListener("abort", listener);
-            needsCleanup = false;
-        }
-    }
-    function listener() {
-        controller.abort(abortSignalLike.reason);
-        cleanup();
-    }
-    abortSignalLike.addEventListener("abort", listener);
-    return { abortSignal: controller.signal, cleanup };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
-/**
- * Policy that ensure that any AbortSignalLike is wrapped in a native AbortSignal for processing by the pipeline.
- * Since the ts-http-runtime expects a native AbortSignal, this policy is used to ensure that any AbortSignalLike is wrapped in a native AbortSignal.
- *
- * @returns - created policy
- */
-function wrapAbortSignalLikePolicy() {
-    return {
-        name: wrapAbortSignalLikePolicyName,
-        sendRequest: async (request, next) => {
-            if (!request.abortSignal) {
-                return next(request);
-            }
-            const { abortSignal, cleanup } = wrapAbortSignalLike(request.abortSignal);
-            // eslint-disable-next-line no-param-reassign
-            request.abortSignal = abortSignal;
-            try {
-                return await next(request);
-            }
-            finally {
-                cleanup === null || cleanup === void 0 ? void 0 : cleanup();
-            }
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Create a new pipeline with a default set of customizable policies.
- * @param options - Options to configure a custom pipeline.
- */
-function createPipelineFromOptions(options) {
-    var _a;
-    const pipeline = createEmptyPipeline();
-    if (isNodeLike) {
-        if (options.agent) {
-            pipeline.addPolicy(agentPolicy(options.agent));
-        }
-        if (options.tlsOptions) {
-            pipeline.addPolicy(tlsPolicy(options.tlsOptions));
-        }
-        pipeline.addPolicy(proxyPolicy(options.proxyOptions));
-        pipeline.addPolicy(decompressResponsePolicy());
-    }
-    pipeline.addPolicy(wrapAbortSignalLikePolicy());
-    pipeline.addPolicy(formDataPolicy(), { beforePolicies: [multipartPolicyName] });
-    pipeline.addPolicy(userAgentPolicy(options.userAgentOptions));
-    pipeline.addPolicy(setClientRequestIdPolicy((_a = options.telemetryOptions) === null || _a === void 0 ? void 0 : _a.clientRequestIdHeaderName));
-    // The multipart policy is added after policies with no phase, so that
-    // policies can be added between it and formDataPolicy to modify
-    // properties (e.g., making the boundary constant in recorded tests).
-    pipeline.addPolicy(multipartPolicy(), { afterPhase: "Deserialize" });
-    pipeline.addPolicy(defaultRetryPolicy(options.retryOptions), { phase: "Retry" });
-    pipeline.addPolicy(tracingPolicy$1(Object.assign(Object.assign({}, options.userAgentOptions), options.loggingOptions)), {
-        afterPhase: "Retry",
-    });
-    if (isNodeLike) {
-        // Both XHR and Fetch expect to handle redirects automatically,
-        // so only include this policy when we're in Node.
-        pipeline.addPolicy(redirectPolicy(options.redirectOptions), { afterPhase: "Retry" });
-    }
-    pipeline.addPolicy(logPolicy(options.loggingOptions), { afterPhase: "Sign" });
-    return pipeline;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-// Default options for the cycler if none are provided
-const DEFAULT_CYCLER_OPTIONS = {
-    forcedRefreshWindowInMs: 1000, // Force waiting for a refresh 1s before the token expires
-    retryIntervalInMs: 3000, // Allow refresh attempts every 3s
-    refreshWindowInMs: 1000 * 60 * 2, // Start refreshing 2m before expiry
-};
-/**
- * Converts an an unreliable access token getter (which may resolve with null)
- * into an AccessTokenGetter by retrying the unreliable getter in a regular
- * interval.
- *
- * @param getAccessToken - A function that produces a promise of an access token that may fail by returning null.
- * @param retryIntervalInMs - The time (in milliseconds) to wait between retry attempts.
- * @param refreshTimeout - The timestamp after which the refresh attempt will fail, throwing an exception.
- * @returns - A promise that, if it resolves, will resolve with an access token.
- */
-async function beginRefresh(getAccessToken, retryIntervalInMs, refreshTimeout) {
-    // This wrapper handles exceptions gracefully as long as we haven't exceeded
-    // the timeout.
-    async function tryGetAccessToken() {
-        if (Date.now() < refreshTimeout) {
-            try {
-                return await getAccessToken();
-            }
-            catch (_a) {
-                return null;
-            }
-        }
-        else {
-            const finalToken = await getAccessToken();
-            // Timeout is up, so throw if it's still null
-            if (finalToken === null) {
-                throw new Error("Failed to refresh access token.");
-            }
-            return finalToken;
-        }
-    }
-    let token = await tryGetAccessToken();
-    while (token === null) {
-        await delay(retryIntervalInMs);
-        token = await tryGetAccessToken();
-    }
-    return token;
-}
-/**
- * Creates a token cycler from a credential, scopes, and optional settings.
- *
- * A token cycler represents a way to reliably retrieve a valid access token
- * from a TokenCredential. It will handle initializing the token, refreshing it
- * when it nears expiration, and synchronizes refresh attempts to avoid
- * concurrency hazards.
- *
- * @param credential - the underlying TokenCredential that provides the access
- * token
- * @param tokenCyclerOptions - optionally override default settings for the cycler
- *
- * @returns - a function that reliably produces a valid access token
- */
-function createTokenCycler(credential, tokenCyclerOptions) {
-    let refreshWorker = null;
-    let token = null;
-    let tenantId;
-    const options = Object.assign(Object.assign({}, DEFAULT_CYCLER_OPTIONS), tokenCyclerOptions);
-    /**
-     * This little holder defines several predicates that we use to construct
-     * the rules of refreshing the token.
-     */
-    const cycler = {
-        /**
-         * Produces true if a refresh job is currently in progress.
-         */
-        get isRefreshing() {
-            return refreshWorker !== null;
-        },
-        /**
-         * Produces true if the cycler SHOULD refresh (we are within the refresh
-         * window and not already refreshing)
-         */
-        get shouldRefresh() {
-            var _a;
-            if (cycler.isRefreshing) {
-                return false;
-            }
-            if ((token === null || token === void 0 ? void 0 : token.refreshAfterTimestamp) && token.refreshAfterTimestamp < Date.now()) {
-                return true;
-            }
-            return ((_a = token === null || token === void 0 ? void 0 : token.expiresOnTimestamp) !== null && _a !== void 0 ? _a : 0) - options.refreshWindowInMs < Date.now();
-        },
-        /**
-         * Produces true if the cycler MUST refresh (null or nearly-expired
-         * token).
-         */
-        get mustRefresh() {
-            return (token === null || token.expiresOnTimestamp - options.forcedRefreshWindowInMs < Date.now());
-        },
-    };
-    /**
-     * Starts a refresh job or returns the existing job if one is already
-     * running.
-     */
-    function refresh(scopes, getTokenOptions) {
-        var _a;
-        if (!cycler.isRefreshing) {
-            // We bind `scopes` here to avoid passing it around a lot
-            const tryGetAccessToken = () => credential.getToken(scopes, getTokenOptions);
-            // Take advantage of promise chaining to insert an assignment to `token`
-            // before the refresh can be considered done.
-            refreshWorker = beginRefresh(tryGetAccessToken, options.retryIntervalInMs, 
-            // If we don't have a token, then we should timeout immediately
-            (_a = token === null || token === void 0 ? void 0 : token.expiresOnTimestamp) !== null && _a !== void 0 ? _a : Date.now())
-                .then((_token) => {
-                refreshWorker = null;
-                token = _token;
-                tenantId = getTokenOptions.tenantId;
-                return token;
-            })
-                .catch((reason) => {
-                // We also should reset the refresher if we enter a failed state.  All
-                // existing awaiters will throw, but subsequent requests will start a
-                // new retry chain.
-                refreshWorker = null;
-                token = null;
-                tenantId = undefined;
-                throw reason;
-            });
-        }
-        return refreshWorker;
-    }
-    return async (scopes, tokenOptions) => {
-        //
-        // Simple rules:
-        // - If we MUST refresh, then return the refresh task, blocking
-        //   the pipeline until a token is available.
-        // - If we SHOULD refresh, then run refresh but don't return it
-        //   (we can still use the cached token).
-        // - Return the token, since it's fine if we didn't return in
-        //   step 1.
-        //
-        const hasClaimChallenge = Boolean(tokenOptions.claims);
-        const tenantIdChanged = tenantId !== tokenOptions.tenantId;
-        if (hasClaimChallenge) {
-            // If we've received a claim, we know the existing token isn't valid
-            // We want to clear it so that that refresh worker won't use the old expiration time as a timeout
-            token = null;
-        }
-        // If the tenantId passed in token options is different to the one we have
-        // Or if we are in claim challenge and the token was rejected and a new access token need to be issued, we need to
-        // refresh the token with the new tenantId or token.
-        const mustRefresh = tenantIdChanged || hasClaimChallenge || cycler.mustRefresh;
-        if (mustRefresh) {
-            return refresh(scopes, tokenOptions);
-        }
-        if (cycler.shouldRefresh) {
-            refresh(scopes, tokenOptions);
-        }
-        return token;
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the bearerTokenAuthenticationPolicy.
- */
-const bearerTokenAuthenticationPolicyName = "bearerTokenAuthenticationPolicy";
-/**
- * Try to send the given request.
- *
- * When a response is received, returns a tuple of the response received and, if the response was received
- * inside a thrown RestError, the RestError that was thrown.
- *
- * Otherwise, if an error was thrown while sending the request that did not provide an underlying response, it
- * will be rethrown.
- */
-async function trySendRequest(request, next) {
-    try {
-        return [await next(request), undefined];
-    }
-    catch (e) {
-        if (isRestError(e) && e.response) {
-            return [e.response, e];
-        }
-        else {
-            throw e;
-        }
-    }
-}
-/**
- * Default authorize request handler
- */
-async function defaultAuthorizeRequest(options) {
-    const { scopes, getAccessToken, request } = options;
-    // Enable CAE true by default
-    const getTokenOptions = {
-        abortSignal: request.abortSignal,
-        tracingOptions: request.tracingOptions,
-        enableCae: true,
-    };
-    const accessToken = await getAccessToken(scopes, getTokenOptions);
-    if (accessToken) {
-        options.request.headers.set("Authorization", `Bearer ${accessToken.token}`);
-    }
-}
-/**
- * We will retrieve the challenge only if the response status code was 401,
- * and if the response contained the header "WWW-Authenticate" with a non-empty value.
- */
-function isChallengeResponse(response) {
-    return response.status === 401 && response.headers.has("WWW-Authenticate");
-}
-/**
- * Re-authorize the request for CAE challenge.
- * The response containing the challenge is `options.response`.
- * If this method returns true, the underlying request will be sent once again.
- */
-async function authorizeRequestOnCaeChallenge(onChallengeOptions, caeClaims) {
-    var _a;
-    const { scopes } = onChallengeOptions;
-    const accessToken = await onChallengeOptions.getAccessToken(scopes, {
-        enableCae: true,
-        claims: caeClaims,
-    });
-    if (!accessToken) {
-        return false;
-    }
-    onChallengeOptions.request.headers.set("Authorization", `${(_a = accessToken.tokenType) !== null && _a !== void 0 ? _a : "Bearer"} ${accessToken.token}`);
-    return true;
-}
-/**
- * A policy that can request a token from a TokenCredential implementation and
- * then apply it to the Authorization header of a request as a Bearer token.
- */
-function bearerTokenAuthenticationPolicy(options) {
-    var _a, _b, _c;
-    const { credential, scopes, challengeCallbacks } = options;
-    const logger = options.logger || logger$1;
-    const callbacks = {
-        authorizeRequest: (_b = (_a = challengeCallbacks === null || challengeCallbacks === void 0 ? void 0 : challengeCallbacks.authorizeRequest) === null || _a === void 0 ? void 0 : _a.bind(challengeCallbacks)) !== null && _b !== void 0 ? _b : defaultAuthorizeRequest,
-        authorizeRequestOnChallenge: (_c = challengeCallbacks === null || challengeCallbacks === void 0 ? void 0 : challengeCallbacks.authorizeRequestOnChallenge) === null || _c === void 0 ? void 0 : _c.bind(challengeCallbacks),
-    };
-    // This function encapsulates the entire process of reliably retrieving the token
-    // The options are left out of the public API until there's demand to configure this.
-    // Remember to extend `BearerTokenAuthenticationPolicyOptions` with `TokenCyclerOptions`
-    // in order to pass through the `options` object.
-    const getAccessToken = credential
-        ? createTokenCycler(credential /* , options */)
-        : () => Promise.resolve(null);
-    return {
-        name: bearerTokenAuthenticationPolicyName,
-        /**
-         * If there's no challenge parameter:
-         * - It will try to retrieve the token using the cache, or the credential's getToken.
-         * - Then it will try the next policy with or without the retrieved token.
-         *
-         * It uses the challenge parameters to:
-         * - Skip a first attempt to get the token from the credential if there's no cached token,
-         *   since it expects the token to be retrievable only after the challenge.
-         * - Prepare the outgoing request if the `prepareRequest` method has been provided.
-         * - Send an initial request to receive the challenge if it fails.
-         * - Process a challenge if the response contains it.
-         * - Retrieve a token with the challenge information, then re-send the request.
-         */
-        async sendRequest(request, next) {
-            if (!request.url.toLowerCase().startsWith("https://")) {
-                throw new Error("Bearer token authentication is not permitted for non-TLS protected (non-https) URLs.");
-            }
-            await callbacks.authorizeRequest({
-                scopes: Array.isArray(scopes) ? scopes : [scopes],
-                request,
-                getAccessToken,
-                logger,
-            });
-            let response;
-            let error;
-            let shouldSendRequest;
-            [response, error] = await trySendRequest(request, next);
-            if (isChallengeResponse(response)) {
-                let claims = getCaeChallengeClaims(response.headers.get("WWW-Authenticate"));
-                // Handle CAE by default when receive CAE claim
-                if (claims) {
-                    let parsedClaim;
-                    // Return the response immediately if claims is not a valid base64 encoded string
+            catch (e) {
+                if (Allow.NUM & allow) {
                     try {
-                        parsedClaim = atob(claims);
+                        if ('.' === jsonString[jsonString.length - 1])
+                            return JSON.parse(jsonString.substring(0, jsonString.lastIndexOf('.')));
+                        return JSON.parse(jsonString.substring(0, jsonString.lastIndexOf('e')));
                     }
-                    catch (e) {
-                        logger.warning(`The WWW-Authenticate header contains "claims" that cannot be parsed. Unable to perform the Continuous Access Evaluation authentication flow. Unparsable claims: ${claims}`);
-                        return response;
-                    }
-                    shouldSendRequest = await authorizeRequestOnCaeChallenge({
-                        scopes: Array.isArray(scopes) ? scopes : [scopes],
-                        response,
-                        request,
-                        getAccessToken,
-                        logger,
-                    }, parsedClaim);
-                    // Send updated request and handle response for RestError
-                    if (shouldSendRequest) {
-                        [response, error] = await trySendRequest(request, next);
-                    }
+                    catch (e) { }
                 }
-                else if (callbacks.authorizeRequestOnChallenge) {
-                    // Handle custom challenges when client provides custom callback
-                    shouldSendRequest = await callbacks.authorizeRequestOnChallenge({
-                        scopes: Array.isArray(scopes) ? scopes : [scopes],
-                        request,
-                        response,
-                        getAccessToken,
-                        logger,
-                    });
-                    // Send updated request and handle response for RestError
-                    if (shouldSendRequest) {
-                        [response, error] = await trySendRequest(request, next);
-                    }
-                    // If we get another CAE Claim, we will handle it by default and return whatever value we receive for this
-                    if (isChallengeResponse(response)) {
-                        claims = getCaeChallengeClaims(response.headers.get("WWW-Authenticate"));
-                        if (claims) {
-                            let parsedClaim;
-                            try {
-                                parsedClaim = atob(claims);
-                            }
-                            catch (e) {
-                                logger.warning(`The WWW-Authenticate header contains "claims" that cannot be parsed. Unable to perform the Continuous Access Evaluation authentication flow. Unparsable claims: ${claims}`);
-                                return response;
-                            }
-                            shouldSendRequest = await authorizeRequestOnCaeChallenge({
-                                scopes: Array.isArray(scopes) ? scopes : [scopes],
-                                response,
-                                request,
-                                getAccessToken,
-                                logger,
-                            }, parsedClaim);
-                            // Send updated request and handle response for RestError
-                            if (shouldSendRequest) {
-                                [response, error] = await trySendRequest(request, next);
-                            }
-                        }
-                    }
-                }
+                throwMalformedError(String(e));
             }
-            if (error) {
-                throw error;
-            }
-            else {
-                return response;
-            }
-        },
-    };
-}
-/**
- * Converts: `Bearer a="b", c="d", Pop e="f", g="h"`.
- * Into: `[ { scheme: 'Bearer', params: { a: 'b', c: 'd' } }, { scheme: 'Pop', params: { e: 'f', g: 'h' } } ]`.
- *
- * @internal
- */
-function parseChallenges(challenges) {
-    // Challenge regex seperates the string to individual challenges with different schemes in the format `Scheme a="b", c=d`
-    // The challenge regex captures parameteres with either quotes values or unquoted values
-    const challengeRegex = /(\w+)\s+((?:\w+=(?:"[^"]*"|[^,]*),?\s*)+)/g;
-    // Parameter regex captures the claims group removed from the scheme in the format `a="b"` and `c="d"`
-    // CAE challenge always have quoted parameters. For more reference, https://learn.microsoft.com/entra/identity-platform/claims-challenge
-    const paramRegex = /(\w+)="([^"]*)"/g;
-    const parsedChallenges = [];
-    let match;
-    // Iterate over each challenge match
-    while ((match = challengeRegex.exec(challenges)) !== null) {
-        const scheme = match[1];
-        const paramsString = match[2];
-        const params = {};
-        let paramMatch;
-        // Iterate over each parameter match
-        while ((paramMatch = paramRegex.exec(paramsString)) !== null) {
-            params[paramMatch[1]] = paramMatch[2];
         }
-        parsedChallenges.push({ scheme, params });
-    }
-    return parsedChallenges;
-}
-/**
- * Parse a pipeline response and look for a CAE challenge with "Bearer" scheme
- * Return the value in the header without parsing the challenge
- * @internal
- */
-function getCaeChallengeClaims(challenges) {
-    var _a;
-    if (!challenges) {
-        return;
-    }
-    // Find all challenges present in the header
-    const parsedChallenges = parseChallenges(challenges);
-    return (_a = parsedChallenges.find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")) === null || _a === void 0 ? void 0 : _a.params.claims;
-}
+        const start = index;
+        if (jsonString[index] === '-')
+            index++;
+        while (jsonString[index] && !',]}'.includes(jsonString[index]))
+            index++;
+        if (index == length && !(Allow.NUM & allow))
+            markPartialJSON('Unterminated number literal');
+        try {
+            return JSON.parse(jsonString.substring(start, index));
+        }
+        catch (e) {
+            if (jsonString.substring(start, index) === '-' && Allow.NUM & allow)
+                markPartialJSON("Not sure what '-' is");
+            try {
+                return JSON.parse(jsonString.substring(start, jsonString.lastIndexOf('e')));
+            }
+            catch (e) {
+                throwMalformedError(String(e));
+            }
+        }
+    };
+    const skipBlank = () => {
+        while (index < length && ' \n\r\t'.includes(jsonString[index])) {
+            index++;
+        }
+    };
+    return parseAny();
+};
+// using this function with malformed JSON is undefined behavior
+const partialParse = (input) => parseJSON(input, Allow.ALL ^ Allow.NUM);
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * A static-key-based credential that supports updating
- * the underlying key value.
- */
-class AzureKeyCredential {
-    /**
-     * The value of the key to be used in authentication
-     */
-    get key() {
-        return this._key;
+var _ChatCompletionStream_instances, _ChatCompletionStream_params, _ChatCompletionStream_choiceEventStates, _ChatCompletionStream_currentChatCompletionSnapshot, _ChatCompletionStream_beginRequest, _ChatCompletionStream_getChoiceEventState, _ChatCompletionStream_addChunk, _ChatCompletionStream_emitToolCallDoneEvent, _ChatCompletionStream_emitContentDoneEvents, _ChatCompletionStream_endRequest, _ChatCompletionStream_getAutoParseableResponseFormat, _ChatCompletionStream_accumulateChatCompletion;
+class ChatCompletionStream extends AbstractChatCompletionRunner {
+    constructor(params) {
+        super();
+        _ChatCompletionStream_instances.add(this);
+        _ChatCompletionStream_params.set(this, void 0);
+        _ChatCompletionStream_choiceEventStates.set(this, void 0);
+        _ChatCompletionStream_currentChatCompletionSnapshot.set(this, void 0);
+        __classPrivateFieldSet(this, _ChatCompletionStream_params, params);
+        __classPrivateFieldSet(this, _ChatCompletionStream_choiceEventStates, []);
+    }
+    get currentChatCompletionSnapshot() {
+        return __classPrivateFieldGet(this, _ChatCompletionStream_currentChatCompletionSnapshot, "f");
     }
     /**
-     * Create an instance of an AzureKeyCredential for use
-     * with a service client.
+     * Intended for use on the frontend, consuming a stream produced with
+     * `.toReadableStream()` on the backend.
      *
-     * @param key - The initial value of the key to use in authentication
+     * Note that messages sent to the model do not appear in `.on('message')`
+     * in this context.
      */
-    constructor(key) {
-        if (!key) {
-            throw new Error("key must be a non-empty string");
+    static fromReadableStream(stream) {
+        const runner = new ChatCompletionStream(null);
+        runner._run(() => runner._fromReadableStream(stream));
+        return runner;
+    }
+    static createChatCompletion(client, params, options) {
+        const runner = new ChatCompletionStream(params);
+        runner._run(() => runner._runChatCompletion(client, { ...params, stream: true }, { ...options, headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'stream' } }));
+        return runner;
+    }
+    async _createChatCompletion(client, params, options) {
+        super._createChatCompletion;
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
         }
-        this._key = key;
+        __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_beginRequest).call(this);
+        const stream = await client.chat.completions.create({ ...params, stream: true }, { ...options, signal: this.controller.signal });
+        this._connected();
+        for await (const chunk of stream) {
+            __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_addChunk).call(this, chunk);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return this._addChatCompletion(__classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_endRequest).call(this));
     }
-    /**
-     * Change the value of the key.
-     *
-     * Updates will take effect upon the next request after
-     * updating the key value.
-     *
-     * @param newKey - The new key value to be used
-     */
-    update(newKey) {
-        this._key = newKey;
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Tests an object to determine whether it implements KeyCredential.
- *
- * @param credential - The assumed KeyCredential to be tested.
- */
-function isKeyCredential$1(credential) {
-    return isObjectWithProperties(credential, ["key"]) && typeof credential.key === "string";
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * @internal
- * @param accessToken - Access token
- * @returns Whether a token is bearer type or not
- */
-/**
- * Tests an object to determine whether it implements TokenCredential.
- *
- * @param credential - The assumed TokenCredential to be tested.
- */
-function isTokenCredential(credential) {
-    // Check for an object with a 'getToken' function and possibly with
-    // a 'signRequest' function.  We do this check to make sure that
-    // a ServiceClientCredentials implementor (like TokenClientCredentials
-    // in ms-rest-nodeauth) doesn't get mistaken for a TokenCredential if
-    // it doesn't actually implement TokenCredential also.
-    const castCredential = credential;
-    return (castCredential &&
-        typeof castCredential.getToken === "function" &&
-        (castCredential.signRequest === undefined || castCredential.getToken.length > 0));
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const apiVersionPolicyName = "ApiVersionPolicy";
-/**
- * Creates a policy that sets the apiVersion as a query parameter on every request
- * @param options - Client options
- * @returns Pipeline policy that sets the apiVersion as a query parameter on every request
- */
-function apiVersionPolicy(options) {
-    return {
-        name: apiVersionPolicyName,
-        sendRequest: (req, next) => {
-            // Use the apiVesion defined in request url directly
-            // Append one if there is no apiVesion and we have one at client options
-            const url = new URL(req.url);
-            if (!url.searchParams.get("api-version") && options.apiVersion) {
-                req.url = `${req.url}${Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"}api-version=${options.apiVersion}`;
+    async _fromReadableStream(readableStream, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_beginRequest).call(this);
+        this._connected();
+        const stream = Stream.fromReadableStream(readableStream, this.controller);
+        let chatId;
+        for await (const chunk of stream) {
+            if (chatId && chatId !== chunk.id) {
+                // A new request has been made.
+                this._addChatCompletion(__classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_endRequest).call(this));
             }
-            return next(req);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the bearerTokenAuthenticationPolicy.
- */
-const keyCredentialAuthenticationPolicyName = "keyCredentialAuthenticationPolicy";
-function keyCredentialAuthenticationPolicy(credential, apiKeyHeaderName) {
-    return {
-        name: keyCredentialAuthenticationPolicyName,
-        async sendRequest(request, next) {
-            request.headers.set(apiKeyHeaderName, credential.key);
-            return next(request);
-        },
-    };
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Adds a credential policy to the pipeline if a credential is provided. If none is provided, no policy is added.
- */
-function addCredentialPipelinePolicy(pipeline, endpoint, options = {}) {
-    var _a, _b, _c, _d;
-    const { credential, clientOptions } = options;
-    if (!credential) {
-        return;
-    }
-    if (isTokenCredential(credential)) {
-        const tokenPolicy = bearerTokenAuthenticationPolicy({
-            credential,
-            scopes: (_b = (_a = clientOptions === null || clientOptions === void 0 ? void 0 : clientOptions.credentials) === null || _a === void 0 ? void 0 : _a.scopes) !== null && _b !== void 0 ? _b : `${endpoint}/.default`,
-        });
-        pipeline.addPolicy(tokenPolicy);
-    }
-    else if (isKeyCredential(credential)) {
-        if (!((_c = clientOptions === null || clientOptions === void 0 ? void 0 : clientOptions.credentials) === null || _c === void 0 ? void 0 : _c.apiKeyHeaderName)) {
-            throw new Error(`Missing API Key Header Name`);
+            __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_addChunk).call(this, chunk);
+            chatId = chunk.id;
         }
-        const keyPolicy = keyCredentialAuthenticationPolicy(credential, (_d = clientOptions === null || clientOptions === void 0 ? void 0 : clientOptions.credentials) === null || _d === void 0 ? void 0 : _d.apiKeyHeaderName);
-        pipeline.addPolicy(keyPolicy);
-    }
-}
-/**
- * Creates a default rest pipeline to re-use accross Rest Level Clients
- */
-function createDefaultPipeline(endpoint, credential, options = {}) {
-    const pipeline = createPipelineFromOptions(options);
-    pipeline.addPolicy(apiVersionPolicy(options));
-    addCredentialPipelinePolicy(pipeline, endpoint, { credential, clientOptions: options });
-    return pipeline;
-}
-function isKeyCredential(credential) {
-    return credential.key !== undefined;
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Function to wrap RequestParameters so that we get the legacy onResponse behavior in core-client-rest
- */
-function wrapRequestParameters(parameters) {
-    if (parameters.onResponse) {
-        return Object.assign(Object.assign({}, parameters), { onResponse(rawResponse, error) {
-                var _a;
-                (_a = parameters.onResponse) === null || _a === void 0 ? void 0 : _a.call(parameters, rawResponse, error, error);
-            } });
-    }
-    return parameters;
-}
-function getClient(endpoint, credentialsOrPipelineOptions, clientOptions = {}) {
-    let credentials;
-    if (credentialsOrPipelineOptions) {
-        if (isCredential(credentialsOrPipelineOptions)) {
-            credentials = credentialsOrPipelineOptions;
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
         }
-        else {
-            clientOptions = credentialsOrPipelineOptions !== null && credentialsOrPipelineOptions !== void 0 ? credentialsOrPipelineOptions : {};
-        }
+        return this._addChatCompletion(__classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_endRequest).call(this));
     }
-    const pipeline = createDefaultPipeline(endpoint, credentials, clientOptions);
-    const tspClient = getClient$1(endpoint, Object.assign(Object.assign({}, clientOptions), { pipeline }));
-    const client = (path, ...args) => {
-        return {
-            get: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).get(wrapRequestParameters(requestOptions));
-            },
-            post: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).post(wrapRequestParameters(requestOptions));
-            },
-            put: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).put(wrapRequestParameters(requestOptions));
-            },
-            patch: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).patch(wrapRequestParameters(requestOptions));
-            },
-            delete: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).delete(wrapRequestParameters(requestOptions));
-            },
-            head: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).head(wrapRequestParameters(requestOptions));
-            },
-            options: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).options(wrapRequestParameters(requestOptions));
-            },
-            trace: (requestOptions = {}) => {
-                return tspClient.path(path, ...args).trace(wrapRequestParameters(requestOptions));
-            },
+    [(_ChatCompletionStream_params = new WeakMap(), _ChatCompletionStream_choiceEventStates = new WeakMap(), _ChatCompletionStream_currentChatCompletionSnapshot = new WeakMap(), _ChatCompletionStream_instances = new WeakSet(), _ChatCompletionStream_beginRequest = function _ChatCompletionStream_beginRequest() {
+        if (this.ended)
+            return;
+        __classPrivateFieldSet(this, _ChatCompletionStream_currentChatCompletionSnapshot, undefined);
+    }, _ChatCompletionStream_getChoiceEventState = function _ChatCompletionStream_getChoiceEventState(choice) {
+        let state = __classPrivateFieldGet(this, _ChatCompletionStream_choiceEventStates, "f")[choice.index];
+        if (state) {
+            return state;
+        }
+        state = {
+            content_done: false,
+            refusal_done: false,
+            logprobs_content_done: false,
+            logprobs_refusal_done: false,
+            done_tool_calls: new Set(),
+            current_tool_call_index: null,
         };
-    };
-    return {
-        path: client,
-        pathUnchecked: client,
-        pipeline: tspClient.pipeline,
-    };
-}
-function isCredential(param) {
-    return isKeyCredential$1(param) || isTokenCredential(param);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * THIS IS AN AUTO-GENERATED FILE - DO NOT EDIT!
- *
- * Any changes you make here may be lost.
- *
- * If you need to make changes, please do so in the original source file, \{project-root\}/sources/custom
- */
-const logger = createClientLogger("ai-inference");
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * THIS IS AN AUTO-GENERATED FILE - DO NOT EDIT!
- *
- * Any changes you make here may be lost.
- *
- * If you need to make changes, please do so in the original source file, \{project-root\}/sources/custom
- */
-const SDK_VERSION = "1.0.0-beta.4";
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/*
-* Add event to span.  Sample:
-    {
-    name: 'gen_ai.user.message',
-    attributes: {
-      'gen_ai.system': 'INFERENCE_GEN_AI_SYSTEM_NAME',
-      'gen_ai.event.content': `{"role":"user","content":"What's the weather like in Boston?"}`
-    },
-    time: [ 1725666879, 622695900 ],
-    droppedAttributesCount: 0
-  },
-*/
-/*
-* Add event to span.  Sample:
-{
-  name: 'gen_ai.choice',
-  attributes: {
-    'gen_ai.system': 'INFERENCE_GEN_AI_SYSTEM_NAME',
-    'gen_ai.event.content': '{"finish_reason":"tool_calls","index":0,"message":{"content":""}}'
-  },
-  time: [ 1725666881, 780608000 ],
-  droppedAttributesCount: 0
-}
-*/
-var TracingAttributesEnum;
-(function (TracingAttributesEnum) {
-    TracingAttributesEnum["Operation_Name"] = "gen_ai.operation.name";
-    TracingAttributesEnum["Request_Model"] = "gen_ai.request.model";
-    TracingAttributesEnum["System"] = "gen_ai.system";
-    TracingAttributesEnum["Error_Type"] = "error.type";
-    TracingAttributesEnum["Server_Port"] = "server.port";
-    TracingAttributesEnum["Request_Frequency_Penalty"] = "gen_ai.request.frequency_penalty";
-    TracingAttributesEnum["Request_Max_Tokens"] = "gen_ai.request.max_tokens";
-    TracingAttributesEnum["Request_Presence_Penalty"] = "gen_ai.request.presence_penalty";
-    TracingAttributesEnum["Request_Stop_Sequences"] = "gen_ai.request.stop_sequences";
-    TracingAttributesEnum["Request_Temperature"] = "gen_ai.request.temperature";
-    TracingAttributesEnum["Request_Top_P"] = "gen_ai.request.top_p";
-    TracingAttributesEnum["Response_Finish_Reasons"] = "gen_ai.response.finish_reasons";
-    TracingAttributesEnum["Response_Id"] = "gen_ai.response.id";
-    TracingAttributesEnum["Response_Model"] = "gen_ai.response.model";
-    TracingAttributesEnum["Usage_Input_Tokens"] = "gen_ai.usage.input_tokens";
-    TracingAttributesEnum["Usage_Output_Tokens"] = "gen_ai.usage.output_tokens";
-    TracingAttributesEnum["Server_Address"] = "server.address";
-})(TracingAttributesEnum || (TracingAttributesEnum = {}));
-const INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
-const isContentRecordingEnabled = () => envVarToBoolean("AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED");
-function getRequestBody(request) {
-    return { body: JSON.parse(request.body) };
-}
-function getSpanName(request) {
-    var _a;
-    const { body } = getRequestBody(request);
-    return `chat ${(_a = body === null || body === void 0 ? void 0 : body.model) !== null && _a !== void 0 ? _a : ""}`.trim();
-}
-function onStartTracing(span, request, url) {
-    if (!span.isRecording()) {
-        return;
-    }
-    const urlObj = new URL(url);
-    const port = Number(urlObj.port) || (urlObj.protocol === "https:" ? undefined : 80);
-    if (port) {
-        span.setAttribute(TracingAttributesEnum.Server_Port, port);
-    }
-    span.setAttribute(TracingAttributesEnum.Server_Address, urlObj.hostname);
-    span.setAttribute(TracingAttributesEnum.Operation_Name, "chat");
-    span.setAttribute(TracingAttributesEnum.System, "az.ai.inference");
-    const { body } = getRequestBody(request);
-    if (!body)
-        return;
-    span.setAttribute(TracingAttributesEnum.Request_Model, body.model);
-    span.setAttribute(TracingAttributesEnum.Request_Frequency_Penalty, body.frequency_penalty);
-    span.setAttribute(TracingAttributesEnum.Request_Max_Tokens, body.max_tokens);
-    span.setAttribute(TracingAttributesEnum.Request_Presence_Penalty, body.presence_penalty);
-    span.setAttribute(TracingAttributesEnum.Request_Stop_Sequences, body.stop);
-    span.setAttribute(TracingAttributesEnum.Request_Temperature, body.temperature);
-    span.setAttribute(TracingAttributesEnum.Request_Top_P, body.top_p);
-    if (body.messages) {
-        addRequestChatMessageEvent(span, body.messages);
-    }
-}
-function tryProcessResponse(span, response) {
-    var _a, _b, _c;
-    if (!span.isRecording()) {
-        return;
-    }
-    if (response === null || response === void 0 ? void 0 : response.bodyAsText) {
-        const body = JSON.parse(response.bodyAsText);
-        if ((_a = body.error) !== null && _a !== void 0 ? _a : body.message) {
-            span.setAttribute(TracingAttributesEnum.Error_Type, `${(_b = body.status) !== null && _b !== void 0 ? _b : body.statusCode}`);
-            span.setStatus({
-                status: "error",
-                error: (_c = body.error) !== null && _c !== void 0 ? _c : body.message, // message is not in the schema of the response, but it can present if there is crediential error
-            });
-        }
-        span.setAttribute(TracingAttributesEnum.Response_Id, body.id);
-        span.setAttribute(TracingAttributesEnum.Response_Model, body.model);
-        if (body.choices) {
-            span.setAttribute(TracingAttributesEnum.Response_Finish_Reasons, body.choices.map((choice) => choice.finish_reason).join(","));
-        }
-        if (body.usage) {
-            span.setAttribute(TracingAttributesEnum.Usage_Input_Tokens, body.usage.prompt_tokens);
-            span.setAttribute(TracingAttributesEnum.Usage_Output_Tokens, body.usage.completion_tokens);
-        }
-        addResponseChatMessageEvent(span, body);
-    }
-}
-function tryProcessError(span, error) {
-    span.setStatus({
-        status: "error",
-        error: isError(error) ? error : undefined,
-    });
-}
-function addRequestChatMessageEvent(span, messages) {
-    messages.forEach((message) => {
-        var _a;
-        if (message.role) {
-            const content = {};
-            const chatMsg = message;
-            if (chatMsg.content) {
-                content.content = chatMsg.content;
-            }
-            if (!isContentRecordingEnabled()) {
-                content.content = "";
-            }
-            const assistantMsg = message;
-            if (assistantMsg.tool_calls) {
-                content.tool_calls = assistantMsg.tool_calls;
-                if (!isContentRecordingEnabled()) {
-                    const toolCalls = JSON.parse(JSON.stringify(content.tool_calls));
-                    toolCalls.forEach((toolCall) => {
-                        if (toolCall.function.arguments) {
-                            toolCall.function.arguments = "";
-                        }
-                        toolCall.function.name = "";
-                    });
-                    content.tool_calls = toolCalls;
-                }
-            }
-            const toolMsg = message;
-            if (toolMsg.tool_call_id) {
-                content.id = toolMsg.tool_call_id;
-            }
-            (_a = span.addEvent) === null || _a === void 0 ? void 0 : _a.call(span, `gen_ai.${message.role}.message`, {
-                attributes: {
-                    "gen_ai.system": INFERENCE_GEN_AI_SYSTEM_NAME,
-                    "gen_ai.event.content": JSON.stringify(content),
-                },
-            });
-        }
-    });
-}
-function addResponseChatMessageEvent(span, body) {
-    var _a;
-    if (!span.addEvent) {
-        return;
-    }
-    (_a = body === null || body === void 0 ? void 0 : body.choices) === null || _a === void 0 ? void 0 : _a.forEach((choice) => {
-        var _a;
-        let message = {};
-        if (choice.message.content) {
-            message.content = choice.message.content;
-        }
-        if (choice.message.tool_calls) {
-            message.toolCalls = choice.message.tool_calls;
-        }
-        if (!isContentRecordingEnabled()) {
-            message = JSON.parse(JSON.stringify(message));
-            message.content = "";
-            if (message.toolCalls) {
-                message.toolCalls.forEach((toolCall) => {
-                    if (toolCall.function.arguments) {
-                        toolCall.function.arguments = "";
-                    }
-                    toolCall.function.name = "";
+        __classPrivateFieldGet(this, _ChatCompletionStream_choiceEventStates, "f")[choice.index] = state;
+        return state;
+    }, _ChatCompletionStream_addChunk = function _ChatCompletionStream_addChunk(chunk) {
+        if (this.ended)
+            return;
+        const completion = __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_accumulateChatCompletion).call(this, chunk);
+        this._emit('chunk', chunk, completion);
+        for (const choice of chunk.choices) {
+            const choiceSnapshot = completion.choices[choice.index];
+            if (choice.delta.content != null &&
+                choiceSnapshot.message?.role === 'assistant' &&
+                choiceSnapshot.message?.content) {
+                this._emit('content', choice.delta.content, choiceSnapshot.message.content);
+                this._emit('content.delta', {
+                    delta: choice.delta.content,
+                    snapshot: choiceSnapshot.message.content,
+                    parsed: choiceSnapshot.message.parsed,
                 });
             }
+            if (choice.delta.refusal != null &&
+                choiceSnapshot.message?.role === 'assistant' &&
+                choiceSnapshot.message?.refusal) {
+                this._emit('refusal.delta', {
+                    delta: choice.delta.refusal,
+                    snapshot: choiceSnapshot.message.refusal,
+                });
+            }
+            if (choice.logprobs?.content != null && choiceSnapshot.message?.role === 'assistant') {
+                this._emit('logprobs.content.delta', {
+                    content: choice.logprobs?.content,
+                    snapshot: choiceSnapshot.logprobs?.content ?? [],
+                });
+            }
+            if (choice.logprobs?.refusal != null && choiceSnapshot.message?.role === 'assistant') {
+                this._emit('logprobs.refusal.delta', {
+                    refusal: choice.logprobs?.refusal,
+                    snapshot: choiceSnapshot.logprobs?.refusal ?? [],
+                });
+            }
+            const state = __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_getChoiceEventState).call(this, choiceSnapshot);
+            if (choiceSnapshot.finish_reason) {
+                __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_emitContentDoneEvents).call(this, choiceSnapshot);
+                if (state.current_tool_call_index != null) {
+                    __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_emitToolCallDoneEvent).call(this, choiceSnapshot, state.current_tool_call_index);
+                }
+            }
+            for (const toolCall of choice.delta.tool_calls ?? []) {
+                if (state.current_tool_call_index !== toolCall.index) {
+                    __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_emitContentDoneEvents).call(this, choiceSnapshot);
+                    // new tool call started, the previous one is done
+                    if (state.current_tool_call_index != null) {
+                        __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_emitToolCallDoneEvent).call(this, choiceSnapshot, state.current_tool_call_index);
+                    }
+                }
+                state.current_tool_call_index = toolCall.index;
+            }
+            for (const toolCallDelta of choice.delta.tool_calls ?? []) {
+                const toolCallSnapshot = choiceSnapshot.message.tool_calls?.[toolCallDelta.index];
+                if (!toolCallSnapshot?.type) {
+                    continue;
+                }
+                if (toolCallSnapshot?.type === 'function') {
+                    this._emit('tool_calls.function.arguments.delta', {
+                        name: toolCallSnapshot.function?.name,
+                        index: toolCallDelta.index,
+                        arguments: toolCallSnapshot.function.arguments,
+                        parsed_arguments: toolCallSnapshot.function.parsed_arguments,
+                        arguments_delta: toolCallDelta.function?.arguments ?? '',
+                    });
+                }
+                else {
+                    assertNever(toolCallSnapshot?.type);
+                }
+            }
         }
-        const response = {
-            finish_reason: choice.finish_reason,
-            index: choice.index,
-            message,
-        };
-        const attributes = {
-            "gen_ai.system": INFERENCE_GEN_AI_SYSTEM_NAME,
-            "gen_ai.event.content": JSON.stringify(response),
-        };
-        (_a = span.addEvent) === null || _a === void 0 ? void 0 : _a.call(span, "gen_ai.choice", { attributes });
-    });
-}
-function envVarToBoolean(key) {
-    var _a;
-    const value = (_a = process.env[key]) !== null && _a !== void 0 ? _a : process.env[key.toLowerCase()];
-    return value !== "false" && value !== "0" && Boolean(value);
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * The programmatic identifier of the tracingPolicy.
- */
-const tracingPolicyName = "inferenceTracingPolicy";
-/**
- * A simple policy to create OpenTelemetry Spans for each request made by the pipeline
- * that has SpanOptions with a parent.
- * Requests made without a parent Span will not be recorded.
- */
-function tracingPolicy() {
-    const tracingClient = createTracingClient({
-        namespace: "Microsoft.CognitiveServices",
-        packageName: "@azure/ai-inference-rest",
-        packageVersion: SDK_VERSION,
-    });
-    return {
-        name: tracingPolicyName,
-        async sendRequest(request, next) {
-            var _a, _b, _c, _d;
-            const url = new URL(request.url);
-            if (!tracingClient ||
-                !url.href.endsWith("/chat/completions") ||
-                ((_b = (_a = getRequestBody(request)) === null || _a === void 0 ? void 0 : _a.body) === null || _b === void 0 ? void 0 : _b.stream)) {
-                return next(request);
+    }, _ChatCompletionStream_emitToolCallDoneEvent = function _ChatCompletionStream_emitToolCallDoneEvent(choiceSnapshot, toolCallIndex) {
+        const state = __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_getChoiceEventState).call(this, choiceSnapshot);
+        if (state.done_tool_calls.has(toolCallIndex)) {
+            // we've already fired the done event
+            return;
+        }
+        const toolCallSnapshot = choiceSnapshot.message.tool_calls?.[toolCallIndex];
+        if (!toolCallSnapshot) {
+            throw new Error('no tool call snapshot');
+        }
+        if (!toolCallSnapshot.type) {
+            throw new Error('tool call snapshot missing `type`');
+        }
+        if (toolCallSnapshot.type === 'function') {
+            const inputTool = __classPrivateFieldGet(this, _ChatCompletionStream_params, "f")?.tools?.find((tool) => tool.type === 'function' && tool.function.name === toolCallSnapshot.function.name);
+            this._emit('tool_calls.function.arguments.done', {
+                name: toolCallSnapshot.function.name,
+                index: toolCallIndex,
+                arguments: toolCallSnapshot.function.arguments,
+                parsed_arguments: isAutoParsableTool$1(inputTool) ? inputTool.$parseRaw(toolCallSnapshot.function.arguments)
+                    : inputTool?.function.strict ? JSON.parse(toolCallSnapshot.function.arguments)
+                        : null,
+            });
+        }
+        else {
+            assertNever(toolCallSnapshot.type);
+        }
+    }, _ChatCompletionStream_emitContentDoneEvents = function _ChatCompletionStream_emitContentDoneEvents(choiceSnapshot) {
+        const state = __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_getChoiceEventState).call(this, choiceSnapshot);
+        if (choiceSnapshot.message.content && !state.content_done) {
+            state.content_done = true;
+            const responseFormat = __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_getAutoParseableResponseFormat).call(this);
+            this._emit('content.done', {
+                content: choiceSnapshot.message.content,
+                parsed: responseFormat ? responseFormat.$parseRaw(choiceSnapshot.message.content) : null,
+            });
+        }
+        if (choiceSnapshot.message.refusal && !state.refusal_done) {
+            state.refusal_done = true;
+            this._emit('refusal.done', { refusal: choiceSnapshot.message.refusal });
+        }
+        if (choiceSnapshot.logprobs?.content && !state.logprobs_content_done) {
+            state.logprobs_content_done = true;
+            this._emit('logprobs.content.done', { content: choiceSnapshot.logprobs.content });
+        }
+        if (choiceSnapshot.logprobs?.refusal && !state.logprobs_refusal_done) {
+            state.logprobs_refusal_done = true;
+            this._emit('logprobs.refusal.done', { refusal: choiceSnapshot.logprobs.refusal });
+        }
+    }, _ChatCompletionStream_endRequest = function _ChatCompletionStream_endRequest() {
+        if (this.ended) {
+            throw new OpenAIError(`stream has ended, this shouldn't happen`);
+        }
+        const snapshot = __classPrivateFieldGet(this, _ChatCompletionStream_currentChatCompletionSnapshot, "f");
+        if (!snapshot) {
+            throw new OpenAIError(`request ended without sending any chunks`);
+        }
+        __classPrivateFieldSet(this, _ChatCompletionStream_currentChatCompletionSnapshot, undefined);
+        __classPrivateFieldSet(this, _ChatCompletionStream_choiceEventStates, []);
+        return finalizeChatCompletion(snapshot, __classPrivateFieldGet(this, _ChatCompletionStream_params, "f"));
+    }, _ChatCompletionStream_getAutoParseableResponseFormat = function _ChatCompletionStream_getAutoParseableResponseFormat() {
+        const responseFormat = __classPrivateFieldGet(this, _ChatCompletionStream_params, "f")?.response_format;
+        if (isAutoParsableResponseFormat(responseFormat)) {
+            return responseFormat;
+        }
+        return null;
+    }, _ChatCompletionStream_accumulateChatCompletion = function _ChatCompletionStream_accumulateChatCompletion(chunk) {
+        var _a, _b, _c, _d;
+        let snapshot = __classPrivateFieldGet(this, _ChatCompletionStream_currentChatCompletionSnapshot, "f");
+        const { choices, ...rest } = chunk;
+        if (!snapshot) {
+            snapshot = __classPrivateFieldSet(this, _ChatCompletionStream_currentChatCompletionSnapshot, {
+                ...rest,
+                choices: [],
+            });
+        }
+        else {
+            Object.assign(snapshot, rest);
+        }
+        for (const { delta, finish_reason, index, logprobs = null, ...other } of chunk.choices) {
+            let choice = snapshot.choices[index];
+            if (!choice) {
+                choice = snapshot.choices[index] = { finish_reason, index, message: {}, logprobs, ...other };
             }
-            const { span, tracingContext } = (_c = tryCreateSpan(tracingClient, request)) !== null && _c !== void 0 ? _c : {};
-            if (!span || !tracingContext) {
-                return next(request);
+            if (logprobs) {
+                if (!choice.logprobs) {
+                    choice.logprobs = Object.assign({}, logprobs);
+                }
+                else {
+                    const { content, refusal, ...rest } = logprobs;
+                    Object.assign(choice.logprobs, rest);
+                    if (content) {
+                        (_a = choice.logprobs).content ?? (_a.content = []);
+                        choice.logprobs.content.push(...content);
+                    }
+                    if (refusal) {
+                        (_b = choice.logprobs).refusal ?? (_b.refusal = []);
+                        choice.logprobs.refusal.push(...refusal);
+                    }
+                }
             }
-            try {
-                (_d = request.tracingOptions) !== null && _d !== void 0 ? _d : (request.tracingOptions = {});
-                request.tracingOptions.tracingContext = tracingContext;
-                onStartTracing(span, request, request.url);
-                const response = await tracingClient.withContext(tracingContext, next, request);
-                tryProcessResponse(span, response);
-                return response;
+            if (finish_reason) {
+                choice.finish_reason = finish_reason;
+                if (__classPrivateFieldGet(this, _ChatCompletionStream_params, "f") && hasAutoParseableInput$1(__classPrivateFieldGet(this, _ChatCompletionStream_params, "f"))) {
+                    if (finish_reason === 'length') {
+                        throw new LengthFinishReasonError();
+                    }
+                    if (finish_reason === 'content_filter') {
+                        throw new ContentFilterFinishReasonError();
+                    }
+                }
             }
-            catch (err) {
-                tryProcessError(span, err);
-                throw err;
+            Object.assign(choice, other);
+            if (!delta)
+                continue; // Shouldn't happen; just in case.
+            const { content, refusal, function_call, role, tool_calls, ...rest } = delta;
+            Object.assign(choice.message, rest);
+            if (refusal) {
+                choice.message.refusal = (choice.message.refusal || '') + refusal;
             }
-            finally {
-                span.end();
+            if (role)
+                choice.message.role = role;
+            if (function_call) {
+                if (!choice.message.function_call) {
+                    choice.message.function_call = function_call;
+                }
+                else {
+                    if (function_call.name)
+                        choice.message.function_call.name = function_call.name;
+                    if (function_call.arguments) {
+                        (_c = choice.message.function_call).arguments ?? (_c.arguments = '');
+                        choice.message.function_call.arguments += function_call.arguments;
+                    }
+                }
             }
-        },
-    };
-}
-function tryCreateSpan(tracingClient, request) {
-    try {
-        // As per spec, we do not need to differentiate between HTTP and HTTPS in span name.
-        const { span, updatedOptions } = tracingClient.startSpan(getSpanName(request), { tracingOptions: request.tracingOptions }, {
-            spanKind: "client",
+            if (content) {
+                choice.message.content = (choice.message.content || '') + content;
+                if (!choice.message.refusal && __classPrivateFieldGet(this, _ChatCompletionStream_instances, "m", _ChatCompletionStream_getAutoParseableResponseFormat).call(this)) {
+                    choice.message.parsed = partialParse(choice.message.content);
+                }
+            }
+            if (tool_calls) {
+                if (!choice.message.tool_calls)
+                    choice.message.tool_calls = [];
+                for (const { index, id, type, function: fn, ...rest } of tool_calls) {
+                    const tool_call = ((_d = choice.message.tool_calls)[index] ?? (_d[index] = {}));
+                    Object.assign(tool_call, rest);
+                    if (id)
+                        tool_call.id = id;
+                    if (type)
+                        tool_call.type = type;
+                    if (fn)
+                        tool_call.function ?? (tool_call.function = { name: fn.name ?? '', arguments: '' });
+                    if (fn?.name)
+                        tool_call.function.name = fn.name;
+                    if (fn?.arguments) {
+                        tool_call.function.arguments += fn.arguments;
+                        if (shouldParseToolCall(__classPrivateFieldGet(this, _ChatCompletionStream_params, "f"), tool_call)) {
+                            tool_call.function.parsed_arguments = partialParse(tool_call.function.arguments);
+                        }
+                    }
+                }
+            }
+        }
+        return snapshot;
+    }, Symbol.asyncIterator)]() {
+        const pushQueue = [];
+        const readQueue = [];
+        let done = false;
+        this.on('chunk', (chunk) => {
+            const reader = readQueue.shift();
+            if (reader) {
+                reader.resolve(chunk);
+            }
+            else {
+                pushQueue.push(chunk);
+            }
         });
-        return { span, tracingContext: updatedOptions.tracingOptions.tracingContext };
-    }
-    catch (e) {
-        logger.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
-        return undefined;
-    }
-}
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-/**
- * Initialize a new instance of `ModelClient`
- * @param endpointParam - The parameter endpointParam
- * @param credentials - uniquely identify client credential
- * @param options - the parameter for all optional parameters
- */
-function createClient(endpointParam, credentials, _a = {}) {
-    var _b, _c, _d, _e, _f, _g, _h, _j;
-    var { apiVersion = "2024-05-01-preview" } = _a, options = __rest(_a, ["apiVersion"]);
-    const endpointUrl = (_c = (_b = options.endpoint) !== null && _b !== void 0 ? _b : options.baseUrl) !== null && _c !== void 0 ? _c : `${endpointParam}`;
-    const userAgentInfo = `azsdk-js-ai-inference-rest/1.0.0-beta.6`;
-    const userAgentPrefix = options.userAgentOptions && options.userAgentOptions.userAgentPrefix
-        ? `${options.userAgentOptions.userAgentPrefix} ${userAgentInfo}`
-        : `${userAgentInfo}`;
-    options = Object.assign(Object.assign({}, options), { userAgentOptions: {
-            userAgentPrefix,
-        }, loggingOptions: {
-            logger: (_e = (_d = options.loggingOptions) === null || _d === void 0 ? void 0 : _d.logger) !== null && _e !== void 0 ? _e : logger.info,
-        }, credentials: {
-            scopes: (_g = (_f = options.credentials) === null || _f === void 0 ? void 0 : _f.scopes) !== null && _g !== void 0 ? _g : ["https://ml.azure.com/.default"],
-            apiKeyHeaderName: (_j = (_h = options.credentials) === null || _h === void 0 ? void 0 : _h.apiKeyHeaderName) !== null && _j !== void 0 ? _j : "api-key",
-        } });
-    const client = getClient(endpointUrl, credentials, options);
-    client.pipeline.removePolicy({ name: "ApiVersionPolicy" });
-    client.pipeline.addPolicy({
-        name: "InferenceTracingPolicy",
-        sendRequest: (req, next) => {
-            return tracingPolicy().sendRequest(req, next);
-        },
-    });
-    client.pipeline.addPolicy({
-        name: "ClientApiVersionPolicy",
-        sendRequest: (req, next) => {
-            // Use the apiVersion defined in request url directly
-            // Append one if there is no apiVersion and we have one at client options
-            const url = new URL(req.url);
-            if (!url.searchParams.get("api-version") && apiVersion) {
-                req.url = `${req.url}${Array.from(url.searchParams.keys()).length > 0 ? "&" : "?"}api-version=${apiVersion}`;
+        this.on('end', () => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.resolve(undefined);
             }
-            return next(req);
-        },
-    });
-    if (isKeyCredential$1(credentials)) {
-        client.pipeline.addPolicy({
-            name: "customKeyCredentialPolicy",
-            async sendRequest(request, next) {
-                request.headers.set("Authorization", "Bearer " + credentials.key);
-                return next(request);
+            readQueue.length = 0;
+        });
+        this.on('abort', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        this.on('error', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        return {
+            next: async () => {
+                if (!pushQueue.length) {
+                    if (done) {
+                        return { value: undefined, done: true };
+                    }
+                    return new Promise((resolve, reject) => readQueue.push({ resolve, reject })).then((chunk) => (chunk ? { value: chunk, done: false } : { value: undefined, done: true }));
+                }
+                const chunk = pushQueue.shift();
+                return { value: chunk, done: false };
             },
-        });
+            return: async () => {
+                this.abort();
+                return { value: undefined, done: true };
+            },
+        };
     }
-    return client;
+    toReadableStream() {
+        const stream = new Stream(this[Symbol.asyncIterator].bind(this), this.controller);
+        return stream.toReadableStream();
+    }
+}
+function finalizeChatCompletion(snapshot, params) {
+    const { id, choices, created, model, system_fingerprint, ...rest } = snapshot;
+    const completion = {
+        ...rest,
+        id,
+        choices: choices.map(({ message, finish_reason, index, logprobs, ...choiceRest }) => {
+            if (!finish_reason) {
+                throw new OpenAIError(`missing finish_reason for choice ${index}`);
+            }
+            const { content = null, function_call, tool_calls, ...messageRest } = message;
+            const role = message.role; // this is what we expect; in theory it could be different which would make our types a slight lie but would be fine.
+            if (!role) {
+                throw new OpenAIError(`missing role for choice ${index}`);
+            }
+            if (function_call) {
+                const { arguments: args, name } = function_call;
+                if (args == null) {
+                    throw new OpenAIError(`missing function_call.arguments for choice ${index}`);
+                }
+                if (!name) {
+                    throw new OpenAIError(`missing function_call.name for choice ${index}`);
+                }
+                return {
+                    ...choiceRest,
+                    message: {
+                        content,
+                        function_call: { arguments: args, name },
+                        role,
+                        refusal: message.refusal ?? null,
+                    },
+                    finish_reason,
+                    index,
+                    logprobs,
+                };
+            }
+            if (tool_calls) {
+                return {
+                    ...choiceRest,
+                    index,
+                    finish_reason,
+                    logprobs,
+                    message: {
+                        ...messageRest,
+                        role,
+                        content,
+                        refusal: message.refusal ?? null,
+                        tool_calls: tool_calls.map((tool_call, i) => {
+                            const { function: fn, type, id, ...toolRest } = tool_call;
+                            const { arguments: args, name, ...fnRest } = fn || {};
+                            if (id == null) {
+                                throw new OpenAIError(`missing choices[${index}].tool_calls[${i}].id\n${str$1(snapshot)}`);
+                            }
+                            if (type == null) {
+                                throw new OpenAIError(`missing choices[${index}].tool_calls[${i}].type\n${str$1(snapshot)}`);
+                            }
+                            if (name == null) {
+                                throw new OpenAIError(`missing choices[${index}].tool_calls[${i}].function.name\n${str$1(snapshot)}`);
+                            }
+                            if (args == null) {
+                                throw new OpenAIError(`missing choices[${index}].tool_calls[${i}].function.arguments\n${str$1(snapshot)}`);
+                            }
+                            return { ...toolRest, id, type, function: { ...fnRest, name, arguments: args } };
+                        }),
+                    },
+                };
+            }
+            return {
+                ...choiceRest,
+                message: { ...messageRest, content, role, refusal: message.refusal ?? null },
+                finish_reason,
+                index,
+                logprobs,
+            };
+        }),
+        created,
+        model,
+        object: 'chat.completion',
+        ...(system_fingerprint ? { system_fingerprint } : {}),
+    };
+    return maybeParseChatCompletion(completion, params);
+}
+function str$1(x) {
+    return JSON.stringify(x);
+}
+function assertNever(_x) { }
+
+class ChatCompletionStreamingRunner extends ChatCompletionStream {
+    static fromReadableStream(stream) {
+        const runner = new ChatCompletionStreamingRunner(null);
+        runner._run(() => runner._fromReadableStream(stream));
+        return runner;
+    }
+    static runTools(client, params, options) {
+        const runner = new ChatCompletionStreamingRunner(
+        // @ts-expect-error TODO these types are incompatible
+        params);
+        const opts = {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'runTools' },
+        };
+        runner._run(() => runner._runTools(client, params, opts));
+        return runner;
+    }
 }
 
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-const responseMap = {
-    "POST /chat/completions": ["200"],
-    "GET /info": ["200"],
-    "POST /embeddings": ["200"],
-    "POST /images/embeddings": ["200"],
-};
-function isUnexpected(response) {
-    const lroOriginal = response.headers["x-ms-original-url"];
-    const url = new URL(lroOriginal !== null && lroOriginal !== void 0 ? lroOriginal : response.request.url);
-    const method = response.request.method;
-    let pathDetails = responseMap[`${method} ${url.pathname}`];
-    if (!pathDetails) {
-        pathDetails = getParametrizedPathSuccess(method, url.pathname);
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Completions$1 = class Completions extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.messages = new Messages$1(this._client);
     }
-    return !pathDetails.includes(response.status);
-}
-function getParametrizedPathSuccess(method, path) {
-    var _a, _b, _c, _d;
-    const pathParts = path.split("/");
-    let matchedLen = -1, matchedValue = [];
-    for (const [key, value] of Object.entries(responseMap)) {
-        // Extracting the path from the map key which is in format
-        // GET /path/foo
-        if (!key.startsWith(method)) {
-            continue;
+    create(body, options) {
+        return this._client.post('/chat/completions', { body, ...options, stream: body.stream ?? false });
+    }
+    /**
+     * Get a stored chat completion. Only Chat Completions that have been created with
+     * the `store` parameter set to `true` will be returned.
+     *
+     * @example
+     * ```ts
+     * const chatCompletion =
+     *   await client.chat.completions.retrieve('completion_id');
+     * ```
+     */
+    retrieve(completionID, options) {
+        return this._client.get(path `/chat/completions/${completionID}`, options);
+    }
+    /**
+     * Modify a stored chat completion. Only Chat Completions that have been created
+     * with the `store` parameter set to `true` can be modified. Currently, the only
+     * supported modification is to update the `metadata` field.
+     *
+     * @example
+     * ```ts
+     * const chatCompletion = await client.chat.completions.update(
+     *   'completion_id',
+     *   { metadata: { foo: 'string' } },
+     * );
+     * ```
+     */
+    update(completionID, body, options) {
+        return this._client.post(path `/chat/completions/${completionID}`, { body, ...options });
+    }
+    /**
+     * List stored Chat Completions. Only Chat Completions that have been stored with
+     * the `store` parameter set to `true` will be returned.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const chatCompletion of client.chat.completions.list()) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/chat/completions', (CursorPage), { query, ...options });
+    }
+    /**
+     * Delete a stored chat completion. Only Chat Completions that have been created
+     * with the `store` parameter set to `true` can be deleted.
+     *
+     * @example
+     * ```ts
+     * const chatCompletionDeleted =
+     *   await client.chat.completions.delete('completion_id');
+     * ```
+     */
+    delete(completionID, options) {
+        return this._client.delete(path `/chat/completions/${completionID}`, options);
+    }
+    parse(body, options) {
+        validateInputTools(body.tools);
+        return this._client.chat.completions
+            .create(body, {
+            ...options,
+            headers: {
+                ...options?.headers,
+                'X-Stainless-Helper-Method': 'chat.completions.parse',
+            },
+        })
+            ._thenUnwrap((completion) => parseChatCompletion(completion, body));
+    }
+    runTools(body, options) {
+        if (body.stream) {
+            return ChatCompletionStreamingRunner.runTools(this._client, body, options);
         }
-        const candidatePath = getPathFromMapKey(key);
-        // Get each part of the url path
-        const candidateParts = candidatePath.split("/");
-        // track if we have found a match to return the values found.
-        let found = true;
-        for (let i = candidateParts.length - 1, j = pathParts.length - 1; i >= 1 && j >= 1; i--, j--) {
-            if (((_a = candidateParts[i]) === null || _a === void 0 ? void 0 : _a.startsWith("{")) && ((_b = candidateParts[i]) === null || _b === void 0 ? void 0 : _b.indexOf("}")) !== -1) {
-                const start = candidateParts[i].indexOf("}") + 1, end = (_c = candidateParts[i]) === null || _c === void 0 ? void 0 : _c.length;
-                // If the current part of the candidate is a "template" part
-                // Try to use the suffix of pattern to match the path
-                // {guid} ==> $
-                // {guid}:export ==> :export$
-                const isMatched = new RegExp(`${(_d = candidateParts[i]) === null || _d === void 0 ? void 0 : _d.slice(start, end)}`).test(pathParts[j] || "");
-                if (!isMatched) {
-                    found = false;
-                    break;
+        return ChatCompletionRunner.runTools(this._client, body, options);
+    }
+    /**
+     * Creates a chat completion stream
+     */
+    stream(body, options) {
+        return ChatCompletionStream.createChatCompletion(this._client, body, options);
+    }
+};
+Completions$1.Messages = Messages$1;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Chat extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.completions = new Completions$1(this._client);
+    }
+}
+Chat.Completions = Completions$1;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+const brand_privateNullableHeaders = /* @__PURE__ */ Symbol('brand.privateNullableHeaders');
+function* iterateHeaders(headers) {
+    if (!headers)
+        return;
+    if (brand_privateNullableHeaders in headers) {
+        const { values, nulls } = headers;
+        yield* values.entries();
+        for (const name of nulls) {
+            yield [name, null];
+        }
+        return;
+    }
+    let shouldClear = false;
+    let iter;
+    if (headers instanceof Headers) {
+        iter = headers.entries();
+    }
+    else if (isReadonlyArray(headers)) {
+        iter = headers;
+    }
+    else {
+        shouldClear = true;
+        iter = Object.entries(headers ?? {});
+    }
+    for (let row of iter) {
+        const name = row[0];
+        if (typeof name !== 'string')
+            throw new TypeError('expected header name to be a string');
+        const values = isReadonlyArray(row[1]) ? row[1] : [row[1]];
+        let didClear = false;
+        for (const value of values) {
+            if (value === undefined)
+                continue;
+            // Objects keys always overwrite older headers, they never append.
+            // Yield a null to clear the header before adding the new values.
+            if (shouldClear && !didClear) {
+                didClear = true;
+                yield [name, null];
+            }
+            yield [name, value];
+        }
+    }
+}
+const buildHeaders = (newHeaders) => {
+    const targetHeaders = new Headers();
+    const nullHeaders = new Set();
+    for (const headers of newHeaders) {
+        const seenHeaders = new Set();
+        for (const [name, value] of iterateHeaders(headers)) {
+            const lowerName = name.toLowerCase();
+            if (!seenHeaders.has(lowerName)) {
+                targetHeaders.delete(name);
+                seenHeaders.add(lowerName);
+            }
+            if (value === null) {
+                targetHeaders.delete(name);
+                nullHeaders.add(lowerName);
+            }
+            else {
+                targetHeaders.append(name, value);
+                nullHeaders.delete(lowerName);
+            }
+        }
+    }
+    return { [brand_privateNullableHeaders]: true, values: targetHeaders, nulls: nullHeaders };
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Speech extends APIResource {
+    /**
+     * Generates audio from the input text.
+     *
+     * @example
+     * ```ts
+     * const speech = await client.audio.speech.create({
+     *   input: 'input',
+     *   model: 'string',
+     *   voice: 'ash',
+     * });
+     *
+     * const content = await speech.blob();
+     * console.log(content);
+     * ```
+     */
+    create(body, options) {
+        return this._client.post('/audio/speech', {
+            body,
+            ...options,
+            headers: buildHeaders([{ Accept: 'application/octet-stream' }, options?.headers]),
+            __binaryResponse: true,
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Transcriptions extends APIResource {
+    create(body, options) {
+        return this._client.post('/audio/transcriptions', multipartFormRequestOptions({
+            body,
+            ...options,
+            stream: body.stream ?? false,
+            __metadata: { model: body.model },
+        }, this._client));
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Translations extends APIResource {
+    create(body, options) {
+        return this._client.post('/audio/translations', multipartFormRequestOptions({ body, ...options, __metadata: { model: body.model } }, this._client));
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Audio extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.transcriptions = new Transcriptions(this._client);
+        this.translations = new Translations(this._client);
+        this.speech = new Speech(this._client);
+    }
+}
+Audio.Transcriptions = Transcriptions;
+Audio.Translations = Translations;
+Audio.Speech = Speech;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Batches extends APIResource {
+    /**
+     * Creates and executes a batch from an uploaded file of requests
+     */
+    create(body, options) {
+        return this._client.post('/batches', { body, ...options });
+    }
+    /**
+     * Retrieves a batch.
+     */
+    retrieve(batchID, options) {
+        return this._client.get(path `/batches/${batchID}`, options);
+    }
+    /**
+     * List your organization's batches.
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/batches', (CursorPage), { query, ...options });
+    }
+    /**
+     * Cancels an in-progress batch. The batch will be in status `cancelling` for up to
+     * 10 minutes, before changing to `cancelled`, where it will have partial results
+     * (if any) available in the output file.
+     */
+    cancel(batchID, options) {
+        return this._client.post(path `/batches/${batchID}/cancel`, options);
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Assistants extends APIResource {
+    /**
+     * Create an assistant with a model and instructions.
+     *
+     * @example
+     * ```ts
+     * const assistant = await client.beta.assistants.create({
+     *   model: 'gpt-4o',
+     * });
+     * ```
+     */
+    create(body, options) {
+        return this._client.post('/assistants', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieves an assistant.
+     *
+     * @example
+     * ```ts
+     * const assistant = await client.beta.assistants.retrieve(
+     *   'assistant_id',
+     * );
+     * ```
+     */
+    retrieve(assistantID, options) {
+        return this._client.get(path `/assistants/${assistantID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Modifies an assistant.
+     *
+     * @example
+     * ```ts
+     * const assistant = await client.beta.assistants.update(
+     *   'assistant_id',
+     * );
+     * ```
+     */
+    update(assistantID, body, options) {
+        return this._client.post(path `/assistants/${assistantID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of assistants.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const assistant of client.beta.assistants.list()) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/assistants', (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Delete an assistant.
+     *
+     * @example
+     * ```ts
+     * const assistantDeleted =
+     *   await client.beta.assistants.delete('assistant_id');
+     * ```
+     */
+    delete(assistantID, options) {
+        return this._client.delete(path `/assistants/${assistantID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Sessions extends APIResource {
+    /**
+     * Create an ephemeral API token for use in client-side applications with the
+     * Realtime API. Can be configured with the same session parameters as the
+     * `session.update` client event.
+     *
+     * It responds with a session object, plus a `client_secret` key which contains a
+     * usable ephemeral API token that can be used to authenticate browser clients for
+     * the Realtime API.
+     *
+     * @example
+     * ```ts
+     * const session =
+     *   await client.beta.realtime.sessions.create();
+     * ```
+     */
+    create(body, options) {
+        return this._client.post('/realtime/sessions', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class TranscriptionSessions extends APIResource {
+    /**
+     * Create an ephemeral API token for use in client-side applications with the
+     * Realtime API specifically for realtime transcriptions. Can be configured with
+     * the same session parameters as the `transcription_session.update` client event.
+     *
+     * It responds with a session object, plus a `client_secret` key which contains a
+     * usable ephemeral API token that can be used to authenticate browser clients for
+     * the Realtime API.
+     *
+     * @example
+     * ```ts
+     * const transcriptionSession =
+     *   await client.beta.realtime.transcriptionSessions.create();
+     * ```
+     */
+    create(body, options) {
+        return this._client.post('/realtime/transcription_sessions', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Realtime extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.sessions = new Sessions(this._client);
+        this.transcriptionSessions = new TranscriptionSessions(this._client);
+    }
+}
+Realtime.Sessions = Sessions;
+Realtime.TranscriptionSessions = TranscriptionSessions;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * @deprecated The Assistants API is deprecated in favor of the Responses API
+ */
+class Messages extends APIResource {
+    /**
+     * Create a message.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    create(threadID, body, options) {
+        return this._client.post(path `/threads/${threadID}/messages`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieve a message.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    retrieve(messageID, params, options) {
+        const { thread_id } = params;
+        return this._client.get(path `/threads/${thread_id}/messages/${messageID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Modifies a message.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    update(messageID, params, options) {
+        const { thread_id, ...body } = params;
+        return this._client.post(path `/threads/${thread_id}/messages/${messageID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of messages for a given thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    list(threadID, query = {}, options) {
+        return this._client.getAPIList(path `/threads/${threadID}/messages`, (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Deletes a message.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    delete(messageID, params, options) {
+        const { thread_id } = params;
+        return this._client.delete(path `/threads/${thread_id}/messages/${messageID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * @deprecated The Assistants API is deprecated in favor of the Responses API
+ */
+class Steps extends APIResource {
+    /**
+     * Retrieves a run step.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    retrieve(stepID, params, options) {
+        const { thread_id, run_id, ...query } = params;
+        return this._client.get(path `/threads/${thread_id}/runs/${run_id}/steps/${stepID}`, {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of run steps belonging to a run.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    list(runID, params, options) {
+        const { thread_id, ...query } = params;
+        return this._client.getAPIList(path `/threads/${thread_id}/runs/${runID}/steps`, (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * Converts a Base64 encoded string to a Float32Array.
+ * @param base64Str - The Base64 encoded string.
+ * @returns An Array of numbers interpreted as Float32 values.
+ */
+const toFloat32Array = (base64Str) => {
+    if (typeof Buffer !== 'undefined') {
+        // for Node.js environment
+        const buf = Buffer.from(base64Str, 'base64');
+        return Array.from(new Float32Array(buf.buffer, buf.byteOffset, buf.length / Float32Array.BYTES_PER_ELEMENT));
+    }
+    else {
+        // for legacy web platform APIs
+        const binaryStr = atob(base64Str);
+        const len = binaryStr.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryStr.charCodeAt(i);
+        }
+        return Array.from(new Float32Array(bytes.buffer));
+    }
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * Read an environment variable.
+ *
+ * Trims beginning and trailing whitespace.
+ *
+ * Will return undefined if the environment variable doesn't exist or cannot be accessed.
+ */
+const readEnv = (env) => {
+    if (typeof globalThis.process !== 'undefined') {
+        return globalThis.process.env?.[env]?.trim() ?? undefined;
+    }
+    if (typeof globalThis.Deno !== 'undefined') {
+        return globalThis.Deno.env?.get?.(env)?.trim();
+    }
+    return undefined;
+};
+
+var _AssistantStream_instances, _a$1, _AssistantStream_events, _AssistantStream_runStepSnapshots, _AssistantStream_messageSnapshots, _AssistantStream_messageSnapshot, _AssistantStream_finalRun, _AssistantStream_currentContentIndex, _AssistantStream_currentContent, _AssistantStream_currentToolCallIndex, _AssistantStream_currentToolCall, _AssistantStream_currentEvent, _AssistantStream_currentRunSnapshot, _AssistantStream_currentRunStepSnapshot, _AssistantStream_addEvent, _AssistantStream_endRequest, _AssistantStream_handleMessage, _AssistantStream_handleRunStep, _AssistantStream_handleEvent, _AssistantStream_accumulateRunStep, _AssistantStream_accumulateMessage, _AssistantStream_accumulateContent, _AssistantStream_handleRun;
+class AssistantStream extends EventStream {
+    constructor() {
+        super(...arguments);
+        _AssistantStream_instances.add(this);
+        //Track all events in a single list for reference
+        _AssistantStream_events.set(this, []);
+        //Used to accumulate deltas
+        //We are accumulating many types so the value here is not strict
+        _AssistantStream_runStepSnapshots.set(this, {});
+        _AssistantStream_messageSnapshots.set(this, {});
+        _AssistantStream_messageSnapshot.set(this, void 0);
+        _AssistantStream_finalRun.set(this, void 0);
+        _AssistantStream_currentContentIndex.set(this, void 0);
+        _AssistantStream_currentContent.set(this, void 0);
+        _AssistantStream_currentToolCallIndex.set(this, void 0);
+        _AssistantStream_currentToolCall.set(this, void 0);
+        //For current snapshot methods
+        _AssistantStream_currentEvent.set(this, void 0);
+        _AssistantStream_currentRunSnapshot.set(this, void 0);
+        _AssistantStream_currentRunStepSnapshot.set(this, void 0);
+    }
+    [(_AssistantStream_events = new WeakMap(), _AssistantStream_runStepSnapshots = new WeakMap(), _AssistantStream_messageSnapshots = new WeakMap(), _AssistantStream_messageSnapshot = new WeakMap(), _AssistantStream_finalRun = new WeakMap(), _AssistantStream_currentContentIndex = new WeakMap(), _AssistantStream_currentContent = new WeakMap(), _AssistantStream_currentToolCallIndex = new WeakMap(), _AssistantStream_currentToolCall = new WeakMap(), _AssistantStream_currentEvent = new WeakMap(), _AssistantStream_currentRunSnapshot = new WeakMap(), _AssistantStream_currentRunStepSnapshot = new WeakMap(), _AssistantStream_instances = new WeakSet(), Symbol.asyncIterator)]() {
+        const pushQueue = [];
+        const readQueue = [];
+        let done = false;
+        //Catch all for passing along all events
+        this.on('event', (event) => {
+            const reader = readQueue.shift();
+            if (reader) {
+                reader.resolve(event);
+            }
+            else {
+                pushQueue.push(event);
+            }
+        });
+        this.on('end', () => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.resolve(undefined);
+            }
+            readQueue.length = 0;
+        });
+        this.on('abort', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        this.on('error', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        return {
+            next: async () => {
+                if (!pushQueue.length) {
+                    if (done) {
+                        return { value: undefined, done: true };
+                    }
+                    return new Promise((resolve, reject) => readQueue.push({ resolve, reject })).then((chunk) => (chunk ? { value: chunk, done: false } : { value: undefined, done: true }));
+                }
+                const chunk = pushQueue.shift();
+                return { value: chunk, done: false };
+            },
+            return: async () => {
+                this.abort();
+                return { value: undefined, done: true };
+            },
+        };
+    }
+    static fromReadableStream(stream) {
+        const runner = new _a$1();
+        runner._run(() => runner._fromReadableStream(stream));
+        return runner;
+    }
+    async _fromReadableStream(readableStream, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        this._connected();
+        const stream = Stream.fromReadableStream(readableStream, this.controller);
+        for await (const event of stream) {
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_addEvent).call(this, event);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return this._addRun(__classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_endRequest).call(this));
+    }
+    toReadableStream() {
+        const stream = new Stream(this[Symbol.asyncIterator].bind(this), this.controller);
+        return stream.toReadableStream();
+    }
+    static createToolAssistantStream(runId, runs, params, options) {
+        const runner = new _a$1();
+        runner._run(() => runner._runToolAssistantStream(runId, runs, params, {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'stream' },
+        }));
+        return runner;
+    }
+    async _createToolAssistantStream(run, runId, params, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        const body = { ...params, stream: true };
+        const stream = await run.submitToolOutputs(runId, body, {
+            ...options,
+            signal: this.controller.signal,
+        });
+        this._connected();
+        for await (const event of stream) {
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_addEvent).call(this, event);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return this._addRun(__classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_endRequest).call(this));
+    }
+    static createThreadAssistantStream(params, thread, options) {
+        const runner = new _a$1();
+        runner._run(() => runner._threadAssistantStream(params, thread, {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'stream' },
+        }));
+        return runner;
+    }
+    static createAssistantStream(threadId, runs, params, options) {
+        const runner = new _a$1();
+        runner._run(() => runner._runAssistantStream(threadId, runs, params, {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'stream' },
+        }));
+        return runner;
+    }
+    currentEvent() {
+        return __classPrivateFieldGet(this, _AssistantStream_currentEvent, "f");
+    }
+    currentRun() {
+        return __classPrivateFieldGet(this, _AssistantStream_currentRunSnapshot, "f");
+    }
+    currentMessageSnapshot() {
+        return __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f");
+    }
+    currentRunStepSnapshot() {
+        return __classPrivateFieldGet(this, _AssistantStream_currentRunStepSnapshot, "f");
+    }
+    async finalRunSteps() {
+        await this.done();
+        return Object.values(__classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f"));
+    }
+    async finalMessages() {
+        await this.done();
+        return Object.values(__classPrivateFieldGet(this, _AssistantStream_messageSnapshots, "f"));
+    }
+    async finalRun() {
+        await this.done();
+        if (!__classPrivateFieldGet(this, _AssistantStream_finalRun, "f"))
+            throw Error('Final run was not received.');
+        return __classPrivateFieldGet(this, _AssistantStream_finalRun, "f");
+    }
+    async _createThreadAssistantStream(thread, params, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        const body = { ...params, stream: true };
+        const stream = await thread.createAndRun(body, { ...options, signal: this.controller.signal });
+        this._connected();
+        for await (const event of stream) {
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_addEvent).call(this, event);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return this._addRun(__classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_endRequest).call(this));
+    }
+    async _createAssistantStream(run, threadId, params, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        const body = { ...params, stream: true };
+        const stream = await run.create(threadId, body, { ...options, signal: this.controller.signal });
+        this._connected();
+        for await (const event of stream) {
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_addEvent).call(this, event);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return this._addRun(__classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_endRequest).call(this));
+    }
+    static accumulateDelta(acc, delta) {
+        for (const [key, deltaValue] of Object.entries(delta)) {
+            if (!acc.hasOwnProperty(key)) {
+                acc[key] = deltaValue;
+                continue;
+            }
+            let accValue = acc[key];
+            if (accValue === null || accValue === undefined) {
+                acc[key] = deltaValue;
+                continue;
+            }
+            // We don't accumulate these special properties
+            if (key === 'index' || key === 'type') {
+                acc[key] = deltaValue;
+                continue;
+            }
+            // Type-specific accumulation logic
+            if (typeof accValue === 'string' && typeof deltaValue === 'string') {
+                accValue += deltaValue;
+            }
+            else if (typeof accValue === 'number' && typeof deltaValue === 'number') {
+                accValue += deltaValue;
+            }
+            else if (isObj(accValue) && isObj(deltaValue)) {
+                accValue = this.accumulateDelta(accValue, deltaValue);
+            }
+            else if (Array.isArray(accValue) && Array.isArray(deltaValue)) {
+                if (accValue.every((x) => typeof x === 'string' || typeof x === 'number')) {
+                    accValue.push(...deltaValue); // Use spread syntax for efficient addition
+                    continue;
+                }
+                for (const deltaEntry of deltaValue) {
+                    if (!isObj(deltaEntry)) {
+                        throw new Error(`Expected array delta entry to be an object but got: ${deltaEntry}`);
+                    }
+                    const index = deltaEntry['index'];
+                    if (index == null) {
+                        console.error(deltaEntry);
+                        throw new Error('Expected array delta entry to have an `index` property');
+                    }
+                    if (typeof index !== 'number') {
+                        throw new Error(`Expected array delta entry \`index\` property to be a number but got ${index}`);
+                    }
+                    const accEntry = accValue[index];
+                    if (accEntry == null) {
+                        accValue.push(deltaEntry);
+                    }
+                    else {
+                        accValue[index] = this.accumulateDelta(accEntry, deltaEntry);
+                    }
                 }
                 continue;
             }
-            // If the candidate part is not a template and
-            // the parts don't match mark the candidate as not found
-            // to move on with the next candidate path.
-            if (candidateParts[i] !== pathParts[j]) {
-                found = false;
+            else {
+                throw Error(`Unhandled record type: ${key}, deltaValue: ${deltaValue}, accValue: ${accValue}`);
+            }
+            acc[key] = accValue;
+        }
+        return acc;
+    }
+    _addRun(run) {
+        return run;
+    }
+    async _threadAssistantStream(params, thread, options) {
+        return await this._createThreadAssistantStream(thread, params, options);
+    }
+    async _runAssistantStream(threadId, runs, params, options) {
+        return await this._createAssistantStream(runs, threadId, params, options);
+    }
+    async _runToolAssistantStream(runId, runs, params, options) {
+        return await this._createToolAssistantStream(runs, runId, params, options);
+    }
+}
+_a$1 = AssistantStream, _AssistantStream_addEvent = function _AssistantStream_addEvent(event) {
+    if (this.ended)
+        return;
+    __classPrivateFieldSet(this, _AssistantStream_currentEvent, event);
+    __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_handleEvent).call(this, event);
+    switch (event.event) {
+        case 'thread.created':
+            //No action on this event.
+            break;
+        case 'thread.run.created':
+        case 'thread.run.queued':
+        case 'thread.run.in_progress':
+        case 'thread.run.requires_action':
+        case 'thread.run.completed':
+        case 'thread.run.incomplete':
+        case 'thread.run.failed':
+        case 'thread.run.cancelling':
+        case 'thread.run.cancelled':
+        case 'thread.run.expired':
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_handleRun).call(this, event);
+            break;
+        case 'thread.run.step.created':
+        case 'thread.run.step.in_progress':
+        case 'thread.run.step.delta':
+        case 'thread.run.step.completed':
+        case 'thread.run.step.failed':
+        case 'thread.run.step.cancelled':
+        case 'thread.run.step.expired':
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_handleRunStep).call(this, event);
+            break;
+        case 'thread.message.created':
+        case 'thread.message.in_progress':
+        case 'thread.message.delta':
+        case 'thread.message.completed':
+        case 'thread.message.incomplete':
+            __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_handleMessage).call(this, event);
+            break;
+        case 'error':
+            //This is included for completeness, but errors are processed in the SSE event processing so this should not occur
+            throw new Error('Encountered an error event in event processing - errors should be processed earlier');
+    }
+}, _AssistantStream_endRequest = function _AssistantStream_endRequest() {
+    if (this.ended) {
+        throw new OpenAIError(`stream has ended, this shouldn't happen`);
+    }
+    if (!__classPrivateFieldGet(this, _AssistantStream_finalRun, "f"))
+        throw Error('Final run has not been received');
+    return __classPrivateFieldGet(this, _AssistantStream_finalRun, "f");
+}, _AssistantStream_handleMessage = function _AssistantStream_handleMessage(event) {
+    const [accumulatedMessage, newContent] = __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_accumulateMessage).call(this, event, __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f"));
+    __classPrivateFieldSet(this, _AssistantStream_messageSnapshot, accumulatedMessage);
+    __classPrivateFieldGet(this, _AssistantStream_messageSnapshots, "f")[accumulatedMessage.id] = accumulatedMessage;
+    for (const content of newContent) {
+        const snapshotContent = accumulatedMessage.content[content.index];
+        if (snapshotContent?.type == 'text') {
+            this._emit('textCreated', snapshotContent.text);
+        }
+    }
+    switch (event.event) {
+        case 'thread.message.created':
+            this._emit('messageCreated', event.data);
+            break;
+        case 'thread.message.in_progress':
+            break;
+        case 'thread.message.delta':
+            this._emit('messageDelta', event.data.delta, accumulatedMessage);
+            if (event.data.delta.content) {
+                for (const content of event.data.delta.content) {
+                    //If it is text delta, emit a text delta event
+                    if (content.type == 'text' && content.text) {
+                        let textDelta = content.text;
+                        let snapshot = accumulatedMessage.content[content.index];
+                        if (snapshot && snapshot.type == 'text') {
+                            this._emit('textDelta', textDelta, snapshot.text);
+                        }
+                        else {
+                            throw Error('The snapshot associated with this text delta is not text or missing');
+                        }
+                    }
+                    if (content.index != __classPrivateFieldGet(this, _AssistantStream_currentContentIndex, "f")) {
+                        //See if we have in progress content
+                        if (__classPrivateFieldGet(this, _AssistantStream_currentContent, "f")) {
+                            switch (__classPrivateFieldGet(this, _AssistantStream_currentContent, "f").type) {
+                                case 'text':
+                                    this._emit('textDone', __classPrivateFieldGet(this, _AssistantStream_currentContent, "f").text, __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f"));
+                                    break;
+                                case 'image_file':
+                                    this._emit('imageFileDone', __classPrivateFieldGet(this, _AssistantStream_currentContent, "f").image_file, __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f"));
+                                    break;
+                            }
+                        }
+                        __classPrivateFieldSet(this, _AssistantStream_currentContentIndex, content.index);
+                    }
+                    __classPrivateFieldSet(this, _AssistantStream_currentContent, accumulatedMessage.content[content.index]);
+                }
+            }
+            break;
+        case 'thread.message.completed':
+        case 'thread.message.incomplete':
+            //We emit the latest content we were working on on completion (including incomplete)
+            if (__classPrivateFieldGet(this, _AssistantStream_currentContentIndex, "f") !== undefined) {
+                const currentContent = event.data.content[__classPrivateFieldGet(this, _AssistantStream_currentContentIndex, "f")];
+                if (currentContent) {
+                    switch (currentContent.type) {
+                        case 'image_file':
+                            this._emit('imageFileDone', currentContent.image_file, __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f"));
+                            break;
+                        case 'text':
+                            this._emit('textDone', currentContent.text, __classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f"));
+                            break;
+                    }
+                }
+            }
+            if (__classPrivateFieldGet(this, _AssistantStream_messageSnapshot, "f")) {
+                this._emit('messageDone', event.data);
+            }
+            __classPrivateFieldSet(this, _AssistantStream_messageSnapshot, undefined);
+    }
+}, _AssistantStream_handleRunStep = function _AssistantStream_handleRunStep(event) {
+    const accumulatedRunStep = __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_accumulateRunStep).call(this, event);
+    __classPrivateFieldSet(this, _AssistantStream_currentRunStepSnapshot, accumulatedRunStep);
+    switch (event.event) {
+        case 'thread.run.step.created':
+            this._emit('runStepCreated', event.data);
+            break;
+        case 'thread.run.step.delta':
+            const delta = event.data.delta;
+            if (delta.step_details &&
+                delta.step_details.type == 'tool_calls' &&
+                delta.step_details.tool_calls &&
+                accumulatedRunStep.step_details.type == 'tool_calls') {
+                for (const toolCall of delta.step_details.tool_calls) {
+                    if (toolCall.index == __classPrivateFieldGet(this, _AssistantStream_currentToolCallIndex, "f")) {
+                        this._emit('toolCallDelta', toolCall, accumulatedRunStep.step_details.tool_calls[toolCall.index]);
+                    }
+                    else {
+                        if (__classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f")) {
+                            this._emit('toolCallDone', __classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f"));
+                        }
+                        __classPrivateFieldSet(this, _AssistantStream_currentToolCallIndex, toolCall.index);
+                        __classPrivateFieldSet(this, _AssistantStream_currentToolCall, accumulatedRunStep.step_details.tool_calls[toolCall.index]);
+                        if (__classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f"))
+                            this._emit('toolCallCreated', __classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f"));
+                    }
+                }
+            }
+            this._emit('runStepDelta', event.data.delta, accumulatedRunStep);
+            break;
+        case 'thread.run.step.completed':
+        case 'thread.run.step.failed':
+        case 'thread.run.step.cancelled':
+        case 'thread.run.step.expired':
+            __classPrivateFieldSet(this, _AssistantStream_currentRunStepSnapshot, undefined);
+            const details = event.data.step_details;
+            if (details.type == 'tool_calls') {
+                if (__classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f")) {
+                    this._emit('toolCallDone', __classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f"));
+                    __classPrivateFieldSet(this, _AssistantStream_currentToolCall, undefined);
+                }
+            }
+            this._emit('runStepDone', event.data, accumulatedRunStep);
+            break;
+    }
+}, _AssistantStream_handleEvent = function _AssistantStream_handleEvent(event) {
+    __classPrivateFieldGet(this, _AssistantStream_events, "f").push(event);
+    this._emit('event', event);
+}, _AssistantStream_accumulateRunStep = function _AssistantStream_accumulateRunStep(event) {
+    switch (event.event) {
+        case 'thread.run.step.created':
+            __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id] = event.data;
+            return event.data;
+        case 'thread.run.step.delta':
+            let snapshot = __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id];
+            if (!snapshot) {
+                throw Error('Received a RunStepDelta before creation of a snapshot');
+            }
+            let data = event.data;
+            if (data.delta) {
+                const accumulated = _a$1.accumulateDelta(snapshot, data.delta);
+                __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id] = accumulated;
+            }
+            return __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id];
+        case 'thread.run.step.completed':
+        case 'thread.run.step.failed':
+        case 'thread.run.step.cancelled':
+        case 'thread.run.step.expired':
+        case 'thread.run.step.in_progress':
+            __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id] = event.data;
+            break;
+    }
+    if (__classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id])
+        return __classPrivateFieldGet(this, _AssistantStream_runStepSnapshots, "f")[event.data.id];
+    throw new Error('No snapshot available');
+}, _AssistantStream_accumulateMessage = function _AssistantStream_accumulateMessage(event, snapshot) {
+    let newContent = [];
+    switch (event.event) {
+        case 'thread.message.created':
+            //On creation the snapshot is just the initial message
+            return [event.data, newContent];
+        case 'thread.message.delta':
+            if (!snapshot) {
+                throw Error('Received a delta with no existing snapshot (there should be one from message creation)');
+            }
+            let data = event.data;
+            //If this delta does not have content, nothing to process
+            if (data.delta.content) {
+                for (const contentElement of data.delta.content) {
+                    if (contentElement.index in snapshot.content) {
+                        let currentContent = snapshot.content[contentElement.index];
+                        snapshot.content[contentElement.index] = __classPrivateFieldGet(this, _AssistantStream_instances, "m", _AssistantStream_accumulateContent).call(this, contentElement, currentContent);
+                    }
+                    else {
+                        snapshot.content[contentElement.index] = contentElement;
+                        // This is a new element
+                        newContent.push(contentElement);
+                    }
+                }
+            }
+            return [snapshot, newContent];
+        case 'thread.message.in_progress':
+        case 'thread.message.completed':
+        case 'thread.message.incomplete':
+            //No changes on other thread events
+            if (snapshot) {
+                return [snapshot, newContent];
+            }
+            else {
+                throw Error('Received thread message event with no existing snapshot');
+            }
+    }
+    throw Error('Tried to accumulate a non-message event');
+}, _AssistantStream_accumulateContent = function _AssistantStream_accumulateContent(contentElement, currentContent) {
+    return _a$1.accumulateDelta(currentContent, contentElement);
+}, _AssistantStream_handleRun = function _AssistantStream_handleRun(event) {
+    __classPrivateFieldSet(this, _AssistantStream_currentRunSnapshot, event.data);
+    switch (event.event) {
+        case 'thread.run.created':
+            break;
+        case 'thread.run.queued':
+            break;
+        case 'thread.run.in_progress':
+            break;
+        case 'thread.run.requires_action':
+        case 'thread.run.cancelled':
+        case 'thread.run.failed':
+        case 'thread.run.completed':
+        case 'thread.run.expired':
+        case 'thread.run.incomplete':
+            __classPrivateFieldSet(this, _AssistantStream_finalRun, event.data);
+            if (__classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f")) {
+                this._emit('toolCallDone', __classPrivateFieldGet(this, _AssistantStream_currentToolCall, "f"));
+                __classPrivateFieldSet(this, _AssistantStream_currentToolCall, undefined);
+            }
+            break;
+    }
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * @deprecated The Assistants API is deprecated in favor of the Responses API
+ */
+let Runs$1 = class Runs extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.steps = new Steps(this._client);
+    }
+    create(threadID, params, options) {
+        const { include, ...body } = params;
+        return this._client.post(path `/threads/${threadID}/runs`, {
+            query: { include },
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+            stream: params.stream ?? false,
+        });
+    }
+    /**
+     * Retrieves a run.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    retrieve(runID, params, options) {
+        const { thread_id } = params;
+        return this._client.get(path `/threads/${thread_id}/runs/${runID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Modifies a run.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    update(runID, params, options) {
+        const { thread_id, ...body } = params;
+        return this._client.post(path `/threads/${thread_id}/runs/${runID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of runs belonging to a thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    list(threadID, query = {}, options) {
+        return this._client.getAPIList(path `/threads/${threadID}/runs`, (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Cancels a run that is `in_progress`.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    cancel(runID, params, options) {
+        const { thread_id } = params;
+        return this._client.post(path `/threads/${thread_id}/runs/${runID}/cancel`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * A helper to create a run an poll for a terminal state. More information on Run
+     * lifecycles can be found here:
+     * https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
+     */
+    async createAndPoll(threadId, body, options) {
+        const run = await this.create(threadId, body, options);
+        return await this.poll(run.id, { thread_id: threadId }, options);
+    }
+    /**
+     * Create a Run stream
+     *
+     * @deprecated use `stream` instead
+     */
+    createAndStream(threadId, body, options) {
+        return AssistantStream.createAssistantStream(threadId, this._client.beta.threads.runs, body, options);
+    }
+    /**
+     * A helper to poll a run status until it reaches a terminal state. More
+     * information on Run lifecycles can be found here:
+     * https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
+     */
+    async poll(runId, params, options) {
+        const headers = buildHeaders([
+            options?.headers,
+            {
+                'X-Stainless-Poll-Helper': 'true',
+                'X-Stainless-Custom-Poll-Interval': options?.pollIntervalMs?.toString() ?? undefined,
+            },
+        ]);
+        while (true) {
+            const { data: run, response } = await this.retrieve(runId, params, {
+                ...options,
+                headers: { ...options?.headers, ...headers },
+            }).withResponse();
+            switch (run.status) {
+                //If we are in any sort of intermediate state we poll
+                case 'queued':
+                case 'in_progress':
+                case 'cancelling':
+                    let sleepInterval = 5000;
+                    if (options?.pollIntervalMs) {
+                        sleepInterval = options.pollIntervalMs;
+                    }
+                    else {
+                        const headerInterval = response.headers.get('openai-poll-after-ms');
+                        if (headerInterval) {
+                            const headerIntervalMs = parseInt(headerInterval);
+                            if (!isNaN(headerIntervalMs)) {
+                                sleepInterval = headerIntervalMs;
+                            }
+                        }
+                    }
+                    await sleep(sleepInterval);
+                    break;
+                //We return the run in any terminal state.
+                case 'requires_action':
+                case 'incomplete':
+                case 'cancelled':
+                case 'completed':
+                case 'failed':
+                case 'expired':
+                    return run;
+            }
+        }
+    }
+    /**
+     * Create a Run stream
+     */
+    stream(threadId, body, options) {
+        return AssistantStream.createAssistantStream(threadId, this._client.beta.threads.runs, body, options);
+    }
+    submitToolOutputs(runID, params, options) {
+        const { thread_id, ...body } = params;
+        return this._client.post(path `/threads/${thread_id}/runs/${runID}/submit_tool_outputs`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+            stream: params.stream ?? false,
+        });
+    }
+    /**
+     * A helper to submit a tool output to a run and poll for a terminal run state.
+     * More information on Run lifecycles can be found here:
+     * https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
+     */
+    async submitToolOutputsAndPoll(runId, params, options) {
+        const run = await this.submitToolOutputs(runId, params, options);
+        return await this.poll(run.id, params, options);
+    }
+    /**
+     * Submit the tool outputs from a previous run and stream the run to a terminal
+     * state. More information on Run lifecycles can be found here:
+     * https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
+     */
+    submitToolOutputsStream(runId, params, options) {
+        return AssistantStream.createToolAssistantStream(runId, this._client.beta.threads.runs, params, options);
+    }
+};
+Runs$1.Steps = Steps;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+/**
+ * @deprecated The Assistants API is deprecated in favor of the Responses API
+ */
+class Threads extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.runs = new Runs$1(this._client);
+        this.messages = new Messages(this._client);
+    }
+    /**
+     * Create a thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    create(body = {}, options) {
+        return this._client.post('/threads', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieves a thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    retrieve(threadID, options) {
+        return this._client.get(path `/threads/${threadID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Modifies a thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    update(threadID, body, options) {
+        return this._client.post(path `/threads/${threadID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Delete a thread.
+     *
+     * @deprecated The Assistants API is deprecated in favor of the Responses API
+     */
+    delete(threadID, options) {
+        return this._client.delete(path `/threads/${threadID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    createAndRun(body, options) {
+        return this._client.post('/threads/runs', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+            stream: body.stream ?? false,
+        });
+    }
+    /**
+     * A helper to create a thread, start a run and then poll for a terminal state.
+     * More information on Run lifecycles can be found here:
+     * https://platform.openai.com/docs/assistants/how-it-works/runs-and-run-steps
+     */
+    async createAndRunPoll(body, options) {
+        const run = await this.createAndRun(body, options);
+        return await this.runs.poll(run.id, { thread_id: run.thread_id }, options);
+    }
+    /**
+     * Create a thread and stream the run back
+     */
+    createAndRunStream(body, options) {
+        return AssistantStream.createThreadAssistantStream(body, this._client.beta.threads, options);
+    }
+}
+Threads.Runs = Runs$1;
+Threads.Messages = Messages;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Beta extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.realtime = new Realtime(this._client);
+        this.assistants = new Assistants(this._client);
+        this.threads = new Threads(this._client);
+    }
+}
+Beta.Realtime = Realtime;
+Beta.Assistants = Assistants;
+Beta.Threads = Threads;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Completions extends APIResource {
+    create(body, options) {
+        return this._client.post('/completions', { body, ...options, stream: body.stream ?? false });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Content extends APIResource {
+    /**
+     * Retrieve Container File Content
+     */
+    retrieve(fileID, params, options) {
+        const { container_id } = params;
+        return this._client.get(path `/containers/${container_id}/files/${fileID}/content`, {
+            ...options,
+            headers: buildHeaders([{ Accept: 'application/binary' }, options?.headers]),
+            __binaryResponse: true,
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Files$2 = class Files extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.content = new Content(this._client);
+    }
+    /**
+     * Create a Container File
+     *
+     * You can send either a multipart/form-data request with the raw file content, or
+     * a JSON request with a file ID.
+     */
+    create(containerID, body, options) {
+        return this._client.post(path `/containers/${containerID}/files`, multipartFormRequestOptions({ body, ...options }, this._client));
+    }
+    /**
+     * Retrieve Container File
+     */
+    retrieve(fileID, params, options) {
+        const { container_id } = params;
+        return this._client.get(path `/containers/${container_id}/files/${fileID}`, options);
+    }
+    /**
+     * List Container files
+     */
+    list(containerID, query = {}, options) {
+        return this._client.getAPIList(path `/containers/${containerID}/files`, (CursorPage), {
+            query,
+            ...options,
+        });
+    }
+    /**
+     * Delete Container File
+     */
+    delete(fileID, params, options) {
+        const { container_id } = params;
+        return this._client.delete(path `/containers/${container_id}/files/${fileID}`, {
+            ...options,
+            headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+        });
+    }
+};
+Files$2.Content = Content;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Containers extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.files = new Files$2(this._client);
+    }
+    /**
+     * Create Container
+     */
+    create(body, options) {
+        return this._client.post('/containers', { body, ...options });
+    }
+    /**
+     * Retrieve Container
+     */
+    retrieve(containerID, options) {
+        return this._client.get(path `/containers/${containerID}`, options);
+    }
+    /**
+     * List Containers
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/containers', (CursorPage), { query, ...options });
+    }
+    /**
+     * Delete Container
+     */
+    delete(containerID, options) {
+        return this._client.delete(path `/containers/${containerID}`, {
+            ...options,
+            headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+        });
+    }
+}
+Containers.Files = Files$2;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Embeddings extends APIResource {
+    /**
+     * Creates an embedding vector representing the input text.
+     *
+     * @example
+     * ```ts
+     * const createEmbeddingResponse =
+     *   await client.embeddings.create({
+     *     input: 'The quick brown fox jumped over the lazy dog',
+     *     model: 'text-embedding-3-small',
+     *   });
+     * ```
+     */
+    create(body, options) {
+        const hasUserProvidedEncodingFormat = !!body.encoding_format;
+        // No encoding_format specified, defaulting to base64 for performance reasons
+        // See https://github.com/openai/openai-node/pull/1312
+        let encoding_format = hasUserProvidedEncodingFormat ? body.encoding_format : 'base64';
+        if (hasUserProvidedEncodingFormat) {
+            loggerFor(this._client).debug('embeddings/user defined encoding_format:', body.encoding_format);
+        }
+        const response = this._client.post('/embeddings', {
+            body: {
+                ...body,
+                encoding_format: encoding_format,
+            },
+            ...options,
+        });
+        // if the user specified an encoding_format, return the response as-is
+        if (hasUserProvidedEncodingFormat) {
+            return response;
+        }
+        // in this stage, we are sure the user did not specify an encoding_format
+        // and we defaulted to base64 for performance reasons
+        // we are sure then that the response is base64 encoded, let's decode it
+        // the returned result will be a float32 array since this is OpenAI API's default encoding
+        loggerFor(this._client).debug('embeddings/decoding base64 embeddings from base64');
+        return response._thenUnwrap((response) => {
+            if (response && response.data) {
+                response.data.forEach((embeddingBase64Obj) => {
+                    const embeddingBase64Str = embeddingBase64Obj.embedding;
+                    embeddingBase64Obj.embedding = toFloat32Array(embeddingBase64Str);
+                });
+            }
+            return response;
+        });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class OutputItems extends APIResource {
+    /**
+     * Get an evaluation run output item by ID.
+     */
+    retrieve(outputItemID, params, options) {
+        const { eval_id, run_id } = params;
+        return this._client.get(path `/evals/${eval_id}/runs/${run_id}/output_items/${outputItemID}`, options);
+    }
+    /**
+     * Get a list of output items for an evaluation run.
+     */
+    list(runID, params, options) {
+        const { eval_id, ...query } = params;
+        return this._client.getAPIList(path `/evals/${eval_id}/runs/${runID}/output_items`, (CursorPage), { query, ...options });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Runs extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.outputItems = new OutputItems(this._client);
+    }
+    /**
+     * Kicks off a new run for a given evaluation, specifying the data source, and what
+     * model configuration to use to test. The datasource will be validated against the
+     * schema specified in the config of the evaluation.
+     */
+    create(evalID, body, options) {
+        return this._client.post(path `/evals/${evalID}/runs`, { body, ...options });
+    }
+    /**
+     * Get an evaluation run by ID.
+     */
+    retrieve(runID, params, options) {
+        const { eval_id } = params;
+        return this._client.get(path `/evals/${eval_id}/runs/${runID}`, options);
+    }
+    /**
+     * Get a list of runs for an evaluation.
+     */
+    list(evalID, query = {}, options) {
+        return this._client.getAPIList(path `/evals/${evalID}/runs`, (CursorPage), {
+            query,
+            ...options,
+        });
+    }
+    /**
+     * Delete an eval run.
+     */
+    delete(runID, params, options) {
+        const { eval_id } = params;
+        return this._client.delete(path `/evals/${eval_id}/runs/${runID}`, options);
+    }
+    /**
+     * Cancel an ongoing evaluation run.
+     */
+    cancel(runID, params, options) {
+        const { eval_id } = params;
+        return this._client.post(path `/evals/${eval_id}/runs/${runID}`, options);
+    }
+}
+Runs.OutputItems = OutputItems;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Evals extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.runs = new Runs(this._client);
+    }
+    /**
+     * Create the structure of an evaluation that can be used to test a model's
+     * performance. An evaluation is a set of testing criteria and the config for a
+     * data source, which dictates the schema of the data used in the evaluation. After
+     * creating an evaluation, you can run it on different models and model parameters.
+     * We support several types of graders and datasources. For more information, see
+     * the [Evals guide](https://platform.openai.com/docs/guides/evals).
+     */
+    create(body, options) {
+        return this._client.post('/evals', { body, ...options });
+    }
+    /**
+     * Get an evaluation by ID.
+     */
+    retrieve(evalID, options) {
+        return this._client.get(path `/evals/${evalID}`, options);
+    }
+    /**
+     * Update certain properties of an evaluation.
+     */
+    update(evalID, body, options) {
+        return this._client.post(path `/evals/${evalID}`, { body, ...options });
+    }
+    /**
+     * List evaluations for a project.
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/evals', (CursorPage), { query, ...options });
+    }
+    /**
+     * Delete an evaluation.
+     */
+    delete(evalID, options) {
+        return this._client.delete(path `/evals/${evalID}`, options);
+    }
+}
+Evals.Runs = Runs;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Files$1 = class Files extends APIResource {
+    /**
+     * Upload a file that can be used across various endpoints. Individual files can be
+     * up to 512 MB, and the size of all files uploaded by one organization can be up
+     * to 100 GB.
+     *
+     * The Assistants API supports files up to 2 million tokens and of specific file
+     * types. See the
+     * [Assistants Tools guide](https://platform.openai.com/docs/assistants/tools) for
+     * details.
+     *
+     * The Fine-tuning API only supports `.jsonl` files. The input also has certain
+     * required formats for fine-tuning
+     * [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input) or
+     * [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
+     * models.
+     *
+     * The Batch API only supports `.jsonl` files up to 200 MB in size. The input also
+     * has a specific required
+     * [format](https://platform.openai.com/docs/api-reference/batch/request-input).
+     *
+     * Please [contact us](https://help.openai.com/) if you need to increase these
+     * storage limits.
+     */
+    create(body, options) {
+        return this._client.post('/files', multipartFormRequestOptions({ body, ...options }, this._client));
+    }
+    /**
+     * Returns information about a specific file.
+     */
+    retrieve(fileID, options) {
+        return this._client.get(path `/files/${fileID}`, options);
+    }
+    /**
+     * Returns a list of files.
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/files', (CursorPage), { query, ...options });
+    }
+    /**
+     * Delete a file.
+     */
+    delete(fileID, options) {
+        return this._client.delete(path `/files/${fileID}`, options);
+    }
+    /**
+     * Returns the contents of the specified file.
+     */
+    content(fileID, options) {
+        return this._client.get(path `/files/${fileID}/content`, {
+            ...options,
+            headers: buildHeaders([{ Accept: 'application/binary' }, options?.headers]),
+            __binaryResponse: true,
+        });
+    }
+    /**
+     * Waits for the given file to be processed, default timeout is 30 mins.
+     */
+    async waitForProcessing(id, { pollInterval = 5000, maxWait = 30 * 60 * 1000 } = {}) {
+        const TERMINAL_STATES = new Set(['processed', 'error', 'deleted']);
+        const start = Date.now();
+        let file = await this.retrieve(id);
+        while (!file.status || !TERMINAL_STATES.has(file.status)) {
+            await sleep(pollInterval);
+            file = await this.retrieve(id);
+            if (Date.now() - start > maxWait) {
+                throw new APIConnectionTimeoutError({
+                    message: `Giving up on waiting for file ${id} to finish processing after ${maxWait} milliseconds.`,
+                });
+            }
+        }
+        return file;
+    }
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Methods extends APIResource {
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Graders$1 = class Graders extends APIResource {
+    /**
+     * Run a grader.
+     *
+     * @example
+     * ```ts
+     * const response = await client.fineTuning.alpha.graders.run({
+     *   grader: {
+     *     input: 'input',
+     *     name: 'name',
+     *     operation: 'eq',
+     *     reference: 'reference',
+     *     type: 'string_check',
+     *   },
+     *   model_sample: 'model_sample',
+     * });
+     * ```
+     */
+    run(body, options) {
+        return this._client.post('/fine_tuning/alpha/graders/run', { body, ...options });
+    }
+    /**
+     * Validate a grader.
+     *
+     * @example
+     * ```ts
+     * const response =
+     *   await client.fineTuning.alpha.graders.validate({
+     *     grader: {
+     *       input: 'input',
+     *       name: 'name',
+     *       operation: 'eq',
+     *       reference: 'reference',
+     *       type: 'string_check',
+     *     },
+     *   });
+     * ```
+     */
+    validate(body, options) {
+        return this._client.post('/fine_tuning/alpha/graders/validate', { body, ...options });
+    }
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Alpha extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.graders = new Graders$1(this._client);
+    }
+}
+Alpha.Graders = Graders$1;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Permissions extends APIResource {
+    /**
+     * **NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).
+     *
+     * This enables organization owners to share fine-tuned models with other projects
+     * in their organization.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const permissionCreateResponse of client.fineTuning.checkpoints.permissions.create(
+     *   'ft:gpt-4o-mini-2024-07-18:org:weather:B7R9VjQd',
+     *   { project_ids: ['string'] },
+     * )) {
+     *   // ...
+     * }
+     * ```
+     */
+    create(fineTunedModelCheckpoint, body, options) {
+        return this._client.getAPIList(path `/fine_tuning/checkpoints/${fineTunedModelCheckpoint}/permissions`, (Page), { body, method: 'post', ...options });
+    }
+    /**
+     * **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+     *
+     * Organization owners can use this endpoint to view all permissions for a
+     * fine-tuned model checkpoint.
+     *
+     * @example
+     * ```ts
+     * const permission =
+     *   await client.fineTuning.checkpoints.permissions.retrieve(
+     *     'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     *   );
+     * ```
+     */
+    retrieve(fineTunedModelCheckpoint, query = {}, options) {
+        return this._client.get(path `/fine_tuning/checkpoints/${fineTunedModelCheckpoint}/permissions`, {
+            query,
+            ...options,
+        });
+    }
+    /**
+     * **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+     *
+     * Organization owners can use this endpoint to delete a permission for a
+     * fine-tuned model checkpoint.
+     *
+     * @example
+     * ```ts
+     * const permission =
+     *   await client.fineTuning.checkpoints.permissions.delete(
+     *     'cp_zc4Q7MP6XxulcVzj4MZdwsAB',
+     *     {
+     *       fine_tuned_model_checkpoint:
+     *         'ft:gpt-4o-mini-2024-07-18:org:weather:B7R9VjQd',
+     *     },
+     *   );
+     * ```
+     */
+    delete(permissionID, params, options) {
+        const { fine_tuned_model_checkpoint } = params;
+        return this._client.delete(path `/fine_tuning/checkpoints/${fine_tuned_model_checkpoint}/permissions/${permissionID}`, options);
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+let Checkpoints$1 = class Checkpoints extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.permissions = new Permissions(this._client);
+    }
+};
+Checkpoints$1.Permissions = Permissions;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Checkpoints extends APIResource {
+    /**
+     * List checkpoints for a fine-tuning job.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const fineTuningJobCheckpoint of client.fineTuning.jobs.checkpoints.list(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * )) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(fineTuningJobID, query = {}, options) {
+        return this._client.getAPIList(path `/fine_tuning/jobs/${fineTuningJobID}/checkpoints`, (CursorPage), { query, ...options });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Jobs extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.checkpoints = new Checkpoints(this._client);
+    }
+    /**
+     * Creates a fine-tuning job which begins the process of creating a new model from
+     * a given dataset.
+     *
+     * Response includes details of the enqueued job including job status and the name
+     * of the fine-tuned models once complete.
+     *
+     * [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
+     *
+     * @example
+     * ```ts
+     * const fineTuningJob = await client.fineTuning.jobs.create({
+     *   model: 'gpt-4o-mini',
+     *   training_file: 'file-abc123',
+     * });
+     * ```
+     */
+    create(body, options) {
+        return this._client.post('/fine_tuning/jobs', { body, ...options });
+    }
+    /**
+     * Get info about a fine-tuning job.
+     *
+     * [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
+     *
+     * @example
+     * ```ts
+     * const fineTuningJob = await client.fineTuning.jobs.retrieve(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * );
+     * ```
+     */
+    retrieve(fineTuningJobID, options) {
+        return this._client.get(path `/fine_tuning/jobs/${fineTuningJobID}`, options);
+    }
+    /**
+     * List your organization's fine-tuning jobs
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const fineTuningJob of client.fineTuning.jobs.list()) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/fine_tuning/jobs', (CursorPage), { query, ...options });
+    }
+    /**
+     * Immediately cancel a fine-tune job.
+     *
+     * @example
+     * ```ts
+     * const fineTuningJob = await client.fineTuning.jobs.cancel(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * );
+     * ```
+     */
+    cancel(fineTuningJobID, options) {
+        return this._client.post(path `/fine_tuning/jobs/${fineTuningJobID}/cancel`, options);
+    }
+    /**
+     * Get status updates for a fine-tuning job.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const fineTuningJobEvent of client.fineTuning.jobs.listEvents(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * )) {
+     *   // ...
+     * }
+     * ```
+     */
+    listEvents(fineTuningJobID, query = {}, options) {
+        return this._client.getAPIList(path `/fine_tuning/jobs/${fineTuningJobID}/events`, (CursorPage), { query, ...options });
+    }
+    /**
+     * Pause a fine-tune job.
+     *
+     * @example
+     * ```ts
+     * const fineTuningJob = await client.fineTuning.jobs.pause(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * );
+     * ```
+     */
+    pause(fineTuningJobID, options) {
+        return this._client.post(path `/fine_tuning/jobs/${fineTuningJobID}/pause`, options);
+    }
+    /**
+     * Resume a fine-tune job.
+     *
+     * @example
+     * ```ts
+     * const fineTuningJob = await client.fineTuning.jobs.resume(
+     *   'ft-AF1WoRqd3aJAHsqc9NY7iL8F',
+     * );
+     * ```
+     */
+    resume(fineTuningJobID, options) {
+        return this._client.post(path `/fine_tuning/jobs/${fineTuningJobID}/resume`, options);
+    }
+}
+Jobs.Checkpoints = Checkpoints;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class FineTuning extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.methods = new Methods(this._client);
+        this.jobs = new Jobs(this._client);
+        this.checkpoints = new Checkpoints$1(this._client);
+        this.alpha = new Alpha(this._client);
+    }
+}
+FineTuning.Methods = Methods;
+FineTuning.Jobs = Jobs;
+FineTuning.Checkpoints = Checkpoints$1;
+FineTuning.Alpha = Alpha;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class GraderModels extends APIResource {
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Graders extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.graderModels = new GraderModels(this._client);
+    }
+}
+Graders.GraderModels = GraderModels;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Images extends APIResource {
+    /**
+     * Creates a variation of a given image. This endpoint only supports `dall-e-2`.
+     *
+     * @example
+     * ```ts
+     * const imagesResponse = await client.images.createVariation({
+     *   image: fs.createReadStream('otter.png'),
+     * });
+     * ```
+     */
+    createVariation(body, options) {
+        return this._client.post('/images/variations', multipartFormRequestOptions({ body, ...options }, this._client));
+    }
+    edit(body, options) {
+        return this._client.post('/images/edits', multipartFormRequestOptions({ body, ...options, stream: body.stream ?? false }, this._client));
+    }
+    generate(body, options) {
+        return this._client.post('/images/generations', { body, ...options, stream: body.stream ?? false });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Models extends APIResource {
+    /**
+     * Retrieves a model instance, providing basic information about the model such as
+     * the owner and permissioning.
+     */
+    retrieve(model, options) {
+        return this._client.get(path `/models/${model}`, options);
+    }
+    /**
+     * Lists the currently available models, and provides basic information about each
+     * one such as the owner and availability.
+     */
+    list(options) {
+        return this._client.getAPIList('/models', (Page), options);
+    }
+    /**
+     * Delete a fine-tuned model. You must have the Owner role in your organization to
+     * delete a model.
+     */
+    delete(model, options) {
+        return this._client.delete(path `/models/${model}`, options);
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Moderations extends APIResource {
+    /**
+     * Classifies if text and/or image inputs are potentially harmful. Learn more in
+     * the [moderation guide](https://platform.openai.com/docs/guides/moderation).
+     */
+    create(body, options) {
+        return this._client.post('/moderations', { body, ...options });
+    }
+}
+
+function maybeParseResponse(response, params) {
+    if (!params || !hasAutoParseableInput(params)) {
+        return {
+            ...response,
+            output_parsed: null,
+            output: response.output.map((item) => {
+                if (item.type === 'function_call') {
+                    return {
+                        ...item,
+                        parsed_arguments: null,
+                    };
+                }
+                if (item.type === 'message') {
+                    return {
+                        ...item,
+                        content: item.content.map((content) => ({
+                            ...content,
+                            parsed: null,
+                        })),
+                    };
+                }
+                else {
+                    return item;
+                }
+            }),
+        };
+    }
+    return parseResponse(response, params);
+}
+function parseResponse(response, params) {
+    const output = response.output.map((item) => {
+        if (item.type === 'function_call') {
+            return {
+                ...item,
+                parsed_arguments: parseToolCall(params, item),
+            };
+        }
+        if (item.type === 'message') {
+            const content = item.content.map((content) => {
+                if (content.type === 'output_text') {
+                    return {
+                        ...content,
+                        parsed: parseTextFormat(params, content.text),
+                    };
+                }
+                return content;
+            });
+            return {
+                ...item,
+                content,
+            };
+        }
+        return item;
+    });
+    const parsed = Object.assign({}, response, { output });
+    if (!Object.getOwnPropertyDescriptor(response, 'output_text')) {
+        addOutputText(parsed);
+    }
+    Object.defineProperty(parsed, 'output_parsed', {
+        enumerable: true,
+        get() {
+            for (const output of parsed.output) {
+                if (output.type !== 'message') {
+                    continue;
+                }
+                for (const content of output.content) {
+                    if (content.type === 'output_text' && content.parsed !== null) {
+                        return content.parsed;
+                    }
+                }
+            }
+            return null;
+        },
+    });
+    return parsed;
+}
+function parseTextFormat(params, content) {
+    if (params.text?.format?.type !== 'json_schema') {
+        return null;
+    }
+    if ('$parseRaw' in params.text?.format) {
+        const text_format = params.text?.format;
+        return text_format.$parseRaw(content);
+    }
+    return JSON.parse(content);
+}
+function hasAutoParseableInput(params) {
+    if (isAutoParsableResponseFormat(params.text?.format)) {
+        return true;
+    }
+    return false;
+}
+function isAutoParsableTool(tool) {
+    return tool?.['$brand'] === 'auto-parseable-tool';
+}
+function getInputToolByName(input_tools, name) {
+    return input_tools.find((tool) => tool.type === 'function' && tool.name === name);
+}
+function parseToolCall(params, toolCall) {
+    const inputTool = getInputToolByName(params.tools ?? [], toolCall.name);
+    return {
+        ...toolCall,
+        ...toolCall,
+        parsed_arguments: isAutoParsableTool(inputTool) ? inputTool.$parseRaw(toolCall.arguments)
+            : inputTool?.strict ? JSON.parse(toolCall.arguments)
+                : null,
+    };
+}
+function addOutputText(rsp) {
+    const texts = [];
+    for (const output of rsp.output) {
+        if (output.type !== 'message') {
+            continue;
+        }
+        for (const content of output.content) {
+            if (content.type === 'output_text') {
+                texts.push(content.text);
+            }
+        }
+    }
+    rsp.output_text = texts.join('');
+}
+
+var _ResponseStream_instances, _ResponseStream_params, _ResponseStream_currentResponseSnapshot, _ResponseStream_finalResponse, _ResponseStream_beginRequest, _ResponseStream_addEvent, _ResponseStream_endRequest, _ResponseStream_accumulateResponse;
+class ResponseStream extends EventStream {
+    constructor(params) {
+        super();
+        _ResponseStream_instances.add(this);
+        _ResponseStream_params.set(this, void 0);
+        _ResponseStream_currentResponseSnapshot.set(this, void 0);
+        _ResponseStream_finalResponse.set(this, void 0);
+        __classPrivateFieldSet(this, _ResponseStream_params, params);
+    }
+    static createResponse(client, params, options) {
+        const runner = new ResponseStream(params);
+        runner._run(() => runner._createOrRetrieveResponse(client, params, {
+            ...options,
+            headers: { ...options?.headers, 'X-Stainless-Helper-Method': 'stream' },
+        }));
+        return runner;
+    }
+    async _createOrRetrieveResponse(client, params, options) {
+        const signal = options?.signal;
+        if (signal) {
+            if (signal.aborted)
+                this.controller.abort();
+            signal.addEventListener('abort', () => this.controller.abort());
+        }
+        __classPrivateFieldGet(this, _ResponseStream_instances, "m", _ResponseStream_beginRequest).call(this);
+        let stream;
+        let starting_after = null;
+        if ('response_id' in params) {
+            stream = await client.responses.retrieve(params.response_id, { stream: true }, { ...options, signal: this.controller.signal, stream: true });
+            starting_after = params.starting_after ?? null;
+        }
+        else {
+            stream = await client.responses.create({ ...params, stream: true }, { ...options, signal: this.controller.signal });
+        }
+        this._connected();
+        for await (const event of stream) {
+            __classPrivateFieldGet(this, _ResponseStream_instances, "m", _ResponseStream_addEvent).call(this, event, starting_after);
+        }
+        if (stream.controller.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        return __classPrivateFieldGet(this, _ResponseStream_instances, "m", _ResponseStream_endRequest).call(this);
+    }
+    [(_ResponseStream_params = new WeakMap(), _ResponseStream_currentResponseSnapshot = new WeakMap(), _ResponseStream_finalResponse = new WeakMap(), _ResponseStream_instances = new WeakSet(), _ResponseStream_beginRequest = function _ResponseStream_beginRequest() {
+        if (this.ended)
+            return;
+        __classPrivateFieldSet(this, _ResponseStream_currentResponseSnapshot, undefined);
+    }, _ResponseStream_addEvent = function _ResponseStream_addEvent(event, starting_after) {
+        if (this.ended)
+            return;
+        const maybeEmit = (name, event) => {
+            if (starting_after == null || event.sequence_number > starting_after) {
+                this._emit(name, event);
+            }
+        };
+        const response = __classPrivateFieldGet(this, _ResponseStream_instances, "m", _ResponseStream_accumulateResponse).call(this, event);
+        maybeEmit('event', event);
+        switch (event.type) {
+            case 'response.output_text.delta': {
+                const output = response.output[event.output_index];
+                if (!output) {
+                    throw new OpenAIError(`missing output at index ${event.output_index}`);
+                }
+                if (output.type === 'message') {
+                    const content = output.content[event.content_index];
+                    if (!content) {
+                        throw new OpenAIError(`missing content at index ${event.content_index}`);
+                    }
+                    if (content.type !== 'output_text') {
+                        throw new OpenAIError(`expected content to be 'output_text', got ${content.type}`);
+                    }
+                    maybeEmit('response.output_text.delta', {
+                        ...event,
+                        snapshot: content.text,
+                    });
+                }
+                break;
+            }
+            case 'response.function_call_arguments.delta': {
+                const output = response.output[event.output_index];
+                if (!output) {
+                    throw new OpenAIError(`missing output at index ${event.output_index}`);
+                }
+                if (output.type === 'function_call') {
+                    maybeEmit('response.function_call_arguments.delta', {
+                        ...event,
+                        snapshot: output.arguments,
+                    });
+                }
+                break;
+            }
+            default:
+                maybeEmit(event.type, event);
+                break;
+        }
+    }, _ResponseStream_endRequest = function _ResponseStream_endRequest() {
+        if (this.ended) {
+            throw new OpenAIError(`stream has ended, this shouldn't happen`);
+        }
+        const snapshot = __classPrivateFieldGet(this, _ResponseStream_currentResponseSnapshot, "f");
+        if (!snapshot) {
+            throw new OpenAIError(`request ended without sending any events`);
+        }
+        __classPrivateFieldSet(this, _ResponseStream_currentResponseSnapshot, undefined);
+        const parsedResponse = finalizeResponse(snapshot, __classPrivateFieldGet(this, _ResponseStream_params, "f"));
+        __classPrivateFieldSet(this, _ResponseStream_finalResponse, parsedResponse);
+        return parsedResponse;
+    }, _ResponseStream_accumulateResponse = function _ResponseStream_accumulateResponse(event) {
+        let snapshot = __classPrivateFieldGet(this, _ResponseStream_currentResponseSnapshot, "f");
+        if (!snapshot) {
+            if (event.type !== 'response.created') {
+                throw new OpenAIError(`When snapshot hasn't been set yet, expected 'response.created' event, got ${event.type}`);
+            }
+            snapshot = __classPrivateFieldSet(this, _ResponseStream_currentResponseSnapshot, event.response);
+            return snapshot;
+        }
+        switch (event.type) {
+            case 'response.output_item.added': {
+                snapshot.output.push(event.item);
+                break;
+            }
+            case 'response.content_part.added': {
+                const output = snapshot.output[event.output_index];
+                if (!output) {
+                    throw new OpenAIError(`missing output at index ${event.output_index}`);
+                }
+                if (output.type === 'message') {
+                    output.content.push(event.part);
+                }
+                break;
+            }
+            case 'response.output_text.delta': {
+                const output = snapshot.output[event.output_index];
+                if (!output) {
+                    throw new OpenAIError(`missing output at index ${event.output_index}`);
+                }
+                if (output.type === 'message') {
+                    const content = output.content[event.content_index];
+                    if (!content) {
+                        throw new OpenAIError(`missing content at index ${event.content_index}`);
+                    }
+                    if (content.type !== 'output_text') {
+                        throw new OpenAIError(`expected content to be 'output_text', got ${content.type}`);
+                    }
+                    content.text += event.delta;
+                }
+                break;
+            }
+            case 'response.function_call_arguments.delta': {
+                const output = snapshot.output[event.output_index];
+                if (!output) {
+                    throw new OpenAIError(`missing output at index ${event.output_index}`);
+                }
+                if (output.type === 'function_call') {
+                    output.arguments += event.delta;
+                }
+                break;
+            }
+            case 'response.completed': {
+                __classPrivateFieldSet(this, _ResponseStream_currentResponseSnapshot, event.response);
                 break;
             }
         }
-        // We finished evaluating the current candidate parts
-        // Update the matched value if and only if we found the longer pattern
-        if (found && candidatePath.length > matchedLen) {
-            matchedLen = candidatePath.length;
-            matchedValue = value;
+        return snapshot;
+    }, Symbol.asyncIterator)]() {
+        const pushQueue = [];
+        const readQueue = [];
+        let done = false;
+        this.on('event', (event) => {
+            const reader = readQueue.shift();
+            if (reader) {
+                reader.resolve(event);
+            }
+            else {
+                pushQueue.push(event);
+            }
+        });
+        this.on('end', () => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.resolve(undefined);
+            }
+            readQueue.length = 0;
+        });
+        this.on('abort', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        this.on('error', (err) => {
+            done = true;
+            for (const reader of readQueue) {
+                reader.reject(err);
+            }
+            readQueue.length = 0;
+        });
+        return {
+            next: async () => {
+                if (!pushQueue.length) {
+                    if (done) {
+                        return { value: undefined, done: true };
+                    }
+                    return new Promise((resolve, reject) => readQueue.push({ resolve, reject })).then((event) => (event ? { value: event, done: false } : { value: undefined, done: true }));
+                }
+                const event = pushQueue.shift();
+                return { value: event, done: false };
+            },
+            return: async () => {
+                this.abort();
+                return { value: undefined, done: true };
+            },
+        };
+    }
+    /**
+     * @returns a promise that resolves with the final Response, or rejects
+     * if an error occurred or the stream ended prematurely without producing a REsponse.
+     */
+    async finalResponse() {
+        await this.done();
+        const response = __classPrivateFieldGet(this, _ResponseStream_finalResponse, "f");
+        if (!response)
+            throw new OpenAIError('stream ended without producing a ChatCompletion');
+        return response;
+    }
+}
+function finalizeResponse(snapshot, params) {
+    return maybeParseResponse(snapshot, params);
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class InputItems extends APIResource {
+    /**
+     * Returns a list of input items for a given response.
+     *
+     * @example
+     * ```ts
+     * // Automatically fetches more pages as needed.
+     * for await (const responseItem of client.responses.inputItems.list(
+     *   'response_id',
+     * )) {
+     *   // ...
+     * }
+     * ```
+     */
+    list(responseID, query = {}, options) {
+        return this._client.getAPIList(path `/responses/${responseID}/input_items`, (CursorPage), { query, ...options });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Responses extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.inputItems = new InputItems(this._client);
+    }
+    create(body, options) {
+        return this._client.post('/responses', { body, ...options, stream: body.stream ?? false })._thenUnwrap((rsp) => {
+            if ('object' in rsp && rsp.object === 'response') {
+                addOutputText(rsp);
+            }
+            return rsp;
+        });
+    }
+    retrieve(responseID, query = {}, options) {
+        return this._client.get(path `/responses/${responseID}`, {
+            query,
+            ...options,
+            stream: query?.stream ?? false,
+        })._thenUnwrap((rsp) => {
+            if ('object' in rsp && rsp.object === 'response') {
+                addOutputText(rsp);
+            }
+            return rsp;
+        });
+    }
+    /**
+     * Deletes a model response with the given ID.
+     *
+     * @example
+     * ```ts
+     * await client.responses.delete(
+     *   'resp_677efb5139a88190b512bc3fef8e535d',
+     * );
+     * ```
+     */
+    delete(responseID, options) {
+        return this._client.delete(path `/responses/${responseID}`, {
+            ...options,
+            headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+        });
+    }
+    parse(body, options) {
+        return this._client.responses
+            .create(body, options)
+            ._thenUnwrap((response) => parseResponse(response, body));
+    }
+    /**
+     * Creates a model response stream
+     */
+    stream(body, options) {
+        return ResponseStream.createResponse(this._client, body, options);
+    }
+    /**
+     * Cancels a model response with the given ID. Only responses created with the
+     * `background` parameter set to `true` can be cancelled.
+     * [Learn more](https://platform.openai.com/docs/guides/background).
+     *
+     * @example
+     * ```ts
+     * const response = await client.responses.cancel(
+     *   'resp_677efb5139a88190b512bc3fef8e535d',
+     * );
+     * ```
+     */
+    cancel(responseID, options) {
+        return this._client.post(path `/responses/${responseID}/cancel`, options);
+    }
+}
+Responses.InputItems = InputItems;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Parts extends APIResource {
+    /**
+     * Adds a
+     * [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
+     * [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object.
+     * A Part represents a chunk of bytes from the file you are trying to upload.
+     *
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload
+     * maximum of 8 GB.
+     *
+     * It is possible to add multiple Parts in parallel. You can decide the intended
+     * order of the Parts when you
+     * [complete the Upload](https://platform.openai.com/docs/api-reference/uploads/complete).
+     */
+    create(uploadID, body, options) {
+        return this._client.post(path `/uploads/${uploadID}/parts`, multipartFormRequestOptions({ body, ...options }, this._client));
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Uploads extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.parts = new Parts(this._client);
+    }
+    /**
+     * Creates an intermediate
+     * [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object
+     * that you can add
+     * [Parts](https://platform.openai.com/docs/api-reference/uploads/part-object) to.
+     * Currently, an Upload can accept at most 8 GB in total and expires after an hour
+     * after you create it.
+     *
+     * Once you complete the Upload, we will create a
+     * [File](https://platform.openai.com/docs/api-reference/files/object) object that
+     * contains all the parts you uploaded. This File is usable in the rest of our
+     * platform as a regular File object.
+     *
+     * For certain `purpose` values, the correct `mime_type` must be specified. Please
+     * refer to documentation for the
+     * [supported MIME types for your use case](https://platform.openai.com/docs/assistants/tools/file-search#supported-files).
+     *
+     * For guidance on the proper filename extensions for each purpose, please follow
+     * the documentation on
+     * [creating a File](https://platform.openai.com/docs/api-reference/files/create).
+     */
+    create(body, options) {
+        return this._client.post('/uploads', { body, ...options });
+    }
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     */
+    cancel(uploadID, options) {
+        return this._client.post(path `/uploads/${uploadID}/cancel`, options);
+    }
+    /**
+     * Completes the
+     * [Upload](https://platform.openai.com/docs/api-reference/uploads/object).
+     *
+     * Within the returned Upload object, there is a nested
+     * [File](https://platform.openai.com/docs/api-reference/files/object) object that
+     * is ready to use in the rest of the platform.
+     *
+     * You can specify the order of the Parts by passing in an ordered list of the Part
+     * IDs.
+     *
+     * The number of bytes uploaded upon completion must match the number of bytes
+     * initially specified when creating the Upload object. No Parts may be added after
+     * an Upload is completed.
+     */
+    complete(uploadID, body, options) {
+        return this._client.post(path `/uploads/${uploadID}/complete`, { body, ...options });
+    }
+}
+Uploads.Parts = Parts;
+
+/**
+ * Like `Promise.allSettled()` but throws an error if any promises are rejected.
+ */
+const allSettledWithThrow = async (promises) => {
+    const results = await Promise.allSettled(promises);
+    const rejected = results.filter((result) => result.status === 'rejected');
+    if (rejected.length) {
+        for (const result of rejected) {
+            console.error(result.reason);
+        }
+        throw new Error(`${rejected.length} promise(s) failed - see the above errors`);
+    }
+    // Note: TS was complaining about using `.filter().map()` here for some reason
+    const values = [];
+    for (const result of results) {
+        if (result.status === 'fulfilled') {
+            values.push(result.value);
         }
     }
-    return matchedValue;
+    return values;
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class FileBatches extends APIResource {
+    /**
+     * Create a vector store file batch.
+     */
+    create(vectorStoreID, body, options) {
+        return this._client.post(path `/vector_stores/${vectorStoreID}/file_batches`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieves a vector store file batch.
+     */
+    retrieve(batchID, params, options) {
+        const { vector_store_id } = params;
+        return this._client.get(path `/vector_stores/${vector_store_id}/file_batches/${batchID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of
+     * files in this batch as soon as possible.
+     */
+    cancel(batchID, params, options) {
+        const { vector_store_id } = params;
+        return this._client.post(path `/vector_stores/${vector_store_id}/file_batches/${batchID}/cancel`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Create a vector store batch and poll until all files have been processed.
+     */
+    async createAndPoll(vectorStoreId, body, options) {
+        const batch = await this.create(vectorStoreId, body);
+        return await this.poll(vectorStoreId, batch.id, options);
+    }
+    /**
+     * Returns a list of vector store files in a batch.
+     */
+    listFiles(batchID, params, options) {
+        const { vector_store_id, ...query } = params;
+        return this._client.getAPIList(path `/vector_stores/${vector_store_id}/file_batches/${batchID}/files`, (CursorPage), { query, ...options, headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]) });
+    }
+    /**
+     * Wait for the given file batch to be processed.
+     *
+     * Note: this will return even if one of the files failed to process, you need to
+     * check batch.file_counts.failed_count to handle this case.
+     */
+    async poll(vectorStoreID, batchID, options) {
+        const headers = buildHeaders([
+            options?.headers,
+            {
+                'X-Stainless-Poll-Helper': 'true',
+                'X-Stainless-Custom-Poll-Interval': options?.pollIntervalMs?.toString() ?? undefined,
+            },
+        ]);
+        while (true) {
+            const { data: batch, response } = await this.retrieve(batchID, { vector_store_id: vectorStoreID }, {
+                ...options,
+                headers,
+            }).withResponse();
+            switch (batch.status) {
+                case 'in_progress':
+                    let sleepInterval = 5000;
+                    if (options?.pollIntervalMs) {
+                        sleepInterval = options.pollIntervalMs;
+                    }
+                    else {
+                        const headerInterval = response.headers.get('openai-poll-after-ms');
+                        if (headerInterval) {
+                            const headerIntervalMs = parseInt(headerInterval);
+                            if (!isNaN(headerIntervalMs)) {
+                                sleepInterval = headerIntervalMs;
+                            }
+                        }
+                    }
+                    await sleep(sleepInterval);
+                    break;
+                case 'failed':
+                case 'cancelled':
+                case 'completed':
+                    return batch;
+            }
+        }
+    }
+    /**
+     * Uploads the given files concurrently and then creates a vector store file batch.
+     *
+     * The concurrency limit is configurable using the `maxConcurrency` parameter.
+     */
+    async uploadAndPoll(vectorStoreId, { files, fileIds = [] }, options) {
+        if (files == null || files.length == 0) {
+            throw new Error(`No \`files\` provided to process. If you've already uploaded files you should use \`.createAndPoll()\` instead`);
+        }
+        const configuredConcurrency = options?.maxConcurrency ?? 5;
+        // We cap the number of workers at the number of files (so we don't start any unnecessary workers)
+        const concurrencyLimit = Math.min(configuredConcurrency, files.length);
+        const client = this._client;
+        const fileIterator = files.values();
+        const allFileIds = [...fileIds];
+        // This code is based on this design. The libraries don't accommodate our environment limits.
+        // https://stackoverflow.com/questions/40639432/what-is-the-best-way-to-limit-concurrency-when-using-es6s-promise-all
+        async function processFiles(iterator) {
+            for (let item of iterator) {
+                const fileObj = await client.files.create({ file: item, purpose: 'assistants' }, options);
+                allFileIds.push(fileObj.id);
+            }
+        }
+        // Start workers to process results
+        const workers = Array(concurrencyLimit).fill(fileIterator).map(processFiles);
+        // Wait for all processing to complete.
+        await allSettledWithThrow(workers);
+        return await this.createAndPoll(vectorStoreId, {
+            file_ids: allFileIds,
+        });
+    }
 }
-function getPathFromMapKey(mapKey) {
-    const pathStart = mapKey.indexOf("/");
-    return mapKey.slice(pathStart);
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class Files extends APIResource {
+    /**
+     * Create a vector store file by attaching a
+     * [File](https://platform.openai.com/docs/api-reference/files) to a
+     * [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
+     */
+    create(vectorStoreID, body, options) {
+        return this._client.post(path `/vector_stores/${vectorStoreID}/files`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieves a vector store file.
+     */
+    retrieve(fileID, params, options) {
+        const { vector_store_id } = params;
+        return this._client.get(path `/vector_stores/${vector_store_id}/files/${fileID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Update attributes on a vector store file.
+     */
+    update(fileID, params, options) {
+        const { vector_store_id, ...body } = params;
+        return this._client.post(path `/vector_stores/${vector_store_id}/files/${fileID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of vector store files.
+     */
+    list(vectorStoreID, query = {}, options) {
+        return this._client.getAPIList(path `/vector_stores/${vectorStoreID}/files`, (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but
+     * the file itself will not be deleted. To delete the file, use the
+     * [delete file](https://platform.openai.com/docs/api-reference/files/delete)
+     * endpoint.
+     */
+    delete(fileID, params, options) {
+        const { vector_store_id } = params;
+        return this._client.delete(path `/vector_stores/${vector_store_id}/files/${fileID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Attach a file to the given vector store and wait for it to be processed.
+     */
+    async createAndPoll(vectorStoreId, body, options) {
+        const file = await this.create(vectorStoreId, body, options);
+        return await this.poll(vectorStoreId, file.id, options);
+    }
+    /**
+     * Wait for the vector store file to finish processing.
+     *
+     * Note: this will return even if the file failed to process, you need to check
+     * file.last_error and file.status to handle these cases
+     */
+    async poll(vectorStoreID, fileID, options) {
+        const headers = buildHeaders([
+            options?.headers,
+            {
+                'X-Stainless-Poll-Helper': 'true',
+                'X-Stainless-Custom-Poll-Interval': options?.pollIntervalMs?.toString() ?? undefined,
+            },
+        ]);
+        while (true) {
+            const fileResponse = await this.retrieve(fileID, {
+                vector_store_id: vectorStoreID,
+            }, { ...options, headers }).withResponse();
+            const file = fileResponse.data;
+            switch (file.status) {
+                case 'in_progress':
+                    let sleepInterval = 5000;
+                    if (options?.pollIntervalMs) {
+                        sleepInterval = options.pollIntervalMs;
+                    }
+                    else {
+                        const headerInterval = fileResponse.response.headers.get('openai-poll-after-ms');
+                        if (headerInterval) {
+                            const headerIntervalMs = parseInt(headerInterval);
+                            if (!isNaN(headerIntervalMs)) {
+                                sleepInterval = headerIntervalMs;
+                            }
+                        }
+                    }
+                    await sleep(sleepInterval);
+                    break;
+                case 'failed':
+                case 'completed':
+                    return file;
+            }
+        }
+    }
+    /**
+     * Upload a file to the `files` API and then attach it to the given vector store.
+     *
+     * Note the file will be asynchronously processed (you can use the alternative
+     * polling helper method to wait for processing to complete).
+     */
+    async upload(vectorStoreId, file, options) {
+        const fileInfo = await this._client.files.create({ file: file, purpose: 'assistants' }, options);
+        return this.create(vectorStoreId, { file_id: fileInfo.id }, options);
+    }
+    /**
+     * Add a file to a vector store and poll until processing is complete.
+     */
+    async uploadAndPoll(vectorStoreId, file, options) {
+        const fileInfo = await this.upload(vectorStoreId, file, options);
+        return await this.poll(vectorStoreId, fileInfo.id, options);
+    }
+    /**
+     * Retrieve the parsed contents of a vector store file.
+     */
+    content(fileID, params, options) {
+        const { vector_store_id } = params;
+        return this._client.getAPIList(path `/vector_stores/${vector_store_id}/files/${fileID}/content`, (Page), { ...options, headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]) });
+    }
+}
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+class VectorStores extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.files = new Files(this._client);
+        this.fileBatches = new FileBatches(this._client);
+    }
+    /**
+     * Create a vector store.
+     */
+    create(body, options) {
+        return this._client.post('/vector_stores', {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Retrieves a vector store.
+     */
+    retrieve(vectorStoreID, options) {
+        return this._client.get(path `/vector_stores/${vectorStoreID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Modifies a vector store.
+     */
+    update(vectorStoreID, body, options) {
+        return this._client.post(path `/vector_stores/${vectorStoreID}`, {
+            body,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Returns a list of vector stores.
+     */
+    list(query = {}, options) {
+        return this._client.getAPIList('/vector_stores', (CursorPage), {
+            query,
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Delete a vector store.
+     */
+    delete(vectorStoreID, options) {
+        return this._client.delete(path `/vector_stores/${vectorStoreID}`, {
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+    /**
+     * Search a vector store for relevant chunks based on a query and file attributes
+     * filter.
+     */
+    search(vectorStoreID, body, options) {
+        return this._client.getAPIList(path `/vector_stores/${vectorStoreID}/search`, (Page), {
+            body,
+            method: 'post',
+            ...options,
+            headers: buildHeaders([{ 'OpenAI-Beta': 'assistants=v2' }, options?.headers]),
+        });
+    }
+}
+VectorStores.Files = Files;
+VectorStores.FileBatches = FileBatches;
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+var _Webhooks_instances, _Webhooks_validateSecret, _Webhooks_getRequiredHeader;
+class Webhooks extends APIResource {
+    constructor() {
+        super(...arguments);
+        _Webhooks_instances.add(this);
+    }
+    /**
+     * Validates that the given payload was sent by OpenAI and parses the payload.
+     */
+    async unwrap(payload, headers, secret = this._client.webhookSecret, tolerance = 300) {
+        await this.verifySignature(payload, headers, secret, tolerance);
+        return JSON.parse(payload);
+    }
+    /**
+     * Validates whether or not the webhook payload was sent by OpenAI.
+     *
+     * An error will be raised if the webhook payload was not sent by OpenAI.
+     *
+     * @param payload - The webhook payload
+     * @param headers - The webhook headers
+     * @param secret - The webhook secret (optional, will use client secret if not provided)
+     * @param tolerance - Maximum age of the webhook in seconds (default: 300 = 5 minutes)
+     */
+    async verifySignature(payload, headers, secret = this._client.webhookSecret, tolerance = 300) {
+        if (typeof crypto === 'undefined' ||
+            typeof crypto.subtle.importKey !== 'function' ||
+            typeof crypto.subtle.verify !== 'function') {
+            throw new Error('Webhook signature verification is only supported when the `crypto` global is defined');
+        }
+        __classPrivateFieldGet(this, _Webhooks_instances, "m", _Webhooks_validateSecret).call(this, secret);
+        const headersObj = buildHeaders([headers]).values;
+        const signatureHeader = __classPrivateFieldGet(this, _Webhooks_instances, "m", _Webhooks_getRequiredHeader).call(this, headersObj, 'webhook-signature');
+        const timestamp = __classPrivateFieldGet(this, _Webhooks_instances, "m", _Webhooks_getRequiredHeader).call(this, headersObj, 'webhook-timestamp');
+        const webhookId = __classPrivateFieldGet(this, _Webhooks_instances, "m", _Webhooks_getRequiredHeader).call(this, headersObj, 'webhook-id');
+        // Validate timestamp to prevent replay attacks
+        const timestampSeconds = parseInt(timestamp, 10);
+        if (isNaN(timestampSeconds)) {
+            throw new InvalidWebhookSignatureError('Invalid webhook timestamp format');
+        }
+        const nowSeconds = Math.floor(Date.now() / 1000);
+        if (nowSeconds - timestampSeconds > tolerance) {
+            throw new InvalidWebhookSignatureError('Webhook timestamp is too old');
+        }
+        if (timestampSeconds > nowSeconds + tolerance) {
+            throw new InvalidWebhookSignatureError('Webhook timestamp is too new');
+        }
+        // Extract signatures from v1,<base64> format
+        // The signature header can have multiple values, separated by spaces.
+        // Each value is in the format v1,<base64>. We should accept if any match.
+        const signatures = signatureHeader
+            .split(' ')
+            .map((part) => (part.startsWith('v1,') ? part.substring(3) : part));
+        // Decode the secret if it starts with whsec_
+        const decodedSecret = secret.startsWith('whsec_') ?
+            Buffer.from(secret.replace('whsec_', ''), 'base64')
+            : Buffer.from(secret, 'utf-8');
+        // Create the signed payload: {webhook_id}.{timestamp}.{payload}
+        const signedPayload = webhookId ? `${webhookId}.${timestamp}.${payload}` : `${timestamp}.${payload}`;
+        // Import the secret as a cryptographic key for HMAC
+        const key = await crypto.subtle.importKey('raw', decodedSecret, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
+        // Check if any signature matches using timing-safe WebCrypto verify
+        for (const signature of signatures) {
+            try {
+                const signatureBytes = Buffer.from(signature, 'base64');
+                const isValid = await crypto.subtle.verify('HMAC', key, signatureBytes, new TextEncoder().encode(signedPayload));
+                if (isValid) {
+                    return; // Valid signature found
+                }
+            }
+            catch {
+                // Invalid base64 or signature format, continue to next signature
+                continue;
+            }
+        }
+        throw new InvalidWebhookSignatureError('The given webhook signature does not match the expected signature');
+    }
+}
+_Webhooks_instances = new WeakSet(), _Webhooks_validateSecret = function _Webhooks_validateSecret(secret) {
+    if (typeof secret !== 'string' || secret.length === 0) {
+        throw new Error(`The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET, on the client class, OpenAI({ webhookSecret: '123' }), or passed to this function`);
+    }
+}, _Webhooks_getRequiredHeader = function _Webhooks_getRequiredHeader(headers, name) {
+    if (!headers) {
+        throw new Error(`Headers are required`);
+    }
+    const value = headers.get(name);
+    if (value === null || value === undefined) {
+        throw new Error(`Missing required header: ${name}`);
+    }
+    return value;
+};
+
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+var _OpenAI_instances, _a, _OpenAI_encoder, _OpenAI_baseURLOverridden;
+/**
+ * API Client for interfacing with the OpenAI API.
+ */
+class OpenAI {
+    /**
+     * API Client for interfacing with the OpenAI API.
+     *
+     * @param {string | undefined} [opts.apiKey=process.env['OPENAI_API_KEY'] ?? undefined]
+     * @param {string | null | undefined} [opts.organization=process.env['OPENAI_ORG_ID'] ?? null]
+     * @param {string | null | undefined} [opts.project=process.env['OPENAI_PROJECT_ID'] ?? null]
+     * @param {string | null | undefined} [opts.webhookSecret=process.env['OPENAI_WEBHOOK_SECRET'] ?? null]
+     * @param {string} [opts.baseURL=process.env['OPENAI_BASE_URL'] ?? https://api.openai.com/v1] - Override the default base URL for the API.
+     * @param {number} [opts.timeout=10 minutes] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
+     * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
+     * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
+     * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
+     * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
+     * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+     * @param {boolean} [opts.dangerouslyAllowBrowser=false] - By default, client-side use of this library is not allowed, as it risks exposing your secret API credentials to attackers.
+     */
+    constructor({ baseURL = readEnv('OPENAI_BASE_URL'), apiKey = readEnv('OPENAI_API_KEY'), organization = readEnv('OPENAI_ORG_ID') ?? null, project = readEnv('OPENAI_PROJECT_ID') ?? null, webhookSecret = readEnv('OPENAI_WEBHOOK_SECRET') ?? null, ...opts } = {}) {
+        _OpenAI_instances.add(this);
+        _OpenAI_encoder.set(this, void 0);
+        this.completions = new Completions(this);
+        this.chat = new Chat(this);
+        this.embeddings = new Embeddings(this);
+        this.files = new Files$1(this);
+        this.images = new Images(this);
+        this.audio = new Audio(this);
+        this.moderations = new Moderations(this);
+        this.models = new Models(this);
+        this.fineTuning = new FineTuning(this);
+        this.graders = new Graders(this);
+        this.vectorStores = new VectorStores(this);
+        this.webhooks = new Webhooks(this);
+        this.beta = new Beta(this);
+        this.batches = new Batches(this);
+        this.uploads = new Uploads(this);
+        this.responses = new Responses(this);
+        this.evals = new Evals(this);
+        this.containers = new Containers(this);
+        if (apiKey === undefined) {
+            throw new OpenAIError("The OPENAI_API_KEY environment variable is missing or empty; either provide it, or instantiate the OpenAI client with an apiKey option, like new OpenAI({ apiKey: 'My API Key' }).");
+        }
+        const options = {
+            apiKey,
+            organization,
+            project,
+            webhookSecret,
+            ...opts,
+            baseURL: baseURL || `https://api.openai.com/v1`,
+        };
+        if (!options.dangerouslyAllowBrowser && isRunningInBrowser()) {
+            throw new OpenAIError("It looks like you're running in a browser-like environment.\n\nThis is disabled by default, as it risks exposing your secret API credentials to attackers.\nIf you understand the risks and have appropriate mitigations in place,\nyou can set the `dangerouslyAllowBrowser` option to `true`, e.g.,\n\nnew OpenAI({ apiKey, dangerouslyAllowBrowser: true });\n\nhttps://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety\n");
+        }
+        this.baseURL = options.baseURL;
+        this.timeout = options.timeout ?? _a.DEFAULT_TIMEOUT /* 10 minutes */;
+        this.logger = options.logger ?? console;
+        const defaultLogLevel = 'warn';
+        // Set default logLevel early so that we can log a warning in parseLogLevel.
+        this.logLevel = defaultLogLevel;
+        this.logLevel =
+            parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
+                parseLogLevel(readEnv('OPENAI_LOG'), "process.env['OPENAI_LOG']", this) ??
+                defaultLogLevel;
+        this.fetchOptions = options.fetchOptions;
+        this.maxRetries = options.maxRetries ?? 2;
+        this.fetch = options.fetch ?? getDefaultFetch();
+        __classPrivateFieldSet(this, _OpenAI_encoder, FallbackEncoder);
+        this._options = options;
+        this.apiKey = apiKey;
+        this.organization = organization;
+        this.project = project;
+        this.webhookSecret = webhookSecret;
+    }
+    /**
+     * Create a new client instance re-using the same options given to the current client with optional overriding.
+     */
+    withOptions(options) {
+        const client = new this.constructor({
+            ...this._options,
+            baseURL: this.baseURL,
+            maxRetries: this.maxRetries,
+            timeout: this.timeout,
+            logger: this.logger,
+            logLevel: this.logLevel,
+            fetch: this.fetch,
+            fetchOptions: this.fetchOptions,
+            apiKey: this.apiKey,
+            organization: this.organization,
+            project: this.project,
+            webhookSecret: this.webhookSecret,
+            ...options,
+        });
+        return client;
+    }
+    defaultQuery() {
+        return this._options.defaultQuery;
+    }
+    validateHeaders({ values, nulls }) {
+        return;
+    }
+    async authHeaders(opts) {
+        return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+    }
+    stringifyQuery(query) {
+        return stringify(query, { arrayFormat: 'brackets' });
+    }
+    getUserAgent() {
+        return `${this.constructor.name}/JS ${VERSION}`;
+    }
+    defaultIdempotencyKey() {
+        return `stainless-node-retry-${uuid4()}`;
+    }
+    makeStatusError(status, error, message, headers) {
+        return APIError.generate(status, error, message, headers);
+    }
+    buildURL(path, query, defaultBaseURL) {
+        const baseURL = (!__classPrivateFieldGet(this, _OpenAI_instances, "m", _OpenAI_baseURLOverridden).call(this) && defaultBaseURL) || this.baseURL;
+        const url = isAbsoluteURL(path) ?
+            new URL(path)
+            : new URL(baseURL + (baseURL.endsWith('/') && path.startsWith('/') ? path.slice(1) : path));
+        const defaultQuery = this.defaultQuery();
+        if (!isEmptyObj(defaultQuery)) {
+            query = { ...defaultQuery, ...query };
+        }
+        if (typeof query === 'object' && query && !Array.isArray(query)) {
+            url.search = this.stringifyQuery(query);
+        }
+        return url.toString();
+    }
+    /**
+     * Used as a callback for mutating the given `FinalRequestOptions` object.
+     */
+    async prepareOptions(options) { }
+    /**
+     * Used as a callback for mutating the given `RequestInit` object.
+     *
+     * This is useful for cases where you want to add certain headers based off of
+     * the request properties, e.g. `method` or `url`.
+     */
+    async prepareRequest(request, { url, options }) { }
+    get(path, opts) {
+        return this.methodRequest('get', path, opts);
+    }
+    post(path, opts) {
+        return this.methodRequest('post', path, opts);
+    }
+    patch(path, opts) {
+        return this.methodRequest('patch', path, opts);
+    }
+    put(path, opts) {
+        return this.methodRequest('put', path, opts);
+    }
+    delete(path, opts) {
+        return this.methodRequest('delete', path, opts);
+    }
+    methodRequest(method, path, opts) {
+        return this.request(Promise.resolve(opts).then((opts) => {
+            return { method, path, ...opts };
+        }));
+    }
+    request(options, remainingRetries = null) {
+        return new APIPromise(this, this.makeRequest(options, remainingRetries, undefined));
+    }
+    async makeRequest(optionsInput, retriesRemaining, retryOfRequestLogID) {
+        const options = await optionsInput;
+        const maxRetries = options.maxRetries ?? this.maxRetries;
+        if (retriesRemaining == null) {
+            retriesRemaining = maxRetries;
+        }
+        await this.prepareOptions(options);
+        const { req, url, timeout } = await this.buildRequest(options, {
+            retryCount: maxRetries - retriesRemaining,
+        });
+        await this.prepareRequest(req, { url, options });
+        /** Not an API request ID, just for correlating local log entries. */
+        const requestLogID = 'log_' + ((Math.random() * (1 << 24)) | 0).toString(16).padStart(6, '0');
+        const retryLogStr = retryOfRequestLogID === undefined ? '' : `, retryOf: ${retryOfRequestLogID}`;
+        const startTime = Date.now();
+        loggerFor(this).debug(`[${requestLogID}] sending request`, formatRequestDetails({
+            retryOfRequestLogID,
+            method: options.method,
+            url,
+            options,
+            headers: req.headers,
+        }));
+        if (options.signal?.aborted) {
+            throw new APIUserAbortError();
+        }
+        const controller = new AbortController();
+        const response = await this.fetchWithTimeout(url, req, timeout, controller).catch(castToError);
+        const headersTime = Date.now();
+        if (response instanceof Error) {
+            const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
+            if (options.signal?.aborted) {
+                throw new APIUserAbortError();
+            }
+            // detect native connection timeout errors
+            // deno throws "TypeError: error sending request for url (https://example/): client error (Connect): tcp connect error: Operation timed out (os error 60): Operation timed out (os error 60)"
+            // undici throws "TypeError: fetch failed" with cause "ConnectTimeoutError: Connect Timeout Error (attempted address: example:443, timeout: 1ms)"
+            // others do not provide enough information to distinguish timeouts from other connection errors
+            const isTimeout = isAbortError(response) ||
+                /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''));
+            if (retriesRemaining) {
+                loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`);
+                loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`, formatRequestDetails({
+                    retryOfRequestLogID,
+                    url,
+                    durationMs: headersTime - startTime,
+                    message: response.message,
+                }));
+                return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID);
+            }
+            loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`);
+            loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`, formatRequestDetails({
+                retryOfRequestLogID,
+                url,
+                durationMs: headersTime - startTime,
+                message: response.message,
+            }));
+            if (isTimeout) {
+                throw new APIConnectionTimeoutError();
+            }
+            throw new APIConnectionError({ cause: response });
+        }
+        const specialHeaders = [...response.headers.entries()]
+            .filter(([name]) => name === 'x-request-id')
+            .map(([name, value]) => ', ' + name + ': ' + JSON.stringify(value))
+            .join('');
+        const responseInfo = `[${requestLogID}${retryLogStr}${specialHeaders}] ${req.method} ${url} ${response.ok ? 'succeeded' : 'failed'} with status ${response.status} in ${headersTime - startTime}ms`;
+        if (!response.ok) {
+            const shouldRetry = await this.shouldRetry(response);
+            if (retriesRemaining && shouldRetry) {
+                const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
+                // We don't need the body of this response.
+                await CancelReadableStream(response.body);
+                loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
+                loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({
+                    retryOfRequestLogID,
+                    url: response.url,
+                    status: response.status,
+                    headers: response.headers,
+                    durationMs: headersTime - startTime,
+                }));
+                return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID, response.headers);
+            }
+            const retryMessage = shouldRetry ? `error; no more retries left` : `error; not retryable`;
+            loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
+            const errText = await response.text().catch((err) => castToError(err).message);
+            const errJSON = safeJSON(errText);
+            const errMessage = errJSON ? undefined : errText;
+            loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({
+                retryOfRequestLogID,
+                url: response.url,
+                status: response.status,
+                headers: response.headers,
+                message: errMessage,
+                durationMs: Date.now() - startTime,
+            }));
+            const err = this.makeStatusError(response.status, errJSON, errMessage, response.headers);
+            throw err;
+        }
+        loggerFor(this).info(responseInfo);
+        loggerFor(this).debug(`[${requestLogID}] response start`, formatRequestDetails({
+            retryOfRequestLogID,
+            url: response.url,
+            status: response.status,
+            headers: response.headers,
+            durationMs: headersTime - startTime,
+        }));
+        return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
+    }
+    getAPIList(path, Page, opts) {
+        return this.requestAPIList(Page, { method: 'get', path, ...opts });
+    }
+    requestAPIList(Page, options) {
+        const request = this.makeRequest(options, null, undefined);
+        return new PagePromise(this, request, Page);
+    }
+    async fetchWithTimeout(url, init, ms, controller) {
+        const { signal, method, ...options } = init || {};
+        if (signal)
+            signal.addEventListener('abort', () => controller.abort());
+        const timeout = setTimeout(() => controller.abort(), ms);
+        const isReadableBody = (globalThis.ReadableStream && options.body instanceof globalThis.ReadableStream) ||
+            (typeof options.body === 'object' && options.body !== null && Symbol.asyncIterator in options.body);
+        const fetchOptions = {
+            signal: controller.signal,
+            ...(isReadableBody ? { duplex: 'half' } : {}),
+            method: 'GET',
+            ...options,
+        };
+        if (method) {
+            // Custom methods like 'patch' need to be uppercased
+            // See https://github.com/nodejs/undici/issues/2294
+            fetchOptions.method = method.toUpperCase();
+        }
+        try {
+            // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
+            return await this.fetch.call(undefined, url, fetchOptions);
+        }
+        finally {
+            clearTimeout(timeout);
+        }
+    }
+    async shouldRetry(response) {
+        // Note this is not a standard header.
+        const shouldRetryHeader = response.headers.get('x-should-retry');
+        // If the server explicitly says whether or not to retry, obey.
+        if (shouldRetryHeader === 'true')
+            return true;
+        if (shouldRetryHeader === 'false')
+            return false;
+        // Retry on request timeouts.
+        if (response.status === 408)
+            return true;
+        // Retry on lock timeouts.
+        if (response.status === 409)
+            return true;
+        // Retry on rate limits.
+        if (response.status === 429)
+            return true;
+        // Retry internal errors.
+        if (response.status >= 500)
+            return true;
+        return false;
+    }
+    async retryRequest(options, retriesRemaining, requestLogID, responseHeaders) {
+        let timeoutMillis;
+        // Note the `retry-after-ms` header may not be standard, but is a good idea and we'd like proactive support for it.
+        const retryAfterMillisHeader = responseHeaders?.get('retry-after-ms');
+        if (retryAfterMillisHeader) {
+            const timeoutMs = parseFloat(retryAfterMillisHeader);
+            if (!Number.isNaN(timeoutMs)) {
+                timeoutMillis = timeoutMs;
+            }
+        }
+        // About the Retry-After header: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
+        const retryAfterHeader = responseHeaders?.get('retry-after');
+        if (retryAfterHeader && !timeoutMillis) {
+            const timeoutSeconds = parseFloat(retryAfterHeader);
+            if (!Number.isNaN(timeoutSeconds)) {
+                timeoutMillis = timeoutSeconds * 1000;
+            }
+            else {
+                timeoutMillis = Date.parse(retryAfterHeader) - Date.now();
+            }
+        }
+        // If the API asks us to wait a certain amount of time (and it's a reasonable amount),
+        // just do what it says, but otherwise calculate a default
+        if (!(timeoutMillis && 0 <= timeoutMillis && timeoutMillis < 60 * 1000)) {
+            const maxRetries = options.maxRetries ?? this.maxRetries;
+            timeoutMillis = this.calculateDefaultRetryTimeoutMillis(retriesRemaining, maxRetries);
+        }
+        await sleep(timeoutMillis);
+        return this.makeRequest(options, retriesRemaining - 1, requestLogID);
+    }
+    calculateDefaultRetryTimeoutMillis(retriesRemaining, maxRetries) {
+        const initialRetryDelay = 0.5;
+        const maxRetryDelay = 8.0;
+        const numRetries = maxRetries - retriesRemaining;
+        // Apply exponential backoff, but not more than the max.
+        const sleepSeconds = Math.min(initialRetryDelay * Math.pow(2, numRetries), maxRetryDelay);
+        // Apply some jitter, take up to at most 25 percent of the retry time.
+        const jitter = 1 - Math.random() * 0.25;
+        return sleepSeconds * jitter * 1000;
+    }
+    async buildRequest(inputOptions, { retryCount = 0 } = {}) {
+        const options = { ...inputOptions };
+        const { method, path, query, defaultBaseURL } = options;
+        const url = this.buildURL(path, query, defaultBaseURL);
+        if ('timeout' in options)
+            validatePositiveInteger('timeout', options.timeout);
+        options.timeout = options.timeout ?? this.timeout;
+        const { bodyHeaders, body } = this.buildBody({ options });
+        const reqHeaders = await this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
+        const req = {
+            method,
+            headers: reqHeaders,
+            ...(options.signal && { signal: options.signal }),
+            ...(globalThis.ReadableStream &&
+                body instanceof globalThis.ReadableStream && { duplex: 'half' }),
+            ...(body && { body }),
+            ...(this.fetchOptions ?? {}),
+            ...(options.fetchOptions ?? {}),
+        };
+        return { req, url, timeout: options.timeout };
+    }
+    async buildHeaders({ options, method, bodyHeaders, retryCount, }) {
+        let idempotencyHeaders = {};
+        if (this.idempotencyHeader && method !== 'get') {
+            if (!options.idempotencyKey)
+                options.idempotencyKey = this.defaultIdempotencyKey();
+            idempotencyHeaders[this.idempotencyHeader] = options.idempotencyKey;
+        }
+        const headers = buildHeaders([
+            idempotencyHeaders,
+            {
+                Accept: 'application/json',
+                'User-Agent': this.getUserAgent(),
+                'X-Stainless-Retry-Count': String(retryCount),
+                ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+                ...getPlatformHeaders(),
+                'OpenAI-Organization': this.organization,
+                'OpenAI-Project': this.project,
+            },
+            await this.authHeaders(options),
+            this._options.defaultHeaders,
+            bodyHeaders,
+            options.headers,
+        ]);
+        this.validateHeaders(headers);
+        return headers.values;
+    }
+    buildBody({ options: { body, headers: rawHeaders } }) {
+        if (!body) {
+            return { bodyHeaders: undefined, body: undefined };
+        }
+        const headers = buildHeaders([rawHeaders]);
+        if (
+        // Pass raw type verbatim
+        ArrayBuffer.isView(body) ||
+            body instanceof ArrayBuffer ||
+            body instanceof DataView ||
+            (typeof body === 'string' &&
+                // Preserve legacy string encoding behavior for now
+                headers.values.has('content-type')) ||
+            // `Blob` is superset of `File`
+            body instanceof Blob ||
+            // `FormData` -> `multipart/form-data`
+            body instanceof FormData ||
+            // `URLSearchParams` -> `application/x-www-form-urlencoded`
+            body instanceof URLSearchParams ||
+            // Send chunked stream (each chunk has own `length`)
+            (globalThis.ReadableStream && body instanceof globalThis.ReadableStream)) {
+            return { bodyHeaders: undefined, body: body };
+        }
+        else if (typeof body === 'object' &&
+            (Symbol.asyncIterator in body ||
+                (Symbol.iterator in body && 'next' in body && typeof body.next === 'function'))) {
+            return { bodyHeaders: undefined, body: ReadableStreamFrom(body) };
+        }
+        else {
+            return __classPrivateFieldGet(this, _OpenAI_encoder, "f").call(this, { body, headers });
+        }
+    }
+}
+_a = OpenAI, _OpenAI_encoder = new WeakMap(), _OpenAI_instances = new WeakSet(), _OpenAI_baseURLOverridden = function _OpenAI_baseURLOverridden() {
+    return this.baseURL !== 'https://api.openai.com/v1';
+};
+OpenAI.OpenAI = _a;
+OpenAI.DEFAULT_TIMEOUT = 600000; // 10 minutes
+OpenAI.OpenAIError = OpenAIError;
+OpenAI.APIError = APIError;
+OpenAI.APIConnectionError = APIConnectionError;
+OpenAI.APIConnectionTimeoutError = APIConnectionTimeoutError;
+OpenAI.APIUserAbortError = APIUserAbortError;
+OpenAI.NotFoundError = NotFoundError;
+OpenAI.ConflictError = ConflictError;
+OpenAI.RateLimitError = RateLimitError;
+OpenAI.BadRequestError = BadRequestError;
+OpenAI.AuthenticationError = AuthenticationError;
+OpenAI.InternalServerError = InternalServerError;
+OpenAI.PermissionDeniedError = PermissionDeniedError;
+OpenAI.UnprocessableEntityError = UnprocessableEntityError;
+OpenAI.InvalidWebhookSignatureError = InvalidWebhookSignatureError;
+OpenAI.toFile = toFile;
+OpenAI.Completions = Completions;
+OpenAI.Chat = Chat;
+OpenAI.Embeddings = Embeddings;
+OpenAI.Files = Files$1;
+OpenAI.Images = Images;
+OpenAI.Audio = Audio;
+OpenAI.Moderations = Moderations;
+OpenAI.Models = Models;
+OpenAI.FineTuning = FineTuning;
+OpenAI.Graders = Graders;
+OpenAI.VectorStores = VectorStores;
+OpenAI.Webhooks = Webhooks;
+OpenAI.Beta = Beta;
+OpenAI.Batches = Batches;
+OpenAI.Uploads = Uploads;
+OpenAI.Responses = Responses;
+OpenAI.Evals = Evals;
+OpenAI.Containers = Containers;
+
+/**
+ * Simple one-shot inference without tools
+ */
+async function simpleInference(request) {
+    coreExports.info('Running simple inference without tools');
+    const client = new OpenAI({
+        apiKey: request.token,
+        baseURL: request.endpoint,
+    });
+    const chatCompletionRequest = {
+        messages: request.messages,
+        max_tokens: request.maxTokens,
+        model: request.modelName,
+    };
+    // Add response format if specified
+    if (request.responseFormat) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        chatCompletionRequest.response_format = request.responseFormat;
+    }
+    try {
+        const response = await client.chat.completions.create(chatCompletionRequest);
+        if ('choices' in response) {
+            const modelResponse = response.choices[0]?.message?.content;
+            coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
+            return modelResponse || null;
+        }
+        else {
+            coreExports.error(`Unexpected response format from API: ${JSON.stringify(response)}`);
+            return null;
+        }
+    }
+    catch (error) {
+        coreExports.error(`API error: ${error}`);
+        throw error;
+    }
+}
+/**
+ * GitHub MCP-enabled inference with tool execution loop
+ */
+async function mcpInference(request, githubMcpClient) {
+    coreExports.info('Running GitHub MCP inference with tools');
+    const client = new OpenAI({
+        apiKey: request.token,
+        baseURL: request.endpoint,
+    });
+    // Start with the pre-processed messages
+    const messages = [...request.messages];
+    let iterationCount = 0;
+    const maxIterations = 5; // Prevent infinite loops
+    while (iterationCount < maxIterations) {
+        iterationCount++;
+        coreExports.info(`MCP inference iteration ${iterationCount}`);
+        const chatCompletionRequest = {
+            messages: messages,
+            max_tokens: request.maxTokens,
+            model: request.modelName,
+            tools: githubMcpClient.tools,
+        };
+        // Add response format if specified (only on first iteration to avoid conflicts)
+        if (iterationCount === 1 && request.responseFormat) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            chatCompletionRequest.response_format = request.responseFormat;
+        }
+        try {
+            const response = await client.chat.completions.create(chatCompletionRequest);
+            if (!('choices' in response)) {
+                throw new Error(`Unexpected response format from API: ${JSON.stringify(response)}`);
+            }
+            const assistantMessage = response.choices[0]?.message;
+            const modelResponse = assistantMessage?.content;
+            const toolCalls = assistantMessage?.tool_calls;
+            coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
+            messages.push({
+                role: 'assistant',
+                content: modelResponse || '',
+                ...(toolCalls && { tool_calls: toolCalls }),
+            });
+            if (!toolCalls || toolCalls.length === 0) {
+                coreExports.info('No tool calls requested, ending GitHub MCP inference loop');
+                return modelResponse || null;
+            }
+            coreExports.info(`Model requested ${toolCalls.length} tool calls`);
+            // Execute all tool calls via GitHub MCP
+            const toolResults = await executeToolCalls(githubMcpClient.client, toolCalls);
+            // Add tool results to the conversation
+            messages.push(...toolResults);
+            coreExports.info('Tool results added, continuing conversation...');
+        }
+        catch (error) {
+            coreExports.error(`OpenAI API error: ${error}`);
+            throw error;
+        }
+    }
+    coreExports.warning(`GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`);
+    // Return the last assistant message content
+    const lastAssistantMessage = messages
+        .slice()
+        .reverse()
+        .find(msg => msg.role === 'assistant');
+    return lastAssistantMessage?.content || null;
 }
 
 /**
@@ -49062,28 +48756,6 @@ function loadContentFromFileOrInput(filePathInput, contentInput, defaultValue) {
     else {
         throw new Error(`Neither ${filePathInput} nor ${contentInput} was set`);
     }
-}
-/**
- * Helper function to handle unexpected responses from AI service
- * @param response - The response object from the AI service
- * @throws Error with appropriate error message based on response content
- */
-function handleUnexpectedResponse(response) {
-    // Extract x-ms-error-code from headers if available
-    const errorCode = response.headers['x-ms-error-code'];
-    const errorCodeMsg = errorCode ? ` (error code: ${errorCode})` : '';
-    // Check if response body exists and contains error details
-    if (response.body && response.body.error) {
-        throw response.body.error;
-    }
-    // Handle case where response body is missing
-    if (!response.body) {
-        throw new Error(`Failed to get response from AI service (status: ${response.status})${errorCodeMsg}. ` +
-            'Please check network connection and endpoint configuration.');
-    }
-    // Handle other error cases
-    throw new Error(`AI service returned error response (status: ${response.status})${errorCodeMsg}: ` +
-        (typeof response.body === 'string' ? response.body : JSON.stringify(response.body)));
 }
 /**
  * Build messages array from either prompt config or legacy format
@@ -49139,93 +48811,6 @@ function buildInferenceRequest(promptConfig, systemPrompt, prompt, modelName, ma
         token,
         responseFormat,
     };
-}
-
-/**
- * Simple one-shot inference without tools
- */
-async function simpleInference(request) {
-    coreExports.info('Running simple inference without tools');
-    const client = createClient(request.endpoint, new AzureKeyCredential(request.token), {
-        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' },
-    });
-    const requestBody = {
-        messages: request.messages,
-        max_tokens: request.maxTokens,
-        model: request.modelName,
-    };
-    // Add response format if specified
-    if (request.responseFormat) {
-        requestBody.response_format = request.responseFormat;
-    }
-    const response = await client.path('/chat/completions').post({
-        body: requestBody,
-    });
-    if (isUnexpected(response)) {
-        handleUnexpectedResponse(response);
-    }
-    const modelResponse = response.body.choices[0].message.content;
-    coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
-    return modelResponse;
-}
-/**
- * GitHub MCP-enabled inference with tool execution loop
- */
-async function mcpInference(request, githubMcpClient) {
-    coreExports.info('Running GitHub MCP inference with tools');
-    const client = createClient(request.endpoint, new AzureKeyCredential(request.token), {
-        userAgentOptions: { userAgentPrefix: 'github-actions-ai-inference' },
-    });
-    // Start with the pre-processed messages
-    const messages = [...request.messages];
-    let iterationCount = 0;
-    const maxIterations = 5; // Prevent infinite loops
-    while (iterationCount < maxIterations) {
-        iterationCount++;
-        coreExports.info(`MCP inference iteration ${iterationCount}`);
-        const requestBody = {
-            messages: messages,
-            max_tokens: request.maxTokens,
-            model: request.modelName,
-            tools: githubMcpClient.tools,
-        };
-        // Add response format if specified (only on first iteration to avoid conflicts)
-        if (iterationCount === 1 && request.responseFormat) {
-            requestBody.response_format = request.responseFormat;
-        }
-        const response = await client.path('/chat/completions').post({
-            body: requestBody,
-        });
-        if (isUnexpected(response)) {
-            handleUnexpectedResponse(response);
-        }
-        const assistantMessage = response.body.choices[0].message;
-        const modelResponse = assistantMessage.content;
-        const toolCalls = assistantMessage.tool_calls;
-        coreExports.info(`Model response: ${modelResponse || 'No response content'}`);
-        messages.push({
-            role: 'assistant',
-            content: modelResponse || '',
-            ...(toolCalls && { tool_calls: toolCalls }),
-        });
-        if (!toolCalls || toolCalls.length === 0) {
-            coreExports.info('No tool calls requested, ending GitHub MCP inference loop');
-            return modelResponse;
-        }
-        coreExports.info(`Model requested ${toolCalls.length} tool calls`);
-        // Execute all tool calls via GitHub MCP
-        const toolResults = await executeToolCalls(githubMcpClient.client, toolCalls);
-        // Add tool results to the conversation
-        messages.push(...toolResults);
-        coreExports.info('Tool results added, continuing conversation...');
-    }
-    coreExports.warning(`GitHub MCP inference loop exceeded maximum iterations (${maxIterations})`);
-    // Return the last assistant message content
-    const lastAssistantMessage = messages
-        .slice()
-        .reverse()
-        .find(msg => msg.role === 'assistant');
-    return lastAssistantMessage?.content || null;
 }
 
 /*! js-yaml 4.1.0 https://github.com/nodeca/js-yaml @license MIT */

@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import {GetChatCompletionsDefaultResponse} from '@azure-rest/ai-inference'
 import * as fs from 'fs'
 import {PromptConfig} from './prompt.js'
 import {InferenceRequest} from './inference.js'
@@ -30,47 +29,17 @@ export function loadContentFromFileOrInput(filePathInput: string, contentInput: 
 }
 
 /**
- * Helper function to handle unexpected responses from AI service
- * @param response - The response object from the AI service
- * @throws Error with appropriate error message based on response content
- */
-export function handleUnexpectedResponse(response: GetChatCompletionsDefaultResponse): never {
-  // Extract x-ms-error-code from headers if available
-  const errorCode = response.headers['x-ms-error-code']
-  const errorCodeMsg = errorCode ? ` (error code: ${errorCode})` : ''
-
-  // Check if response body exists and contains error details
-  if (response.body && response.body.error) {
-    throw response.body.error
-  }
-
-  // Handle case where response body is missing
-  if (!response.body) {
-    throw new Error(
-      `Failed to get response from AI service (status: ${response.status})${errorCodeMsg}. ` +
-        'Please check network connection and endpoint configuration.',
-    )
-  }
-
-  // Handle other error cases
-  throw new Error(
-    `AI service returned error response (status: ${response.status})${errorCodeMsg}: ` +
-      (typeof response.body === 'string' ? response.body : JSON.stringify(response.body)),
-  )
-}
-
-/**
  * Build messages array from either prompt config or legacy format
  */
 export function buildMessages(
   promptConfig?: PromptConfig,
   systemPrompt?: string,
   prompt?: string,
-): Array<{role: string; content: string}> {
+): Array<{role: 'system' | 'user' | 'assistant' | 'tool'; content: string}> {
   if (promptConfig?.messages && promptConfig.messages.length > 0) {
     // Use new message format
     return promptConfig.messages.map(msg => ({
-      role: msg.role,
+      role: msg.role as 'system' | 'user' | 'assistant' | 'tool',
       content: msg.content,
     }))
   } else {
