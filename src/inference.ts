@@ -141,7 +141,7 @@ export async function mcpInference(
           // Add a user message requesting JSON format and try again
           messages.push({
             role: 'user',
-            content: `Please provide your response in the exact ${request.responseFormat} format specified.`,
+            content: `Please provide your response in the exact ${request.responseFormat.type} format specified.`,
           })
 
           finalMessage = true
