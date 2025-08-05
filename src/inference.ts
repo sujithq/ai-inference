@@ -61,11 +61,11 @@ export async function simpleInference(request: InferenceRequest): Promise<string
       core.info(`Model response: ${modelResponse || 'No response content'}`)
       return modelResponse || null
     } else {
-      core.error('Unexpected response format from OpenAI API')
+      core.error(`Unexpected response format from API: ${JSON.stringify(response)}`)
       return null
     }
   } catch (error) {
-    core.error(`OpenAI API error: ${error}`)
+    core.error(`API error: ${error}`)
     throw error
   }
 }
