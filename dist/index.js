@@ -51790,6 +51790,8 @@ async function run() {
         // Force exit to prevent hanging on open connections
         process.exit(1);
     }
+    // Force exit to prevent hanging on open connections
+    process.exit(0);
 }
 function tempDir() {
     const tempDirectory = process.env['RUNNER_TEMP'] || require$$0.tmpdir();

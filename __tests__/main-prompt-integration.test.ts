@@ -34,6 +34,12 @@ vi.mock('../src/mcp.js', () => ({
 
 vi.mock('@actions/core', () => core)
 
+// Mock process.exit to prevent it from actually exiting during tests
+const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
+  // Prevent actual exit, but don't throw - just return
+  return undefined as never
+})
+
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
 const {run} = await import('../src/main.js')
@@ -41,6 +47,7 @@ const {run} = await import('../src/main.js')
 describe('main.ts - prompt.yml integration', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockProcessExit.mockClear()
 
     // Mock environment variables
     process.env['GITHUB_TOKEN'] = 'test-token'
@@ -103,7 +110,11 @@ model: openai/gpt-4o
       }
     })
 
+    // Expect the run function to complete successfully
     await run()
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
 
     // Verify simpleInference was called with the correct message structure
     expect(mockSimpleInference).toHaveBeenCalledWith(
@@ -171,6 +182,9 @@ model: openai/gpt-4o
         messages: [{role: 'user', content: 'Here is the data: FILE_CONTENTS'}],
       }),
     )
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('should fall back to legacy format when not using prompt YAML', async () => {
@@ -215,5 +229,8 @@ model: openai/gpt-4o
         token: 'test-token',
       }),
     )
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 })
