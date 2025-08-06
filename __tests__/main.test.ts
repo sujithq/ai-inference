@@ -96,7 +96,8 @@ vi.mock('@actions/core', () => core)
 
 // Mock process.exit to prevent it from actually exiting during tests
 const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
-  throw new Error('process.exit called')
+  // Prevent actual exit, but don't throw - just return
+  return undefined as never
 })
 
 // The module being tested should be imported dynamically. This ensures that the
@@ -127,6 +128,7 @@ describe('main.ts', () => {
 
     expect(core.setOutput).toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('Sets a failed status when no prompt is set', async () => {
@@ -135,8 +137,7 @@ describe('main.ts', () => {
       'prompt-file': '',
     })
 
-    // Expect the run function to throw due to process.exit being mocked
-    await expect(run()).rejects.toThrow('process.exit called')
+    await run()
 
     expect(core.setFailed).toHaveBeenCalledWith('Neither prompt-file nor prompt was set')
     expect(mockProcessExit).toHaveBeenCalledWith(1)
@@ -165,6 +166,7 @@ describe('main.ts', () => {
     expect(mockConnectToGitHubMCP).not.toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('uses MCP inference when enabled and connection succeeds', async () => {
@@ -197,6 +199,7 @@ describe('main.ts', () => {
     )
     expect(mockSimpleInference).not.toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('falls back to simple inference when MCP connection fails', async () => {
@@ -215,6 +218,7 @@ describe('main.ts', () => {
     expect(mockMcpInference).not.toHaveBeenCalled()
     expect(core.warning).toHaveBeenCalledWith('MCP connection failed, falling back to simple inference')
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('properly integrates with loadContentFromFileOrInput', async () => {
@@ -248,6 +252,7 @@ describe('main.ts', () => {
       responseFormat: undefined,
     })
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('handles non-existent prompt-file with an error', async () => {
@@ -259,8 +264,7 @@ describe('main.ts', () => {
       'prompt-file': promptFile,
     })
 
-    // Expect the run function to throw due to process.exit being mocked
-    await expect(run()).rejects.toThrow('process.exit called')
+    await run()
 
     expect(core.setFailed).toHaveBeenCalledWith(`File for prompt-file was not found: ${promptFile}`)
     expect(mockProcessExit).toHaveBeenCalledWith(1)
