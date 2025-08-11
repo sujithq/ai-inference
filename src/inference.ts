@@ -41,10 +41,15 @@ export async function simpleInference(request: InferenceRequest): Promise<string
     baseURL: request.endpoint,
   })
 
-  const chatCompletionRequest: OpenAI.Chat.Completions.ChatCompletionCreateParams = {
+  const chatCompletionRequest: OpenAI.Chat.Completions.ChatCompletionCreateParams & {
+    // Some providers/models expect max_completion_tokens instead of max_tokens
+    max_completion_tokens?: number
+  } = {
     messages: request.messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
-    max_tokens: request.maxTokens,
     model: request.modelName,
+    ...(request.modelName === 'openai/gpt-5'
+      ? {max_completion_tokens: request.maxTokens}
+      : {max_tokens: request.maxTokens}),
   }
 
   // Add response format if specified
@@ -97,10 +102,15 @@ export async function mcpInference(
     iterationCount++
     core.info(`MCP inference iteration ${iterationCount}`)
 
-    const chatCompletionRequest: OpenAI.Chat.Completions.ChatCompletionCreateParams = {
+    const chatCompletionRequest: OpenAI.Chat.Completions.ChatCompletionCreateParams & {
+      // Some providers/models expect max_completion_tokens instead of max_tokens
+      max_completion_tokens?: number
+    } = {
       messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
-      max_tokens: request.maxTokens,
       model: request.modelName,
+      ...(request.modelName === 'openai/gpt-5'
+        ? {max_completion_tokens: request.maxTokens}
+        : {max_tokens: request.maxTokens}),
     }
 
     // Add response format if specified (only on final iteration to avoid conflicts with tool calls)

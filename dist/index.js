@@ -48640,8 +48640,10 @@ async function simpleInference(request) {
     });
     const chatCompletionRequest = {
         messages: request.messages,
-        max_tokens: request.maxTokens,
         model: request.modelName,
+        ...(request.modelName === 'openai/gpt-5'
+            ? { max_completion_tokens: request.maxTokens }
+            : { max_tokens: request.maxTokens }),
     };
     // Add response format if specified
     if (request.responseFormat) {
@@ -48686,8 +48688,10 @@ async function mcpInference(request, githubMcpClient) {
         coreExports.info(`MCP inference iteration ${iterationCount}`);
         const chatCompletionRequest = {
             messages: messages,
-            max_tokens: request.maxTokens,
             model: request.modelName,
+            ...(request.modelName === 'openai/gpt-5'
+                ? { max_completion_tokens: request.maxTokens }
+                : { max_tokens: request.maxTokens }),
         };
         // Add response format if specified (only on final iteration to avoid conflicts with tool calls)
         if (finalMessage && request.responseFormat) {
