@@ -38,6 +38,47 @@ export function parseTemplateVariables(input: string): TemplateVariables {
 }
 
 /**
+ * Parse file-based template variables from YAML input string. The YAML should map
+ * variable names to file paths. File contents are read and returned as variables.
+ */
+export function parseFileTemplateVariables(fileInput: string): TemplateVariables {
+  if (!fileInput.trim()) {
+    return {}
+  }
+
+  try {
+    const parsed = yaml.load(fileInput) as Record<string, unknown>
+    if (typeof parsed !== 'object' || parsed === null) {
+      throw new Error('File template variables must be a YAML object')
+    }
+
+    const result: TemplateVariables = {}
+    for (const [key, value] of Object.entries(parsed)) {
+      if (typeof value !== 'string') {
+        throw new Error(`File template variable '${key}' must be a string file path`)
+      }
+      const filePath = value
+      if (!fs.existsSync(filePath)) {
+        throw new Error(`File for template variable '${key}' was not found: ${filePath}`)
+      }
+      try {
+        result[key] = fs.readFileSync(filePath, 'utf-8')
+      } catch (err) {
+        throw new Error(
+          `Failed to read file for template variable '${key}' at path '${filePath}': ${err instanceof Error ? err.message : 'Unknown error'}`,
+        )
+      }
+    }
+
+    return result
+  } catch (error) {
+    throw new Error(
+      `Failed to parse file template variables: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    )
+  }
+}
+
+/**
  * Replace template variables in text using {{variable}} syntax
  */
 export function replaceTemplateVariables(text: string, variables: TemplateVariables): string {

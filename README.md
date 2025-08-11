@@ -65,6 +65,9 @@ steps:
         var3: |
           Lorem Ipsum
           Hello World
+      file_input: |
+        var4: ./path/to/long-text.txt
+        var5: ./path/to/config.json
 ```
 
 #### Simple prompt.yml example
@@ -116,7 +119,9 @@ jsonSchema: |-
 ```
 
 Variables in prompt.yml files are templated using `{{variable}}` format and are
-supplied via the `input` parameter in YAML format.
+supplied via the `input` parameter in YAML format. Additionally, you can
+provide file-based variables via `file_input`, where each key maps to a file
+path.
 
 ### Using a system prompt file
 
@@ -168,11 +173,23 @@ steps:
       token: ${{ secrets.USER_PAT }}
 ```
 
+If you want, you can use separate tokens for the AI inference endpoint
+and the GitHub MCP server:
+
+```yaml
+steps:
+  - name: AI Inference with Separate MCP Token
+    id: inference
+    uses: actions/ai-inference@v1.2
+    with:
+      prompt: 'List my open pull requests and create a summary'
+      enable-github-mcp: true
+      token: ${{ secrets.GITHUB_TOKEN }}
+      github-mcp-token: ${{ secrets.USER_PAT }}
+```
+
 When MCP is enabled, the AI model will have access to GitHub tools and can
 perform actions like searching issues and PRs.
-
-**Note:** For now, MCP integration cannot be used with the built-in token. You
-must pass a GitHub PAT into `token:` instead.
 
 ## Inputs
 
@@ -185,12 +202,14 @@ the action:
 | `prompt`             | The prompt to send to the model                                                                                                                               | N/A                                  |
 | `prompt-file`        | Path to a file containing the prompt (supports .txt and .prompt.yml formats). If both `prompt` and `prompt-file` are provided, `prompt-file` takes precedence | `""`                                 |
 | `input`              | Template variables in YAML format for .prompt.yml files (e.g., `var1: value1` on separate lines)                                                              | `""`                                 |
+| `file_input`         | Template variables in YAML where values are file paths. The file contents are read and used for templating                                                    | `""`                                 |
 | `system-prompt`      | The system prompt to send to the model                                                                                                                        | `"You are a helpful assistant"`      |
 | `system-prompt-file` | Path to a file containing the system prompt. If both `system-prompt` and `system-prompt-file` are provided, `system-prompt-file` takes precedence             | `""`                                 |
 | `model`              | The model to use for inference. Must be available in the [GitHub Models](https://github.com/marketplace?type=models) catalog                                  | `openai/gpt-4o`                      |
 | `endpoint`           | The endpoint to use for inference. If you're running this as part of an org, you should probably use the org-specific Models endpoint                         | `https://models.github.ai/inference` |
 | `max-tokens`         | The max number of tokens to generate                                                                                                                          | 200                                  |
 | `enable-github-mcp`  | Enable Model Context Protocol integration with GitHub tools                                                                                                   | `false`                              |
+| `github-mcp-token`   | Token to use for GitHub MCP server (defaults to the main token if not specified). Use a separate PAT for tighter security                                     | `""`                                 |
 
 ## Outputs
 

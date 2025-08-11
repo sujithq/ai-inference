@@ -34,6 +34,12 @@ vi.mock('../src/mcp.js', () => ({
 
 vi.mock('@actions/core', () => core)
 
+// Mock process.exit to prevent it from actually exiting during tests
+const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
+  // Prevent actual exit, but don't throw - just return
+  return undefined as never
+})
+
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
 const {run} = await import('../src/main.js')
@@ -41,6 +47,7 @@ const {run} = await import('../src/main.js')
 describe('main.ts - prompt.yml integration', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockProcessExit.mockClear()
 
     // Mock environment variables
     process.env['GITHUB_TOKEN'] = 'test-token'
@@ -103,7 +110,11 @@ model: openai/gpt-4o
       }
     })
 
+    // Expect the run function to complete successfully
     await run()
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
 
     // Verify simpleInference was called with the correct message structure
     expect(mockSimpleInference).toHaveBeenCalledWith(
@@ -128,6 +139,52 @@ model: openai/gpt-4o
     // Verify outputs were set
     expect(core.setOutput).toHaveBeenCalledWith('response', 'Mocked AI response')
     expect(core.setOutput).toHaveBeenCalledWith('response-file', expect.any(String))
+  })
+
+  it('supports file_input variables to load file contents', async () => {
+    mockExistsSync.mockReturnValue(true)
+
+    // First call: reading the prompt file. Second call: reading file_input referenced file contents.
+    const externalFilePath = 'vars.txt'
+    mockReadFileSync.mockImplementation((path: string) => {
+      if (path === 'test.prompt.yml') {
+        return `messages:\n  - role: user\n    content: 'Here is the data: {{blob}}'\nmodel: openai/gpt-4o\n`
+      }
+      if (path === externalFilePath) {
+        return 'FILE_CONTENTS'
+      }
+      return ''
+    })
+
+    core.getInput.mockImplementation((name: string) => {
+      switch (name) {
+        case 'prompt-file':
+          return 'test.prompt.yml'
+        case 'file_input':
+          return `blob: ${externalFilePath}`
+        case 'model':
+          return 'openai/gpt-4o'
+        case 'max-tokens':
+          return '200'
+        case 'endpoint':
+          return 'https://models.github.ai/inference'
+        case 'enable-github-mcp':
+          return 'false'
+        default:
+          return ''
+      }
+    })
+
+    await run()
+
+    expect(mockSimpleInference).toHaveBeenCalledWith(
+      expect.objectContaining({
+        messages: [{role: 'user', content: 'Here is the data: FILE_CONTENTS'}],
+      }),
+    )
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('should fall back to legacy format when not using prompt YAML', async () => {
@@ -172,5 +229,8 @@ model: openai/gpt-4o
         token: 'test-token',
       }),
     )
+
+    // Verify process.exit was called with code 0 (success)
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 })

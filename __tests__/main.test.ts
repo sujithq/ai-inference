@@ -94,6 +94,12 @@ vi.mock('../src/inference.js', () => ({
 
 vi.mock('@actions/core', () => core)
 
+// Mock process.exit to prevent it from actually exiting during tests
+const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => {
+  // Prevent actual exit, but don't throw - just return
+  return undefined as never
+})
+
 // The module being tested should be imported dynamically. This ensures that the
 // mocks are used in place of any actual dependencies.
 const {run} = await import('../src/main.js')
@@ -102,6 +108,7 @@ describe('main.ts', () => {
   // Reset all mocks before each test
   beforeEach(() => {
     vi.clearAllMocks()
+    mockProcessExit.mockClear()
 
     // Remove any existing GITHUB_TOKEN
     delete process.env.GITHUB_TOKEN
@@ -121,6 +128,7 @@ describe('main.ts', () => {
 
     expect(core.setOutput).toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('Sets a failed status when no prompt is set', async () => {
@@ -131,7 +139,8 @@ describe('main.ts', () => {
 
     await run()
 
-    expect(core.setFailed).toHaveBeenNthCalledWith(1, 'Neither prompt-file nor prompt was set')
+    expect(core.setFailed).toHaveBeenCalledWith('Neither prompt-file nor prompt was set')
+    expect(mockProcessExit).toHaveBeenCalledWith(1)
   })
 
   it('uses simple inference when MCP is disabled', async () => {
@@ -157,6 +166,7 @@ describe('main.ts', () => {
     expect(mockConnectToGitHubMCP).not.toHaveBeenCalled()
     expect(mockMcpInference).not.toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('uses MCP inference when enabled and connection succeeds', async () => {
@@ -189,6 +199,7 @@ describe('main.ts', () => {
     )
     expect(mockSimpleInference).not.toHaveBeenCalled()
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('falls back to simple inference when MCP connection fails', async () => {
@@ -207,6 +218,7 @@ describe('main.ts', () => {
     expect(mockMcpInference).not.toHaveBeenCalled()
     expect(core.warning).toHaveBeenCalledWith('MCP connection failed, falling back to simple inference')
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('properly integrates with loadContentFromFileOrInput', async () => {
@@ -240,6 +252,7 @@ describe('main.ts', () => {
       responseFormat: undefined,
     })
     verifyStandardResponse()
+    expect(mockProcessExit).toHaveBeenCalledWith(0)
   })
 
   it('handles non-existent prompt-file with an error', async () => {
@@ -254,5 +267,6 @@ describe('main.ts', () => {
     await run()
 
     expect(core.setFailed).toHaveBeenCalledWith(`File for prompt-file was not found: ${promptFile}`)
+    expect(mockProcessExit).toHaveBeenCalledWith(1)
   })
 })
